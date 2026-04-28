@@ -1,0 +1,9 @@
+@import './base.css';
+
+/* Garante a cadeia de altura necessária para o Leaflet preencher 100% da tela.
+   Sem isso, divs com height: 100% colapsam para zero. */
+html,
+body,
+#app {
+  height: 100%;
+}
