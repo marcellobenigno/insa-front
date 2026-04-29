@@ -1,85 +1,65 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
-// ─── Camadas Base ─────────────────────────────────────────────────────────────
-
-const BASE_LAYERS = {
-  osm: {
-    label: 'OpenStreetMap',
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19,
-  },
-  satellite: {
-    label: 'Satélite (ESRI)',
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attribution:
-      'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-    maxZoom: 18,
-  },
-}
-
-// ─── Camadas de Sobreposição (WMS) ────────────────────────────────────────────
-
-// URL base do serviço WMS do workspace INSA
-export const WMS_URL = 'http://localhost:8080/geoserver/insa/wms'
-
-const OVERLAY_LAYERS = {
-  municipios_semiarido: {
-    label: 'Municípios do Semiárido',
-    wmsLayer: 'insa:municipios_semiarido',
-  },
-  limite_semiarido: {
-    label: 'Limite do Semiárido',
-    wmsLayer: 'insa:limite_semiarido',
-  },
-}
-
-// ─── Store ────────────────────────────────────────────────────────────────────
+import { BASE_LAYERS, OVERLAY_LAYERS } from '@/config/layers'
 
 export const useMapStore = defineStore('map', () => {
   // ── Estado ──────────────────────────────────────────────────────────────────
 
-  // Chave da camada base ativa
-  const activeBaseLayerKey = ref('osm')
+  const defaultBaseKey =
+    Object.entries(BASE_LAYERS).find(([, cfg]) => cfg.active)?.[0] ??
+    Object.keys(BASE_LAYERS)[0]
 
-  // Visibilidade de cada camada de sobreposição (chave → boolean)
+  const activeBaseLayerKey = ref(defaultBaseKey)
+
   const visibleOverlays = ref(
-    Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, true])),
+    Object.fromEntries(Object.entries(OVERLAY_LAYERS).map(([k, cfg]) => [k, cfg.active])),
+  )
+
+  // Opacidade de cada camada (base e overlay), escala 0–1
+  const layerOpacity = ref(
+    Object.fromEntries(
+      [...Object.keys(BASE_LAYERS), ...Object.keys(OVERLAY_LAYERS)].map((k) => [k, 1]),
+    ),
+  )
+
+  // Modo identificar (GetFeatureInfo) ativo por overlay
+  const infoActive = ref(
+    Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, false])),
   )
 
   // ── Getters ─────────────────────────────────────────────────────────────────
 
-  // Configuração completa da camada base ativa
   const activeBaseLayer = computed(() => BASE_LAYERS[activeBaseLayerKey.value])
 
-  // Lista de camadas base para montar os radio buttons
   const availableBaseLayers = computed(() =>
-    Object.entries(BASE_LAYERS).map(([key, { label }]) => ({ key, label })),
+    Object.entries(BASE_LAYERS).map(([key, { label, meta }]) => ({ key, label, meta })),
   )
 
-  // Lista de overlays com configuração WMS para montar os checkboxes
   const availableOverlays = computed(() =>
-    Object.entries(OVERLAY_LAYERS).map(([key, { label, wmsLayer }]) => ({
-      key,
-      label,
-      wmsLayer,
-    })),
+    Object.entries(OVERLAY_LAYERS).map(([key, cfg]) => ({ key, ...cfg })),
   )
 
   // ── Ações ───────────────────────────────────────────────────────────────────
 
   function setBaseLayer(key) {
-    if (BASE_LAYERS[key]) {
-      activeBaseLayerKey.value = key
-    }
+    if (BASE_LAYERS[key]) activeBaseLayerKey.value = key
   }
 
   function toggleOverlay(key) {
-    if (key in visibleOverlays.value) {
-      visibleOverlays.value[key] = !visibleOverlays.value[key]
-    }
+    if (key in visibleOverlays.value) visibleOverlays.value[key] = !visibleOverlays.value[key]
+  }
+
+  function setLayerOpacity(key, value) {
+    if (key in layerOpacity.value) layerOpacity.value[key] = value
+  }
+
+  function toggleLayerInfo(key) {
+    if (!(key in infoActive.value)) return
+    const wasActive = infoActive.value[key]
+    // Desativa todas as camadas (comportamento radio)
+    Object.keys(infoActive.value).forEach((k) => { infoActive.value[k] = false })
+    // Se não estava ativa, ativa; se já estava, permanece desativada (toggle off)
+    if (!wasActive) infoActive.value[key] = true
   }
 
   return {
@@ -88,7 +68,11 @@ export const useMapStore = defineStore('map', () => {
     availableBaseLayers,
     visibleOverlays,
     availableOverlays,
+    layerOpacity,
+    infoActive,
     setBaseLayer,
     toggleOverlay,
+    setLayerOpacity,
+    toggleLayerInfo,
   }
 })

@@ -1,9 +1,123 @@
 @import './base.css';
 
-/* Garante a cadeia de altura necessária para o Leaflet preencher 100% da tela.
-   Sem isso, divs com height: 100% colapsam para zero. */
+/* ── Dark theme — CSS tokens usados por todos os componentes ── */
+:root {
+  --sidebar-w:           340px;
+  --sidebar-collapsed-w: 68px;
+  --transition-speed:    0.3s;
+  --transition-curve:    cubic-bezier(0.4, 0, 0.2, 1);
+
+  --bg-app:          #0a0c10;
+  --bg-sidebar:      #111418;
+  --bg-card:         #1a1f26;
+  --bg-card-hover:   #232932;
+  --bg-accent-dim:   rgba(0, 212, 170, 0.1);
+
+  --accent:          #00d4aa;
+  --accent-hover:    #00f2c3;
+  --accent-secondary:#3b82f6;
+
+  --text-main:       #f1f5f9;
+  --text-muted:      #94a3b8;
+  --text-dim:        #64748b;
+
+  --border-color:    rgba(255, 255, 255, 0.08);
+  --shadow-lg:       0 10px 25px -5px rgba(0,0,0,.4), 0 8px 10px -6px rgba(0,0,0,.4);
+}
+
+/* ── Leaflet popup — dark theme ──────────────────────────────────────────────
+   Estilos globais: o DOM do popup é criado pelo Leaflet fora da árvore Vue,
+   então scoped CSS não alcança. Todos os seletores usam a classe .popup-dark
+   adicionada via L.popup({ className: 'popup-dark' }).
+   ──────────────────────────────────────────────────────────────────────── */
+
+.popup-dark .leaflet-popup-content-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+  overflow: hidden;
+  color: var(--text-main);
+}
+
+.popup-dark .leaflet-popup-tip {
+  background: var(--bg-card);
+}
+
+.popup-dark .leaflet-popup-content {
+  margin: 0;
+}
+
+.popup-dark .leaflet-popup-close-button {
+  color: var(--text-muted);
+  font-size: 1rem;
+  padding: 6px 8px;
+  right: 2px;
+  top: 2px;
+}
+
+.popup-dark .leaflet-popup-close-button:hover {
+  color: var(--text-main);
+  background: transparent;
+}
+
+/* ── Conteúdo GFI ─────────────────────────────────────────────────────────── */
+
+.gfi-popup {
+  font-family: 'Inter', sans-serif;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.gfi-section {
+  padding: 12px 14px;
+}
+
+.gfi-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.gfi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.gfi-key {
+  color: var(--text-dim);
+  padding: 3px 10px 3px 0;
+  white-space: nowrap;
+  vertical-align: top;
+  font-weight: 500;
+}
+
+.gfi-val {
+  color: var(--text-main);
+  padding: 3px 0;
+  word-break: break-word;
+}
+
+.gfi-hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 0;
+}
+
+/* Garante a cadeia de altura para o Leaflet preencher 100% e sobrescreve
+   o background claro do base.css */
 html,
 body,
 #app {
   height: 100%;
+  margin: 0;
+  background: var(--bg-app);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
 }
