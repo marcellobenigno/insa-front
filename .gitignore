@@ -36,3 +36,8 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+
+data/
+
+public/tiles/
