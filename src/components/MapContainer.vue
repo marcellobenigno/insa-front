@@ -9,7 +9,10 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { VectorTile } from 'vector-tile'
 import Pbf from 'pbf'
-import gpkgStyles from '@/assets/styles.json'
+
+// Utilitários isolados
+import { getThematicColor, drawGeometryToContext } from '@/utils/mapRenderer'
+import { createPopupContent } from '@/utils/mapPopup'
 
 const mapStore = useMapStore()
 const mapEl = ref(null)
@@ -17,7 +20,9 @@ const mapEl = ref(null)
 let map = null
 let currentTileLayer = null
 const activeOverlays = new Map() 
-const clickReferences = new Map()
+
+// Cache de memória para reuso dos buffers binários PBF
+const tileDataCache = new Map()
 
 onMounted(async () => {
   await nextTick()
@@ -35,13 +40,18 @@ onMounted(async () => {
   map = L.map(mapEl.value).fitBounds(paraibaBounds)
   renderTileLayer()
   syncVectorOverlays(mapStore.visibleOverlays)
+
+  // ── Ouvinte de Clique Global do Mapa ──
+  map.on('click', handleMapClick)
 })
 
 onUnmounted(() => {
   if (map) {
+    map.off('click', handleMapClick)
     map.remove()
     map = null
   }
+  tileDataCache.clear()
 })
 
 // ── 1. Gerenciamento do Mapa de Fundo ──────────────────────────────────────────
@@ -82,14 +92,17 @@ function syncVectorOverlays(desired) {
 
           fetch(tileUrl)
             .then(res => {
-              if (!res.ok) throw new Error('Tile não encontrado')
+              if (!res.ok) throw new Error('Tile pbf não encontrado')
               return res.arrayBuffer()
             })
             .then(buffer => {
+              const cacheKey = `${coords.z}-${coords.x}-${coords.y}-${sourceLayer}`
+              tileDataCache.set(cacheKey, buffer)
+
               const pbf = new Pbf(new Uint8Array(buffer))
               const vt = new VectorTile(pbf)
-              
               const layer = vt.layers[sourceLayer]
+              
               if (!layer) {
                 done(null, tile)
                 return
@@ -101,32 +114,13 @@ function syncVectorOverlays(desired) {
                 const feature = layer.feature(i)
                 const geom = feature.loadGeometry()
                 const props = feature.properties
-
-                if (i === 0) console.log(`Camada: ${sourceLayer} | Atributos reais:`, props)
-
                 const color = getThematicColor(sourceLayer, props)
 
-                ctx.beginPath()
-                for (let j = 0; j < geom.length; j++) {
-                  const ring = geom[j]
-                  for (let k = 0; k < ring.length; k++) {
-                    const p = ring[k]
-                    const x = (p.x / 4096) * size.x
-                    const y = (p.y / 4096) * size.y
-                    if (k === 0) ctx.moveTo(x, y)
-                    else ctx.lineTo(x, y)
-                  }
-                  if (feature.type === 3) ctx.closePath()
-                }
+                drawGeometryToContext(ctx, geom, feature.type, size)
 
                 ctx.fillStyle = color
                 ctx.globalAlpha = 0.8 * currentOpacity
                 ctx.fill()
-
-                // ctx.strokeStyle = '#4b5563'
-                // ctx.lineWidth = 0.6
-                // ctx.globalAlpha = 0.5 * currentOpacity
-                // ctx.stroke()
               }
               done(null, tile)
             })
@@ -144,165 +138,101 @@ function syncVectorOverlays(desired) {
         zIndex: zIndex
       }).addTo(map)
 
-      const clickHandler = function(e) {
-        if (!mapStore.infoActive[key] || !desired[key]) return
-
-        const zoom = map.getZoom()
-        const layerPoint = map.project(e.latlng, zoom).divideBy(256).floor()
-        
-        const tileUrl = url
-          .replace('{z}', zoom)
-          .replace('{x}', layerPoint.x)
-          .replace('{y}', layerPoint.y)
-
-        fetch(tileUrl)
-          .then(res => res.arrayBuffer())
-          .then(buffer => {
-            const pbf = new Pbf(new Uint8Array(buffer))
-            const vt = new VectorTile(pbf)
-            const layer = vt.layers[sourceLayer]
-            if (!layer) return
-
-            if (layer.length > 0) {
-              const props = layer.feature(0).properties
-              renderPopup(e.latlng, props, key)
-            }
-          }).catch(() => {})
-      }
-
-      map.on('click', clickHandler)
-      clickReferences.set(key, clickHandler)
       activeOverlays.set(key, layer)
 
     } else if (!shouldBeVisible && isOnMap) {
       map.removeLayer(activeOverlays.get(key))
       activeOverlays.delete(key)
-
-      const oldClickHandler = clickReferences.get(key)
-      if (oldClickHandler) {
-        map.off('click', oldClickHandler)
-        clickReferences.delete(key)
+      
+      // Limpa registros antigos de cache daquela camada para liberar memória
+      for (const cacheKey of tileDataCache.keys()) {
+        if (cacheKey.endsWith(`-${sourceLayer}`)) {
+          tileDataCache.delete(cacheKey)
+        }
       }
     }
   }
 }
 
-// ── 3. Controle Reativo de Opacidade (Chama o Redraw do GridLayer) ─────────────
+// ── 3. Identificação Unificada Multicamadas (Multi-GetFeatureInfo Local) ───────
+async function handleMapClick(e) {
+  const zoom = map.getZoom()
+  const layerPoint = map.project(e.latlng, zoom).divideBy(256).floor()
+  
+  const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key])
+  
+  if (layersToQuery.length === 0) return
+
+  const popupPromises = layersToQuery.map(async (overlay) => {
+    const { key, url, sourceLayer, label } = overlay
+    const cacheKey = `${zoom}-${layerPoint.x}-${layerPoint.y}-${sourceLayer}`
+
+    // Helper interno para extrair propriedades do primeiro feature encontrado no quadrante
+    const parseProperties = (buffer) => {
+      const pbf = new Pbf(new Uint8Array(buffer))
+      const vt = new VectorTile(pbf)
+      const layer = vt.layers[sourceLayer]
+      if (layer && layer.length > 0) {
+        return { label, properties: layer.feature(0).properties }
+      }
+      return null
+    }
+
+    // Se estiver no cache, resolve imediatamente
+    if (tileDataCache.has(cacheKey)) {
+      return parseProperties(tileDataCache.get(cacheKey))
+    }
+
+    // Fallback remoto caso o quadrante ainda não tenha cacheado (ex: transição rápida de zoom)
+    try {
+      const tileUrl = url
+        .replace('{z}', zoom)
+        .replace('{x}', layerPoint.x)
+        .replace('{y}', layerPoint.y)
+      
+      const res = await fetch(tileUrl)
+      if (!res.ok) return null
+      const buffer = await res.arrayBuffer()
+      
+      // Atualiza o cache para cliques futuros no mesmo lugar
+      tileDataCache.set(cacheKey, buffer)
+      return parseProperties(buffer)
+    } catch {
+      return null
+    }
+  })
+
+  // Aguarda a resolução dos buffers de todas as camadas ativas simultaneamente
+  const results = await Promise.all(popupPromises)
+  const validLayersData = results.filter(item => item !== null)
+
+  if (validLayersData.length > 0) {
+    const htmlContent = createPopupContent(validLayersData)
+    
+    L.popup({ className: 'popup-dark', maxWidth: 350 })
+      .setLatLng(e.latlng)
+      .setContent(htmlContent)
+      .openOn(map)
+  }
+}
+
+// ── 4. Controle Suave de Opacidade ───────────────────────────────────────────
+let redrawTimeout = null
 watch(
   () => mapStore.layerOpacity,
   (opacities) => {
     const baseKey = mapStore.activeBaseLayerKey
-    if (currentTileLayer && baseKey in opacities) currentTileLayer.setOpacity(opacities[baseKey])
+    if (currentTileLayer && baseKey in opacities) {
+      currentTileLayer.setOpacity(opacities[baseKey])
+    }
     
-    activeOverlays.forEach((layer) => {
-      layer.redraw()
-    })
+    clearTimeout(redrawTimeout)
+    redrawTimeout = setTimeout(() => {
+      activeOverlays.forEach((layer) => layer.redraw())
+    }, 50)
   },
   { deep: true },
 )
-
-function renderPopup(latlng, properties, layerKey) {
-  const rows = Object.entries(properties)
-    .map(([k, v]) => `<tr><td class="gfi-key">${k}</td><td class="gfi-val">${v}</td></tr>`)
-    .join('')
-
-  const layerLabel = mapStore.availableOverlays.find(l => l.key === layerKey)?.label || 'Camada'
-
-  const htmlContent = `
-    <div class="gfi-popup">
-      <div class="gfi-section">
-        <div class="gfi-title">${layerLabel}</div>
-        <table class="gfi-table">${rows}</table>
-      </div>
-    </div>`
-
-  L.popup({ className: 'popup-dark', maxWidth: 350 })
-    .setLatLng(latlng)
-    .setContent(htmlContent)
-    .openOn(map)
-}
-
-// ── 4. Resolução de Cores Temáticas Vinda do QGIS ─────────────────────────────
-function getThematicColor(sourceLayer, featureProps) {
-  const layerStyle = gpkgStyles[sourceLayer]
-  if (!layerStyle) return '#9ca3af'
-
-  // 🌟 MAPA COMPLETO DOS ATRIBUTOS REAIS EXTRAÍDOS DO CONSOLE:
-  const possibleValues = [
-    // 1. Pesos e Números Específicos de cada Camada
-    featureProps?.IQS,          // Encontrado em iqs_sab_pb
-    featureProps?.TipSoilPes,   // Encontrado em solos_tipos_sab_pb_pesos
-    featureProps?.SoilTextur,   // Encontrado em textura_sab_pb_pesos
-    featureProps?.pes_Peso,     // Encontrado em geologia_sab_pb_pesos
-    featureProps?.PesDecl,      // Encontrado em declividade_sab_pb_pesos
-    featureProps?.PesosX10Ve,   // Variante encontrada em declividade_sab_pb_pesos
-    featureProps?.DN,           // Encontrado em declividade_sab_pb_original
-    featureProps?.dn,
-
-    // 2. Colunas de Texto/Descrição originais
-    featureProps?.DSC_COMPON,   // Encontrado em solos_tipos_sab_pb_original
-    featureProps?.DSC_TEXTUR,   // Encontrado em textura_sab_pb_original
-    featureProps?.GLO_DS_LIT,   // Encontrado em geologia_sab_pb_original
-    
-    // Fallbacks genéricos caso existam em outras camadas
-    featureProps?.peso,
-    featureProps?.classes,
-    featureProps?.textura,
-    featureProps?.solo,
-    featureProps?.tipo,
-    featureProps?.Geologia
-  ].filter(v => v !== undefined && v !== null)
-
-  for (let rawVal of possibleValues) {
-    // Normaliza o texto removendo espaços em branco especiais do banco de dados (\xa0)
-    const valStr = String(rawVal)
-      .replace(/\u00a0/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-
-    // 🌟 CASO A: Casamento Direto Perfeito (Texto Exato ou Código Inteiro)
-    if (layerStyle[valStr]) {
-      return layerStyle[valStr]
-    }
-
-    // Se for numérico, aplica as aproximações por ponto flutuante ou faixas de valores
-    if (!isNaN(Number(valStr))) {
-      const numVal = Number(valStr)
-
-      // Coleta todas as chaves do estilo que sejam numéricas e ordena ascendentemente
-      const numericKeys = Object.keys(layerStyle)
-        .map(k => Number(k.trim()))
-        .filter(n => !isNaN(n))
-        .sort((a, b) => a - b)
-
-      if (numericKeys.length > 0) {
-        // 🌟 CASO B: Intervalos Dinâmicos de Declividade (Ex: DN=10 entra na classe do 16)
-        if (sourceLayer.includes('declividade')) {
-          const matchedLimit = numericKeys.find(limit => numVal <= limit)
-          if (matchedLimit !== undefined) {
-            return layerStyle[String(matchedLimit)]
-          }
-          return layerStyle[String(numericKeys[numericKeys.length - 1])]
-        }
-
-        // 🌟 CASO C: Precisão Decimal Flutuante (Ex: Compara 1.5800002 ou 1.58)
-        const targetFixed = numVal.toFixed(2)
-        const matchingKey = Object.keys(layerStyle).find(key => {
-          const cleanKey = String(key).trim()
-          return !isNaN(Number(cleanKey)) && Number(cleanKey).toFixed(2) === targetFixed
-        })
-        if (matchingKey) return layerStyle[matchingKey]
-      }
-    }
-  }
-
-  // 3. Se nenhuma lógica bater, tenta aplicar o padrão definido para a camada ou cinza escuro
-  if (layerStyle["default"]) {
-    return layerStyle["default"]
-  }
-
-  return '#4b5563' // Retorna cinza chumbo se o mapeamento falhar completamente
-}
 </script>
 
 <style scoped>
@@ -318,6 +248,8 @@ function getThematicColor(sourceLayer, featureProps) {
   border-radius: 8px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   border: 1px solid #374151;
+  max-height: 400px;
+  overflow-y: auto; /* Garante scroll caso muitas camadas fiquem ativas */
 }
 :deep(.popup-dark .leaflet-popup-tip) {
   background: #111827;

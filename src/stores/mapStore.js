@@ -1,3 +1,4 @@
+// src/stores/mapStore.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { BASE_LAYERS, OVERLAY_LAYERS } from '@/config/layers'
@@ -15,16 +16,11 @@ export const useMapStore = defineStore('map', () => {
     Object.fromEntries(Object.entries(OVERLAY_LAYERS).map(([k, cfg]) => [k, cfg.active])),
   )
 
-  // Opacidade de cada camada (base e overlay), escala 0–1
+  // Opacidade de cada camada (base e overlay) inicializada dinamicamente em 1 (100%)
   const layerOpacity = ref(
     Object.fromEntries(
       [...Object.keys(BASE_LAYERS), ...Object.keys(OVERLAY_LAYERS)].map((k) => [k, 1]),
     ),
-  )
-
-  // Modo identificar (GetFeatureInfo) ativo por overlay
-  const infoActive = ref(
-    Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, false])),
   )
 
   // ── Getters ─────────────────────────────────────────────────────────────────
@@ -50,16 +46,10 @@ export const useMapStore = defineStore('map', () => {
   }
 
   function setLayerOpacity(key, value) {
-    if (key in layerOpacity.value) layerOpacity.value[key] = value
-  }
-
-  function toggleLayerInfo(key) {
-    if (!(key in infoActive.value)) return
-    const wasActive = infoActive.value[key]
-    // Desativa todas as camadas (comportamento radio)
-    Object.keys(infoActive.value).forEach((k) => { infoActive.value[k] = false })
-    // Se não estava ativa, ativa; se já estava, permanece desativada (toggle off)
-    if (!wasActive) infoActive.value[key] = true
+    // Garante que o valor recebido fique estritamente no intervalo aceitável de 0 a 1
+    if (key in layerOpacity.value) {
+      layerOpacity.value[key] = Math.max(0, Math.min(1, value))
+    }
   }
 
   return {
@@ -69,10 +59,8 @@ export const useMapStore = defineStore('map', () => {
     visibleOverlays,
     availableOverlays,
     layerOpacity,
-    infoActive,
     setBaseLayer,
     toggleOverlay,
     setLayerOpacity,
-    toggleLayerInfo,
   }
 })

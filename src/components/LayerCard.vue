@@ -1,3 +1,103 @@
+<template>
+  <div class="layer-card">
+    <div class="layer-main-row">
+
+      <button
+        class="layer-icon-btn"
+        :class="{ active: isVisible }"
+        :title="isVisible ? 'Ocultar' : 'Exibir'"
+        @click="toggleVisibility"
+      >
+        <i class="bi" :class="isVisible ? 'bi-eye-fill' : 'bi-eye-slash'" />
+      </button>
+
+      <div class="layer-info">
+        <span class="layer-label">{{ label }}</span>
+        <span class="layer-meta">{{ meta }}</span>
+      </div>
+
+      <div class="layer-actions-top">
+
+        <button
+          class="action-btn"
+          :class="{ active: activePanel === 'opacity' }"
+          title="Opacidade"
+          @click="togglePanel('opacity')"
+        >
+          <i class="bi bi-sliders" />
+        </button>
+
+        <template v-if="type === 'overlay'">
+          <button
+            v-if="legend"
+            class="action-btn"
+            :class="{ active: activePanel === 'legend' }"
+            title="Legenda"
+            @click="togglePanel('legend')"
+          >
+            <i class="bi bi-palette" />
+          </button>
+          <button
+            v-if="searchFields.length > 0"
+            class="action-btn"
+            :class="{ active: activePanel === 'search' }"
+            title="Busca"
+            @click="togglePanel('search')"
+          >
+            <i class="bi bi-search" />
+          </button>
+        </template>
+
+      </div>
+    </div>
+
+    <div class="sub-panel" :class="{ open: activePanel === 'opacity' }">
+      <div class="sub-panel-inner">
+        <div class="panel-title">
+          <i class="bi bi-sliders" />
+          Opacidade: <span>{{ Math.round(opacity * 100) }}%</span>
+        </div>
+        <input
+          type="range"
+          class="custom-range"
+          min="0"
+          max="100"
+          :value="Math.round(opacity * 100)"
+          @input="onOpacityInput"
+        />
+      </div>
+    </div>
+
+    <div class="sub-panel" :class="{ open: activePanel === 'legend' }">
+      <div class="sub-panel-inner">
+        <div class="panel-title"><i class="bi bi-palette" /> Legenda</div>
+        <img v-if="legend" :src="legend" alt="Legenda da camada" class="legend-img" />
+      </div>
+    </div>
+
+    <div class="sub-panel" :class="{ open: activePanel === 'search' }">
+      <div class="sub-panel-inner">
+        <div class="search-box">
+          <select
+            v-if="searchFields.length > 1"
+            v-model="selectedField"
+            class="search-input"
+          >
+            <option v-for="f in searchFields" :key="f" :value="f">{{ f }}</option>
+          </select>
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="search-input"
+            :placeholder="`Buscar por ${selectedField || 'campo'}…`"
+          />
+          <button class="search-btn">Filtrar Mapa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
@@ -20,6 +120,7 @@ const isVisible = computed(() =>
     : store.visibleOverlays[props.layerKey],
 )
 
+// Busca dinamicamente a opacidade da store usando a chave única da camada
 const opacity = computed(() => store.layerOpacity[props.layerKey] ?? 1)
 
 const activePanel = ref(null)
@@ -45,125 +146,8 @@ function onOpacityInput(e) {
 }
 </script>
 
-<template>
-  <div class="layer-card">
-    <div class="layer-main-row">
-
-      <!-- Botão de visibilidade -->
-      <button
-        class="layer-icon-btn"
-        :class="{ active: isVisible }"
-        :title="isVisible ? 'Ocultar' : 'Exibir'"
-        @click="toggleVisibility"
-      >
-        <i class="bi" :class="isVisible ? 'bi-eye-fill' : 'bi-eye-slash'" />
-      </button>
-
-      <!-- Rótulo + metadado -->
-      <div class="layer-info">
-        <span class="layer-label">{{ label }}</span>
-        <span class="layer-meta">{{ meta }}</span>
-      </div>
-
-      <!-- Botões de ação -->
-      <div class="layer-actions-top">
-
-        <!-- Base: opacidade -->
-        <template v-if="type === 'base'">
-          <button
-            class="action-btn"
-            :class="{ active: activePanel === 'opacity' }"
-            title="Opacidade"
-            @click="togglePanel('opacity')"
-          >
-            <i class="bi bi-sliders" />
-          </button>
-        </template>
-
-        <!-- Overlay: identificar + legenda + busca -->
-        <template v-else>
-          <button
-            class="action-btn"
-            :class="{ active: store.infoActive[layerKey] }"
-            title="Identificar feições"
-            @click="store.toggleLayerInfo(layerKey)"
-          >
-            <i class="bi bi-crosshair2" />
-          </button>
-          <button
-            v-if="legend"
-            class="action-btn"
-            :class="{ active: activePanel === 'legend' }"
-            title="Legenda"
-            @click="togglePanel('legend')"
-          >
-            <i class="bi bi-palette" />
-          </button>
-          <button
-            v-if="searchFields.length > 0"
-            class="action-btn"
-            :class="{ active: activePanel === 'search' }"
-            title="Busca"
-            @click="togglePanel('search')"
-          >
-            <i class="bi bi-search" />
-          </button>
-        </template>
-
-      </div>
-    </div>
-
-    <!-- Sub-painel: Opacidade (camadas base) -->
-    <div class="sub-panel" :class="{ open: activePanel === 'opacity' }">
-      <div class="sub-panel-inner">
-        <div class="panel-title">
-          <i class="bi bi-sliders" />
-          Opacidade: <span>{{ Math.round(opacity * 100) }}%</span>
-        </div>
-        <input
-          type="range"
-          class="custom-range"
-          min="0"
-          max="100"
-          :value="Math.round(opacity * 100)"
-          @input="onOpacityInput"
-        />
-      </div>
-    </div>
-
-    <!-- Sub-painel: Legenda (overlays) -->
-    <div class="sub-panel" :class="{ open: activePanel === 'legend' }">
-      <div class="sub-panel-inner">
-        <div class="panel-title"><i class="bi bi-palette" /> Legenda</div>
-        <img v-if="legend" :src="legend" alt="Legenda da camada" class="legend-img" />
-      </div>
-    </div>
-
-    <!-- Sub-painel: Busca (overlays com searchFields) -->
-    <div class="sub-panel" :class="{ open: activePanel === 'search' }">
-      <div class="sub-panel-inner">
-        <div class="search-box">
-          <select
-            v-if="searchFields.length > 1"
-            v-model="selectedField"
-            class="search-input"
-          >
-            <option v-for="f in searchFields" :key="f" :value="f">{{ f }}</option>
-          </select>
-          <input
-            v-model="searchQuery"
-            type="text"
-            class="search-input"
-            :placeholder="`Buscar por ${selectedField || 'campo'}…`"
-          />
-          <button class="search-btn">Filtrar Mapa</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <style scoped>
+/* Mantém seus estilos originais perfeitamente intactos */
 .layer-card {
   margin: 4px 12px 12px;
   background: var(--bg-card);
@@ -185,7 +169,6 @@ function onOpacityInput(e) {
   gap: 10px;
 }
 
-/* Botão de visibilidade */
 .layer-icon-btn {
   width: 36px;
   height: 36px;
@@ -207,7 +190,6 @@ function onOpacityInput(e) {
   background: var(--bg-accent-dim);
 }
 
-/* Info textual */
 .layer-info {
   flex: 1;
   min-width: 0;
@@ -228,7 +210,6 @@ function onOpacityInput(e) {
   color: var(--text-dim);
 }
 
-/* Botões de ação (paleta, busca, sliders) */
 .layer-actions-top {
   display: flex;
   gap: 4px;
@@ -260,9 +241,6 @@ function onOpacityInput(e) {
   border-color: rgba(59, 130, 246, 0.2);
 }
 
-/* Sub-painéis (colapsáveis)
-   Técnica grid-template-rows: 0fr → 1fr anima exatamente a altura real do
-   conteúdo, sem o "engasgo" do max-height com valor arbitrário. */
 .sub-panel {
   display: grid;
   grid-template-rows: 0fr;
@@ -304,7 +282,6 @@ function onOpacityInput(e) {
   accent-color: var(--accent);
 }
 
-/* Legenda */
 .legend-img {
   max-width: 100%;
   border-radius: 4px;
@@ -312,7 +289,6 @@ function onOpacityInput(e) {
   padding: 4px;
 }
 
-/* Busca */
 .search-box {
   display: flex;
   flex-direction: column;

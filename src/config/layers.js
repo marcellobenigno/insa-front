@@ -1,20 +1,3 @@
-// ─── UTILIÁRIO OBSOLETO (MANTIDO CASO OUTRO COMPONENTE PRECISE) ────────────────
-/**
- * Nota de Migração: As camadas Vector Tiles não utilizam mais essa função,
- * pois os atributos agora são lidos localmente direto do binário .pbf.
- */
-export function getLegendUrl(geoServerUrl, layerName) {
-  return (
-    `${geoServerUrl}?REQUEST=GetLegendGraphic&` +
-    'VERSION=1.1.0&' +
-    'FORMAT=image/png&' +
-    'WIDTH=18&' +
-    'HEIGHT=18&' +
-    `LAYER=${layerName}&` +
-    'LEGEND_OPTIONS=fontName:Arial;fontAntiAliasing:true;dpi=200'
-  )
-}
-
 // ─── CAMADAS BASE (MAPAS DE FUNDO) ────────────────────────────────────────────
 export const BASE_LAYERS = {
   osm: {
@@ -52,19 +35,21 @@ export const BASE_LAYERS = {
 const VECTOR_TILES_URL = '/tiles/insa_layers/{z}/{x}/{y}.pbf'
 
 export const OVERLAY_LAYERS = {
-  // 1. Camadas de Declividade
-  declividade_sab_pb: {
-    label: 'Declividade (Geral)',
-    meta: 'INSA Vetorial Otimizado',
+  // 1. Índice de Qualidade do Solo (Resultado Analítico Principal)
+  iqs_sab_pb: {
+    label: 'IQS',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
-    sourceLayer: 'declividade_sab_pb', // Nome exato gerado pelo Tippecanoe
+    sourceLayer: 'iqs_sab_pb',
     zIndex: 10,
-    active: false,
-    searchFields: ['peso', 'classe'],
+    active: true,
+    searchFields: ['iqs_valor', 'status'],
   },
+
+  // 2. Camadas de Declividade (Morfologia e Relevo)
   declividade_sab_pb_original: {
-    label: 'Declividade (Malha Original)',
-    meta: 'INSA Vetorial Otimizado',
+    label: 'Declividade (Original)',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
     sourceLayer: 'declividade_sab_pb_original',
     zIndex: 11,
@@ -72,50 +57,48 @@ export const OVERLAY_LAYERS = {
     searchFields: ['classe'],
   },
   declividade_sab_pb_pesos: {
-    label: 'Declividade (Pesos Configurados)',
-    meta: 'INSA Vetorial Otimizado',
+    label: 'Declividade (Pesos)',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
     sourceLayer: 'declividade_sab_pb_pesos',
     zIndex: 12,
     active: false,
     searchFields: ['peso'],
   },
-
-  // 2. Camadas de Geologia
-  geologia_sab_pb_original: {
-    label: 'Geologia (Malha Original)',
-    meta: 'INSA Vetorial Otimizado',
+  declividade_sab_pb: {
+    label: 'Declividade (Geral)',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
-    sourceLayer: 'geologia_sab_pb_original',
+    sourceLayer: 'declividade_sab_pb', 
     zIndex: 13,
-    active: false,
-    searchFields: ['sigla', 'formacao'],
-  },
-  geologia_sab_pb_pesos: {
-    label: 'Geologia (Pesos Configurados)',
-    meta: 'INSA Vetorial Otimizado',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'geologia_sab_pb_pesos',
-    zIndex: 14,
     active: false,
     searchFields: ['peso', 'classe'],
   },
 
-  // 3. Camada de IQS
-  iqs_sab_pb: {
-    label: 'Índice de Qualidade do Solo (IQS)',
-    meta: 'INSA Vetorial Otimizado',
+  // 3. Camadas de Geologia (Material de Origem / Litologia)
+  geologia_sab_pb_original: {
+    label: 'Geologia (Original)',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
-    sourceLayer: 'iqs_sab_pb',
+    sourceLayer: 'geologia_sab_pb_original',
+    zIndex: 14,
+    active: false,
+    searchFields: ['sigla', 'formacao'],
+  },
+  geologia_sab_pb_pesos: {
+    label: 'Geologia (Pesos)',
+    meta: 'inserir metadados...',
+    url: VECTOR_TILES_URL,
+    sourceLayer: 'geologia_sab_pb_pesos',
     zIndex: 15,
     active: false,
-    searchFields: ['iqs_valor', 'status'],
+    searchFields: ['peso', 'classe'],
   },
 
-  // 4. Camadas de Solos Tipos
+  // 4. Camadas de Classificação de Solos (Tipologia Pedológica)
   solos_tipos_sab_pb_original: {
     label: 'Tipos de Solos (Original)',
-    meta: 'INSA Vetorial Otimizado',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
     sourceLayer: 'solos_tipos_sab_pb_original',
     zIndex: 16,
@@ -123,8 +106,8 @@ export const OVERLAY_LAYERS = {
     searchFields: ['componente', 'ordem'],
   },
   solos_tipos_sab_pb_pesos: {
-    label: 'Tipos de Solos (Pesos Configurados)',
-    meta: 'INSA Vetorial Otimizado',
+    label: 'Tipos de Solos (Pesos)',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
     sourceLayer: 'solos_tipos_sab_pb_pesos',
     zIndex: 17,
@@ -132,10 +115,10 @@ export const OVERLAY_LAYERS = {
     searchFields: ['peso'],
   },
 
-  // 5. Camadas de Textura do Solo
+  // 5. Camadas de Textura Físico-Química do Solo
   textura_sab_pb_original: {
     label: 'Textura do Solo (Original)',
-    meta: 'INSA Vetorial Otimizado',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
     sourceLayer: 'textura_sab_pb_original',
     zIndex: 18,
@@ -143,8 +126,8 @@ export const OVERLAY_LAYERS = {
     searchFields: ['componente', 'grupamento'],
   },
   textura_sab_pb_pesos: {
-    label: 'Textura do Solo (Pesos Configurados)',
-    meta: 'INSA Vetorial Otimizado',
+    label: 'Textura do Solo (Pesos)',
+    meta: 'inserir metadados...',
     url: VECTOR_TILES_URL,
     sourceLayer: 'textura_sab_pb_pesos',
     zIndex: 19,
