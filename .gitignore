@@ -41,3 +41,5 @@ __screenshots__/
 data/
 
 public/tiles/
+
+.env.development

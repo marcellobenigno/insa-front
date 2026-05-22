@@ -1,14 +1,53 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
+import { OVERLAY_CATEGORIES } from '@/config/layers'
 import LayerCard from './LayerCard.vue'
 
 const store = useMapStore()
 const isCollapsed = ref(false)
 
+// Accordion das camadas base (inicia colapsado)
+const openBase = ref(false)
+
+// Todas as categorias de overlay iniciam colapsadas
+const openCategories = ref(
+  Object.fromEntries(
+    Object.keys(OVERLAY_CATEGORIES).map((key) => [key, false])
+  )
+)
+
 function toggle() {
   isCollapsed.value = !isCollapsed.value
+  // Colapsa todos os accordions quando a sidebar fecha
+  if (isCollapsed.value) {
+    openBase.value = false
+    Object.keys(openCategories.value).forEach(k => (openCategories.value[k] = false))
+  }
 }
+
+function toggleBase() {
+  openBase.value = !openBase.value
+}
+
+function toggleCategory(key) {
+  openCategories.value[key] = !openCategories.value[key]
+}
+
+// Conta camadas visíveis por categoria para feedback visual no badge
+function visibleCount(categoryKey) {
+  const layers = OVERLAY_CATEGORIES[categoryKey].layers
+  return Object.keys(layers).filter(k => store.visibleOverlays[k]).length
+}
+
+// Lista de categorias como array para o v-for
+const categories = computed(() =>
+  Object.entries(OVERLAY_CATEGORIES).map(([key, cat]) => ({
+    key,
+    ...cat,
+    layerList: Object.entries(cat.layers).map(([lKey, l]) => ({ key: lKey, ...l })),
+  }))
+)
 </script>
 
 <template>
@@ -32,39 +71,100 @@ function toggle() {
     <!-- Conteúdo -->
     <div class="sidebar-content">
 
-      <!-- Seção: Camadas Base -->
-      <div class="section-title">
-        <span>Camadas Base</span>
-        <span class="count-badge">{{ store.availableBaseLayers.length }}</span>
+      <!-- ── Camadas Base (accordion) ── -->
+      <div class="category-block" :class="{ open: openBase }">
+        <button
+          class="category-header"
+          :title="openBase ? 'Recolher' : 'Expandir'"
+          @click="toggleBase"
+        >
+          <span class="cat-dot" style="background: #94a3b8" />
+          <i class="bi bi-map cat-icon" />
+          <span class="cat-label">Camadas Base</span>
+          <span
+            class="cat-active-badge"
+            title="1 camada base ativa"
+          >1</span>
+          <span class="cat-count">{{ store.availableBaseLayers.length }}</span>
+          <i
+            class="bi bi-chevron-down cat-chevron"
+            :class="{ rotated: openBase }"
+          />
+        </button>
+
+        <div class="category-body">
+          <div class="category-body-inner">
+            <LayerCard
+              v-for="layer in store.availableBaseLayers"
+              :key="layer.key"
+              type="base"
+              :layer-key="layer.key"
+              :label="layer.label"
+              :meta="layer.meta"
+              :collapsed="isCollapsed"
+            />
+          </div>
+        </div>
       </div>
 
-      <LayerCard
-        v-for="layer in store.availableBaseLayers"
-        :key="layer.key"
-        type="base"
-        :layer-key="layer.key"
-        :label="layer.label"
-        :meta="layer.meta"
-        :collapsed="isCollapsed"
-      />
-
-      <!-- Seção: Sobreposição -->
+      <!-- ── Análise Temática (agrupada por categoria) ── -->
       <div class="section-title section-title--gap">
-        <span>Sobreposição</span>
+        <span>Análise Temática</span>
         <span class="count-badge">{{ store.availableOverlays.length }}</span>
       </div>
 
-      <LayerCard
-        v-for="layer in store.availableOverlays"
-        :key="layer.key"
-        type="overlay"
-        :layer-key="layer.key"
-        :label="layer.label"
-        :meta="layer.meta"
-        :legend="layer.legend"
-        :search-fields="layer.searchFields"
-        :collapsed="isCollapsed"
-      />
+      <div
+        v-for="cat in categories"
+        :key="cat.key"
+        class="category-block"
+        :class="{ open: openCategories[cat.key] }"
+      >
+        <!-- Cabeçalho da categoria (accordion trigger) -->
+        <button
+          class="category-header"
+          :title="openCategories[cat.key] ? 'Recolher' : 'Expandir'"
+          @click="toggleCategory(cat.key)"
+        >
+          <span class="cat-dot" :style="{ background: cat.color }" />
+
+          <i class="bi cat-icon" :class="cat.icon" />
+
+          <span class="cat-label">{{ cat.label }}</span>
+
+          <span
+            v-if="visibleCount(cat.key) > 0"
+            class="cat-active-badge"
+            :title="`${visibleCount(cat.key)} camada(s) visível(eis)`"
+          >
+            {{ visibleCount(cat.key) }}
+          </span>
+
+          <span class="cat-count">{{ cat.layerList.length }}</span>
+
+          <i
+            class="bi bi-chevron-down cat-chevron"
+            :class="{ rotated: openCategories[cat.key] }"
+          />
+        </button>
+
+        <!-- Camadas da categoria (accordion body) -->
+        <div class="category-body">
+          <div class="category-body-inner">
+            <LayerCard
+              v-for="layer in cat.layerList"
+              :key="layer.key"
+              type="overlay"
+              :layer-key="layer.key"
+              :label="layer.label"
+              :meta="layer.meta"
+              :legend="layer.legend ?? null"
+              :search-fields="layer.searchFields ?? []"
+              :collapsed="isCollapsed"
+            />
+          </div>
+        </div>
+
+      </div>
 
     </div>
 
@@ -78,6 +178,7 @@ function toggle() {
 </template>
 
 <style scoped>
+/* ── Layout geral ────────────────────────────────────────────────────────── */
 #sidebar {
   width: var(--sidebar-w);
   background: var(--bg-sidebar);
@@ -95,7 +196,7 @@ function toggle() {
   width: var(--sidebar-collapsed-w);
 }
 
-/* ── Cabeçalho ── */
+/* ── Cabeçalho ───────────────────────────────────────────────────────────── */
 .sidebar-header {
   height: 70px;
   padding: 0 20px;
@@ -172,12 +273,12 @@ function toggle() {
   transform: translateX(-50%);
 }
 
-/* ── Conteúdo ── */
+/* ── Conteúdo com scroll ─────────────────────────────────────────────────── */
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 16px 0;
+  padding: 12px 0;
 }
 
 .sidebar-content::-webkit-scrollbar {
@@ -189,6 +290,7 @@ function toggle() {
   border-radius: 10px;
 }
 
+/* ── Títulos de seção ────────────────────────────────────────────────────── */
 .section-title {
   padding: 0 20px 8px;
   font-size: 0.7rem;
@@ -221,13 +323,121 @@ function toggle() {
   padding: 1px 7px;
 }
 
-/* Oculta info textual dos cards quando colapsado */
+/* ── Bloco de categoria (accordion) ─────────────────────────────────────── */
+.category-block {
+  margin: 0 10px 4px;
+}
+
+.category-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.category-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.cat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cat-icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  color: var(--text-dim);
+}
+
+.cat-label {
+  flex: 1;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* badge verde indicando quantas camadas estão ativas na categoria */
+.cat-active-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  background: rgba(0, 212, 170, 0.15);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 1px 6px;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+.cat-count {
+  font-size: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 1px 6px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.cat-chevron {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  transition: transform 0.22s var(--transition-curve);
+  flex-shrink: 0;
+}
+
+.cat-chevron.rotated {
+  transform: rotate(-180deg);
+}
+
+/* Accordion body – animado via grid-template-rows */
+.category-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s var(--transition-curve);
+}
+
+.category-block.open .category-body {
+  grid-template-rows: 1fr;
+}
+
+.category-body-inner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* LayerCard já tem margin própria */
+}
+
+/* Quando a sidebar colapsa, oculta todos os textos dos cards */
 #sidebar.collapsed :deep(.layer-info),
 #sidebar.collapsed :deep(.layer-actions-top) {
   display: none;
 }
 
-/* ── Rodapé ── */
+/* Oculta labels de categoria quando colapsado */
+#sidebar.collapsed .cat-label,
+#sidebar.collapsed .cat-count,
+#sidebar.collapsed .cat-active-badge,
+#sidebar.collapsed .cat-chevron,
+#sidebar.collapsed .cat-icon {
+  display: none;
+}
+
+/* ── Rodapé ──────────────────────────────────────────────────────────────── */
 .sidebar-footer {
   padding: 15px 20px;
   border-top: 1px solid var(--border-color);

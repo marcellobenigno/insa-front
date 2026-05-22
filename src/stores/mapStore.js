@@ -1,7 +1,7 @@
 // src/stores/mapStore.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { BASE_LAYERS, OVERLAY_LAYERS } from '@/config/layers'
+import { BASE_LAYERS, OVERLAY_LAYERS, OVERLAY_CATEGORIES } from '@/config/layers'
 
 export const useMapStore = defineStore('map', () => {
   // ── Estado ──────────────────────────────────────────────────────────────────
@@ -31,8 +31,25 @@ export const useMapStore = defineStore('map', () => {
     Object.entries(BASE_LAYERS).map(([key, { label, meta }]) => ({ key, label, meta })),
   )
 
+  // Lista plana de overlays (retrocompatibilidade com MapContainer.vue)
   const availableOverlays = computed(() =>
     Object.entries(OVERLAY_LAYERS).map(([key, cfg]) => ({ key, ...cfg })),
+  )
+
+  // Lista de categorias enriquecida com estado reativo de visibilidade
+  const availableCategories = computed(() =>
+    Object.entries(OVERLAY_CATEGORIES).map(([catKey, cat]) => ({
+      key: catKey,
+      label: cat.label,
+      color: cat.color,
+      icon: cat.icon,
+      layers: Object.entries(cat.layers).map(([lKey, l]) => ({
+        key: lKey,
+        ...l,
+        visible: visibleOverlays.value[lKey] ?? false,
+        opacity: layerOpacity.value[lKey] ?? 1,
+      })),
+    }))
   )
 
   // ── Ações ───────────────────────────────────────────────────────────────────
@@ -46,7 +63,6 @@ export const useMapStore = defineStore('map', () => {
   }
 
   function setLayerOpacity(key, value) {
-    // Garante que o valor recebido fique estritamente no intervalo aceitável de 0 a 1
     if (key in layerOpacity.value) {
       layerOpacity.value[key] = Math.max(0, Math.min(1, value))
     }
@@ -58,6 +74,7 @@ export const useMapStore = defineStore('map', () => {
     availableBaseLayers,
     visibleOverlays,
     availableOverlays,
+    availableCategories,  // novo – consumido por AppSidebar se necessário
     layerOpacity,
     setBaseLayer,
     toggleOverlay,

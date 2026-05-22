@@ -147,12 +147,11 @@ function onOpacityInput(e) {
 </script>
 
 <style scoped>
-/* Mantém seus estilos originais perfeitamente intactos */
 .layer-card {
-  margin: 4px 12px 12px;
+  margin: 3px 10px 6px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 10px;
   transition: all 0.2s;
   overflow: hidden;
 }
@@ -163,16 +162,16 @@ function onOpacityInput(e) {
 }
 
 .layer-main-row {
-  padding: 12px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .layer-icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.03);
   border: none;
   color: var(--text-muted);
@@ -182,7 +181,7 @@ function onOpacityInput(e) {
   cursor: pointer;
   transition: all 0.2s;
   flex-shrink: 0;
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
 .layer-icon-btn.active {
@@ -195,37 +194,42 @@ function onOpacityInput(e) {
   min-width: 0;
 }
 
+/* Label legível: até 2 linhas, sem ellipsis prematuro */
 .layer-label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.3;
+  white-space: normal;
+  overflow-wrap: break-word;
   color: var(--text-main);
 }
 
 .layer-meta {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--text-dim);
+  margin-top: 1px;
 }
 
+/* Ações empilhadas verticalmente para não roubar largura do label */
 .layer-actions-top {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
 }
 
 .action-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--text-dim);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   cursor: pointer;
   transition: all 0.2s;
 }

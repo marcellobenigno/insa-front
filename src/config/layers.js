@@ -6,199 +6,296 @@ export const BASE_LAYERS = {
     label: 'OpenStreetMap',
     meta: 'Global Vector Tile',
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
-    active: true,
+    active: false,
   },
+
   osm_dark: {
     label: 'OpenStreetMap Dark (Carto)',
     meta: 'Dark Vector Tile',
     url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     maxZoom: 20,
     active: false,
   },
-  satellite: {
+
+  satellite_esri: {
     label: 'Satélite (ESRI)',
     meta: 'Imagens de Alta Res.',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-    maxZoom: 18,
+    attribution:
+      'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, USDA FSA, USGS, Aerogrid, IGN, and the GIS User Community',
+    maxZoom: 19,
     active: false,
   },
-}
 
-// ─── CAMADAS DE SOBREPOSIÇÃO (VECTOR TILES DA PASTA PUBLIC) ───────────────────
-/**
- * Rota estática que o Vite serve a partir da sua pasta public.
- * O Leaflet substituirá automaticamente {z}, {x} e {y} em tempo de execução
- * para buscar os micro-arquivos binários à medida que o usuário navega pelo mapa.
- */
-const VECTOR_TILES_URL = '/tiles/insa_layers/{z}/{x}/{y}.pbf'
+  google_streets: {
+    label: 'Google Streets',
+    meta: 'Mapa de Ruas Google',
+    url: 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    attribution: '&copy; Google',
+    maxZoom: 20,
+    active: false,
+  },
 
-export const OVERLAY_LAYERS = {
-  // 1. Índices de Qualidade (Resultados Analíticos Principais)
-  iqs_sab_pb: {
-    label: 'IQS (Qualidade do Solo)',
-    meta: 'Índice de Qualidade do Solo',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'iqs_sab_pb',
-    zIndex: 10,
+  google_satellite: {
+    label: 'Google Satellite',
+    meta: 'Imagem de Satélite Google',
+    url: 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+    attribution: '&copy; Google',
+    maxZoom: 20,
     active: true,
-    searchFields: ['iqs_valor', 'status'],
-  },
-  iqc_sab_pb: {
-    label: 'IQC (Capacidade do Solo)',
-    meta: 'Índice de Capacidade de Carga',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'iqc_sab_pb',
-    zIndex: 11,
-    active: false,
-    searchFields: ['valor', 'classe'],
   },
 
-  // 2. Camadas de Declividade (Morfologia e Relevo)
-  declividade_sab_pb_original: {
-    label: 'Declividade (Original)',
-    meta: 'Classes de declividade em %',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'declividade_sab_pb_original',
-    zIndex: 12,
+  google_hybrid: {
+    label: 'Google Hybrid',
+    meta: 'Satélite + Labels',
+    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    attribution: '&copy; Google',
+    maxZoom: 20,
     active: false,
-    searchFields: ['classe'],
-  },
-  declividade_sab_pb_pesos: {
-    label: 'Declividade (Pesos)',
-    meta: 'Pesos atribuídos à declividade',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'declividade_sab_pb_pesos',
-    zIndex: 13,
-    active: false,
-    searchFields: ['peso'],
-  },
-  declividade_sab_pb: {
-    label: 'Declividade (Geral)',
-    meta: 'Grade geral de declividade',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'declividade_sab_pb', 
-    zIndex: 14,
-    active: false,
-    searchFields: ['peso', 'classe'],
   },
 
-  // 3. Camadas de Geologia (Material de Origem / Litologia)
-  geologia_sab_pb_original: {
-    label: 'Geologia (Original)',
-    meta: 'Formações litológicas e rochas',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'geologia_sab_pb_original',
-    zIndex: 15,
+  google_terrain: {
+    label: 'Google Terrain',
+    meta: 'Relevo/Terreno Google',
+    url: 'https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+    attribution: '&copy; Google',
+    maxZoom: 20,
     active: false,
-    searchFields: ['sigla', 'formacao'],
   },
-  geologia_sab_pb_pesos: {
-    label: 'Geologia (Pesos)',
-    meta: 'Pesos atribuídos às formações rochosas',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'geologia_sab_pb_pesos',
-    zIndex: 16,
-    active: false,
-    searchFields: ['peso', 'classe'],
-  },
-
-  // 4. Camadas de Classificação de Solos (Tipologia Pedológica)
-  solos_tipos_sab_pb_original: {
-    label: 'Tipos de Solos (Original)',
-    meta: 'Classificação pedológica (SiBCS)',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'solos_tipos_sab_pb_original',
-    zIndex: 17,
-    active: false,
-    searchFields: ['componente', 'ordem'],
-  },
-  solos_tipos_sab_pb_pesos: {
-    label: 'Tipos de Solos (Pesos)',
-    meta: 'Pesos atribuídos aos tipos de solo',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'solos_tipos_sab_pb_pesos',
-    zIndex: 18,
-    active: false,
-    searchFields: ['peso'],
-  },
-
-  // 5. Camadas de Textura Físico-Química do Solo
-  textura_sab_pb_original: {
-    label: 'Textura do Solo (Original)',
-    meta: 'Grupamento de textura física',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'textura_sab_pb_original',
-    zIndex: 19,
-    active: false,
-    searchFields: ['componente', 'grupamento'],
-  },
-  textura_sab_pb_pesos: {
-    label: 'Textura do Solo (Pesos)',
-    meta: 'Pesos atribuídos à textura do solo',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'textura_sab_pb_pesos',
-    zIndex: 20,
-    active: false,
-    searchFields: ['peso'],
-  },
-
-  // 6. Agroclimatologia e Hidrologia (Camadas Adicionadas)
-  eto_sab_pb_original: {
-    label: 'Evapotranspiração (ETo)',
-    meta: 'Evapotranspiração de referência acumulada',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'eto_sab_pb_original',
-    zIndex: 21,
-    active: false,
-    searchFields: ['valor', 'classe'],
-  },
-  eto_sab_pb_pesos: {
-    label: 'Evapotranspiração (Pesos)',
-    meta: 'Pesos atribuídos à ETo regional',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'eto_sab_pb_pesos',
-    zIndex: 22,
-    active: false,
-    searchFields: ['peso'],
-  },
-  ia_sab_pb_original: {
-    label: 'Índice de Aridez (IA)',
-    meta: 'Índice de aridez meteorológica',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'ia_sab_pb_original',
-    zIndex: 23,
-    active: false,
-    searchFields: ['valor', 'status'],
-  },
-  ia_sab_pb_pesos: {
-    label: 'Índice de Aridez (Pesos)',
-    meta: 'Pesos atribuídos ao Índice de Aridez',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'ia_sab_pb_pesos',
-    zIndex: 24,
-    active: false,
-    searchFields: ['peso'],
-  },
-  precipitacao_sab_pb_original: {
-    label: 'Precipitação Pluviométrica',
-    meta: 'Precipitação média anual acumulada',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'precipitacao_sab_pb_original',
-    zIndex: 25,
-    active: false,
-    searchFields: ['valor', 'classe'],
-  },
-  precipitacao_sab_pb_pesos: {
-    label: 'Precipitação (Pesos)',
-    meta: 'Pesos atribuídos às faixas de chuva',
-    url: VECTOR_TILES_URL,
-    sourceLayer: 'precipitacao_sab_pb_pesos',
-    zIndex: 26,
-    active: false,
-    searchFields: ['peso'],
-  }
 }
+
+// ─── URL BASE DOS VECTOR TILES ────────────────────────────────────────────────
+const VECTOR_TILES_URL = import.meta.env.DEV
+  ? `${import.meta.env.BASE_URL}tiles/insa_layers/{z}/{x}/{y}.pbf`
+  : 'https://vmvjbrwwogshvbbcutya.supabase.co/storage/v1/object/public/insa-tiles/insa_layers/{z}/{x}/{y}.pbf'
+
+console.log('DEV:', import.meta.env.DEV)
+console.log('TILES URL:', VECTOR_TILES_URL)
+
+
+// ─── CAMADAS DE SOBREPOSIÇÃO AGRUPADAS POR CATEGORIA ─────────────────────────
+//
+// Cada categoria possui:
+//   key:    identificador único (usado como chave de accordion na sidebar)
+//   label:  nome exibido ao usuário
+//   color:  cor do ponto indicador na sidebar (CSS color)
+//   icon:   classe Bootstrap Icons para o cabeçalho da categoria
+//   layers: objeto de camadas (mesma estrutura anterior por camada)
+//
+export const OVERLAY_CATEGORIES = {
+
+  // 1. Índices de Qualidade ──────────────────────────────────────────────────
+  indices_qualidade: {
+    label: 'Índices de Qualidade',
+    color: '#00d4aa',           // accent verde-água do tema
+    icon: 'bi-graph-up-arrow',
+    layers: {
+      iqs_sab_pb: {
+        label: 'IQS (Qualidade do Solo)',
+        meta: 'Índice de Qualidade do Solo',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'iqs_sab_pb',
+        zIndex: 10,
+        active: true,
+        searchFields: ['iqs_valor', 'status'],
+      },
+      iqc_sab_pb: {
+        label: 'IQC (Capacidade do Solo)',
+        meta: 'Índice de Capacidade de Carga',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'iqc_sab_pb',
+        zIndex: 11,
+        active: false,
+        searchFields: ['valor', 'classe'],
+      },
+    },
+  },
+
+  // 2. Declividade ───────────────────────────────────────────────────────────
+  declividade: {
+    label: 'Declividade',
+    color: '#f59e0b',
+    icon: 'bi-bar-chart-steps',
+    layers: {
+      declividade_sab_pb_original: {
+        label: 'Declividade (Original)',
+        meta: 'Classes de declividade em %',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'declividade_sab_pb_original',
+        zIndex: 12,
+        active: false,
+        searchFields: ['classe'],
+      },
+      declividade_sab_pb_pesos: {
+        label: 'Declividade (Pesos)',
+        meta: 'Pesos atribuídos à declividade',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'declividade_sab_pb_pesos',
+        zIndex: 13,
+        active: false,
+        searchFields: ['peso'],
+      },
+      // declividade_sab_pb: {
+      //   label: 'Declividade (Geral)',
+      //   meta: 'Grade geral de declividade',
+      //   url: VECTOR_TILES_URL,
+      //   sourceLayer: 'declividade_sab_pb',
+      //   zIndex: 14,
+      //   active: false,
+      //   searchFields: ['peso', 'classe'],
+      // },
+    },
+  },
+
+  // 3. Geologia ──────────────────────────────────────────────────────────────
+  geologia: {
+    label: 'Geologia',
+    color: '#8b5cf6',
+    icon: 'bi-layers',
+    layers: {
+      geologia_sab_pb_original: {
+        label: 'Geologia (Original)',
+        meta: 'Formações litológicas e rochas',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'geologia_sab_pb_original',
+        zIndex: 15,
+        active: false,
+        searchFields: ['sigla', 'formacao'],
+      },
+      geologia_sab_pb_pesos: {
+        label: 'Geologia (Pesos)',
+        meta: 'Pesos atribuídos às formações rochosas',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'geologia_sab_pb_pesos',
+        zIndex: 16,
+        active: false,
+        searchFields: ['peso', 'classe'],
+      },
+    },
+  },
+
+  // 4. Solos ─────────────────────────────────────────────────────────────────
+  solos: {
+    label: 'Solos',
+    color: '#ec4899',
+    icon: 'bi-geo',
+    layers: {
+      solos_tipos_sab_pb_original: {
+        label: 'Tipos de Solos (Original)',
+        meta: 'Classificação pedológica (SiBCS)',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'solos_tipos_sab_pb_original',
+        zIndex: 17,
+        active: false,
+        searchFields: ['componente', 'ordem'],
+      },
+      solos_tipos_sab_pb_pesos: {
+        label: 'Tipos de Solos (Pesos)',
+        meta: 'Pesos atribuídos aos tipos de solo',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'solos_tipos_sab_pb_pesos',
+        zIndex: 18,
+        active: false,
+        searchFields: ['peso'],
+      },
+      textura_sab_pb_original: {
+        label: 'Textura do Solo (Original)',
+        meta: 'Grupamento de textura física',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'textura_sab_pb_original',
+        zIndex: 19,
+        active: false,
+        searchFields: ['componente', 'grupamento'],
+      },
+      textura_sab_pb_pesos: {
+        label: 'Textura do Solo (Pesos)',
+        meta: 'Pesos atribuídos à textura do solo',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'textura_sab_pb_pesos',
+        zIndex: 20,
+        active: false,
+        searchFields: ['peso'],
+      },
+    },
+  },
+
+  // 5. Agroclimatologia ──────────────────────────────────────────────────────
+  agroclimatologia: {
+    label: 'Agroclimatologia',
+    color: '#3b82f6',
+    icon: 'bi-cloud-rain',
+    layers: {
+      eto_sab_pb_original: {
+        label: 'Evapotranspiração (ETo)',
+        meta: 'Evapotranspiração de referência acumulada',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'eto_sab_pb_original',
+        zIndex: 21,
+        active: false,
+        searchFields: ['valor', 'classe'],
+      },
+      eto_sab_pb_pesos: {
+        label: 'Evapotranspiração (Pesos)',
+        meta: 'Pesos atribuídos à ETo regional',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'eto_sab_pb_pesos',
+        zIndex: 22,
+        active: false,
+        searchFields: ['peso'],
+      },
+      ia_sab_pb_original: {
+        label: 'Índice de Aridez (IA)',
+        meta: 'Índice de aridez meteorológica',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'ia_sab_pb_original',
+        zIndex: 23,
+        active: false,
+        searchFields: ['valor', 'status'],
+      },
+      ia_sab_pb_pesos: {
+        label: 'Índice de Aridez (Pesos)',
+        meta: 'Pesos atribuídos ao Índice de Aridez',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'ia_sab_pb_pesos',
+        zIndex: 24,
+        active: false,
+        searchFields: ['peso'],
+      },
+      precipitacao_sab_pb_original: {
+        label: 'Precipitação Pluviométrica',
+        meta: 'Precipitação média anual acumulada',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'precipitacao_sab_pb_original',
+        zIndex: 25,
+        active: false,
+        searchFields: ['valor', 'classe'],
+      },
+      precipitacao_sab_pb_pesos: {
+        label: 'Precipitação (Pesos)',
+        meta: 'Pesos atribuídos às faixas de chuva',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'precipitacao_sab_pb_pesos',
+        zIndex: 26,
+        active: false,
+        searchFields: ['peso'],
+      },
+    },
+  },
+}
+
+// ─── OVERLAY_LAYERS PLANO (retrocompatibilidade com mapStore / MapContainer) ──
+//
+// Gerado automaticamente a partir de OVERLAY_CATEGORIES para que MapContainer.vue
+// e mapStore.js não precisem ser reescritos. Qualquer novo código deve preferir
+// consumir OVERLAY_CATEGORIES diretamente.
+//
+export const OVERLAY_LAYERS = Object.fromEntries(
+  Object.values(OVERLAY_CATEGORIES).flatMap(cat =>
+    Object.entries(cat.layers)
+  )
+)
