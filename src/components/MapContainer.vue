@@ -85,6 +85,7 @@ function syncVectorOverlays(desired) {
           tile.height = size.y
           const ctx = tile.getContext('2d')
 
+          // Monta a URL dinâmica injetando as coordenadas do bloco
           const tileUrl = url
             .replace('{z}', coords.z)
             .replace('{x}', coords.x)
@@ -92,7 +93,7 @@ function syncVectorOverlays(desired) {
 
           fetch(tileUrl)
             .then(res => {
-              if (!res.ok) throw new Error('Tile pbf não encontrado')
+              if (!res.ok) throw new Error(`Tile PBF não encontrado na URL: ${tileUrl}`)
               return res.arrayBuffer()
             })
             .then(buffer => {
@@ -103,17 +104,33 @@ function syncVectorOverlays(desired) {
               const vt = new VectorTile(pbf)
               const layer = vt.layers[sourceLayer]
               
+              // 🔴 Alerta de inconsistência de nomes:
               if (!layer) {
+                // Se cair aqui, o Tippecanoe salvou a camada interna com um nome diferente do configurado no frontend
+                console.error(`❌ [MVT Error] A camada interna "${sourceLayer}" não existe dentro do arquivo PBF carregado de: ${tileUrl}. Camadas disponíveis no arquivo:`, Object.keys(vt.layers))
                 done(null, tile)
                 return
               }
 
               const currentOpacity = mapStore.layerOpacity[key] ?? 1
 
+              // 🔴 DEBUG LOG: Mostra as colunas do seu GPKG na tela para o primeiro bloco renderizado
+              if (layer.length > 0) {
+                if (!window._debuggedLayers) window._debuggedLayers = new Set()
+                if (!window._debuggedLayers.has(sourceLayer)) {
+                  window._debuggedLayers.add(sourceLayer)
+                  console.log(`🎯 [WebGIS Debug] Camada visualizada com sucesso: "${sourceLayer}"`)
+                  console.log(`📊 Atributos reais decodificados dessa camada:`, layer.feature(0).properties)
+                }
+              }
+
+              // Loop de renderização do Canvas
               for (let i = 0; i < layer.length; i++) {
                 const feature = layer.feature(i)
                 const geom = feature.loadGeometry()
                 const props = feature.properties
+                
+                // Descobre a cor temática baseada no gpkgStyles.json
                 const color = getThematicColor(sourceLayer, props)
 
                 drawGeometryToContext(ctx, geom, feature.type, size)
@@ -124,7 +141,9 @@ function syncVectorOverlays(desired) {
               }
               done(null, tile)
             })
-            .catch(() => {
+            .catch((err) => {
+              // Mostra o erro real no console para sabermos se deu 404
+              console.warn(`[GridLayer Warning] Falha ao processar bloco MVT:`, err.message)
               done(null, tile)
             })
 
@@ -241,45 +260,108 @@ watch(
   height: 100%;
 }
 
-/* Customização Estilizada dos Popups */
+/* ── Customização Estilizada e Compacta dos Popups ── */
+
+/* Container Principal do Popup (Balaozinho) */
 :deep(.popup-dark .leaflet-popup-content-wrapper) {
   background: #111827;
   color: #f3f4f6;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   border: 1px solid #374151;
-  max-height: 400px;
-  overflow-y: auto; /* Garante scroll caso muitas camadas fiquem ativas */
+  
+  /* Mantém a janela compacta e elegante */
+  max-width: 250px !important; 
+  max-height: 280px;
+  overflow-y: auto; /* Scroll vertical macio se acumular muitas camadas */
 }
+
+/* Ajuste do container interno de margens nativas do Leaflet */
+:deep(.popup-dark .leaflet-popup-content) {
+  margin: 10px 12px;
+  line-height: 1.4;
+}
+
+/* A pequena seta na parte inferior do popup */
 :deep(.popup-dark .leaflet-popup-tip) {
   background: #111827;
+  border: 1px solid #374151;
+  box-shadow: none;
 }
-:deep(.gfi-title) {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #38bdf8;
-  border-bottom: 1px solid #374151;
-  padding-bottom: 6px;
+
+/* Botão de Fechar do Popup (X) */
+:deep(.popup-dark .leaflet-popup-close-button) {
+  color: #9ca3af !important;
+  padding: 6px 4px 0 0 !important;
+}
+
+:deep(.popup-dark .leaflet-popup-close-button:hover) {
+  color: #f3f4f6 !important;
+  background: transparent !important;
+}
+
+/* ── Elementos de Dados Estruturados (gfi-section) ── */
+
+/* Bloco isolador de cada camada ativa clicada */
+:deep(.gfi-section) {
+  border-bottom: 1px dashed #374151; /* Linha tracejada discreta substituindo o antigo <hr> */
+  padding-bottom: 8px;
   margin-bottom: 8px;
 }
+
+/* Remove a linha tracejada e os recuos da última camada da lista */
+:deep(.gfi-section:last-of-type) {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+/* Título de Cada Seção de Camada */
+:deep(.gfi-title) {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #38bdf8; /* Azul claro destacado */
+  margin-top: 2px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Tabela de Atributos (Chave -> Valor) */
 :deep(.gfi-table) {
   width: 100%;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   border-collapse: collapse;
 }
+
+/* Efeito Zebrado sutil nas linhas de atributos */
 :deep(.gfi-table tr:nth-child(even)) {
   background: rgba(255, 255, 255, 0.03);
 }
+
+/* Coluna da Esquerda (Nome do Atributo) */
 :deep(.gfi-key) {
   font-weight: 600;
-  color: #34d399;
-  padding: 4px 8px 4px 0;
+  color: #34d399; /* Verde esmeralda */
+  padding: 3px 6px 3px 0;
   vertical-align: top;
   text-transform: capitalize;
+  width: 45%; /* Divisão limpa da janelinha */
 }
+
+/* Coluna da Direita (Valor Real) */
 :deep(.gfi-val) {
   color: #e5e7eb;
-  padding: 4px 0;
-  word-break: break-word;
+  padding: 3px 0;
+  vertical-align: top;
+  word-break: break-word; /* Quebra o texto se o valor for muito extenso */
+}
+
+/* Estado de aviso para camadas vazias */
+:deep(.gfi-empty) {
+  font-size: 0.72rem;
+  color: #9ca3af; /* Cinza opaco */
+  padding: 3px 0;
+  font-style: italic;
 }
 </style>
