@@ -42,3 +42,26 @@ npm run build
 ```sh
 npm run lint
 ```
+
+```
+for camada in $(ogrinfo -q dados_insa.gpkg | awk -F': ' '{print $2}'); do
+    echo "Convertendo camada: $camada ..."
+    ogr2ogr -f "GeoJSON" "geojson/${camada}.geojson" dados_insa.gpkg "$camada" -t_srs EPSG:4326
+done
+
+
+tippecanoe -o mbtiles/insa_layers.mbtiles \
+  -z14 -Z2 \
+  --no-feature-limit \
+  --no-tile-size-limit \
+  --extend-zooms-if-still-dropping \
+  --no-tile-compression \
+  --force \
+  geojson/*.geojson
+```
+
+```
+python3 export.py
+
+python3 styles.py
+```
