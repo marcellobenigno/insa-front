@@ -22,6 +22,7 @@ export function getThematicColor(sourceLayer, featureProps) {
 
   // 🔑 Injeção das novas colunas detectadas no console do navegador
   const possibleValues = [
+    featureProps?.IQC_Pes,
     featureProps?.ETo_Climat,    // ETo Original
     featureProps?.ETo_Pesos,     // ETo Pesos
     featureProps?.IA_climat,     // IA Original
