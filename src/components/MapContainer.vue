@@ -94,46 +94,46 @@ function syncVectorOverlays(desired) {
             .replace('{y}', targetY)
 
           fetch(tileUrl)
-            .then(res => {
-              if (!res.ok) throw new Error(`Tile PBF não encontrado na URL: ${tileUrl}`)
-              return res.arrayBuffer()
-            })
-            .then(buffer => {
-              // Cache amarrado ao targetY do ambiente para consistência no clique posterior
-              const cacheKey = `${coords.z}-${coords.x}-${targetY}-${sourceLayer}`
-              tileDataCache.set(cacheKey, buffer)
-
-              const pbf = new Pbf(new Uint8Array(buffer))
-              const vt = new VectorTile(pbf)
-              console.log('Camadas no PBF:', Object.keys(vt.layers))
-              const layer = vt.layers[sourceLayer]
-              
-              if (!layer) {
-                console.error(`❌ [MVT Error] A camada interna "${sourceLayer}" não existe dentro do arquivo PBF carregado de: ${tileUrl}. Camadas disponíveis no arquivo:`, Object.keys(vt.layers))
-                done(null, tile)
-                return
-              }
-
-              const currentOpacity = mapStore.layerOpacity[key] ?? 1
-
-              for (let i = 0; i < layer.length; i++) {
-                const feature = layer.feature(i)
-                const geom = feature.loadGeometry()
-                const props = feature.properties
-                const color = getThematicColor(sourceLayer, props)
-
-                drawGeometryToContext(ctx, geom, feature.type, size)
-
-                ctx.fillStyle = color
-                ctx.globalAlpha = 0.8 * currentOpacity
-                ctx.fill()
-              }
-              done(null, tile)
-            })
-            .catch((err) => {
-              console.warn(`[GridLayer Warning] Falha ao processar bloco MVT:`, err.message)
-              done(null, tile)
-            })
+  .then(res => {
+    console.log(`[Tile] ${tileUrl} → status: ${res.status}, content-type: ${res.headers.get('content-type')}`)
+    if (!res.ok) throw new Error(`Tile PBF não encontrado na URL: ${tileUrl}`)
+    return res.arrayBuffer()
+  })
+  .then(buffer => {
+    console.log(`[Buffer] tamanho: ${buffer.byteLength} bytes`)
+    try {
+      const cacheKey = `${coords.z}-${coords.x}-${targetY}-${sourceLayer}`
+      tileDataCache.set(cacheKey, buffer)
+      const pbf = new Pbf(new Uint8Array(buffer))
+      const vt = new VectorTile(pbf)
+      console.log('Camadas no PBF:', Object.keys(vt.layers))
+      const layer = vt.layers[sourceLayer]
+      if (!layer) {
+        console.error(`❌ sourceLayer "${sourceLayer}" não encontrado. Disponíveis:`, Object.keys(vt.layers))
+        done(null, tile)
+        return
+      }
+      const currentOpacity = mapStore.layerOpacity[key] ?? 1
+      for (let i = 0; i < layer.length; i++) {
+        const feature = layer.feature(i)
+        const geom = feature.loadGeometry()
+        const props = feature.properties
+        const color = getThematicColor(sourceLayer, props)
+        drawGeometryToContext(ctx, geom, feature.type, size)
+        ctx.fillStyle = color
+        ctx.globalAlpha = 0.8 * currentOpacity
+        ctx.fill()
+      }
+      done(null, tile)
+    } catch(e) {
+      console.error('[Decode Error]', e)
+      done(null, tile)
+    }
+  })
+  .catch((err) => {
+    console.error(`[Fetch Error] ${tileUrl}:`, err)
+    done(null, tile)
+  })
 
           return tile
         }
