@@ -1,38 +1,25 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { OVERLAY_CATEGORIES } from '@/config/layers'
+import { useSidebar } from '@/composables/useSidebar'
 import LayerCard from './LayerCard.vue'
 
 const store = useMapStore()
-const isCollapsed = ref(false)
+const { 
+  isCollapsed, 
+  openBase, 
+  openCategories, 
+  toggleSidebar, 
+  toggleBase, 
+  toggleCategory,
+  initCategories 
+} = useSidebar()
 
-// Accordion das camadas base (inicia colapsado)
-const openBase = ref(false)
-
-// Todas as categorias de overlay iniciam colapsadas
-const openCategories = ref(
-  Object.fromEntries(
-    Object.keys(OVERLAY_CATEGORIES).map((key) => [key, false])
-  )
-)
-
-function toggle() {
-  isCollapsed.value = !isCollapsed.value
-  // Colapsa todos os accordions quando a sidebar fecha
-  if (isCollapsed.value) {
-    openBase.value = false
-    Object.keys(openCategories.value).forEach(k => (openCategories.value[k] = false))
-  }
-}
-
-function toggleBase() {
-  openBase.value = !openBase.value
-}
-
-function toggleCategory(key) {
-  openCategories.value[key] = !openCategories.value[key]
-}
+// Inicializa o estado das categorias baseado no config
+onMounted(() => {
+  initCategories(Object.keys(OVERLAY_CATEGORIES))
+})
 
 // Conta camadas visíveis por categoria para feedback visual no badge
 function visibleCount(categoryKey) {
@@ -40,8 +27,8 @@ function visibleCount(categoryKey) {
   return Object.keys(layers).filter(k => store.visibleOverlays[k]).length
 }
 
-// Lista de categorias como array para o v-for
-const categories = computed(() =>
+// Lista de categorias formatada para o v-for
+const categoriesList = computed(() =>
   Object.entries(OVERLAY_CATEGORIES).map(([key, cat]) => ({
     key,
     ...cat,
@@ -51,48 +38,60 @@ const categories = computed(() =>
 </script>
 
 <template>
-  <aside id="sidebar" :class="{ collapsed: isCollapsed }">
-
+  <aside 
+    id="sidebar" 
+    :class="{ 'is-collapsed': isCollapsed }"
+    role="complementary"
+    aria-label="Painel de Controle do Mapa"
+  >
     <!-- Cabeçalho -->
-    <div class="sidebar-header">
-      <div class="brand-wrapper">
-        <div class="brand-logo">
+    <header class="sidebar-header">
+      <div class="brand-wrapper" v-show="!isCollapsed">
+        <div class="brand-logo" aria-hidden="true">
           <i class="bi bi-geo-alt-fill" />
         </div>
         <div class="brand-name">
           INSA <span class="brand-accent">WebGIS</span>
         </div>
       </div>
-      <button class="toggle-btn" title="Alternar sidebar" @click="toggle">
+      <button 
+        class="toggle-btn" 
+        :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
+        :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
+        :aria-expanded="!isCollapsed"
+        @click="toggleSidebar"
+      >
         <i class="bi" :class="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'" />
       </button>
-    </div>
+    </header>
 
-    <!-- Conteúdo -->
-    <div class="sidebar-content">
-
-      <!-- ── Camadas Base (accordion) ── -->
-      <div class="category-block" :class="{ open: openBase }">
+    <!-- Conteúdo Principal -->
+    <div class="sidebar-content custom-scrollbar">
+      
+      <!-- Camadas Base -->
+      <section class="category-block" :class="{ 'is-open': openBase }">
         <button
-          class="category-header"
-          :title="openBase ? 'Recolher' : 'Expandir'"
+          class="category-header btn-reset"
+          :aria-expanded="openBase"
+          aria-controls="base-layers-content"
           @click="toggleBase"
         >
-          <span class="cat-dot" style="background: #94a3b8" />
-          <i class="bi bi-map cat-icon" />
-          <span class="cat-label">Camadas Base</span>
-          <span
-            class="cat-active-badge"
-            title="1 camada base ativa"
-          >1</span>
-          <span class="cat-count">{{ store.availableBaseLayers.length }}</span>
-          <i
-            class="bi bi-chevron-down cat-chevron"
-            :class="{ rotated: openBase }"
-          />
+          <span class="cat-dot bg-secondary" aria-hidden="true" />
+          <i class="bi bi-map cat-icon" aria-hidden="true" />
+          <span class="cat-label" v-show="!isCollapsed">Camadas Base</span>
+          
+          <div class="cat-meta" v-show="!isCollapsed">
+            <span class="badge rounded-pill bg-accent-dim text-accent me-1">1</span>
+            <span class="text-muted small">{{ store.availableBaseLayers.length }}</span>
+            <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': openBase }" />
+          </div>
         </button>
 
-        <div class="category-body">
+        <div 
+          id="base-layers-content" 
+          class="category-body" 
+          v-show="openBase && !isCollapsed"
+        >
           <div class="category-body-inner">
             <LayerCard
               v-for="layer in store.availableBaseLayers"
@@ -105,50 +104,48 @@ const categories = computed(() =>
             />
           </div>
         </div>
+      </section>
+
+      <!-- Divisor Temático -->
+      <div class="section-divider" v-show="!isCollapsed">
+        <span class="divider-text">Análise Temática</span>
+        <span class="badge border border-secondary text-muted">{{ store.availableOverlays.length }}</span>
       </div>
 
-      <!-- ── Análise Temática (agrupada por categoria) ── -->
-      <div class="section-title section-title--gap">
-        <span>Análise Temática</span>
-        <span class="count-badge">{{ store.availableOverlays.length }}</span>
-      </div>
-
-      <div
-        v-for="cat in categories"
+      <!-- Categorias de Overlay -->
+      <section
+        v-for="cat in categoriesList"
         :key="cat.key"
         class="category-block"
-        :class="{ open: openCategories[cat.key] }"
+        :class="{ 'is-open': openCategories[cat.key] }"
       >
-        <!-- Cabeçalho da categoria (accordion trigger) -->
         <button
-          class="category-header"
-          :title="openCategories[cat.key] ? 'Recolher' : 'Expandir'"
+          class="category-header btn-reset"
+          :aria-expanded="openCategories[cat.key]"
+          :aria-controls="`cat-content-${cat.key}`"
           @click="toggleCategory(cat.key)"
         >
-          <span class="cat-dot" :style="{ background: cat.color }" />
+          <span class="cat-dot" :style="{ background: cat.color }" aria-hidden="true" />
+          <i class="bi cat-icon" :class="cat.icon" aria-hidden="true" />
+          <span class="cat-label" v-show="!isCollapsed">{{ cat.label }}</span>
 
-          <i class="bi cat-icon" :class="cat.icon" />
-
-          <span class="cat-label">{{ cat.label }}</span>
-
-          <span
-            v-if="visibleCount(cat.key) > 0"
-            class="cat-active-badge"
-            :title="`${visibleCount(cat.key)} camada(s) visível(eis)`"
-          >
-            {{ visibleCount(cat.key) }}
-          </span>
-
-          <span class="cat-count">{{ cat.layerList.length }}</span>
-
-          <i
-            class="bi bi-chevron-down cat-chevron"
-            :class="{ rotated: openCategories[cat.key] }"
-          />
+          <div class="cat-meta" v-show="!isCollapsed">
+            <span
+              v-if="visibleCount(cat.key) > 0"
+              class="badge rounded-pill bg-accent-dim text-accent me-1"
+            >
+              {{ visibleCount(cat.key) }}
+            </span>
+            <span class="text-muted small">{{ cat.layerList.length }}</span>
+            <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': openCategories[cat.key] }" />
+          </div>
         </button>
 
-        <!-- Camadas da categoria (accordion body) -->
-        <div class="category-body">
+        <div 
+          :id="`cat-content-${cat.key}`" 
+          class="category-body" 
+          v-show="openCategories[cat.key] && !isCollapsed"
+        >
           <div class="category-body-inner">
             <LayerCard
               v-for="layer in cat.layerList"
@@ -163,43 +160,52 @@ const categories = computed(() =>
             />
           </div>
         </div>
-
-      </div>
-
+      </section>
     </div>
 
     <!-- Rodapé -->
-    <div class="sidebar-footer">
-      <i class="bi bi-hdd-network-fill footer-icon" />
-      <span>EPSG:4326 | Online</span>
-    </div>
-
+    <footer class="sidebar-footer">
+      <i class="bi bi-hdd-network-fill text-accent" aria-hidden="true" />
+      <span v-show="!isCollapsed" class="ms-2">EPSG:4326 | Online</span>
+    </footer>
   </aside>
 </template>
 
 <style scoped>
-/* ── Layout geral ────────────────────────────────────────────────────────── */
+/* Variáveis de Tema (Devem estar no main.css ou :root) */
+:root {
+  --sidebar-w: 280px;
+  --sidebar-collapsed-w: 64px;
+  --bg-sidebar: #0f172a;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent: #00d4aa;
+  --bg-accent-dim: rgba(0, 212, 170, 0.1);
+  --transition-speed: 0.3s;
+}
+
 #sidebar {
   width: var(--sidebar-w);
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  transition: width var(--transition-speed) var(--transition-curve);
-  position: relative;
-  z-index: 1000;
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
+  transition: width var(--transition-speed) ease-in-out;
+  height: 100vh;
+  z-index: 1050;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
 }
 
-#sidebar.collapsed {
+#sidebar.is-collapsed {
   width: var(--sidebar-collapsed-w);
 }
 
-/* ── Cabeçalho ───────────────────────────────────────────────────────────── */
+/* Header */
 .sidebar-header {
-  height: 70px;
-  padding: 0 20px;
+  height: 64px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -211,252 +217,155 @@ const categories = computed(() =>
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 200px;
-  transition: opacity 0.2s;
-}
-
-#sidebar.collapsed .brand-wrapper {
-  opacity: 0;
-  pointer-events: none;
+  overflow: hidden;
 }
 
 .brand-logo {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  background: linear-gradient(135deg, var(--accent), #3b82f6);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
-  font-size: 1.1rem;
-  box-shadow: 0 0 15px rgba(0, 212, 170, 0.3);
-  flex-shrink: 0;
+  color: #0f172a;
+  font-size: 1.2rem;
 }
 
 .brand-name {
   font-weight: 700;
   font-size: 1.1rem;
-  letter-spacing: -0.02em;
   color: var(--text-main);
   white-space: nowrap;
 }
 
-.brand-accent {
-  color: var(--accent);
-}
+.brand-accent { color: var(--accent); }
 
 .toggle-btn {
-  background: var(--bg-card);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-color);
   color: var(--text-muted);
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
-  flex-shrink: 0;
 }
 
 .toggle-btn:hover {
   background: var(--accent);
-  color: #000;
-  border-color: var(--accent);
+  color: #0f172a;
 }
 
-#sidebar.collapsed .toggle-btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* ── Conteúdo com scroll ─────────────────────────────────────────────────── */
+/* Content */
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
   padding: 12px 0;
 }
 
-.sidebar-content::-webkit-scrollbar {
-  width: 5px;
-}
-
-.sidebar-content::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 10px;
-}
-
-/* ── Títulos de seção ────────────────────────────────────────────────────── */
-.section-title {
-  padding: 0 20px 8px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-dim);
+.section-divider {
+  padding: 24px 16px 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.section-title--gap {
-  margin-top: 1.5rem;
-}
-
-#sidebar.collapsed .section-title span,
-#sidebar.collapsed .count-badge {
-  display: none;
-}
-
-.count-badge {
-  background: transparent;
-  border: 1px solid var(--border-color);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--text-dim);
-  font-size: 0.65rem;
-  border-radius: 20px;
-  padding: 1px 7px;
 }
 
-/* ── Bloco de categoria (accordion) ─────────────────────────────────────── */
+/* Category Blocks */
 .category-block {
-  margin: 0 10px 4px;
+  margin: 4px 8px;
 }
 
 .category-header {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 10px;
-  background: transparent;
-  border: none;
+  padding: 10px 12px;
   border-radius: 8px;
-  cursor: pointer;
   color: var(--text-muted);
-  transition: background 0.15s;
-  text-align: left;
+  transition: background 0.2s;
 }
 
 .category-header:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
 }
 
 .cat-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  flex-shrink: 0;
+  margin-right: 12px;
 }
 
 .cat-icon {
-  font-size: 0.85rem;
-  flex-shrink: 0;
-  color: var(--text-dim);
+  font-size: 1rem;
+  margin-right: 12px;
 }
 
 .cat-label {
   flex: 1;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* badge verde indicando quantas camadas estão ativas na categoria */
-.cat-active-badge {
-  font-size: 0.6rem;
-  font-weight: 700;
-  background: rgba(0, 212, 170, 0.15);
-  color: var(--accent);
-  border-radius: 20px;
-  padding: 1px 6px;
-  line-height: 1.6;
-  flex-shrink: 0;
-}
-
-.cat-count {
-  font-size: 0.6rem;
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 1px 6px;
-  color: var(--text-dim);
-  flex-shrink: 0;
+.cat-meta {
+  display: flex;
+  align-items: center;
 }
 
 .cat-chevron {
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  transition: transform 0.22s var(--transition-curve);
-  flex-shrink: 0;
+  font-size: 0.8rem;
+  transition: transform 0.3s;
 }
 
-.cat-chevron.rotated {
+.cat-chevron.is-rotated {
   transform: rotate(-180deg);
 }
 
-/* Accordion body – animado via grid-template-rows */
+/* Body */
 .category-body {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s var(--transition-curve);
-}
-
-.category-block.open .category-body {
-  grid-template-rows: 1fr;
+  padding-top: 4px;
 }
 
 .category-body-inner {
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0; /* LayerCard já tem margin própria */
+  gap: 4px;
 }
 
-/* Quando a sidebar colapsa, oculta todos os textos dos cards */
-#sidebar.collapsed :deep(.layer-info),
-#sidebar.collapsed :deep(.layer-actions-top) {
-  display: none;
-}
-
-/* Oculta labels de categoria quando colapsado */
-#sidebar.collapsed .cat-label,
-#sidebar.collapsed .cat-count,
-#sidebar.collapsed .cat-active-badge,
-#sidebar.collapsed .cat-chevron,
-#sidebar.collapsed .cat-icon {
-  display: none;
-}
-
-/* ── Rodapé ──────────────────────────────────────────────────────────────── */
+/* Footer */
 .sidebar-footer {
-  padding: 15px 20px;
+  padding: 16px;
   border-top: 1px solid var(--border-color);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--text-dim);
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  white-space: nowrap;
-  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.footer-icon {
-  color: var(--accent);
-  flex-shrink: 0;
+/* Helpers */
+.btn-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-#sidebar.collapsed .sidebar-footer span {
-  display: none;
-}
+.bg-accent-dim { background: var(--bg-accent-dim); }
+.text-accent { color: var(--accent); }
+
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 </style>

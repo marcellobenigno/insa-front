@@ -1,103 +1,3 @@
-<template>
-  <div class="layer-card">
-    <div class="layer-main-row">
-
-      <button
-        class="layer-icon-btn"
-        :class="{ active: isVisible }"
-        :title="isVisible ? 'Ocultar' : 'Exibir'"
-        @click="toggleVisibility"
-      >
-        <i class="bi" :class="isVisible ? 'bi-eye-fill' : 'bi-eye-slash'" />
-      </button>
-
-      <div class="layer-info">
-        <span class="layer-label">{{ label }}</span>
-        <span class="layer-meta">{{ meta }}</span>
-      </div>
-
-      <div class="layer-actions-top">
-
-        <button
-          class="action-btn"
-          :class="{ active: activePanel === 'opacity' }"
-          title="Opacidade"
-          @click="togglePanel('opacity')"
-        >
-          <i class="bi bi-sliders" />
-        </button>
-
-        <template v-if="type === 'overlay'">
-          <button
-            v-if="legend"
-            class="action-btn"
-            :class="{ active: activePanel === 'legend' }"
-            title="Legenda"
-            @click="togglePanel('legend')"
-          >
-            <i class="bi bi-palette" />
-          </button>
-          <button
-            v-if="searchFields.length > 0"
-            class="action-btn"
-            :class="{ active: activePanel === 'search' }"
-            title="Busca"
-            @click="togglePanel('search')"
-          >
-            <i class="bi bi-search" />
-          </button>
-        </template>
-
-      </div>
-    </div>
-
-    <div class="sub-panel" :class="{ open: activePanel === 'opacity' }">
-      <div class="sub-panel-inner">
-        <div class="panel-title">
-          <i class="bi bi-sliders" />
-          Opacidade: <span>{{ Math.round(opacity * 100) }}%</span>
-        </div>
-        <input
-          type="range"
-          class="custom-range"
-          min="0"
-          max="100"
-          :value="Math.round(opacity * 100)"
-          @input="onOpacityInput"
-        />
-      </div>
-    </div>
-
-    <div class="sub-panel" :class="{ open: activePanel === 'legend' }">
-      <div class="sub-panel-inner">
-        <div class="panel-title"><i class="bi bi-palette" /> Legenda</div>
-        <img v-if="legend" :src="legend" alt="Legenda da camada" class="legend-img" />
-      </div>
-    </div>
-
-    <div class="sub-panel" :class="{ open: activePanel === 'search' }">
-      <div class="sub-panel-inner">
-        <div class="search-box">
-          <select
-            v-if="searchFields.length > 1"
-            v-model="selectedField"
-            class="search-input"
-          >
-            <option v-for="f in searchFields" :key="f" :value="f">{{ f }}</option>
-          </select>
-          <input
-            v-model="searchQuery"
-            type="text"
-            class="search-input"
-            :placeholder="`Buscar por ${selectedField || 'campo'}…`"
-          />
-          <button class="search-btn">Filtrar Mapa</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
@@ -114,19 +14,21 @@ const props = defineProps({
 
 const store = useMapStore()
 
+// Reatividade da visibilidade
 const isVisible = computed(() =>
   props.type === 'base'
     ? store.activeBaseLayerKey === props.layerKey
     : store.visibleOverlays[props.layerKey],
 )
 
-// Busca dinamicamente a opacidade da store usando a chave única da camada
+// Reatividade da opacidade
 const opacity = computed(() => store.layerOpacity[props.layerKey] ?? 1)
 
 const activePanel = ref(null)
 const searchQuery  = ref('')
 const selectedField = ref(props.searchFields[0] ?? '')
 
+// Fecha painéis se a sidebar colapsar
 watch(
   () => props.collapsed,
   (val) => { if (val) activePanel.value = null },
@@ -146,187 +48,264 @@ function onOpacityInput(e) {
 }
 </script>
 
+<template>
+  <div 
+    class="layer-card" 
+    :class="{ 'is-active': isVisible }"
+  >
+    <!-- Linha Principal -->
+    <div class="layer-main-row">
+      <button
+        class="visibility-toggle"
+        :class="{ 'is-visible': isVisible }"
+        :title="isVisible ? 'Ocultar camada' : 'Exibir camada'"
+        :aria-label="isVisible ? `Ocultar ${label}` : `Exibir ${label}`"
+        @click="toggleVisibility"
+      >
+        <i class="bi" :class="isVisible ? 'bi-eye-fill' : 'bi-eye-slash'" aria-hidden="true" />
+      </button>
+
+      <div class="layer-info">
+        <span class="layer-label">{{ label }}</span>
+        <span class="layer-meta" v-if="meta">{{ meta }}</span>
+      </div>
+
+      <div class="layer-actions">
+        <button
+          class="action-btn"
+          :class="{ 'is-panel-open': activePanel === 'opacity' }"
+          title="Ajustar Opacidade"
+          aria-label="Ajustar opacidade"
+          @click="togglePanel('opacity')"
+        >
+          <i class="bi bi-sliders" aria-hidden="true" />
+        </button>
+
+        <template v-if="type === 'overlay'">
+          <button
+            v-if="legend"
+            class="action-btn"
+            :class="{ 'is-panel-open': activePanel === 'legend' }"
+            title="Ver Legenda"
+            aria-label="Ver legenda"
+            @click="togglePanel('legend')"
+          >
+            <i class="bi bi-palette" aria-hidden="true" />
+          </button>
+          
+          <button
+            v-if="searchFields.length > 0"
+            class="action-btn"
+            :class="{ 'is-panel-open': activePanel === 'search' }"
+            title="Buscar na camada"
+            aria-label="Buscar na camada"
+            @click="togglePanel('search')"
+          >
+            <i class="bi bi-search" aria-hidden="true" />
+          </button>
+        </template>
+      </div>
+    </div>
+
+    <!-- Painéis Expansíveis (Bootstrap-like Collapse) -->
+    <Transition name="panel-fade">
+      <div class="layer-sub-panel" v-if="activePanel">
+        
+        <!-- Painel de Opacidade -->
+        <div v-if="activePanel === 'opacity'" class="panel-content">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="panel-label">Opacidade</label>
+            <span class="badge bg-dark">{{ Math.round(opacity * 100) }}%</span>
+          </div>
+          <input
+            type="range"
+            class="form-range custom-slider"
+            min="0"
+            max="100"
+            :value="Math.round(opacity * 100)"
+            @input="onOpacityInput"
+          />
+        </div>
+
+        <!-- Painel de Legenda -->
+        <div v-if="activePanel === 'legend'" class="panel-content">
+          <label class="panel-label mb-2">Legenda</label>
+          <div class="legend-container">
+            <img :src="legend" :alt="`Legenda de ${label}`" class="img-fluid rounded" />
+          </div>
+        </div>
+
+        <!-- Painel de Busca -->
+        <div v-if="activePanel === 'search'" class="panel-content">
+          <label class="panel-label mb-2">Busca Avançada</label>
+          <div class="search-form">
+            <select
+              v-if="searchFields.length > 1"
+              v-model="selectedField"
+              class="form-select form-select-sm mb-2 bg-dark text-light border-secondary"
+            >
+              <option v-for="f in searchFields" :key="f" :value="f">{{ f }}</option>
+            </select>
+            <div class="input-group input-group-sm">
+              <input
+                v-model="searchQuery"
+                type="text"
+                class="form-control bg-dark text-light border-secondary"
+                :placeholder="`Buscar em ${selectedField}...`"
+              />
+              <button class="btn btn-primary" type="button">
+                <i class="bi bi-search" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </Transition>
+  </div>
+</template>
+
 <style scoped>
 .layer-card {
-  margin: 3px 10px 6px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  transition: all 0.2s ease;
   overflow: hidden;
 }
 
 .layer-card:hover {
-  border-color: rgba(0, 212, 170, 0.3);
-  background: var(--bg-card-hover);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.layer-card.is-active {
+  border-left: 3px solid var(--accent, #00d4aa);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .layer-main-row {
-  padding: 8px 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  padding: 10px;
+  gap: 12px;
 }
 
-.layer-icon-btn {
-  width: 28px;
-  height: 28px;
+/* Visibility Toggle */
+.visibility-toggle {
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.03);
   border: none;
-  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-  font-size: 0.85rem;
 }
 
-.layer-icon-btn.active {
-  color: var(--accent);
-  background: var(--bg-accent-dim);
+.visibility-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
 }
 
+.visibility-toggle.is-visible {
+  color: var(--accent, #00d4aa);
+  background: rgba(0, 212, 170, 0.1);
+}
+
+/* Info */
 .layer-info {
   flex: 1;
   min-width: 0;
 }
 
-/* Label legível: até 2 linhas, sem ellipsis prematuro */
 .layer-label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  line-height: 1.3;
-  white-space: normal;
-  overflow-wrap: break-word;
-  color: var(--text-main);
+  color: #f1f5f9;
+  line-height: 1.2;
 }
 
 .layer-meta {
-  font-size: 0.65rem;
-  color: var(--text-dim);
-  margin-top: 1px;
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-top: 2px;
 }
 
-/* Ações empilhadas verticalmente para não roubar largura do label */
-.layer-actions-top {
+/* Actions */
+.layer-actions {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-  flex-shrink: 0;
+  gap: 4px;
 }
 
 .action-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 5px;
-  border: 1px solid transparent;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: none;
   background: transparent;
-  color: var(--text-dim);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.78rem;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
 .action-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
 }
 
-.action-btn.active {
-  color: var(--accent-secondary);
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.2);
+.action-btn.is-panel-open {
+  background: #3b82f6;
+  color: white;
 }
 
-.sub-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s ease;
+/* Sub Panels */
+.layer-sub-panel {
   background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid transparent;
-  transition:
-    grid-template-rows 0.25s ease,
-    border-top-color   0.25s ease;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.sub-panel.open {
-  grid-template-rows: 1fr;
-  border-top-color: var(--border-color);
-}
-
-.sub-panel-inner {
-  overflow: hidden;
-  padding: 0 12px;
-  transition: padding 0.25s ease;
-}
-
-.sub-panel.open .sub-panel-inner {
+.panel-content {
   padding: 12px;
 }
 
-.panel-title {
+.panel-label {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0;
 }
 
-.custom-range {
-  width: 100%;
-  accent-color: var(--accent);
+.custom-slider {
+  accent-color: var(--accent, #00d4aa);
 }
 
-.legend-img {
-  max-width: 100%;
-  border-radius: 4px;
+.legend-container {
   background: rgba(255, 255, 255, 0.05);
-  padding: 4px;
+  padding: 8px;
+  border-radius: 4px;
 }
 
-.search-box {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* Transitions */
+.panel-fade-enter-active,
+.panel-fade-leave-active {
+  transition: all 0.25s ease;
+  max-height: 200px;
 }
 
-.search-input {
-  background: var(--bg-app);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 6px 10px;
-  color: var(--text-main);
-  font-size: 0.8rem;
-  width: 100%;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--accent-secondary);
-}
-
-.search-btn {
-  background: var(--accent-secondary);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.search-btn:hover {
-  opacity: 0.85;
+.panel-fade-enter-from,
+.panel-fade-leave-to {
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-10px);
 }
 </style>

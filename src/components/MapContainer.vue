@@ -163,19 +163,21 @@ function syncVectorOverlays(desired) {
   }
 }
 
-// ── 3. Identificação Unificada Multicamadas (Multi-GetFeatureInfo Local) ───────
+// ── 3. Identificação Unificada Multicamadas (Corrigida) ───────
 async function handleMapClick(e) {
   const zoom = map.getZoom()
-  const layerPoint = map.project(e.latlng, zoom).divideBy(256).floor()
+  const point = map.project(e.latlng, zoom)
+  const layerPoint = point.divideBy(256).floor()
   
-  // 🌟 CONDICIONAL DE AMBIENTE PARA O CLIQUE:
-  // Segue rigorosamente la mesma regra de inversão adotada na renderização.
+  // Coordenadas locais dentro do tile (0-4096) para precisão no clique
+  const clickX = (point.x % 256) * (4096 / 256)
+  const clickY = (point.y % 256) * (4096 / 256)
+  
   const targetY = import.meta.env.DEV
     ? layerPoint.y
     : Math.pow(2, zoom) - 1 - layerPoint.y
 
   const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key])
-  
   if (layersToQuery.length === 0) return
 
   const popupPromises = layersToQuery.map(async (overlay) => {
@@ -183,11 +185,30 @@ async function handleMapClick(e) {
     const cacheKey = `${zoom}-${layerPoint.x}-${targetY}-${sourceLayer}`
 
     const parseProperties = (buffer) => {
-      const pbf = new Pbf(new Uint8Array(buffer))
-      const vt = new VectorTile(pbf)
-      const layer = vt.layers[sourceLayer]
-      if (layer && layer.length > 0) {
-        return { label, properties: layer.feature(0).properties }
+      try {
+        // Validação básica: se o buffer for muito pequeno ou começar com '<' (HTML), ignore
+        const uint8 = new Uint8Array(buffer)
+        if (uint8.length < 10 || uint8[0] === 0x3C) return null 
+
+        const pbf = new Pbf(uint8)
+        const vt = new VectorTile(pbf)
+        const layer = vt.layers[sourceLayer]
+        
+        if (layer && layer.length > 0) {
+          // Itera pelas feições para ver qual delas contém o ponto do clique
+          for (let i = 0; i < layer.length; i++) {
+            const feature = layer.feature(i)
+            const bbox = feature.bbox() // [x1, y1, x2, y2]
+            
+            // Verifica se o clique está dentro do bounding box da geometria
+            if (clickX >= bbox[0] && clickX <= bbox[2] && 
+                clickY >= bbox[1] && clickY <= bbox[3]) {
+              return { label, properties: feature.properties }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn(`[MVT Parse Error] Erro ao processar tile para ${label}:`, err.message)
       }
       return null
     }
@@ -204,8 +225,12 @@ async function handleMapClick(e) {
       
       const res = await fetch(tileUrl)
       if (!res.ok) return null
-      const buffer = await res.arrayBuffer()
       
+      // Verifica se o conteúdo é realmente um binário/pbf
+      const contentType = res.headers.get('content-type')
+      if (contentType && contentType.includes('text/html')) return null
+
+      const buffer = await res.arrayBuffer()
       tileDataCache.set(cacheKey, buffer)
       return parseProperties(buffer)
     } catch {
@@ -218,13 +243,16 @@ async function handleMapClick(e) {
 
   if (validLayersData.length > 0) {
     const htmlContent = createPopupContent(validLayersData)
-    
     L.popup({ className: 'popup-dark', maxWidth: 350 })
       .setLatLng(e.latlng)
       .setContent(htmlContent)
       .openOn(map)
+  } else {
+    // Se não houver dados válidos, garante que qualquer popup aberto seja fechado
+    map.closePopup()
   }
 }
+
 
 // ── 4. Controle Suave de Opacidade ───────────────────────────────────────────
 let redrawTimeout = null
