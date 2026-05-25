@@ -22,9 +22,9 @@ let currentTileLayer = null
 const activeOverlays = new Map() 
 
 const paraibaBounds = [
-    [-8.300000000000000, -38.7599999999999980],
-    [-6.0200000000000005, -35.1700000000000017]
-  ]
+  [-8.3, -38.76],
+  [-6.02, -35.17]
+]
 
 // Cache de memória para reuso dos buffers binários PBF
 const tileDataCache = new Map()
@@ -37,7 +37,46 @@ onMounted(async () => {
     return
   }
 
-  map = L.map(mapEl.value).fitBounds(paraibaBounds)
+  map = L.map(mapEl.value, { zoomControl: false }).fitBounds(paraibaBounds)
+
+
+  // Controle de zoom + home unificado
+const ZoomHomeControl = L.Control.extend({
+  onAdd(map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control zoom-home-control')
+
+    // Botão zoom +
+    const zoomIn = L.DomUtil.create('button', 'zoom-btn', container)
+    zoomIn.innerHTML = '<i class="bi bi-plus"></i>'
+    zoomIn.title = 'Aproximar'
+    L.DomEvent.on(zoomIn, 'click', (e) => {
+      L.DomEvent.stopPropagation(e)
+      map.zoomIn()
+    })
+
+    // Botão home
+    const home = L.DomUtil.create('button', 'zoom-btn home-btn', container)
+    home.innerHTML = '<i class="bi bi-fullscreen"></i>'
+    home.title = 'Voltar à visão inicial'
+    L.DomEvent.on(home, 'click', (e) => {
+      L.DomEvent.stopPropagation(e)
+      map.fitBounds(paraibaBounds)
+    })
+
+    // Botão zoom -
+    const zoomOut = L.DomUtil.create('button', 'zoom-btn', container)
+    zoomOut.innerHTML = '<i class="bi bi-dash"></i>'
+    zoomOut.title = 'Afastar'
+    L.DomEvent.on(zoomOut, 'click', (e) => {
+      L.DomEvent.stopPropagation(e)
+      map.zoomOut()
+    })
+
+    return container
+  }
+})
+new ZoomHomeControl({ position: 'topleft' }).addTo(map)
+
   renderTileLayer()
   syncVectorOverlays(mapStore.visibleOverlays)
 
@@ -360,5 +399,50 @@ watch(
   color: #9ca3af;
   padding: 3px 0;
   font-style: italic;
+}
+
+:deep(.zoom-home-control) {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  border: none !important;
+}
+
+:deep(.zoom-btn) {
+  width: 34px;
+  height: 34px;
+  background: #1a1f26;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: background 0.15s, color 0.15s;
+}
+
+:deep(.zoom-btn:last-child) {
+  border-bottom: none;
+}
+
+:deep(.zoom-btn:hover) {
+  background: #232932;
+  color: #00d4aa;
+}
+
+:deep(.home-btn) {
+  font-size: 0.9rem;
+  color: #64748b;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:deep(.home-btn:hover) {
+  color: #00d4aa;
 }
 </style>
