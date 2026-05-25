@@ -21,6 +21,11 @@ let map = null
 let currentTileLayer = null
 const activeOverlays = new Map() 
 
+const paraibaBounds = [
+    [-8.300000000000000, -38.7599999999999980],
+    [-6.0200000000000005, -35.1700000000000017]
+  ]
+
 // Cache de memória para reuso dos buffers binários PBF
 const tileDataCache = new Map()
 
@@ -31,11 +36,6 @@ onMounted(async () => {
     console.warn('⚠️ Contêiner do mapa não foi encontrado no DOM ainda.')
     return
   }
-
-  const paraibaBounds = [
-    [-8.300000000000000, -38.7599999999999980],
-    [-6.0200000000000005, -35.1700000000000017]
-  ]
 
   map = L.map(mapEl.value).fitBounds(paraibaBounds)
   renderTileLayer()
@@ -142,7 +142,8 @@ function syncVectorOverlays(desired) {
       const layer = new CustomMVTLayer({
         minZoom: 2,
         maxZoom: 14,
-        zIndex: zIndex
+        zIndex: zIndex,
+        bounds: paraibaBounds
       }).addTo(map)
 
       activeOverlays.set(key, layer)
