@@ -105,6 +105,7 @@ function syncVectorOverlays(desired) {
 
               const pbf = new Pbf(new Uint8Array(buffer))
               const vt = new VectorTile(pbf)
+              console.log('Camadas no PBF:', Object.keys(vt.layers))
               const layer = vt.layers[sourceLayer]
               
               if (!layer) {
