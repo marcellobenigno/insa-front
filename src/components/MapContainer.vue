@@ -64,9 +64,9 @@ function renderTileLayer() {
   currentTileLayer = L.tileLayer(url, { ...leafletOptions, opacity, zIndex: 1 }).addTo(map)
 }
 
-// ── 2. Sincronização Dinâmica das Camadas Vetoriais (MVT Nativo) ───────────────
+// ── 2. Sincronização Dinâmica das Camadas Vetoriais (MVT Nativo - XYZ Direto) ──
 watch(
-  () => mapStore.visibleOverlays,
+  (() => mapStore.visibleOverlays),
   (desired) => { if (map) syncVectorOverlays(desired) },
   { deep: true },
 )
@@ -85,18 +85,11 @@ function syncVectorOverlays(desired) {
           tile.height = size.y
           const ctx = tile.getContext('2d')
 
-          // 🌟 EIXO Y CONDICIONAL: 
-          // Se estiver em DEV, usa o coords.y direto (XYZ local).
-          // Se estiver em PROD, aplica a inversão para o padrão do servidor (TMS).
-          const targetY = import.meta.env.DEV 
-            ? coords.y 
-            : Math.pow(2, coords.z) - 1 - coords.y
-
-          // Monta a URL dinâmica injetando o Y correto para o ambiente atual
+          // Monta a URL dinâmica injetando as coordenadas do bloco (XYZ Direto)
           const tileUrl = url
             .replace('{z}', coords.z)
             .replace('{x}', coords.x)
-            .replace('{y}', targetY)
+            .replace('{y}', coords.y)
 
           fetch(tileUrl)
             .then(res => {
@@ -104,26 +97,39 @@ function syncVectorOverlays(desired) {
               return res.arrayBuffer()
             })
             .then(buffer => {
-              // O cache interno precisa seguir a mesma lógica do targetY para o clique funcionar depois
-              const cacheKey = `${coords.z}-${coords.x}-${targetY}-${sourceLayer}`
+              const cacheKey = `${coords.z}-${coords.x}-${coords.y}-${sourceLayer}`
               tileDataCache.set(cacheKey, buffer)
 
               const pbf = new Pbf(new Uint8Array(buffer))
               const vt = new VectorTile(pbf)
               const layer = vt.layers[sourceLayer]
               
+              // 🔴 Alerta de inconsistência de nomes:
               if (!layer) {
-                console.error(`❌ [MVT Error] A camada interna "${sourceLayer}" não existe dentro do arquivo PBF.`, Object.keys(vt.layers))
+                console.error(`❌ [MVT Error] A camada interna "${sourceLayer}" não existe dentro do arquivo PBF carregado de: ${tileUrl}. Camadas disponíveis no arquivo:`, Object.keys(vt.layers))
                 done(null, tile)
                 return
               }
 
               const currentOpacity = mapStore.layerOpacity[key] ?? 1
 
+              // 🔴 DEBUG LOG: Mostra as colunas do seu GPKG na tela para o primeiro bloco renderizado
+              if (layer.length > 0) {
+                if (!window._debuggedLayers) window._debuggedLayers = new Set()
+                if (!window._debuggedLayers.has(sourceLayer)) {
+                  window._debuggedLayers.add(sourceLayer)
+                  console.log(`🎯 [WebGIS Debug] Camada visualizada com sucesso: "${sourceLayer}"`)
+                  console.log(`📊 Atributos reais decodificados dessa camada:`, layer.feature(0).properties)
+                }
+              }
+
+              // Loop de renderização do Canvas
               for (let i = 0; i < layer.length; i++) {
                 const feature = layer.feature(i)
                 const geom = feature.loadGeometry()
                 const props = feature.properties
+                
+                // Descobre a cor temática baseada no gpkgStyles.json
                 const color = getThematicColor(sourceLayer, props)
 
                 drawGeometryToContext(ctx, geom, feature.type, size)
@@ -155,6 +161,7 @@ function syncVectorOverlays(desired) {
       map.removeLayer(activeOverlays.get(key))
       activeOverlays.delete(key)
       
+      // Limpa registros antigos de cache daquela camada para liberar memória
       for (const cacheKey of tileDataCache.keys()) {
         if (cacheKey.endsWith(`-${sourceLayer}`)) {
           tileDataCache.delete(cacheKey)
@@ -169,13 +176,6 @@ async function handleMapClick(e) {
   const zoom = map.getZoom()
   const layerPoint = map.project(e.latlng, zoom).divideBy(256).floor()
   
-  // 🌟 EIXO Y CONDICIONAL PARA O CLIQUE:
-  // Em DEV, mantemos layerPoint.y nativo (XYZ padrão).
-  // Em PROD, invertemos para casar com a estrutura TMS do servidor remoto.
-  const targetY = import.meta.env.DEV
-    ? layerPoint.y
-    : Math.pow(2, zoom) - 1 - layerPoint.y
-
   const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key])
   
   if (layersToQuery.length === 0) return
@@ -183,10 +183,9 @@ async function handleMapClick(e) {
   const popupPromises = layersToQuery.map(async (overlay) => {
     const { key, url, sourceLayer, label } = overlay
     
-    // 🌟 Usamos targetY para garantir o alinhamento com a chave gravada pelo GridLayer
-    const cacheKey = `${zoom}-${layerPoint.x}-${targetY}-${sourceLayer}`
+    // 🌟 PADRÃO DIRETO (XYZ): Usa layerPoint.y puro para ler e gravar no cache de memória
+    const cacheKey = `${zoom}-${layerPoint.x}-${layerPoint.y}-${sourceLayer}`
 
-    // Helper interno para extrair propriedades do primeiro feature encontrado no quadrante
     const parseProperties = (buffer) => {
       const pbf = new Pbf(new Uint8Array(buffer))
       const vt = new VectorTile(pbf)
@@ -197,24 +196,21 @@ async function handleMapClick(e) {
       return null
     }
 
-    // Se estiver no cache, resolve imediatamente
     if (tileDataCache.has(cacheKey)) {
       return parseProperties(tileDataCache.get(cacheKey))
     }
 
     // Fallback remoto caso o quadrante ainda não tenha cacheado (ex: transição rápida de zoom)
     try {
-      // 🌟 Injeta targetY na montagem da URL remota se for buscar do servidor externo
       const tileUrl = url
         .replace('{z}', zoom)
         .replace('{x}', layerPoint.x)
-        .replace('{y}', targetY)
+        .replace('{y}', layerPoint.y)
       
       const res = await fetch(tileUrl)
       if (!res.ok) return null
       const buffer = await res.arrayBuffer()
       
-      // Atualiza o cache para cliques futuros no mesmo lugar usando a chave padronizada
       tileDataCache.set(cacheKey, buffer)
       return parseProperties(buffer)
     } catch {
