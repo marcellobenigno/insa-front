@@ -85,12 +85,8 @@ function syncVectorOverlays(desired) {
           tile.height = size.y
           const ctx = tile.getContext('2d')
 
-          // 🌟 CONDICIONAL DE AMBIENTE PARA A URL:
-          // Se for DEV (local), mantém coords.y direto.
-          // Se for PROD (Tomcat remoto), calcula o Y invertido do padrão TMS.
-          const targetY = import.meta.env.DEV 
-            ? coords.y 
-            : Math.pow(2, coords.z) - 1 - coords.y
+          const targetY = coords.y
+
 
           const tileUrl = url
             .replace('{z}', coords.z)
@@ -173,9 +169,7 @@ async function handleMapClick(e) {
   const clickX = (point.x % 256) * (4096 / 256)
   const clickY = (point.y % 256) * (4096 / 256)
   
-  const targetY = import.meta.env.DEV
-    ? layerPoint.y
-    : Math.pow(2, zoom) - 1 - layerPoint.y
+  const targetY = layerPoint.y
 
   const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key])
   if (layersToQuery.length === 0) return
