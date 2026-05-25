@@ -64,7 +64,7 @@ function renderTileLayer() {
   currentTileLayer = L.tileLayer(url, { ...leafletOptions, opacity, zIndex: 1 }).addTo(map)
 }
 
-// ── 2. Sincronização Dinâmica das Camadas Vetoriais (MVT Nativo - XYZ Direto) ──
+// ── 2. Sincronização Dinâmica das Camadas Vetoriais (MVT Híbrido: XYZ local / TMS prod) ──
 watch(
   (() => mapStore.visibleOverlays),
   (desired) => { if (map) syncVectorOverlays(desired) },
@@ -85,11 +85,17 @@ function syncVectorOverlays(desired) {
           tile.height = size.y
           const ctx = tile.getContext('2d')
 
-          // Monta a URL dinâmica injetando as coordenadas do bloco (XYZ Direto)
+          // 🌟 CONDICIONAL DE AMBIENTE PARA A URL:
+          // Se for DEV (local), mantém coords.y direto.
+          // Se for PROD (Tomcat remoto), calcula o Y invertido do padrão TMS.
+          const targetY = import.meta.env.DEV 
+            ? coords.y 
+            : Math.pow(2, coords.z) - 1 - coords.y
+
           const tileUrl = url
             .replace('{z}', coords.z)
             .replace('{x}', coords.x)
-            .replace('{y}', coords.y)
+            .replace('{y}', targetY)
 
           fetch(tileUrl)
             .then(res => {
@@ -97,14 +103,14 @@ function syncVectorOverlays(desired) {
               return res.arrayBuffer()
             })
             .then(buffer => {
-              const cacheKey = `${coords.z}-${coords.x}-${coords.y}-${sourceLayer}`
+              // Cache amarrado ao targetY do ambiente para consistência no clique posterior
+              const cacheKey = `${coords.z}-${coords.x}-${targetY}-${sourceLayer}`
               tileDataCache.set(cacheKey, buffer)
 
               const pbf = new Pbf(new Uint8Array(buffer))
               const vt = new VectorTile(pbf)
               const layer = vt.layers[sourceLayer]
               
-              // 🔴 Alerta de inconsistência de nomes:
               if (!layer) {
                 console.error(`❌ [MVT Error] A camada interna "${sourceLayer}" não existe dentro do arquivo PBF carregado de: ${tileUrl}. Camadas disponíveis no arquivo:`, Object.keys(vt.layers))
                 done(null, tile)
@@ -113,23 +119,10 @@ function syncVectorOverlays(desired) {
 
               const currentOpacity = mapStore.layerOpacity[key] ?? 1
 
-              // 🔴 DEBUG LOG: Mostra as colunas do seu GPKG na tela para o primeiro bloco renderizado
-              if (layer.length > 0) {
-                if (!window._debuggedLayers) window._debuggedLayers = new Set()
-                if (!window._debuggedLayers.has(sourceLayer)) {
-                  window._debuggedLayers.add(sourceLayer)
-                  console.log(`🎯 [WebGIS Debug] Camada visualizada com sucesso: "${sourceLayer}"`)
-                  console.log(`📊 Atributos reais decodificados dessa camada:`, layer.feature(0).properties)
-                }
-              }
-
-              // Loop de renderização do Canvas
               for (let i = 0; i < layer.length; i++) {
                 const feature = layer.feature(i)
                 const geom = feature.loadGeometry()
                 const props = feature.properties
-                
-                // Descobre a cor temática baseada no gpkgStyles.json
                 const color = getThematicColor(sourceLayer, props)
 
                 drawGeometryToContext(ctx, geom, feature.type, size)
@@ -161,7 +154,6 @@ function syncVectorOverlays(desired) {
       map.removeLayer(activeOverlays.get(key))
       activeOverlays.delete(key)
       
-      // Limpa registros antigos de cache daquela camada para liberar memória
       for (const cacheKey of tileDataCache.keys()) {
         if (cacheKey.endsWith(`-${sourceLayer}`)) {
           tileDataCache.delete(cacheKey)
@@ -176,15 +168,19 @@ async function handleMapClick(e) {
   const zoom = map.getZoom()
   const layerPoint = map.project(e.latlng, zoom).divideBy(256).floor()
   
+  // 🌟 CONDICIONAL DE AMBIENTE PARA O CLIQUE:
+  // Segue rigorosamente la mesma regra de inversão adotada na renderização.
+  const targetY = import.meta.env.DEV
+    ? layerPoint.y
+    : Math.pow(2, zoom) - 1 - layerPoint.y
+
   const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key])
   
   if (layersToQuery.length === 0) return
 
   const popupPromises = layersToQuery.map(async (overlay) => {
     const { key, url, sourceLayer, label } = overlay
-    
-    // 🌟 PADRÃO DIRETO (XYZ): Usa layerPoint.y puro para ler e gravar no cache de memória
-    const cacheKey = `${zoom}-${layerPoint.x}-${layerPoint.y}-${sourceLayer}`
+    const cacheKey = `${zoom}-${layerPoint.x}-${targetY}-${sourceLayer}`
 
     const parseProperties = (buffer) => {
       const pbf = new Pbf(new Uint8Array(buffer))
@@ -200,12 +196,11 @@ async function handleMapClick(e) {
       return parseProperties(tileDataCache.get(cacheKey))
     }
 
-    // Fallback remoto caso o quadrante ainda não tenha cacheado (ex: transição rápida de zoom)
     try {
       const tileUrl = url
         .replace('{z}', zoom)
         .replace('{x}', layerPoint.x)
-        .replace('{y}', layerPoint.y)
+        .replace('{y}', targetY)
       
       const res = await fetch(tileUrl)
       if (!res.ok) return null
@@ -218,7 +213,6 @@ async function handleMapClick(e) {
     }
   })
 
-  // Aguarda a resolução dos buffers de todas as camadas ativas simultaneamente
   const results = await Promise.all(popupPromises)
   const validLayersData = results.filter(item => item !== null)
 
@@ -257,36 +251,28 @@ watch(
   height: 100%;
 }
 
-/* ── Customização Estilizada e Compacta dos Popups ── */
-
-/* Container Principal do Popup (Balaozinho) */
 :deep(.popup-dark .leaflet-popup-content-wrapper) {
   background: #111827;
   color: #f3f4f6;
   border-radius: 6px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   border: 1px solid #374151;
-  
-  /* Mantém a janela compacta e elegante */
   max-width: 250px !important; 
   max-height: 280px;
-  overflow-y: auto; /* Scroll vertical macio se acumular muitas camadas */
+  overflow-y: auto;
 }
 
-/* Ajuste do container interno de margens nativas do Leaflet */
 :deep(.popup-dark .leaflet-popup-content) {
   margin: 10px 12px;
   line-height: 1.4;
 }
 
-/* A pequena seta na parte inferior do popup */
 :deep(.popup-dark .leaflet-popup-tip) {
   background: #111827;
   border: 1px solid #374151;
   box-shadow: none;
 }
 
-/* Botão de Fechar do Popup (X) */
 :deep(.popup-dark .leaflet-popup-close-button) {
   color: #9ca3af !important;
   padding: 6px 4px 0 0 !important;
@@ -297,67 +283,57 @@ watch(
   background: transparent !important;
 }
 
-/* ── Elementos de Dados Estruturados (gfi-section) ── */
-
-/* Bloco isolador de cada camada ativa clicada */
 :deep(.gfi-section) {
-  border-bottom: 1px dashed #374151; /* Linha tracejada discreta substituindo o antigo <hr> */
+  border-bottom: 1px dashed #374151;
   padding-bottom: 8px;
   margin-bottom: 8px;
 }
 
-/* Remove a linha tracejada e os recuos da última camada da lista */
 :deep(.gfi-section:last-of-type) {
   border-bottom: none;
   padding-bottom: 0;
   margin-bottom: 0;
 }
 
-/* Título de Cada Seção de Camada */
 :deep(.gfi-title) {
   font-weight: 700;
   font-size: 0.75rem;
-  color: #38bdf8; /* Azul claro destacado */
+  color: #38bdf8;
   margin-top: 2px;
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-/* Tabela de Atributos (Chave -> Valor) */
 :deep(.gfi-table) {
   width: 100%;
   font-size: 0.72rem;
   border-collapse: collapse;
 }
 
-/* Efeito Zebrado sutil nas linhas de atributos */
 :deep(.gfi-table tr:nth-child(even)) {
   background: rgba(255, 255, 255, 0.03);
 }
 
-/* Coluna da Esquerda (Nome do Atributo) */
 :deep(.gfi-key) {
   font-weight: 600;
-  color: #34d399; /* Verde esmeralda */
+  color: #34d399;
   padding: 3px 6px 3px 0;
   vertical-align: top;
   text-transform: capitalize;
-  width: 45%; /* Divisão limpa da janelinha */
+  width: 45%;
 }
 
-/* Coluna da Direita (Valor Real) */
 :deep(.gfi-val) {
   color: #e5e7eb;
   padding: 3px 0;
   vertical-align: top;
-  word-break: break-word; /* Quebra o texto se o valor for muito extenso */
+  word-break: break-word;
 }
 
-/* Estado de aviso para camadas vazias */
 :deep(.gfi-empty) {
   font-size: 0.72rem;
-  color: #9ca3af; /* Cinza opaco */
+  color: #9ca3af;
   padding: 3px 0;
   font-style: italic;
 }
