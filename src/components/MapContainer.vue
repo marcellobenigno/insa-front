@@ -39,6 +39,16 @@ onMounted(async () => {
 
   map = L.map(mapEl.value, { zoomControl: false }).fitBounds(paraibaBounds)
 
+  // Bounds com padding generoso para o popup não ser cortado nas bordas
+  const maxBounds = L.latLngBounds(
+    L.latLng(-9.5, -40.5),   // sudoeste — margem extra
+    L.latLng(-4.8, -33.5)    // nordeste — margem extra
+  )
+
+  map.setMaxBounds(maxBounds)
+  map.setMinZoom(7)           // impede zoom out demais
+  map.options.maxBoundsViscosity = 1.0  // torna os bounds rígidos (sem elástico)
+
 
   // Controle de zoom + home unificado
 const ZoomHomeControl = L.Control.extend({
