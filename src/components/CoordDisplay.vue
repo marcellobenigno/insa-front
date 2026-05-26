@@ -41,16 +41,12 @@ const dms = computed(() => {
 <template>
   <div class="coord-display" :class="{ 'coord-display--ready': !!dd }" aria-live="off" aria-label="Coordenadas do cursor">
     <template v-if="dd">
-      <!-- DD -->
       <div class="coord-row">
-        <span class="coord-tag">DD</span>
         <span class="coord-val">{{ dd.lat }}</span>
         <span class="coord-sep" aria-hidden="true">|</span>
         <span class="coord-val">{{ dd.lng }}</span>
       </div>
-      <!-- DMS -->
       <div class="coord-row">
-        <span class="coord-tag">DMS</span>
         <span class="coord-val">{{ dms.lat }}</span>
         <span class="coord-sep" aria-hidden="true">|</span>
         <span class="coord-val">{{ dms.lng }}</span>
@@ -71,7 +67,7 @@ const dms = computed(() => {
   bottom: 24px;
   left: 12px;
   z-index: 1000;
-  padding: 7px 12px;
+  padding: 5px 9px;
   border-radius: 8px;
   background: rgba(10, 12, 16, 0.82);
   border: 1px solid var(--border-color);
@@ -95,7 +91,7 @@ const dms = computed(() => {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   color: var(--text-main);
   white-space: nowrap;
@@ -104,22 +100,12 @@ const dms = computed(() => {
 .coord-row--hint {
   font-family: 'Inter', sans-serif;
   color: var(--text-dim);
-  font-size: 0.72rem;
-}
-
-.coord-tag {
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  width: 28px;
-  flex-shrink: 0;
+  font-size: 0.66rem;
 }
 
 .coord-val {
   color: var(--text-main);
-  min-width: 100px;
+  min-width: 90px;
 }
 
 .coord-sep {
