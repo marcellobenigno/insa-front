@@ -5,7 +5,6 @@ Aplicação web de mapeamento GIS desenvolvida com Vue 3 + Vite. Exibe camadas v
 ## Pré-requisitos
 
 - **Node.js** `^20.19.0` ou `>=22.12.0`
-- **GeoServer** rodando em `http://localhost:8080/geoserver/insa/wms` (necessário para camadas WMS; as camadas base funcionam sem ele)
 
 ## Instalação e execução
 
