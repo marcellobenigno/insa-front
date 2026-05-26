@@ -132,6 +132,7 @@ function visibleCount(categoryKey) {
               :meta="layer.meta"
               :legend="layer.legend ?? null"
               :search-fields="layer.searchFields ?? []"
+              :field-types="layer.fieldTypes ?? {}"
               :collapsed="isCollapsed"
             />
           </div>

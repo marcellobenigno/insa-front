@@ -10,6 +10,7 @@ const props = defineProps({
   meta:         { type: String,  default: '' },
   legend:       { type: String,  default: null },
   searchFields: { type: Array,   default: () => [] },
+  fieldTypes:   { type: Object,  default: () => ({}) },
   collapsed:    { type: Boolean, default: false },
 })
 
@@ -25,15 +26,27 @@ const isVisible = computed(() =>
 // Reatividade da opacidade
 const opacity = computed(() => store.layerOpacity[props.layerKey] ?? 1)
 
-const activePanel = ref(null)
-const searchQuery  = ref('')
-const selectedField = ref(props.searchFields[0] ?? '')
+const activePanel   = ref(null)
+const searchQuery   = ref('')
+const searchOperator = ref('=')
+const selectedField  = ref(props.searchFields[0] ?? '')
+
+// Tipo do campo selecionado (number | string)
+const isNumericField = computed(() =>
+  props.fieldTypes?.[selectedField.value] === 'number'
+)
+
+// Filtro ativo no store para esta camada
+const activeFilter = computed(() => store.layerSearchFilters?.[props.layerKey] ?? null)
 
 // Fecha painéis se a sidebar colapsar
 watch(
   () => props.collapsed,
   (val) => { if (val) activePanel.value = null },
 )
+
+// Reseta operador ao trocar campo
+watch(selectedField, () => { searchOperator.value = '=' })
 
 function toggleVisibility() {
   if (props.type === 'base') store.setBaseLayer(props.layerKey)
@@ -46,6 +59,23 @@ function togglePanel(name) {
 
 function onOpacityInput(e) {
   store.setLayerOpacity(props.layerKey, Number(e.target.value) / 100)
+}
+
+// ── Busca ─────────────────────────────────────────────────────────────────────
+
+function executeSearch() {
+  if (!searchQuery.value.trim()) return
+  store.setSearchFilter(props.layerKey, {
+    field:    selectedField.value,
+    operator: isNumericField.value ? searchOperator.value : '=',
+    value:    searchQuery.value.trim(),
+  })
+}
+
+function clearSearch() {
+  searchQuery.value    = ''
+  searchOperator.value = '='
+  store.clearSearchFilter(props.layerKey)
 }
 
 // ── Legenda dinâmica via styles.json ──────────────────────────────────────────
@@ -205,8 +235,29 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
         <!-- Painel de Busca -->
         <div v-if="activePanel === 'search'" class="panel-content">
-          <label class="panel-label mb-2">Busca Avançada</label>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="panel-label">Busca na camada</label>
+            <button
+              v-if="activeFilter"
+              class="btn-clear-search"
+              title="Limpar filtro"
+              @click="clearSearch"
+            >
+              <i class="bi bi-x-circle-fill" /> Limpar
+            </button>
+          </div>
+
+          <!-- Indicador de filtro ativo -->
+          <div v-if="activeFilter" class="filter-badge mb-2">
+            <i class="bi bi-funnel-fill" />
+            {{ activeFilter.field }}
+            <template v-if="isNumericField"> {{ activeFilter.operator }}</template>
+            <template v-else> contém</template>
+            <strong>{{ activeFilter.value }}</strong>
+          </div>
+
           <div class="search-form">
+            <!-- Campo -->
             <select
               v-if="searchFields.length > 1"
               v-model="selectedField"
@@ -214,14 +265,28 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
             >
               <option v-for="f in searchFields" :key="f" :value="f">{{ f }}</option>
             </select>
+
+            <!-- Operador (só numérico) + Valor -->
             <div class="input-group input-group-sm">
+              <select
+                v-if="isNumericField"
+                v-model="searchOperator"
+                class="form-select form-select-sm operator-select bg-dark text-light border-secondary"
+              >
+                <option value="=">=</option>
+                <option value=">">&gt;</option>
+                <option value=">=">&gt;=</option>
+                <option value="<">&lt;</option>
+                <option value="<=">&lt;=</option>
+              </select>
               <input
                 v-model="searchQuery"
-                type="text"
+                :type="isNumericField ? 'number' : 'text'"
                 class="form-control bg-dark text-light border-secondary"
-                :placeholder="`Buscar em ${selectedField}...`"
+                :placeholder="isNumericField ? 'Valor numérico...' : `Buscar em ${selectedField}...`"
+                @keyup.enter="executeSearch"
               />
-              <button class="btn btn-primary" type="button">
+              <button class="btn btn-primary" type="button" @click="executeSearch">
                 <i class="bi bi-search" />
               </button>
             </div>
@@ -400,6 +465,49 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   padding: 8px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Busca ───────────────────────────────────────────────────────────────────── */
+.operator-select {
+  flex: 0 0 60px;
+  min-width: 60px;
+  padding: 0 4px;
+  text-align: center;
+}
+
+.filter-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  font-size: 0.75rem;
+  color: #fbbf24;
+}
+
+.filter-badge strong {
+  color: #fde68a;
+}
+
+.btn-clear-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: none;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.btn-clear-search:hover {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
 }
 
 /* ── Transição de painel ─────────────────────────────────────────────────────── */

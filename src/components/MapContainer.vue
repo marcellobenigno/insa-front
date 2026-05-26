@@ -11,7 +11,7 @@ import { VectorTile } from 'vector-tile'
 import Pbf from 'pbf'
 
 // Utilitários isolados
-import { getThematicColor, drawGeometryToContext, parseColor } from '@/utils/mapRenderer'
+import { getThematicColor, drawGeometryToContext, parseColor, matchesFilter } from '@/utils/mapRenderer'
 import { createPopupContent } from '@/utils/mapPopup'
 
 const mapStore = useMapStore()
@@ -161,22 +161,47 @@ function syncVectorOverlays(desired) {
         return
       }
       const currentOpacity = mapStore.layerOpacity[key] ?? 1
+      const activeFilter   = mapStore.layerSearchFilters?.[key] ?? null
       for (let i = 0; i < layer.length; i++) {
         const feature = layer.feature(i)
         const geom = feature.loadGeometry()
         const props = feature.properties
         const rawColor = getThematicColor(sourceLayer, props)
         const { strokeOnly, color } = parseColor(rawColor)
+        const isMatch = !activeFilter || matchesFilter(props, activeFilter)
+
         drawGeometryToContext(ctx, geom, feature.type, size)
+
         if (strokeOnly) {
-          ctx.strokeStyle = color
-          ctx.lineWidth = 1.5
-          ctx.globalAlpha = 0.9 * currentOpacity
+          // Camada de contorno (ex: municípios)
+          if (activeFilter && !isMatch) {
+            ctx.strokeStyle = '#6b7280'
+            ctx.lineWidth   = 1
+            ctx.globalAlpha = 0.15 * currentOpacity
+          } else {
+            ctx.strokeStyle = color
+            ctx.lineWidth   = activeFilter && isMatch ? 2.5 : 1.5
+            ctx.globalAlpha = 0.9 * currentOpacity
+          }
           ctx.stroke()
         } else {
-          ctx.fillStyle = color
-          ctx.globalAlpha = 0.8 * currentOpacity
-          ctx.fill()
+          // Camada de preenchimento
+          if (activeFilter && !isMatch) {
+            ctx.fillStyle   = '#6b7280'
+            ctx.globalAlpha = 0.12 * currentOpacity
+            ctx.fill()
+          } else {
+            ctx.fillStyle   = color
+            ctx.globalAlpha = 0.8 * currentOpacity
+            ctx.fill()
+            // Borda de destaque amarela nas feições que batem com o filtro
+            if (activeFilter && isMatch) {
+              ctx.strokeStyle = '#fbbf24'
+              ctx.lineWidth   = 2
+              ctx.globalAlpha = currentOpacity
+              ctx.stroke()
+            }
+          }
         }
       }
       done(null, tile)
@@ -305,7 +330,26 @@ async function handleMapClick(e) {
 }
 
 
-// ── 4. Controle Suave de Opacidade ───────────────────────────────────────────
+// ── 4. Redesenho ao mudar filtro de busca ────────────────────────────────────
+watch(
+  () => mapStore.layerSearchFilters,
+  (filters) => {
+    if (!map) return
+    for (const [key, filter] of Object.entries(filters)) {
+      // Redesenha apenas a camada cujo filtro mudou e que está visível
+      if (activeOverlays.has(key)) {
+        activeOverlays.get(key).redraw()
+      }
+      // Se a camada não estiver visível mas tem filtro ativo, ativa-a
+      if (filter && !mapStore.visibleOverlays[key]) {
+        mapStore.toggleOverlay(key)
+      }
+    }
+  },
+  { deep: true },
+)
+
+// ── 5. Controle Suave de Opacidade ───────────────────────────────────────────
 let redrawTimeout = null
 watch(
   () => mapStore.layerOpacity,

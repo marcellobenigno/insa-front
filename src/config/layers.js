@@ -84,10 +84,29 @@ const VECTOR_TILES_URL = import.meta.env.VITE_TILES_URL
 //
 export const OVERLAY_CATEGORIES = {
 
-  // 1. Índices de Qualidade ──────────────────────────────────────────────────
+  // 1. Semiárido PB ──────────────────────────────────────────────────────────
+  semiarido_pb: {
+    label: 'Semiárido PB',
+    color: '#f97316',
+    icon: 'bi-map',
+    layers: {
+      municipios_pb_semiarido: {
+        label: 'Municípios',
+        meta: 'Limites municipais do semiárido paraibano',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'municipios_pb_semiarido',
+        zIndex: 30,
+        active: true,
+        searchFields: ['nm_municip', 'cod_ibge_m', 'slug'],
+        fieldTypes:   { nm_municip: 'string', cod_ibge_m: 'string', slug: 'string' },
+      },
+    },
+  },
+
+  // 2. Índices de Qualidade ──────────────────────────────────────────────────
   indices_qualidade: {
     label: 'Índices de Qualidade',
-    color: '#00d4aa',           // accent verde-água do tema
+    color: '#00d4aa',
     icon: 'bi-graph-up-arrow',
     layers: {
       iqs_sab_pb: {
@@ -97,7 +116,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'iqs_sab_pb',
         zIndex: 10,
         active: true,
-        searchFields: ['iqs_valor', 'status'],
+        searchFields: ['IQS'],
+        fieldTypes:   { IQS: 'number' },
       },
       iqc_sab_pb: {
         label: 'IQC (Capacidade do Solo)',
@@ -106,12 +126,13 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'iqc_sab_pb',
         zIndex: 11,
         active: false,
-        searchFields: ['valor', 'classe'],
+        searchFields: ['IQC_Pes'],
+        fieldTypes:   { IQC_Pes: 'number' },
       },
     },
   },
 
-  // 2. Declividade ───────────────────────────────────────────────────────────
+  // 3. Declividade ───────────────────────────────────────────────────────────
   declividade: {
     label: 'Declividade',
     color: '#f59e0b',
@@ -124,7 +145,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'declividade_sab_pb_original',
         zIndex: 12,
         active: false,
-        searchFields: ['classe'],
+        searchFields: ['DN'],
+        fieldTypes:   { DN: 'number' },
       },
       declividade_sab_pb_pesos: {
         label: 'Declividade (Pesos)',
@@ -133,21 +155,13 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'declividade_sab_pb_pesos',
         zIndex: 13,
         active: false,
-        searchFields: ['peso'],
+        searchFields: ['PesDecl', 'PesosX10Ve'],
+        fieldTypes:   { PesDecl: 'number', PesosX10Ve: 'number' },
       },
-      // declividade_sab_pb: {
-      //   label: 'Declividade (Geral)',
-      //   meta: 'Grade geral de declividade',
-      //   url: VECTOR_TILES_URL,
-      //   sourceLayer: 'declividade_sab_pb',
-      //   zIndex: 14,
-      //   active: false,
-      //   searchFields: ['peso', 'classe'],
-      // },
     },
   },
 
-  // 3. Geologia ──────────────────────────────────────────────────────────────
+  // 4. Geologia ──────────────────────────────────────────────────────────────
   geologia: {
     label: 'Geologia',
     color: '#8b5cf6',
@@ -160,7 +174,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'geologia_sab_pb_original',
         zIndex: 15,
         active: false,
-        searchFields: ['sigla', 'formacao'],
+        searchFields: ['GLO_DS_LIT'],
+        fieldTypes:   { GLO_DS_LIT: 'string' },
       },
       geologia_sab_pb_pesos: {
         label: 'Geologia (Pesos)',
@@ -169,12 +184,13 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'geologia_sab_pb_pesos',
         zIndex: 16,
         active: false,
-        searchFields: ['peso', 'classe'],
+        searchFields: ['GLO_DS_LIT', 'pes_Peso'],
+        fieldTypes:   { GLO_DS_LIT: 'string', pes_Peso: 'number' },
       },
     },
   },
 
-  // 4. Solos ─────────────────────────────────────────────────────────────────
+  // 5. Solos ─────────────────────────────────────────────────────────────────
   solos: {
     label: 'Solos',
     color: '#ec4899',
@@ -187,7 +203,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'solos_tipos_sab_pb_original',
         zIndex: 17,
         active: false,
-        searchFields: ['componente', 'ordem'],
+        searchFields: ['DSC_COMPON'],
+        fieldTypes:   { DSC_COMPON: 'string' },
       },
       solos_tipos_sab_pb_pesos: {
         label: 'Tipos de Solos (Pesos)',
@@ -196,7 +213,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'solos_tipos_sab_pb_pesos',
         zIndex: 18,
         active: false,
-        searchFields: ['peso'],
+        searchFields: ['DSC_COMPON', 'TipSoilPes'],
+        fieldTypes:   { DSC_COMPON: 'string', TipSoilPes: 'number' },
       },
       textura_sab_pb_original: {
         label: 'Textura do Solo (Original)',
@@ -205,7 +223,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'textura_sab_pb_original',
         zIndex: 19,
         active: false,
-        searchFields: ['componente', 'grupamento'],
+        searchFields: ['DSC_TEXTUR'],
+        fieldTypes:   { DSC_TEXTUR: 'string' },
       },
       textura_sab_pb_pesos: {
         label: 'Textura do Solo (Pesos)',
@@ -214,25 +233,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'textura_sab_pb_pesos',
         zIndex: 20,
         active: false,
-        searchFields: ['peso'],
-      },
-    },
-  },
-
-  // 5. Semiárido PB ──────────────────────────────────────────────────────────
-  semiarido_pb: {
-    label: 'Semiárido PB',
-    color: '#f97316',
-    icon: 'bi-map',
-    layers: {
-      municipios_pb_semiarido: {
-        label: 'Municípios',
-        meta: 'Limites municipais do semiárido paraibano',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'municipios_pb_semiarido',
-        zIndex: 30,
-        active: false,
-        searchFields: ['nm_municip', 'cod_ibge_m', 'slug'],
+        searchFields: ['DSC_TEXTUR', 'SoilTextur'],
+        fieldTypes:   { DSC_TEXTUR: 'string', SoilTextur: 'number' },
       },
     },
   },
@@ -250,7 +252,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'eto_sab_pb_original',
         zIndex: 21,
         active: false,
-        searchFields: ['valor', 'classe'],
+        searchFields: ['ETo_Climat'],
+        fieldTypes:   { ETo_Climat: 'number' },
       },
       eto_sab_pb_pesos: {
         label: 'Evapotranspiração (Pesos)',
@@ -259,7 +262,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'eto_sab_pb_pesos',
         zIndex: 22,
         active: false,
-        searchFields: ['peso'],
+        searchFields: ['ETo_Pesos'],
+        fieldTypes:   { ETo_Pesos: 'number' },
       },
       ia_sab_pb_original: {
         label: 'Índice de Aridez (IA)',
@@ -268,7 +272,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'ia_sab_pb_original',
         zIndex: 23,
         active: false,
-        searchFields: ['valor', 'status'],
+        searchFields: ['IA_climat'],
+        fieldTypes:   { IA_climat: 'number' },
       },
       ia_sab_pb_pesos: {
         label: 'Índice de Aridez (Pesos)',
@@ -277,7 +282,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'ia_sab_pb_pesos',
         zIndex: 24,
         active: false,
-        searchFields: ['peso'],
+        searchFields: ['IA_Pesos'],
+        fieldTypes:   { IA_Pesos: 'number' },
       },
       precipitacao_sab_pb_original: {
         label: 'Precipitação Pluviométrica',
@@ -286,7 +292,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'precipitacao_sab_pb_original',
         zIndex: 25,
         active: false,
-        searchFields: ['valor', 'classe'],
+        searchFields: ['Clim_Prec'],
+        fieldTypes:   { Clim_Prec: 'number' },
       },
       precipitacao_sab_pb_pesos: {
         label: 'Precipitação (Pesos)',
@@ -295,7 +302,8 @@ export const OVERLAY_CATEGORIES = {
         sourceLayer: 'precipitacao_sab_pb_pesos',
         zIndex: 26,
         active: false,
-        searchFields: ['peso'],
+        searchFields: ['Pesos_Prec'],
+        fieldTypes:   { Pesos_Prec: 'number' },
       },
     },
   },

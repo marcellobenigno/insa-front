@@ -72,6 +72,38 @@ export function getThematicColor(sourceLayer, featureProps) {
 }
 
 /**
+ * Avalia se as propriedades de uma feição satisfazem um filtro de busca.
+ * Para campos numéricos usa operadores relacionais; para texto usa "contém" (case-insensitive).
+ *
+ * @param {object} featureProps  Propriedades da feição MVT
+ * @param {{ field: string, operator: string, value: string }} filter
+ * @returns {boolean}
+ */
+export function matchesFilter(featureProps, filter) {
+  if (!filter || !filter.value) return true
+  const { field, operator, value } = filter
+  const raw = featureProps?.[field]
+  if (raw === undefined || raw === null) return false
+
+  const numSearch = parseFloat(value)
+  const numFeature = parseFloat(raw)
+
+  if (!isNaN(numSearch) && !isNaN(numFeature)) {
+    switch (operator) {
+      case '=':  return numFeature === numSearch
+      case '>':  return numFeature >   numSearch
+      case '>=': return numFeature >=  numSearch
+      case '<':  return numFeature <   numSearch
+      case '<=': return numFeature <=  numSearch
+      default:   return false
+    }
+  }
+
+  // Texto: busca parcial insensível a maiúsculas
+  return String(raw).toLowerCase().includes(String(value).toLowerCase())
+}
+
+/**
  * Verifica se a cor indica um estilo stroke-only (ex: "stroke:#918e90").
  * Retorna { strokeOnly: true, color: '#918e90' } ou { strokeOnly: false, color }.
  */

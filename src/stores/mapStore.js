@@ -23,6 +23,11 @@ export const useMapStore = defineStore('map', () => {
     ),
   )
 
+  // Filtro de busca ativo por camada: { field, operator, value } | null
+  const layerSearchFilters = ref(
+    Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, null])),
+  )
+
   // ── Getters ─────────────────────────────────────────────────────────────────
 
   const activeBaseLayer = computed(() => BASE_LAYERS[activeBaseLayerKey.value])
@@ -68,16 +73,32 @@ export const useMapStore = defineStore('map', () => {
     }
   }
 
+  // filter: { field: string, operator: string, value: string } | null
+  function setSearchFilter(key, filter) {
+    if (key in layerSearchFilters.value) {
+      layerSearchFilters.value[key] = filter
+    }
+  }
+
+  function clearSearchFilter(key) {
+    if (key in layerSearchFilters.value) {
+      layerSearchFilters.value[key] = null
+    }
+  }
+
   return {
     activeBaseLayerKey,
     activeBaseLayer,
     availableBaseLayers,
     visibleOverlays,
     availableOverlays,
-    availableCategories,  // novo – consumido por AppSidebar se necessário
+    availableCategories,
     layerOpacity,
+    layerSearchFilters,
     setBaseLayer,
     toggleOverlay,
     setLayerOpacity,
+    setSearchFilter,
+    clearSearchFilter,
   }
 })
