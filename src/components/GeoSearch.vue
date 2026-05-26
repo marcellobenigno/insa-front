@@ -66,9 +66,14 @@ async function fetchNominatim(q) {
       signal:  abortCtrl.signal,
       headers: { 'Accept-Language': 'pt-BR,pt;q=0.9' },
     })
-    const data = await res.json()
-    suggestions.value = data
-    if (!data.length) error.value = 'Nenhum resultado encontrado.'
+    const data    = await res.json()
+    const inside  = data.filter(s => inBounds(parseFloat(s.lat), parseFloat(s.lon)))
+    suggestions.value = inside
+    if (!inside.length) {
+      error.value = data.length
+        ? 'Local fora da área de estudo.'
+        : 'Nenhum resultado encontrado.'
+    }
   } catch (e) {
     if (e.name !== 'AbortError') error.value = 'Erro na busca. Verifique sua conexão.'
   } finally {
@@ -108,7 +113,7 @@ function submitDD() {
     return
   }
   if (!inBounds(lat, lng)) {
-    error.value = `Fora da área. Lat ${LAT_MIN}…${LAT_MAX} | Lng ${LNG_MIN}…${LNG_MAX}`
+    error.value = 'Coordenadas fora da área de estudo.'
     return
   }
   error.value = ''
@@ -131,7 +136,7 @@ function submitDMS() {
   const lng = dmsToDD(dmsLngDeg.value, dmsLngMin.value, dmsLngSec.value, 'W')
   if (isNaN(lat) || isNaN(lng)) { error.value = 'Valores inválidos.'; return }
   if (!inBounds(lat, lng)) {
-    error.value = `Fora da área. Lat ${LAT_MIN}…${LAT_MAX} | Lng ${LNG_MIN}…${LNG_MAX}`
+    error.value = 'Coordenadas fora da área de estudo.'
     return
   }
   const fmt = (d, m, s, dir) => `${d}°${m}′${Number(s).toFixed(1)}″${dir}`
