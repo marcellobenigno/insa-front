@@ -10,7 +10,7 @@ const { isCollapsed, toggleSidebar } = useSidebar()
 const MODES = [
   { key: 'address', label: 'Endereço ou local',       icon: 'bi-geo-alt'   },
   { key: 'dd',      label: 'Lat/Long Graus Decimais', icon: 'bi-crosshair' },
-  { key: 'dms',     label: 'Lat/Long G°M′S″ (DMS)',   icon: 'bi-compass'   },
+  { key: 'dms',     label: 'Lat/Long G°M′S″',          icon: 'bi-compass'   },
 ]
 
 const mode        = ref('address')
@@ -31,8 +31,8 @@ const ddLat = ref('')
 const ddLng = ref('')
 
 // ── Modo: DMS ──────────────────────────────────────────────────────────────────
-const dmsLatDeg = ref(''); const dmsLatMin = ref(''); const dmsLatSec = ref(''); const dmsLatDir = ref('S')
-const dmsLngDeg = ref(''); const dmsLngMin = ref(''); const dmsLngSec = ref(''); const dmsLngDir = ref('W')
+const dmsLatDeg = ref(''); const dmsLatMin = ref(''); const dmsLatSec = ref('')
+const dmsLngDeg = ref(''); const dmsLngMin = ref(''); const dmsLngSec = ref('')
 
 // ── Limites da área de interesse (espelha paraibaBounds em MapContainer) ───────
 const LAT_MIN = -8.3,   LAT_MAX = -6.02
@@ -127,8 +127,8 @@ function submitDMS() {
     error.value = 'Preencha todos os campos.'
     return
   }
-  const lat = dmsToDD(dmsLatDeg.value, dmsLatMin.value, dmsLatSec.value, dmsLatDir.value)
-  const lng = dmsToDD(dmsLngDeg.value, dmsLngMin.value, dmsLngSec.value, dmsLngDir.value)
+  const lat = dmsToDD(dmsLatDeg.value, dmsLatMin.value, dmsLatSec.value, 'S')
+  const lng = dmsToDD(dmsLngDeg.value, dmsLngMin.value, dmsLngSec.value, 'W')
   if (isNaN(lat) || isNaN(lng)) { error.value = 'Valores inválidos.'; return }
   if (!inBounds(lat, lng)) {
     error.value = `Fora da área. Lat ${LAT_MIN}…${LAT_MAX} | Lng ${LNG_MIN}…${LNG_MAX}`
@@ -138,8 +138,8 @@ function submitDMS() {
   error.value = ''
   store.setGeoLocation({
     lat, lng,
-    label: `${fmt(dmsLatDeg.value, dmsLatMin.value, dmsLatSec.value, dmsLatDir.value)} `
-         + `${fmt(dmsLngDeg.value, dmsLngMin.value, dmsLngSec.value, dmsLngDir.value)}`,
+    label: `${fmt(dmsLatDeg.value, dmsLatMin.value, dmsLatSec.value, 'S')} `
+         + `${fmt(dmsLngDeg.value, dmsLngMin.value, dmsLngSec.value, 'W')}`,
   })
 }
 
@@ -159,8 +159,8 @@ function resetAll() {
   if (abortCtrl) { abortCtrl.abort(); abortCtrl = null }
   query.value = ''; suggestions.value = []; loading.value = false; error.value = ''
   ddLat.value = ''; ddLng.value = ''
-  dmsLatDeg.value = ''; dmsLatMin.value = ''; dmsLatSec.value = ''; dmsLatDir.value = 'S'
-  dmsLngDeg.value = ''; dmsLngMin.value = ''; dmsLngSec.value = ''; dmsLngDir.value = 'W'
+  dmsLatDeg.value = ''; dmsLatMin.value = ''; dmsLatSec.value = ''
+  dmsLngDeg.value = ''; dmsLngMin.value = ''; dmsLngSec.value = ''
   store.clearGeoLocation()
 }
 
@@ -337,9 +337,9 @@ onUnmounted(() => {
       <div v-if="mode === 'dms'" class="gs-body">
         <div class="gs-coords">
 
-          <!-- Latitude DMS -->
+          <!-- Latitude DMS (sempre S) -->
           <fieldset class="gs-dms-fieldset">
-            <legend class="gs-coord-label">Latitude</legend>
+            <legend class="gs-coord-label">Latitude <span class="gs-dms-fixed-dir">S</span></legend>
             <div class="gs-dms-row">
               <input
                 v-model="dmsLatDeg"
@@ -365,20 +365,12 @@ onUnmounted(() => {
                 aria-label="Segundos de latitude"
                 @keyup.enter="submitDMS"
               /><span class="gs-dms-sep">″</span>
-              <select
-                v-model="dmsLatDir"
-                class="gs-dms-dir"
-                aria-label="Direção de latitude"
-              >
-                <option value="S">S</option>
-                <option value="N">N</option>
-              </select>
             </div>
           </fieldset>
 
-          <!-- Longitude DMS -->
+          <!-- Longitude DMS (sempre W) -->
           <fieldset class="gs-dms-fieldset">
-            <legend class="gs-coord-label">Longitude</legend>
+            <legend class="gs-coord-label">Longitude <span class="gs-dms-fixed-dir">W</span></legend>
             <div class="gs-dms-row">
               <input
                 v-model="dmsLngDeg"
@@ -404,14 +396,6 @@ onUnmounted(() => {
                 aria-label="Segundos de longitude"
                 @keyup.enter="submitDMS"
               /><span class="gs-dms-sep">″</span>
-              <select
-                v-model="dmsLngDir"
-                class="gs-dms-dir"
-                aria-label="Direção de longitude"
-              >
-                <option value="W">W</option>
-                <option value="E">E</option>
-              </select>
             </div>
           </fieldset>
         </div>
@@ -785,19 +769,11 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.gs-dms-dir {
-  padding: 6px 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  color: var(--text-main);
-  font-size: 0.78rem;
-  cursor: pointer;
-  outline: none;
-  flex-shrink: 0;
+.gs-dms-fixed-dir {
+  font-weight: 700;
+  color: var(--accent);
+  margin-left: 4px;
 }
-
-.gs-dms-dir:focus { border-color: var(--accent); }
 
 /* ── Botão submeter ──────────────────────────────────────────────────────────── */
 .gs-submit-btn {
