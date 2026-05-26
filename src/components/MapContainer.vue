@@ -5,6 +5,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
+import { useSidebar } from '@/composables/useSidebar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { VectorTile } from 'vector-tile'
@@ -15,6 +16,7 @@ import { getThematicColor, drawGeometryToContext, parseColor, matchesFilter } fr
 import { createPopupContent } from '@/utils/mapPopup'
 
 const mapStore = useMapStore()
+const { isCollapsed } = useSidebar()
 const mapEl = ref(null)
 
 let map = null
@@ -370,6 +372,15 @@ watch(
   },
   { deep: true },
 )
+
+// ── 6. Redimensionamento ao colapsar/expandir a sidebar ───────────────────────
+// A sidebar anima por --transition-speed (300 ms). Após a transição o Leaflet
+// precisa recalcular o tamanho do contêiner, senão deixa uma faixa cinza.
+watch(isCollapsed, () => {
+  setTimeout(() => {
+    if (map) map.invalidateSize({ animate: false })
+  }, 310) // 10 ms de margem além dos 300 ms da transição CSS
+})
 </script>
 
 <style scoped>

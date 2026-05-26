@@ -11,6 +11,7 @@ const props = defineProps({
   legend:       { type: String,  default: null },
   searchFields: { type: Array,   default: () => [] },
   fieldTypes:   { type: Object,  default: () => ({}) },
+  descFields:   { type: Object,  default: () => ({}) },
   collapsed:    { type: Boolean, default: false },
 })
 
@@ -38,6 +39,11 @@ const isNumericField = computed(() =>
 
 // Filtro ativo no store para esta camada
 const activeFilter = computed(() => store.layerSearchFilters?.[props.layerKey] ?? null)
+
+// Rótulo amigável de um campo — fallback para o próprio nome do campo
+function fieldLabel(fieldName) {
+  return props.descFields?.[fieldName] ?? fieldName
+}
 
 // Fecha painéis se a sidebar colapsar
 watch(
@@ -251,7 +257,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
           <!-- Indicador de filtro ativo -->
           <div v-if="activeFilter" class="filter-badge mb-2">
             <i class="bi bi-funnel-fill" />
-            {{ activeFilter.field }}
+            {{ fieldLabel(activeFilter.field) }}
             <template v-if="isNumericField"> {{ activeFilter.operator }}</template>
             <template v-else> contém</template>
             <strong>{{ activeFilter.value }}</strong>
@@ -264,11 +270,11 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
               v-model="selectedField"
               class="form-select form-select-sm mb-2 bg-dark text-light border-secondary"
             >
-              <option v-for="f in searchFields" :key="f" :value="f">{{ f }}</option>
+              <option v-for="f in searchFields" :key="f" :value="f">{{ fieldLabel(f) }}</option>
             </select>
 
             <!-- Operador (só numérico) + Valor -->
-            <div class="input-group input-group-sm">
+            <div class="search-input-row">
               <select
                 v-if="isNumericField"
                 v-model="searchOperator"
@@ -283,13 +289,11 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
               <input
                 v-model="searchQuery"
                 :type="isNumericField ? 'number' : 'text'"
-                class="form-control bg-dark text-light border-secondary"
-                :placeholder="isNumericField ? 'Valor numérico...' : `Buscar em ${selectedField}...`"
+                class="form-control form-control-sm bg-dark text-light border-secondary"
+                :placeholder="isNumericField ? 'Valor numérico… ↵' : `Buscar em ${fieldLabel(selectedField)}… ↵`"
+                title="Pressione Enter para buscar"
                 @keyup.enter="executeSearch"
               />
-              <button class="btn btn-primary" type="button" @click="executeSearch">
-                <i class="bi bi-search" />
-              </button>
             </div>
           </div>
         </div>
@@ -469,6 +473,17 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 /* ── Busca ───────────────────────────────────────────────────────────────────── */
+.search-input-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.search-input-row .form-control {
+  flex: 1;
+  min-width: 0;
+}
+
 .operator-select {
   flex: 0 0 60px;
   min-width: 60px;
