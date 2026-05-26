@@ -1,6 +1,7 @@
 <script setup>
 import AppSidebar from '@/components/AppSidebar.vue'
 import MapContainer from '@/components/MapContainer.vue'
+import CoordDisplay from '@/components/CoordDisplay.vue'
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import MapContainer from '@/components/MapContainer.vue'
     <AppSidebar />
     <main class="map-area">
       <MapContainer />
+      <CoordDisplay />
     </main>
   </div>
 </template>

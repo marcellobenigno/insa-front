@@ -31,6 +31,9 @@ export const useMapStore = defineStore('map', () => {
   // Localização geoespacial buscada: { lat, lng, label } | null
   const geoLocation = ref(null)
 
+  // Coordenadas do cursor sobre o mapa: { lat, lng } | null
+  const mouseCoords = ref(null)
+
   // ── Getters ─────────────────────────────────────────────────────────────────
 
   const activeBaseLayer = computed(() => BASE_LAYERS[activeBaseLayerKey.value])
@@ -97,6 +100,10 @@ export const useMapStore = defineStore('map', () => {
     geoLocation.value = null
   }
 
+  function setMouseCoords(coords) {
+    mouseCoords.value = coords
+  }
+
   return {
     activeBaseLayerKey,
     activeBaseLayer,
@@ -114,5 +121,7 @@ export const useMapStore = defineStore('map', () => {
     geoLocation,
     setGeoLocation,
     clearGeoLocation,
+    mouseCoords,
+    setMouseCoords,
   }
 })

@@ -97,6 +97,9 @@ new ZoomHomeControl({ position: 'topleft' }).addTo(map)
 
   // ── Ouvinte de Clique Global do Mapa ──
   map.on('click', handleMapClick)
+
+  // ── Coordenadas do cursor em tempo real ──
+  map.on('mousemove', (e) => mapStore.setMouseCoords({ lat: e.latlng.lat, lng: e.latlng.lng }))
 })
 
 onUnmounted(() => {
