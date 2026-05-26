@@ -64,8 +64,8 @@ const dms = computed(() => {
 <style scoped>
 .coord-display {
   position: absolute;
-  bottom: 24px;
-  left: 12px;
+  bottom: 8px;
+  left: 10px;
   z-index: 1000;
   padding: 5px 9px;
   border-radius: 8px;
