@@ -5,18 +5,6 @@ import gpkgStyles from '@/assets/styles.json'
  * Resolve a cor temática com base nas propriedades da feição e nos estilos do QGIS.
  */
 export function getThematicColor(sourceLayer, featureProps) {
-
-  // Blocos de Debug para monitoramento no Console
-  if (featureProps && Object.keys(featureProps).length > 0) {
-    if (!window._debuggedLayers) window._debuggedLayers = new Set();
-    if (!window._debuggedLayers.has(sourceLayer)) {
-      window._debuggedLayers.add(sourceLayer);
-      console.log(`[WebGIS Debug] Camada ativa detetada: "${sourceLayer}"`);
-      console.log(`[WebGIS Debug] Atributos (colunas) reais vindos do MVT para esta camada:`, featureProps);
-      console.log(`[WebGIS Debug] Chaves de estilo disponíveis para ela no JSON:`, Object.keys(gpkgStyles[sourceLayer] || {}));
-    }
-  }
-
   const layerStyle = gpkgStyles[sourceLayer]
   if (!layerStyle) return '#9ca3af'
 

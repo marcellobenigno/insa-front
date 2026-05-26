@@ -144,21 +144,17 @@ function syncVectorOverlays(desired) {
 
           fetch(tileUrl)
   .then(res => {
-    console.log(`[Tile] ${tileUrl} → status: ${res.status}, content-type: ${res.headers.get('content-type')}`)
     if (!res.ok) throw new Error(`Tile PBF não encontrado na URL: ${tileUrl}`)
     return res.arrayBuffer()
   })
   .then(buffer => {
-    console.log(`[Buffer] tamanho: ${buffer.byteLength} bytes`)
     try {
       const cacheKey = `${coords.z}-${coords.x}-${targetY}-${sourceLayer}`
       tileDataCache.set(cacheKey, buffer)
       const pbf = new Pbf(new Uint8Array(buffer))
       const vt = new VectorTile(pbf)
-      console.log('Camadas no PBF:', Object.keys(vt.layers))
       const layer = vt.layers[sourceLayer]
       if (!layer) {
-        console.error(`❌ sourceLayer "${sourceLayer}" não encontrado. Disponíveis:`, Object.keys(vt.layers))
         done(null, tile)
         return
       }
@@ -322,93 +318,6 @@ watch(
 .map-container {
   width: 100%;
   height: 100%;
-}
-
-:deep(.popup-dark .leaflet-popup-content-wrapper) {
-  background: #111827;
-  color: #f3f4f6;
-  border-radius: 6px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  border: 1px solid #374151;
-  max-width: 250px !important; 
-  max-height: 280px;
-  overflow-y: auto;
-}
-
-:deep(.popup-dark .leaflet-popup-content) {
-  margin: 10px 12px;
-  line-height: 1.4;
-}
-
-:deep(.popup-dark .leaflet-popup-tip) {
-  background: #111827;
-  border: 1px solid #374151;
-  box-shadow: none;
-}
-
-:deep(.popup-dark .leaflet-popup-close-button) {
-  color: #9ca3af !important;
-  padding: 6px 4px 0 0 !important;
-}
-
-:deep(.popup-dark .leaflet-popup-close-button:hover) {
-  color: #f3f4f6 !important;
-  background: transparent !important;
-}
-
-:deep(.gfi-section) {
-  border-bottom: 1px dashed #374151;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
-}
-
-:deep(.gfi-section:last-of-type) {
-  border-bottom: none;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-:deep(.gfi-title) {
-  font-weight: 700;
-  font-size: 0.75rem;
-  color: #38bdf8;
-  margin-top: 2px;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-:deep(.gfi-table) {
-  width: 100%;
-  font-size: 0.72rem;
-  border-collapse: collapse;
-}
-
-:deep(.gfi-table tr:nth-child(even)) {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-:deep(.gfi-key) {
-  font-weight: 600;
-  color: #34d399;
-  padding: 3px 6px 3px 0;
-  vertical-align: top;
-  text-transform: capitalize;
-  width: 45%;
-}
-
-:deep(.gfi-val) {
-  color: #e5e7eb;
-  padding: 3px 0;
-  vertical-align: top;
-  word-break: break-word;
-}
-
-:deep(.gfi-empty) {
-  font-size: 0.72rem;
-  color: #9ca3af;
-  padding: 3px 0;
-  font-style: italic;
 }
 
 :deep(.zoom-home-control) {

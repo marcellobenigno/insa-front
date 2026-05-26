@@ -1,40 +1,16 @@
 <script setup>
-import { computed, onMounted } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
-import { OVERLAY_CATEGORIES } from '@/config/layers'
 import { useSidebar } from '@/composables/useSidebar'
 import LayerCard from './LayerCard.vue'
 
 const store = useMapStore()
-const { 
-  isCollapsed, 
-  openBase, 
-  openCategories, 
-  toggleSidebar, 
-  toggleBase, 
-  toggleCategory,
-  initCategories 
-} = useSidebar()
-
-// Inicializa o estado das categorias baseado no config
-onMounted(() => {
-  initCategories(Object.keys(OVERLAY_CATEGORIES))
-})
+const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase, toggleCategory } = useSidebar()
 
 // Conta camadas visíveis por categoria para feedback visual no badge
 function visibleCount(categoryKey) {
-  const layers = OVERLAY_CATEGORIES[categoryKey].layers
-  return Object.keys(layers).filter(k => store.visibleOverlays[k]).length
+  const cat = store.availableCategories.find(c => c.key === categoryKey)
+  return cat ? cat.layers.filter(l => l.visible).length : 0
 }
-
-// Lista de categorias formatada para o v-for
-const categoriesList = computed(() =>
-  Object.entries(OVERLAY_CATEGORIES).map(([key, cat]) => ({
-    key,
-    ...cat,
-    layerList: Object.entries(cat.layers).map(([lKey, l]) => ({ key: lKey, ...l })),
-  }))
-)
 </script>
 
 <template>
@@ -114,7 +90,7 @@ const categoriesList = computed(() =>
 
       <!-- Categorias de Overlay -->
       <section
-        v-for="cat in categoriesList"
+        v-for="cat in store.availableCategories"
         :key="cat.key"
         class="category-block"
         :class="{ 'is-open': openCategories[cat.key] }"
@@ -136,19 +112,19 @@ const categoriesList = computed(() =>
             >
               {{ visibleCount(cat.key) }}
             </span>
-            <span class="text-muted small">{{ cat.layerList.length }}</span>
+            <span class="text-muted small">{{ cat.layers.length }}</span>
             <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': openCategories[cat.key] }" />
           </div>
         </button>
 
-        <div 
-          :id="`cat-content-${cat.key}`" 
-          class="category-body" 
+        <div
+          :id="`cat-content-${cat.key}`"
+          class="category-body"
           v-show="openCategories[cat.key] && !isCollapsed"
         >
           <div class="category-body-inner">
             <LayerCard
-              v-for="layer in cat.layerList"
+              v-for="layer in cat.layers"
               :key="layer.key"
               type="overlay"
               :layer-key="layer.key"
@@ -172,20 +148,6 @@ const categoriesList = computed(() =>
 </template>
 
 <style scoped>
-/* Variáveis de Tema (Devem estar no main.css ou :root) */
-:root {
-  --sidebar-w: 280px;
-  --sidebar-collapsed-w: 64px;
-  --bg-sidebar: #0f172a;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  --accent: #00d4aa;
-  --bg-accent-dim: rgba(0, 212, 170, 0.1);
-  --transition-speed: 0.3s;
-}
-
 #sidebar {
   width: var(--sidebar-w);
   background: var(--bg-sidebar);
