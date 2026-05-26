@@ -11,7 +11,7 @@ import { VectorTile } from 'vector-tile'
 import Pbf from 'pbf'
 
 // Utilitários isolados
-import { getThematicColor, drawGeometryToContext } from '@/utils/mapRenderer'
+import { getThematicColor, drawGeometryToContext, parseColor } from '@/utils/mapRenderer'
 import { createPopupContent } from '@/utils/mapPopup'
 
 const mapStore = useMapStore()
@@ -165,11 +165,19 @@ function syncVectorOverlays(desired) {
         const feature = layer.feature(i)
         const geom = feature.loadGeometry()
         const props = feature.properties
-        const color = getThematicColor(sourceLayer, props)
+        const rawColor = getThematicColor(sourceLayer, props)
+        const { strokeOnly, color } = parseColor(rawColor)
         drawGeometryToContext(ctx, geom, feature.type, size)
-        ctx.fillStyle = color
-        ctx.globalAlpha = 0.8 * currentOpacity
-        ctx.fill()
+        if (strokeOnly) {
+          ctx.strokeStyle = color
+          ctx.lineWidth = 1.5
+          ctx.globalAlpha = 0.9 * currentOpacity
+          ctx.stroke()
+        } else {
+          ctx.fillStyle = color
+          ctx.globalAlpha = 0.8 * currentOpacity
+          ctx.fill()
+        }
       }
       done(null, tile)
     } catch(e) {

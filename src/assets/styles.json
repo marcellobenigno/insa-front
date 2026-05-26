@@ -1,4 +1,7 @@
 {
+  "municipios_pb_semiarido": {
+    "Limite municipal": "stroke:#ffffff"
+  },
   "iqs_sab_pb": {
     "1": "#005400",
     "1.17999999999999994": "#85c343",

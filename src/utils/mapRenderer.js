@@ -67,7 +67,19 @@ export function getThematicColor(sourceLayer, featureProps) {
     }
   }
 
-  return layerStyle["default"] || '#4b5563'
+  // Fallback: "default" explícito → primeiro valor do estilo (símbolo único) → cinza neutro
+  return layerStyle["default"] ?? Object.values(layerStyle)[0] ?? '#4b5563'
+}
+
+/**
+ * Verifica se a cor indica um estilo stroke-only (ex: "stroke:#918e90").
+ * Retorna { strokeOnly: true, color: '#918e90' } ou { strokeOnly: false, color }.
+ */
+export function parseColor(colorValue) {
+  if (typeof colorValue === 'string' && colorValue.startsWith('stroke:')) {
+    return { strokeOnly: true, color: colorValue.slice(7) }
+  }
+  return { strokeOnly: false, color: colorValue }
 }
 
 /**

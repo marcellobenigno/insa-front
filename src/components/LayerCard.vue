@@ -55,6 +55,14 @@ function formatNum(n) {
   return parseFloat(n.toFixed(3)).toString()
 }
 
+/** Parseia cores no formato "stroke:#rrggbb" → { strokeOnly, color } */
+function parseColorEntry(rawColor) {
+  if (typeof rawColor === 'string' && rawColor.startsWith('stroke:')) {
+    return { strokeOnly: true, color: rawColor.slice(7) }
+  }
+  return { strokeOnly: false, color: rawColor }
+}
+
 const legendItems = computed(() => {
   const styleEntry = stylesData[props.layerKey]
   if (!styleEntry) return []
@@ -67,7 +75,7 @@ const legendItems = computed(() => {
 
   if (isNumeric) {
     const sorted = entries
-      .map(([key, color]) => ({ value: parseFloat(key), color }))
+      .map(([key, rawColor]) => ({ value: parseFloat(key), ...parseColorEntry(rawColor) }))
       .sort((a, b) => a.value - b.value)
 
     return sorted.map((item, i) => {
@@ -75,12 +83,15 @@ const legendItems = computed(() => {
       const label = next
         ? `${formatNum(item.value)} – ${formatNum(next.value)}`
         : `≥ ${formatNum(item.value)}`
-      return { label, color: item.color }
+      return { label, color: item.color, strokeOnly: item.strokeOnly }
     })
   }
 
   // Categórico: retorna chave como label
-  return entries.map(([key, color]) => ({ label: key, color }))
+  return entries.map(([key, rawColor]) => ({
+    label: key,
+    ...parseColorEntry(rawColor),
+  }))
 })
 
 const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
@@ -176,7 +187,12 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
               :key="item.label"
               class="legend-item"
             >
-              <span class="legend-swatch" :style="{ background: item.color }" />
+              <span
+                class="legend-swatch"
+                :style="item.strokeOnly
+                  ? { background: 'transparent', border: `3px solid ${item.color}` }
+                  : { background: item.color, border: '1px solid rgba(255,255,255,0.15)' }"
+              />
               <span class="legend-item-label">{{ item.label }}</span>
             </div>
           </div>
@@ -369,7 +385,6 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   width: 22px;
   height: 14px;
   border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .legend-item-label {

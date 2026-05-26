@@ -219,7 +219,25 @@ export const OVERLAY_CATEGORIES = {
     },
   },
 
-  // 5. Agroclimatologia ──────────────────────────────────────────────────────
+  // 5. Semiárido PB ──────────────────────────────────────────────────────────
+  semiarido_pb: {
+    label: 'Semiárido PB',
+    color: '#f97316',
+    icon: 'bi-map',
+    layers: {
+      municipios_pb_semiarido: {
+        label: 'Municípios',
+        meta: 'Limites municipais do semiárido paraibano',
+        url: VECTOR_TILES_URL,
+        sourceLayer: 'municipios_pb_semiarido',
+        zIndex: 30,
+        active: false,
+        searchFields: ['nm_municip', 'cod_ibge_m', 'slug'],
+      },
+    },
+  },
+
+  // 6. Agroclimatologia ──────────────────────────────────────────────────────
   agroclimatologia: {
     label: 'Agroclimatologia',
     color: '#3b82f6',
