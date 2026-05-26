@@ -64,11 +64,12 @@ function onOpacityInput(e) {
 // ── Busca ─────────────────────────────────────────────────────────────────────
 
 function executeSearch() {
-  if (!searchQuery.value.trim()) return
+  const val = String(searchQuery.value ?? '').trim()
+  if (!val) return
   store.setSearchFilter(props.layerKey, {
     field:    selectedField.value,
     operator: isNumericField.value ? searchOperator.value : '=',
-    value:    searchQuery.value.trim(),
+    value:    val,
   })
 }
 

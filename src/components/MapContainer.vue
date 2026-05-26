@@ -163,45 +163,49 @@ function syncVectorOverlays(desired) {
       const currentOpacity = mapStore.layerOpacity[key] ?? 1
       const activeFilter   = mapStore.layerSearchFilters?.[key] ?? null
       for (let i = 0; i < layer.length; i++) {
-        const feature = layer.feature(i)
-        const geom = feature.loadGeometry()
-        const props = feature.properties
-        const rawColor = getThematicColor(sourceLayer, props)
-        const { strokeOnly, color } = parseColor(rawColor)
-        const isMatch = !activeFilter || matchesFilter(props, activeFilter)
+        try {
+          const feature = layer.feature(i)
+          const geom = feature.loadGeometry()
+          const props = feature.properties
+          const rawColor = getThematicColor(sourceLayer, props)
+          const { strokeOnly, color } = parseColor(rawColor)
+          const isMatch = !activeFilter || matchesFilter(props, activeFilter)
 
-        drawGeometryToContext(ctx, geom, feature.type, size)
+          drawGeometryToContext(ctx, geom, feature.type, size)
 
-        if (strokeOnly) {
-          // Camada de contorno (ex: municípios)
-          if (activeFilter && !isMatch) {
-            ctx.strokeStyle = '#6b7280'
-            ctx.lineWidth   = 1
-            ctx.globalAlpha = 0.15 * currentOpacity
+          if (strokeOnly) {
+            // Camada de contorno (ex: municípios)
+            if (activeFilter && !isMatch) {
+              ctx.strokeStyle = '#6b7280'
+              ctx.lineWidth   = 1
+              ctx.globalAlpha = 0.15 * currentOpacity
+            } else {
+              ctx.strokeStyle = color
+              ctx.lineWidth   = activeFilter && isMatch ? 2.5 : 1.5
+              ctx.globalAlpha = 0.9 * currentOpacity
+            }
+            ctx.stroke()
           } else {
-            ctx.strokeStyle = color
-            ctx.lineWidth   = activeFilter && isMatch ? 2.5 : 1.5
-            ctx.globalAlpha = 0.9 * currentOpacity
-          }
-          ctx.stroke()
-        } else {
-          // Camada de preenchimento
-          if (activeFilter && !isMatch) {
-            ctx.fillStyle   = '#6b7280'
-            ctx.globalAlpha = 0.12 * currentOpacity
-            ctx.fill()
-          } else {
-            ctx.fillStyle   = color
-            ctx.globalAlpha = 0.8 * currentOpacity
-            ctx.fill()
-            // Borda de destaque amarela nas feições que batem com o filtro
-            if (activeFilter && isMatch) {
-              ctx.strokeStyle = '#fbbf24'
-              ctx.lineWidth   = 2
-              ctx.globalAlpha = currentOpacity
-              ctx.stroke()
+            // Camada de preenchimento
+            if (activeFilter && !isMatch) {
+              ctx.fillStyle   = '#6b7280'
+              ctx.globalAlpha = 0.12 * currentOpacity
+              ctx.fill()
+            } else {
+              ctx.fillStyle   = color
+              ctx.globalAlpha = 0.8 * currentOpacity
+              ctx.fill()
+              // Borda de destaque amarela nas feições que batem com o filtro
+              if (activeFilter && isMatch) {
+                ctx.strokeStyle = '#fbbf24'
+                ctx.lineWidth   = 2
+                ctx.globalAlpha = currentOpacity
+                ctx.stroke()
+              }
             }
           }
+        } catch {
+          // Ignora feições com tipo de geometria não suportado (ex: type 4)
         }
       }
       done(null, tile)
