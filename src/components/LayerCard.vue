@@ -373,10 +373,11 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 .legend-item-label {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   line-height: 1.3;
   word-break: break-word;
-  color: var(--text-muted);
+  color: var(--text-main);
 }
 
 /* ── Legenda estática (imagem) ───────────────────────────────────────────────── */
