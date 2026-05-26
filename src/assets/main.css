@@ -1,36 +1,60 @@
 @import './base.css';
 
-/* ── Dark theme — CSS tokens usados por todos os componentes ── */
+/* ── Design Tokens ───────────────────────────────────────────────────────────── */
 :root {
+  /* Layout */
   --sidebar-w:           340px;
   --sidebar-collapsed-w: 68px;
-  --transition-speed:    0.3s;
-  --transition-curve:    cubic-bezier(0.4, 0, 0.2, 1);
 
+  /* Transições */
+  --transition-speed:  0.3s;
+  --transition-curve:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Superfícies */
   --bg-app:          #0a0c10;
   --bg-sidebar:      #111418;
   --bg-card:         #1a1f26;
   --bg-card-hover:   #232932;
   --bg-accent-dim:   rgba(0, 212, 170, 0.1);
 
-  --accent:          #00d4aa;
-  --accent-hover:    #00f2c3;
-  --accent-secondary:#3b82f6;
+  /* Cores de destaque */
+  --accent:           #00d4aa;
+  --accent-hover:     #00f2c3;
+  --accent-secondary: #3b82f6;
 
+  /* Tipografia */
   --text-main:       #f1f5f9;
   --text-muted:      #94a3b8;
   --text-dim:        #64748b;
+  --text-on-accent:  #0f172a;   /* texto escuro sobre fundo accent */
 
-  --border-color:    rgba(255, 255, 255, 0.08);
-  --shadow-lg:       0 10px 25px -5px rgba(0,0,0,.4), 0 8px 10px -6px rgba(0,0,0,.4);
+  /* Bordas & sombras */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --shadow-lg:    0 10px 25px -5px rgba(0, 0, 0, 0.4),
+                  0 8px 10px -6px rgba(0, 0, 0, 0.4);
 }
 
-/* ── Leaflet popup — dark theme ──────────────────────────────────────────────
-   Estilos globais: o DOM do popup é criado pelo Leaflet fora da árvore Vue,
-   então scoped CSS não alcança. Todos os seletores usam a classe .popup-dark
-   adicionada via L.popup({ className: 'popup-dark' }).
-   ──────────────────────────────────────────────────────────────────────── */
+/* ── Fundação da aplicação ───────────────────────────────────────────────────── */
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg-app);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+}
 
+/* ── Utilitários globais ─────────────────────────────────────────────────────── */
+.text-accent    { color: var(--accent); }
+.bg-accent-dim  { background: var(--bg-accent-dim); }
+
+/* ── Leaflet popup — dark theme ──────────────────────────────────────────────
+   O DOM do popup é criado pelo Leaflet fora da árvore Vue,
+   então scoped CSS não alcança. Todos os seletores usam .popup-dark
+   adicionada via L.popup({ className: 'popup-dark' }).
+   ──────────────────────────────────────────────────────────────────────────── */
 .popup-dark .leaflet-popup-content-wrapper {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -63,8 +87,7 @@
   background: transparent;
 }
 
-/* ── Conteúdo GFI ─────────────────────────────────────────────────────────── */
-
+/* ── Conteúdo GFI (GetFeatureInfo popup) ─────────────────────────────────────── */
 .gfi-popup {
   font-family: 'Inter', sans-serif;
   min-width: 200px;
@@ -108,17 +131,4 @@
   border: none;
   border-top: 1px solid var(--border-color);
   margin: 0;
-}
-
-/* Garante a cadeia de altura para o Leaflet preencher 100% e sobrescreve
-   o background claro do base.css */
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
-  background: var(--bg-app);
-  color: var(--text-main);
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
 }

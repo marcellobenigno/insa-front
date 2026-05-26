@@ -40,9 +40,11 @@ onMounted(async () => {
   map = L.map(mapEl.value, { zoomControl: false }).fitBounds(paraibaBounds)
 
   // Bounds com padding generoso para o popup não ser cortado nas bordas
+  const BOUNDS_PADDING = 1.5 // graus de margem extra ao redor da área de interesse
+  const [[swLat, swLng], [neLat, neLng]] = paraibaBounds
   const maxBounds = L.latLngBounds(
-    L.latLng(-9.5, -40.5),   // sudoeste — margem extra
-    L.latLng(-4.8, -33.5)    // nordeste — margem extra
+    L.latLng(swLat - BOUNDS_PADDING, swLng - BOUNDS_PADDING),
+    L.latLng(neLat + BOUNDS_PADDING, neLng + BOUNDS_PADDING)
   )
 
   map.setMaxBounds(maxBounds)
@@ -320,28 +322,29 @@ watch(
   height: 100%;
 }
 
+/* ── Controle de zoom customizado ────────────────────────────────────────────── */
 :deep(.zoom-home-control) {
   display: flex;
   flex-direction: column;
+  border: none !important;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  border: none !important;
 }
 
 :deep(.zoom-btn) {
   width: 34px;
   height: 34px;
-  background: #1a1f26;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #94a3b8;
   transition: background 0.15s, color 0.15s;
 }
 
@@ -350,18 +353,18 @@ watch(
 }
 
 :deep(.zoom-btn:hover) {
-  background: #232932;
-  color: #00d4aa;
+  background: var(--bg-card-hover);
+  color: var(--accent);
 }
 
 :deep(.home-btn) {
   font-size: 0.9rem;
-  color: #64748b;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 :deep(.home-btn:hover) {
-  color: #00d4aa;
+  color: var(--accent);
 }
 </style>

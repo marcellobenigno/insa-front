@@ -218,12 +218,13 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 </template>
 
 <style scoped>
+/* ── Card ────────────────────────────────────────────────────────────────────── */
 .layer-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  transition: all 0.2s ease;
   overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .layer-card:hover {
@@ -232,7 +233,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 .layer-card.is-active {
-  border-left: 3px solid var(--accent, #00d4aa);
+  border-left: 3px solid var(--accent);
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -243,32 +244,32 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   gap: 12px;
 }
 
-/* Visibility Toggle */
+/* ── Botão de visibilidade ───────────────────────────────────────────────────── */
 .visibility-toggle {
   width: 32px;
   height: 32px;
-  border-radius: 6px;
   border: none;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.05);
-  color: #64748b;
+  color: var(--text-dim);
   cursor: pointer;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s, color 0.2s;
 }
 
 .visibility-toggle:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #f8fafc;
+  color: var(--text-main);
 }
 
 .visibility-toggle.is-visible {
-  color: var(--accent, #00d4aa);
-  background: rgba(0, 212, 170, 0.1);
+  color: var(--accent);
+  background: var(--bg-accent-dim);
 }
 
-/* Info */
+/* ── Info da camada ──────────────────────────────────────────────────────────── */
 .layer-info {
   flex: 1;
   min-width: 0;
@@ -278,18 +279,18 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   display: block;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #f1f5f9;
   line-height: 1.2;
+  color: var(--text-main);
 }
 
 .layer-meta {
   display: block;
   font-size: 0.7rem;
-  color: #94a3b8;
   margin-top: 2px;
+  color: var(--text-muted);
 }
 
-/* Actions */
+/* ── Ações ───────────────────────────────────────────────────────────────────── */
 .layer-actions {
   display: flex;
   gap: 4px;
@@ -298,31 +299,31 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 .action-btn {
   width: 28px;
   height: 28px;
-  border-radius: 4px;
   border: none;
+  border-radius: 4px;
   background: transparent;
-  color: #94a3b8;
+  color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s, color 0.2s;
 }
 
 .action-btn:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #f8fafc;
+  color: var(--text-main);
 }
 
 .action-btn.is-panel-open {
-  background: #3b82f6;
+  background: var(--accent-secondary);
   color: white;
 }
 
-/* Sub Panels */
+/* ── Painéis expansíveis ─────────────────────────────────────────────────────── */
 .layer-sub-panel {
-  background: rgba(0, 0, 0, 0.2);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .panel-content {
@@ -330,24 +331,18 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 .panel-label {
+  margin: 0;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #64748b;
-  margin: 0;
+  color: var(--text-dim);
 }
 
 .custom-slider {
-  accent-color: var(--accent, #00d4aa);
+  accent-color: var(--accent);
 }
 
-.legend-container {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 8px;
-  border-radius: 4px;
-}
-
-/* Legenda dinâmica */
+/* ── Legenda dinâmica ────────────────────────────────────────────────────────── */
 .legend-list {
   display: flex;
   flex-direction: column;
@@ -356,19 +351,12 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   overflow-y: auto;
   padding-right: 4px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.15) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
 
-.legend-list::-webkit-scrollbar {
-  width: 4px;
-}
-.legend-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-.legend-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 2px;
-}
+.legend-list::-webkit-scrollbar       { width: 4px; }
+.legend-list::-webkit-scrollbar-track  { background: transparent; }
+.legend-list::-webkit-scrollbar-thumb  { background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
 
 .legend-item {
   display: flex;
@@ -386,16 +374,23 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
 .legend-item-label {
   font-size: 0.72rem;
-  color: #cbd5e1;
   line-height: 1.3;
   word-break: break-word;
+  color: var(--text-muted);
 }
 
-/* Transitions */
+/* ── Legenda estática (imagem) ───────────────────────────────────────────────── */
+.legend-container {
+  padding: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Transição de painel ─────────────────────────────────────────────────────── */
 .panel-fade-enter-active,
 .panel-fade-leave-active {
-  transition: all 0.25s ease;
   max-height: 300px;
+  transition: opacity 0.25s ease, max-height 0.25s ease, transform 0.25s ease;
 }
 
 .panel-fade-enter-from,

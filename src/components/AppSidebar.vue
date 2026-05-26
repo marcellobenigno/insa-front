@@ -148,31 +148,32 @@ function visibleCount(categoryKey) {
 </template>
 
 <style scoped>
+/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
 #sidebar {
   width: var(--sidebar-w);
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  transition: width var(--transition-speed) ease-in-out;
   height: 100vh;
   z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+  transition: width var(--transition-speed) ease-in-out;
 }
 
 #sidebar.is-collapsed {
   width: var(--sidebar-collapsed-w);
 }
 
-/* Header */
+/* ── Header ──────────────────────────────────────────────────────────────────── */
 .sidebar-header {
   height: 64px;
   padding: 0 16px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
 }
 
 .brand-wrapper {
@@ -185,18 +186,18 @@ function visibleCount(categoryKey) {
 .brand-logo {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  font-size: 1.2rem;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0f172a;
-  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  color: var(--text-on-accent);
 }
 
 .brand-name {
-  font-weight: 700;
   font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-main);
   white-space: nowrap;
 }
@@ -204,27 +205,31 @@ function visibleCount(categoryKey) {
 .brand-accent { color: var(--accent); }
 
 .toggle-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
   width: 32px;
   height: 32px;
   border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .toggle-btn:hover {
   background: var(--accent);
-  color: #0f172a;
+  color: var(--text-on-accent);
 }
 
-/* Content */
+/* ── Conteúdo ────────────────────────────────────────────────────────────────── */
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
   padding: 12px 0;
 }
+
+.sidebar-content::-webkit-scrollbar       { width: 4px; }
+.sidebar-content::-webkit-scrollbar-track  { background: transparent; }
+.sidebar-content::-webkit-scrollbar-thumb  { background: var(--border-color); border-radius: 10px; }
 
 .section-divider {
   padding: 24px 16px 8px;
@@ -238,19 +243,19 @@ function visibleCount(categoryKey) {
   color: var(--text-dim);
 }
 
-/* Category Blocks */
+/* ── Categorias ──────────────────────────────────────────────────────────────── */
 .category-block {
   margin: 4px 8px;
 }
 
 .category-header {
   width: 100%;
-  display: flex;
-  align-items: center;
   padding: 10px 12px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
   color: var(--text-muted);
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .category-header:hover {
@@ -263,6 +268,7 @@ function visibleCount(categoryKey) {
   height: 8px;
   border-radius: 50%;
   margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .cat-icon {
@@ -287,14 +293,13 @@ function visibleCount(categoryKey) {
 
 .cat-chevron {
   font-size: 0.8rem;
-  transition: transform 0.3s;
+  transition: transform var(--transition-speed);
 }
 
 .cat-chevron.is-rotated {
   transform: rotate(-180deg);
 }
 
-/* Body */
 .category-body {
   padding-top: 4px;
 }
@@ -305,29 +310,22 @@ function visibleCount(categoryKey) {
   gap: 4px;
 }
 
-/* Footer */
+/* ── Footer ──────────────────────────────────────────────────────────────────── */
 .sidebar-footer {
   padding: 16px;
-  border-top: 1px solid var(--border-color);
-  font-size: 0.75rem;
-  color: var(--text-dim);
   display: flex;
   align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border-color);
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* Helpers */
+/* ── Reset de botão ──────────────────────────────────────────────────────────── */
 .btn-reset {
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
 }
-
-.bg-accent-dim { background: var(--bg-accent-dim); }
-.text-accent { color: var(--accent); }
-
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 </style>

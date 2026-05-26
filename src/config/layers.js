@@ -70,14 +70,7 @@ export const BASE_LAYERS = {
 }
 
 // ─── URL BASE DOS VECTOR TILES ────────────────────────────────────────────────
-const VECTOR_TILES_URL = import.meta.env.DEV
-  ? `${import.meta.env.BASE_URL}tiles/insa_layers/{z}/{x}/{y}.pbf`
-  : 'https://geoserver.multisig.com.br/tiles/insa_layers/{z}/{x}/{y}.pbf'
-
-  
-
-console.log('DEV:', import.meta.env.DEV)
-console.log('TILES URL:', VECTOR_TILES_URL)
+const VECTOR_TILES_URL = import.meta.env.VITE_TILES_URL
 
 
 // ─── CAMADAS DE SOBREPOSIÇÃO AGRUPADAS POR CATEGORIA ─────────────────────────
