@@ -28,6 +28,9 @@ export const useMapStore = defineStore('map', () => {
     Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, null])),
   )
 
+  // Localização geoespacial buscada: { lat, lng, label } | null
+  const geoLocation = ref(null)
+
   // ── Getters ─────────────────────────────────────────────────────────────────
 
   const activeBaseLayer = computed(() => BASE_LAYERS[activeBaseLayerKey.value])
@@ -86,6 +89,14 @@ export const useMapStore = defineStore('map', () => {
     }
   }
 
+  function setGeoLocation(payload) {
+    geoLocation.value = payload
+  }
+
+  function clearGeoLocation() {
+    geoLocation.value = null
+  }
+
   return {
     activeBaseLayerKey,
     activeBaseLayer,
@@ -100,5 +111,8 @@ export const useMapStore = defineStore('map', () => {
     setLayerOpacity,
     setSearchFilter,
     clearSearchFilter,
+    geoLocation,
+    setGeoLocation,
+    clearGeoLocation,
   }
 })

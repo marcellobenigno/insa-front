@@ -2,6 +2,7 @@
 import { useMapStore } from '@/stores/mapStore'
 import { useSidebar } from '@/composables/useSidebar'
 import LayerCard from './LayerCard.vue'
+import GeoSearch from './GeoSearch.vue'
 
 const store = useMapStore()
 const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase, toggleCategory } = useSidebar()
@@ -141,10 +142,8 @@ function visibleCount(categoryKey) {
       </section>
     </div>
 
-    <!-- Rodapé -->
-    <footer class="sidebar-footer">
-      <i class="bi bi-hdd-network-fill text-accent" aria-hidden="true" />
-    </footer>
+    <!-- Rodapé / Busca Geoespacial -->
+    <GeoSearch />
   </aside>
 </template>
 
@@ -309,17 +308,6 @@ function visibleCount(categoryKey) {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-/* ── Footer ──────────────────────────────────────────────────────────────────── */
-.sidebar-footer {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  border-top: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.2);
 }
 
 /* ── Reset de botão ──────────────────────────────────────────────────────────── */

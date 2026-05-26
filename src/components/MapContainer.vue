@@ -21,7 +21,8 @@ const mapEl = ref(null)
 
 let map = null
 let currentTileLayer = null
-const activeOverlays = new Map() 
+let searchMarker = null
+const activeOverlays = new Map()
 
 const paraibaBounds = [
   [-8.3, -38.76],
@@ -106,6 +107,17 @@ onUnmounted(() => {
   }
   tileDataCache.clear()
 })
+
+// ── Ícone personalizado para marcador de busca ─────────────────────────────────
+function makeSearchIcon() {
+  return L.divIcon({
+    className: '',
+    html: `<div class="search-marker-icon"><i class="bi bi-geo-alt-fill"></i></div>`,
+    iconSize:   [28, 36],
+    iconAnchor: [14, 36],
+    popupAnchor:[0, -36],
+  })
+}
 
 // ── 1. Gerenciamento do Mapa de Fundo ──────────────────────────────────────────
 watch(() => mapStore.activeBaseLayer, renderTileLayer)
@@ -381,6 +393,28 @@ watch(isCollapsed, () => {
     if (map) map.invalidateSize({ animate: false })
   }, 310) // 10 ms de margem além dos 300 ms da transição CSS
 })
+
+// ── 7. Marcador de busca geoespacial ─────────────────────────────────────────
+watch(
+  () => mapStore.geoLocation,
+  (loc) => {
+    if (searchMarker) {
+      map?.removeLayer(searchMarker)
+      searchMarker = null
+    }
+    if (!loc || !map) return
+
+    searchMarker = L.marker([loc.lat, loc.lng], { icon: makeSearchIcon() })
+      .addTo(map)
+      .bindPopup(`<div class="gs-popup-label">${loc.label}</div>`, {
+        className: 'popup-dark',
+        maxWidth:  260,
+      })
+      .openPopup()
+
+    map.flyTo([loc.lat, loc.lng], 13, { duration: 0.8 })
+  },
+)
 </script>
 
 <style scoped>
@@ -433,5 +467,25 @@ watch(isCollapsed, () => {
 
 :deep(.home-btn:hover) {
   color: var(--accent);
+}
+
+/* ── Marcador de busca geoespacial ───────────────────────────────────────────── */
+/* O divIcon é criado fora da árvore Vue, então :deep é necessário */
+:deep(.search-marker-icon) {
+  width: 28px;
+  height: 36px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+:deep(.gs-popup-label) {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  padding: 8px 10px;
+  color: var(--text-main);
 }
 </style>
