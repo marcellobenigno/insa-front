@@ -261,7 +261,7 @@ async function handleMapClick(e) {
   if (layersToQuery.length === 0) return
 
   const popupPromises = layersToQuery.map(async (overlay) => {
-    const { key, url, sourceLayer, label } = overlay
+    const { key, url, sourceLayer, label, popUpFields, descFields } = overlay
     const cacheKey = `${zoom}-${layerPoint.x}-${targetY}-${sourceLayer}`
 
     const parseProperties = (buffer) => {
@@ -283,7 +283,7 @@ async function handleMapClick(e) {
             // Verifica se o clique está dentro do bounding box da geometria
             if (clickX >= bbox[0] && clickX <= bbox[2] && 
                 clickY >= bbox[1] && clickY <= bbox[3]) {
-              return { label, properties: feature.properties }
+              return { label, properties: feature.properties, popUpFields, descFields }
             }
           }
         }

@@ -53,6 +53,107 @@ src/
 
 ---
 
+## Referência: `src/config/layers.js`
+
+Este é o **único arquivo que você precisa editar** para controlar quais camadas existem, como elas aparecem na sidebar e o que o popup de clique exibe. Não há nenhuma outra configuração de camadas espalhada pela aplicação.
+
+### Estrutura geral
+
+O arquivo exporta dois objetos principais:
+
+| Export | Usado por |
+|---|---|
+| `BASE_LAYERS` | Mapas de fundo (OSM, Satélite, Google…) — selecionados via radio button |
+| `OVERLAY_CATEGORIES` | Camadas de sobreposição agrupadas por categoria — exibidas no accordion da sidebar |
+
+`OVERLAY_LAYERS` (export derivado) é gerado automaticamente a partir de `OVERLAY_CATEGORIES` para retrocompatibilidade interna — não edite diretamente.
+
+---
+
+### Campos de cada camada overlay
+
+```js
+nome_da_camada: {
+  // ── Obrigatórios ──────────────────────────────────────────────────────────
+  label:       'Rótulo exibido no menu e no popup',
+  meta:        'Descrição curta exibida abaixo do rótulo na sidebar',
+  url:         VECTOR_TILES_URL,          // URL do servidor de tiles (não alterar)
+  sourceLayer: 'nome_exato_no_gpkg',      // deve bater com o layer_id dentro do .pbf
+  zIndex:      20,                        // maior = fica acima de outras camadas no mapa
+  active:      false,                     // true = camada visível ao carregar a página
+
+  // ── Pesquisa (barra de busca) ─────────────────────────────────────────────
+  searchFields: ['campo1', 'campo2'],     // campos pesquisáveis na barra de busca
+  fieldTypes:   { campo1: 'string',       // tipo de cada campo: 'string' ou 'number'
+                  campo2: 'number' },     // usado para aplicar operadores de comparação
+
+  // ── Popup de clique ───────────────────────────────────────────────────────
+  popUpFields: ['campo1'],               // quais campos aparecem no popup, em qual ordem
+                                          // se omitido, exibe todos os campos da feição
+  descFields:  { campo1: 'Descrição',    // rótulo amigável para cada campo no popup
+                 campo2: 'Valor Peso' }, // se um campo não estiver aqui, usa o nome técnico
+},
+```
+
+#### Detalhes por campo
+
+**`sourceLayer`**
+Deve ser idêntico ao nome da camada no GeoPackage. O Tippecanoe usa o nome do arquivo GeoJSON (sem extensão) como `layer_id` dentro do `.pbf` — qualquer divergência faz os tiles não renderizarem.
+
+**`zIndex`**
+Controla a ordem de empilhamento visual. Camadas com `zIndex` maior ficam na frente. Sugestão de faixas do projeto:
+
+| Faixa | Uso |
+|---|---|
+| 1 | Camadas base (tile layers) |
+| 10–19 | Índices e dados temáticos |
+| 20–29 | Solos e textura |
+| 30+ | Limites administrativos (sempre na frente) |
+
+**`searchFields`**
+Lista dos campos que a barra de busca inspeciona. Funciona com operadores: `>`, `<`, `>=`, `<=`, `=` para campos numéricos; substring case-insensitive para strings. Deve incluir pelo menos um campo que identifique a feição de forma legível.
+
+**`fieldTypes`**
+Dicionário `{ nomeDoCampo: 'string' | 'number' }`. Usado pela busca para decidir se aplica comparação numérica ou textual. Campos ausentes aqui são tratados como string.
+
+**`popUpFields`**
+Array com os nomes dos campos que devem aparecer no popup ao clicar no mapa — **na ordem declarada**. Campos que existem na feição mas não estão nesta lista são silenciosamente ignorados.
+
+Se `popUpFields` for omitido, o popup exibe todos os campos da feição (exceto `id`, `gid`, `fid`, `objectid`), que é o comportamento legado.
+
+**`descFields`**
+Dicionário que mapeia nome técnico do campo → rótulo legível exibido na coluna esquerda do popup. Exemplo:
+
+```js
+descFields: {
+  DSC_TEXTUR: 'Descrição',
+  SoilTextur: 'Textura do Solo',
+}
+```
+
+Se um campo estiver em `popUpFields` mas não em `descFields`, o nome técnico (`DSC_TEXTUR`) é usado como fallback — então é seguro preencher `descFields` gradualmente conforme os metadados forem levantados.
+
+---
+
+### Adicionando uma nova categoria
+
+```js
+export const OVERLAY_CATEGORIES = {
+  // ... categorias existentes ...
+
+  nova_categoria: {
+    label: 'Nome no accordion',
+    color: '#34d399',          // cor do indicador visual na sidebar (CSS color)
+    icon:  'bi-tree',          // classe Bootstrap Icons
+    layers: {
+      // ... suas camadas aqui ...
+    },
+  },
+}
+```
+
+---
+
 ## Pipeline de dados (GeoPackage → Vector Tiles)
 
 Esta seção documenta como os dados brutos em `data/dados_insa.gpkg` são convertidos em vector tiles servidos pela aplicação.
@@ -212,17 +313,22 @@ Siga a checklist abaixo na ordem:
 
 ### 2. Código
 
-Abra `src/config/layers.js` e adicione um objeto na categoria adequada (ou crie uma nova):
+Abra `src/config/layers.js` e adicione um objeto na categoria adequada (ou crie uma nova). Veja a [Referência: `src/config/layers.js`](#referência-srcconfiglayersjs) para a descrição completa de cada campo.
 
 ```js
 nova_camada: {
   label: 'Rótulo no menu',
   meta: 'Descrição curta',
   url: VECTOR_TILES_URL,
-  sourceLayer: 'nome_exato_no_gpkg',   // deve bater com o nome da camada no Tippecanoe
-  zIndex: 31,                           // maior = fica acima de outras camadas
-  active: false,                        // false = camada começa oculta
-  searchFields: ['campo1', 'campo2'],   // campos disponíveis no popup de clique
+  sourceLayer: 'nome_exato_no_gpkg',    // deve bater com o nome da camada no Tippecanoe
+  zIndex: 31,                            // maior = fica acima de outras camadas
+  active: false,                         // false = camada começa oculta
+  searchFields: ['campo1', 'campo2'],    // campos inspecionados pela barra de busca
+  fieldTypes:   { campo1: 'string',      // tipo de cada campo: 'string' ou 'number'
+                  campo2: 'number' },
+  popUpFields:  ['campo1', 'campo2'],    // campos exibidos no popup de clique (em ordem)
+  descFields:   { campo1: 'Descrição',   // rótulo amigável por campo no popup
+                  campo2: 'Valor' },
 },
 ```
 
