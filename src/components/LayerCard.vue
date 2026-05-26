@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
+import stylesData from '@/assets/styles.json'
 
 const props = defineProps({
   layerKey:     { type: String,  required: true },
@@ -46,6 +47,43 @@ function togglePanel(name) {
 function onOpacityInput(e) {
   store.setLayerOpacity(props.layerKey, Number(e.target.value) / 100)
 }
+
+// ── Legenda dinâmica via styles.json ──────────────────────────────────────────
+
+function formatNum(n) {
+  // Remove casas decimais desnecessárias (ex: 1.30000000004 → "1.3")
+  return parseFloat(n.toFixed(3)).toString()
+}
+
+const legendItems = computed(() => {
+  const styleEntry = stylesData[props.layerKey]
+  if (!styleEntry) return []
+
+  const entries = Object.entries(styleEntry)
+  if (entries.length === 0) return []
+
+  // Detecta se as chaves são numéricas
+  const isNumeric = entries.every(([key]) => !isNaN(parseFloat(key)) && isFinite(key))
+
+  if (isNumeric) {
+    const sorted = entries
+      .map(([key, color]) => ({ value: parseFloat(key), color }))
+      .sort((a, b) => a.value - b.value)
+
+    return sorted.map((item, i) => {
+      const next = sorted[i + 1]
+      const label = next
+        ? `${formatNum(item.value)} – ${formatNum(next.value)}`
+        : `≥ ${formatNum(item.value)}`
+      return { label, color: item.color }
+    })
+  }
+
+  // Categórico: retorna chave como label
+  return entries.map(([key, color]) => ({ label: key, color }))
+})
+
+const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 </script>
 
 <template>
@@ -83,7 +121,7 @@ function onOpacityInput(e) {
 
         <template v-if="type === 'overlay'">
           <button
-            v-if="legend"
+            v-if="hasLegend"
             class="action-btn"
             :class="{ 'is-panel-open': activePanel === 'legend' }"
             title="Ver Legenda"
@@ -130,7 +168,21 @@ function onOpacityInput(e) {
         <!-- Painel de Legenda -->
         <div v-if="activePanel === 'legend'" class="panel-content">
           <label class="panel-label mb-2">Legenda</label>
-          <div class="legend-container">
+
+          <!-- Legenda dinâmica via styles.json -->
+          <div v-if="legendItems.length > 0" class="legend-list">
+            <div
+              v-for="item in legendItems"
+              :key="item.label"
+              class="legend-item"
+            >
+              <span class="legend-swatch" :style="{ background: item.color }" />
+              <span class="legend-item-label">{{ item.label }}</span>
+            </div>
+          </div>
+
+          <!-- Fallback: imagem estática -->
+          <div v-else-if="legend" class="legend-container">
             <img :src="legend" :alt="`Legenda de ${label}`" class="img-fluid rounded" />
           </div>
         </div>
@@ -295,11 +347,55 @@ function onOpacityInput(e) {
   border-radius: 4px;
 }
 
+/* Legenda dinâmica */
+.legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+.legend-list::-webkit-scrollbar {
+  width: 4px;
+}
+.legend-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.legend-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-swatch {
+  flex-shrink: 0;
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.legend-item-label {
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
 /* Transitions */
 .panel-fade-enter-active,
 .panel-fade-leave-active {
   transition: all 0.25s ease;
-  max-height: 200px;
+  max-height: 300px;
 }
 
 .panel-fade-enter-from,
