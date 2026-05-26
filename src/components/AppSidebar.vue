@@ -143,7 +143,6 @@ function visibleCount(categoryKey) {
     <!-- Rodapé -->
     <footer class="sidebar-footer">
       <i class="bi bi-hdd-network-fill text-accent" aria-hidden="true" />
-      <span v-show="!isCollapsed" class="ms-2">EPSG:4326 | Online</span>
     </footer>
   </aside>
 </template>
