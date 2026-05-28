@@ -1,6 +1,6 @@
 # INSA Front
 
-Aplicação web de mapeamento GIS desenvolvida com Vue 3 + Vite. Exibe camadas vetoriais do INSA sobre um mapa base interativo (OpenStreetMap ou ESRI Satellite), com suporte a vector tiles locais e legendas dinâmicas por camada.
+Aplicação web de mapeamento GIS desenvolvida com Vue 3 + Vite. Exibe camadas vetoriais do INSA sobre um mapa base interativo (Google Satellite, Google Streets, OSM e outros), com suporte a vector tiles locais e legendas dinâmicas por camada.
 
 ## Pré-requisitos
 
