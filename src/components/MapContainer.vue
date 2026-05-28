@@ -179,6 +179,7 @@ function syncVectorOverlays(desired) {
       }
       const currentOpacity = mapStore.layerOpacity[key] ?? 1
       const activeFilter   = mapStore.layerSearchFilters?.[key] ?? null
+      let anyMatch = false
       for (let i = 0; i < layer.length; i++) {
         try {
           const feature = layer.feature(i)
@@ -187,6 +188,7 @@ function syncVectorOverlays(desired) {
           const rawColor = getThematicColor(sourceLayer, props)
           const { strokeOnly, color } = parseColor(rawColor)
           const isMatch = !activeFilter || matchesFilter(props, activeFilter)
+          if (activeFilter && isMatch) anyMatch = true
 
           drawGeometryToContext(ctx, geom, feature.type, size)
 
@@ -224,6 +226,9 @@ function syncVectorOverlays(desired) {
         } catch {
           // Ignora feições com tipo de geometria não suportado (ex: type 4)
         }
+      }
+      if (activeFilter && anyMatch && mapStore.layerSearchMatchCounts?.[key] === 0) {
+        mapStore.setSearchMatchCount(key, 1)
       }
       done(null, tile)
     } catch(e) {
