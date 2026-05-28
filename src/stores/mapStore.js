@@ -34,6 +34,10 @@ export const useMapStore = defineStore('map', () => {
   )
 
   // Localização geoespacial buscada: { lat, lng, label } | null
+  const activeOverlayCount = computed(
+    () => Object.values(visibleOverlays.value).filter(Boolean).length
+  )
+
   const geoLocation = ref(null)
 
   // Coordenadas do cursor sobre o mapa: { lat, lng } | null
@@ -104,6 +108,13 @@ export const useMapStore = defineStore('map', () => {
     }
   }
 
+  function clearAllOverlays() {
+    Object.keys(visibleOverlays.value).forEach((k) => {
+      visibleOverlays.value[k] = false
+      layerOpacity.value[k] = 1
+    })
+  }
+
   function setGeoLocation(payload) {
     geoLocation.value = payload
   }
@@ -125,6 +136,7 @@ export const useMapStore = defineStore('map', () => {
     availableCategories,
     layerOpacity,
     layerSearchFilters,
+    activeOverlayCount,
     setBaseLayer,
     toggleOverlay,
     setLayerOpacity,
@@ -133,6 +145,7 @@ export const useMapStore = defineStore('map', () => {
     layerSearchMatchCounts,
     setSearchMatchCount,
     geoLocation,
+    clearAllOverlays,
     setGeoLocation,
     clearGeoLocation,
     mouseCoords,

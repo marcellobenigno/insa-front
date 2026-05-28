@@ -8,6 +8,11 @@ import GeoSearch from './GeoSearch.vue'
 const store = useMapStore()
 const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase, toggleCategory } = useSidebar()
 
+function clearAllAndCollapse() {
+  store.clearAllOverlays()
+  Object.keys(openCategories).forEach(k => { openCategories[k] = false })
+}
+
 // Conta camadas visíveis por categoria para feedback visual no badge
 function visibleCount(categoryKey) {
   const cat = store.availableCategories.find(c => c.key === categoryKey)
@@ -105,9 +110,23 @@ const filteredLayerCount = computed(() =>
       <!-- Divisor Temático -->
       <div class="section-divider" v-show="!isCollapsed">
         <span class="divider-text">Análise Temática</span>
-        <span class="badge overlay-count-badge" :class="{ 'is-filtered': searchTerm }">
-          <template v-if="searchTerm">{{ filteredLayerCount }} de </template>{{ store.availableOverlays.length }}
-        </span>
+        <div class="divider-actions">
+          <span class="badge overlay-count-badge" :class="{ 'is-filtered': searchTerm }">
+            <template v-if="searchTerm">{{ filteredLayerCount }} de </template>{{ store.availableOverlays.length }}
+          </span>
+          <Transition name="clear-btn">
+            <button
+              v-if="store.activeOverlayCount > 0"
+              class="clear-overlays-btn"
+              title="Limpar camadas ativas"
+              aria-label="Desligar todas as camadas de sobreposição"
+              @click="clearAllAndCollapse()"
+            >
+              <i class="bi bi-x-circle" aria-hidden="true" />
+              <span class="clear-overlays-label">Limpar</span>
+            </button>
+          </Transition>
+        </div>
       </div>
 
       <!-- Filtro de camadas -->
@@ -204,6 +223,23 @@ const filteredLayerCount = computed(() =>
 
 #sidebar.is-collapsed {
   width: var(--sidebar-collapsed-w);
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-mobile-w);
+    z-index: 1100;
+    transform: translateX(0);
+    transition: transform var(--transition-speed) ease-in-out;
+  }
+
+  #sidebar.is-collapsed {
+    width: var(--sidebar-mobile-w);
+    transform: translateX(-100%);
+  }
 }
 
 /* ── Header ──────────────────────────────────────────────────────────────────── */
@@ -419,5 +455,49 @@ const filteredLayerCount = computed(() =>
   border-color: var(--accent);
   color: var(--accent);
   background: var(--bg-accent-dim);
+}
+
+/* ── Limpar camadas ──────────────────────────────────────────────────────────── */
+.divider-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clear-overlays-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px 2px 5px;
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  border-radius: 10px;
+  background: rgba(255, 80, 80, 0.08);
+  color: rgba(255, 120, 120, 0.85);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.clear-overlays-btn:hover {
+  background: rgba(255, 80, 80, 0.22);
+  border-color: rgba(255, 80, 80, 0.7);
+  color: #ff8080;
+}
+
+.clear-overlays-btn .bi {
+  font-size: 0.75rem;
+}
+
+.clear-btn-enter-active,
+.clear-btn-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.clear-btn-enter-from,
+.clear-btn-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
 }
 </style>
