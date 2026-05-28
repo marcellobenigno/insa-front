@@ -266,6 +266,17 @@ python3 styles.py    # writes src/assets/styles.json from layer_styles in the Ge
 If a layer is styled as stroke-only in QGIS (no fill), `styles.py` will not capture it.
 Add the entry manually to `src/assets/styles.json` using the `stroke:` prefix.
 
+> ⚠️ **`styles.py` overwrites `src/assets/styles.json` entirely.** Any manual entry
+> (such as `municipios_pb_semiarido`) will be lost after every pipeline run.
+> Always restore manual entries immediately after running `styles.py`.
+> Current manual entries that must be re-added:
+>
+> ```json
+> "municipios_pb_semiarido": {
+>   "Limite municipal": "stroke:#ffffff"
+> }
+> ```
+
 ### Required tools (macOS)
 
 ```bash
@@ -305,6 +316,7 @@ What the script does:
 - [ ] Re-run Step 2 (generate `.mbtiles`)
 - [ ] Re-run Step 3 (`rm -rf` + `python3 export.py`)
 - [ ] Re-run Step 4 (`python3 styles.py`)
+- [ ] Restore any manual entries in `src/assets/styles.json` (styles.py overwrites the file — see warning above)
 - [ ] If stroke-only, add entry manually to `src/assets/styles.json`
 
 ### Code side
