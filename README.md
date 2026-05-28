@@ -32,14 +32,21 @@ npm run preview   # preview do build de produção
 src/
 ├── components/
 │   ├── MapContainer.vue   # instância do Leaflet; reage ao store
-│   ├── AppSidebar.vue     # painel lateral com controles de camadas
-│   ├── LayerCard.vue      # card por camada (visibilidade, opacidade, legenda)
-│   ├── GeoSearch.vue      # busca geocodificada + filtro por atributo (DD, DMS, endereço)
+│   ├── AppSidebar.vue     # painel lateral: accordion de camadas + filtro por nome
+│   ├── LayerCard.vue      # card por camada (visibilidade, opacidade, legenda, busca por atributo)
+│   ├── GeoSearch.vue      # busca geocodificada + coordenadas (DD, DMS, endereço)
 │   └── CoordDisplay.vue   # overlay de coordenadas do cursor em tempo real (DD e DMS)
+├── composables/
+│   └── useSidebar.js      # estado do accordion e colapso da sidebar
 ├── stores/
-│   └── mapStore.js        # Pinia — fonte única de verdade do estado das camadas
+│   └── mapStore.js        # Pinia — estado das camadas, filtros de busca, localização
 ├── config/
 │   └── layers.js          # definição das camadas base e overlays por categoria
+├── utils/
+│   ├── mapRenderer.js     # renderiza feições no canvas via styles.json
+│   └── mapPopup.js        # monta o HTML do popup de clique no mapa
+├── router/
+│   └── index.js           # Vue Router (rota única: HomeView)
 ├── views/
 │   └── HomeView.vue       # layout principal
 └── assets/
@@ -56,6 +63,35 @@ src/
 
 ---
 
+## Funcionalidades da interface
+
+### Sidebar
+
+- **Filtro de camadas por nome** — campo de texto acima das categorias filtra as camadas em tempo real (case-insensitive). Categorias sem resultado são ocultadas; as que têm resultado expandem automaticamente. O badge "Análise Temática" exibe `N de 17` ao filtrar.
+- **Accordion por categoria** — cada categoria pode ser expandida/recolhida individualmente.
+- **Badge de visibilidade** — indicador numérico por categoria mostra quantas camadas estão ativas no mapa.
+
+### Painel de busca por atributo (por camada)
+
+Acessado pelo ícone de lupa em cada `LayerCard`. Permite filtrar feições por valor de campo:
+
+- **Campos string** — busca por substring, case-insensitive
+- **Campos numérico** — suporta operadores `=`, `>`, `>=`, `<`, `<=`
+- **Feedback visual** — feições que batem ficam destacadas com borda amarela; as demais ficam acinzentadas
+- **Badge de resultado** — exibe "Nenhum resultado encontrado" (vermelho) quando o filtro não encontra feições; o resultado é atualizado à medida que novos tiles carregam
+
+### GeoSearch (rodapé da sidebar)
+
+- Busca por endereço via Nominatim (geocodificação)
+- Entrada de coordenadas em DD (decimal) ou DMS (graus, minutos, segundos)
+- Resultados restritos ao bounding box do Semiárido da PB
+
+### CoordDisplay
+
+Overlay no canto inferior do mapa exibe as coordenadas do cursor em DD e DMS em tempo real.
+
+---
+
 ## Referência: `src/config/layers.js`
 
 Este é o **único arquivo que você precisa editar** para controlar quais camadas existem, como elas aparecem na sidebar e o que o popup de clique exibe. Não há nenhuma outra configuração de camadas espalhada pela aplicação.
@@ -66,7 +102,7 @@ O arquivo exporta dois objetos principais:
 
 | Export | Usado por |
 |---|---|
-| `BASE_LAYERS` | Mapas de fundo (OSM, Satélite, Google…) — selecionados via radio button |
+| `BASE_LAYERS` | 6 mapas de fundo (Google Satellite ★, Google Streets, Google Hybrid, Google Terrain, OSM, OSM Dark) — selecionados via radio button. ★ = ativo por padrão. |
 | `OVERLAY_CATEGORIES` | Camadas de sobreposição agrupadas por categoria — exibidas no accordion da sidebar |
 
 `OVERLAY_LAYERS` (export derivado) é gerado automaticamente a partir de `OVERLAY_CATEGORIES` para retrocompatibilidade interna — não edite diretamente.
