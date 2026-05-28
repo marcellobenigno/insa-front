@@ -1,4 +1,5 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useSidebar } from '@/composables/useSidebar'
 import LayerCard from './LayerCard.vue'
@@ -12,6 +13,20 @@ function visibleCount(categoryKey) {
   const cat = store.availableCategories.find(c => c.key === categoryKey)
   return cat ? cat.layers.filter(l => l.visible).length : 0
 }
+
+// ── Filtro de camadas ──────────────────────────────────────────────────────────
+const searchTerm = ref('')
+
+const filteredCategories = computed(() => {
+  if (!searchTerm.value.trim()) return store.availableCategories
+  const q = searchTerm.value.trim().toLowerCase()
+  return store.availableCategories
+    .map(cat => ({
+      ...cat,
+      layers: cat.layers.filter(l => l.label.toLowerCase().includes(q)),
+    }))
+    .filter(cat => cat.layers.length > 0)
+})
 </script>
 
 <template>
@@ -89,16 +104,36 @@ function visibleCount(categoryKey) {
         <span class="badge border border-secondary text-muted">{{ store.availableOverlays.length }}</span>
       </div>
 
+      <!-- Filtro de camadas -->
+      <div class="layer-search-box" v-show="!isCollapsed" role="search">
+        <i class="bi bi-search layer-search-icon" aria-hidden="true" />
+        <input
+          v-model="searchTerm"
+          type="text"
+          class="layer-search-input"
+          placeholder="Filtrar camadas por nome"
+          aria-label="Filtrar camadas"
+        />
+        <button
+          v-if="searchTerm"
+          class="layer-search-clear"
+          aria-label="Limpar busca"
+          @click="searchTerm = ''"
+        >
+          <i class="bi bi-x" aria-hidden="true" />
+        </button>
+      </div>
+
       <!-- Categorias de Overlay -->
       <section
-        v-for="cat in store.availableCategories"
+        v-for="cat in filteredCategories"
         :key="cat.key"
         class="category-block"
-        :class="{ 'is-open': openCategories[cat.key] }"
+        :class="{ 'is-open': searchTerm || openCategories[cat.key] }"
       >
         <button
           class="category-header btn-reset"
-          :aria-expanded="openCategories[cat.key]"
+          :aria-expanded="searchTerm ? true : openCategories[cat.key]"
           :aria-controls="`cat-content-${cat.key}`"
           @click="toggleCategory(cat.key)"
         >
@@ -114,14 +149,14 @@ function visibleCount(categoryKey) {
               {{ visibleCount(cat.key) }}
             </span>
             <span class="text-muted small">{{ cat.layers.length }}</span>
-            <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': openCategories[cat.key] }" />
+            <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': searchTerm || openCategories[cat.key] }" />
           </div>
         </button>
 
         <div
           :id="`cat-content-${cat.key}`"
           class="category-body"
-          v-show="openCategories[cat.key] && !isCollapsed"
+          v-show="(searchTerm || openCategories[cat.key]) && !isCollapsed"
         >
           <div class="category-body-inner">
             <LayerCard
@@ -317,4 +352,51 @@ function visibleCount(categoryKey) {
   padding: 0;
   cursor: pointer;
 }
+
+/* ── Filtro de camadas ───────────────────────────────────────────────────────── */
+.layer-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 10px 10px;
+}
+
+.layer-search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.layer-search-input {
+  width: 100%;
+  padding: 6px 32px 6px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-main);
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.layer-search-input::placeholder { color: var(--text-muted); }
+
+.layer-search-input:focus { border-color: var(--accent); }
+
+.layer-search-clear {
+  position: absolute;
+  right: 6px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.layer-search-clear:hover { color: var(--text-main); }
 </style>
