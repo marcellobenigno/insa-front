@@ -42,4 +42,5 @@ data/
 
 public/tiles/
 
-.env.development
+.env.development*.docx
+~$*
