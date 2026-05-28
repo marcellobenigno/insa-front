@@ -4,7 +4,7 @@ import { ref, reactive } from 'vue'
  * Composable para gerenciar o estado global da sidebar e seus accordions.
  * Permite que o estado seja compartilhado entre componentes se necessário.
  */
-const isCollapsed = ref(false)
+const isCollapsed = ref(typeof window !== 'undefined' && window.innerWidth <= 768)
 const openBase = ref(false)
 const openCategories = reactive({})
 
