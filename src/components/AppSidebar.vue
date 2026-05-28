@@ -27,6 +27,10 @@ const filteredCategories = computed(() => {
     }))
     .filter(cat => cat.layers.length > 0)
 })
+
+const filteredLayerCount = computed(() =>
+  filteredCategories.value.reduce((sum, cat) => sum + cat.layers.length, 0)
+)
 </script>
 
 <template>
@@ -101,7 +105,9 @@ const filteredCategories = computed(() => {
       <!-- Divisor Temático -->
       <div class="section-divider" v-show="!isCollapsed">
         <span class="divider-text">Análise Temática</span>
-        <span class="badge border border-secondary text-muted">{{ store.availableOverlays.length }}</span>
+        <span class="badge overlay-count-badge" :class="{ 'is-filtered': searchTerm }">
+          <template v-if="searchTerm">{{ filteredLayerCount }} de </template>{{ store.availableOverlays.length }}
+        </span>
       </div>
 
       <!-- Filtro de camadas -->
@@ -399,4 +405,19 @@ const filteredCategories = computed(() => {
 }
 
 .layer-search-clear:hover { color: var(--text-main); }
+
+/* ── Badge de contagem de camadas ────────────────────────────────────────────── */
+.overlay-count-badge {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.overlay-count-badge.is-filtered {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-accent-dim);
+}
 </style>
