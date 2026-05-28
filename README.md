@@ -2,6 +2,13 @@
 
 Aplicação web de mapeamento GIS desenvolvida com Vue 3 + Vite. Exibe camadas vetoriais do INSA sobre um mapa base interativo (Google Satellite, Google Streets, OSM e outros), com suporte a vector tiles locais e legendas dinâmicas por camada.
 
+## Ambiente de homologação
+
+[![Abrir aplicação](https://img.shields.io/badge/Abrir%20aplicação-insa--front-blue?style=for-the-badge)](https://marcellobenigno.github.io/insa-front/)
+
+Ambiente atualizado automaticamente a cada push na branch `main`.
+Use este link para visualizar e validar as camadas junto à equipe.
+
 ## Pré-requisitos
 
 - **Node.js** `^20.19.0` ou `>=22.12.0`
