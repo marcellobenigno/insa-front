@@ -352,19 +352,48 @@ async function handleMapClick(e) {
 
 
 // ── 4. Redesenho ao mudar filtro de busca ────────────────────────────────────
+
+function countFilterMatches(key) {
+  const overlay = mapStore.availableOverlays.find(o => o.key === key)
+  if (!overlay) return
+  const filter = mapStore.layerSearchFilters[key]
+  if (!filter) { mapStore.setSearchMatchCount(key, null); return }
+
+  const { sourceLayer } = overlay
+  let found = false
+
+  for (const [cacheKey, buffer] of tileDataCache.entries()) {
+    if (!cacheKey.endsWith(`-${sourceLayer}`)) continue
+    try {
+      const pbf = new Pbf(new Uint8Array(buffer))
+      const vt = new VectorTile(pbf)
+      const layer = vt.layers[sourceLayer]
+      if (!layer) continue
+      for (let i = 0; i < layer.length; i++) {
+        if (matchesFilter(layer.feature(i).properties, filter)) {
+          found = true
+          break
+        }
+      }
+    } catch { /* ignora tiles corrompidos */ }
+    if (found) break
+  }
+
+  mapStore.setSearchMatchCount(key, found ? 1 : 0)
+}
+
 watch(
   () => mapStore.layerSearchFilters,
   (filters) => {
     if (!map) return
     for (const [key, filter] of Object.entries(filters)) {
-      // Redesenha apenas a camada cujo filtro mudou e que está visível
       if (activeOverlays.has(key)) {
         activeOverlays.get(key).redraw()
       }
-      // Se a camada não estiver visível mas tem filtro ativo, ativa-a
       if (filter && !mapStore.visibleOverlays[key]) {
         mapStore.toggleOverlay(key)
       }
+      countFilterMatches(key)
     }
   },
   { deep: true },

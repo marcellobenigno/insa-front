@@ -263,6 +263,12 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
             <strong>{{ activeFilter.value }}</strong>
           </div>
 
+          <!-- Feedback: zero resultados -->
+          <div v-if="activeFilter && store.layerSearchMatchCounts?.[layerKey] === 0" class="no-results-badge mb-2">
+            <i class="bi bi-exclamation-circle-fill" />
+            Nenhum resultado encontrado
+          </div>
+
           <div class="search-form">
             <!-- Campo -->
             <select
@@ -505,6 +511,18 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
 .filter-badge strong {
   color: #fde68a;
+}
+
+.no-results-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  font-size: 0.75rem;
+  color: #f87171;
 }
 
 .btn-clear-search {

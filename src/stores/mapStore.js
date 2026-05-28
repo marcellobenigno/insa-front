@@ -28,6 +28,11 @@ export const useMapStore = defineStore('map', () => {
     Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, null])),
   )
 
+  // Contagem de resultados após filtro: null = sem filtro, 0 = zero resultados, 1 = algum resultado
+  const layerSearchMatchCounts = ref(
+    Object.fromEntries(Object.keys(OVERLAY_LAYERS).map((k) => [k, null])),
+  )
+
   // Localização geoespacial buscada: { lat, lng, label } | null
   const geoLocation = ref(null)
 
@@ -89,6 +94,13 @@ export const useMapStore = defineStore('map', () => {
   function clearSearchFilter(key) {
     if (key in layerSearchFilters.value) {
       layerSearchFilters.value[key] = null
+      layerSearchMatchCounts.value[key] = null
+    }
+  }
+
+  function setSearchMatchCount(key, count) {
+    if (key in layerSearchMatchCounts.value) {
+      layerSearchMatchCounts.value[key] = count
     }
   }
 
@@ -118,6 +130,8 @@ export const useMapStore = defineStore('map', () => {
     setLayerOpacity,
     setSearchFilter,
     clearSearchFilter,
+    layerSearchMatchCounts,
+    setSearchMatchCount,
     geoLocation,
     setGeoLocation,
     clearGeoLocation,
