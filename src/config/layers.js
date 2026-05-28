@@ -2,34 +2,13 @@
 
 // ─── CAMADAS BASE (MAPAS DE FUNDO) ────────────────────────────────────────────
 export const BASE_LAYERS = {
-  osm: {
-    label: 'OpenStreetMap',
-    meta: 'Global Vector Tile',
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19,
-    active: false,
-  },
-
-  osm_dark: {
-    label: 'OpenStreetMap Dark (Carto)',
-    meta: 'Dark Vector Tile',
-    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  google_satellite: {
+    label: 'Google Satellite',
+    meta: 'Imagem de Satélite Google',
+    url: 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+    attribution: '&copy; Google',
     maxZoom: 20,
-    active: false,
-  },
-
-  satellite_esri: {
-    label: 'Satélite (ESRI)',
-    meta: 'Imagens de Alta Res.',
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attribution:
-      'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, USDA FSA, USGS, Aerogrid, IGN, and the GIS User Community',
-    maxZoom: 19,
-    active: false,
+    active: true,
   },
 
   google_streets: {
@@ -39,15 +18,6 @@ export const BASE_LAYERS = {
     attribution: '&copy; Google',
     maxZoom: 20,
     active: false,
-  },
-
-  google_satellite: {
-    label: 'Google Satellite',
-    meta: 'Imagem de Satélite Google',
-    url: 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-    attribution: '&copy; Google',
-    maxZoom: 20,
-    active: true,
   },
 
   google_hybrid: {
@@ -64,6 +34,26 @@ export const BASE_LAYERS = {
     meta: 'Relevo/Terreno Google',
     url: 'https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
     attribution: '&copy; Google',
+    maxZoom: 20,
+    active: false,
+  },
+
+  osm: {
+    label: 'OpenStreetMap',
+    meta: 'Global Vector Tile',
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19,
+    active: false,
+  },
+
+  osm_dark: {
+    label: 'OpenStreetMap Dark (Carto)',
+    meta: 'Dark Vector Tile',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     maxZoom: 20,
     active: false,
   },
