@@ -78,7 +78,7 @@ const { isCollapsed, toggleSidebar } = useSidebar()
     justify-content: center;
     position: absolute;
     top: 14px;
-    left: 14px;
+    right: 14px;
     z-index: 1000;
     width: 44px;
     height: 44px;
