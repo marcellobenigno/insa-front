@@ -17,11 +17,12 @@ external map server dependency at runtime.
 ## Commands
 
 ```bash
-npm run dev        # Development server with hot-reload (Vite)
-npm run build      # Production build → dist/
-npm run preview    # Preview production build
-npm run lint       # oxlint + eslint with auto-fix (sequential)
-npm run format     # Prettier format on src/
+npm run dev          # Development server with hot-reload (Vite)
+npm run build        # Production build → dist/
+npm run preview      # Preview production build
+npm run lint         # oxlint + eslint with auto-fix (sequential)
+npm run format       # Prettier format on src/
+npm run deploy:tiles # Pack and deploy tiles to production server (see scripts/deploy-tiles.sh)
 ```
 
 No test suite is configured.
@@ -129,6 +130,15 @@ layer_key: {
   descFields:   { field1: 'Friendly label',
                   field2: 'Another label' }, // human-readable label per field
 }
+```
+
+> **`descFields` convention:** every entry must be a human-readable Portuguese label —
+> never use the technical field name as its own value (e.g., `{ IQS: 'IQS' }` is wrong;
+> `{ IQS: 'Índice de Qualidade do Solo' }` is correct).
+> These labels surface in two places: the popup left column and the search panel header
+> (`"Buscar por <label>"`), so they must be meaningful to end users.
+
+```js
 ```
 
 ### `zIndex` conventions
@@ -261,6 +271,27 @@ Add the entry manually to `src/assets/styles.json` using the `stroke:` prefix.
 ```bash
 brew install gdal tippecanoe python3
 ```
+
+---
+
+## Deploying tiles to production
+
+After regenerating tiles locally (pipeline steps 2–3), publish to the server:
+
+```bash
+npm run deploy:tiles
+```
+
+**Script:** `scripts/deploy-tiles.sh`
+**Server:** `ubuntu@geoserver.multisig.com.br` — SSH key access, no password
+**Remote path:** `/var/lib/tomcat9/webapps/tiles/insa_layers/`
+
+What the script does:
+1. Packs `public/tiles/insa_layers/` → `insa_layers.tar.gz` (~20 MB) using `COPYFILE_DISABLE=1`
+   to suppress macOS extended-attribute warnings on the Linux server
+2. Sends via SCP to `/home/ubuntu/`
+3. On the server: removes old tiles (`rm -rf insa_layers`), extracts, removes the archive
+4. Cleans up the local `.tar.gz`
 
 ---
 
