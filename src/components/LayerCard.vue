@@ -243,7 +243,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
         <!-- Painel de Busca -->
         <div v-if="activePanel === 'search'" class="panel-content">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <label class="panel-label">Busca na camada</label>
+            <label class="panel-label">Buscar por {{ fieldLabel(selectedField) }}</label>
             <button
               v-if="activeFilter"
               class="btn-clear-search"
