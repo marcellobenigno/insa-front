@@ -21,7 +21,7 @@ ssh "$REMOTE_HOST" bash <<EOF
   cd "$REMOTE_TILES_DIR"
   sudo mv "$REMOTE_DEST/$ARCHIVE" .
   sudo rm -rf insa_layers
-  sudo tar -zxf "$ARCHIVE"
+  sudo tar --warning=no-unknown-keyword -zxf "$ARCHIVE"
   sudo rm "$ARCHIVE"
   echo "    Tiles em: $REMOTE_TILES_DIR/insa_layers"
 EOF
