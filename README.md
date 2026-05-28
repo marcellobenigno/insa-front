@@ -24,6 +24,7 @@ npm run preview   # preview do build de produção
 | `npm run preview` | Preview do build de produção |
 | `npm run lint` | Executa oxlint + eslint com auto-fix |
 | `npm run format` | Formata os arquivos de `src/` com Prettier |
+| `npm run deploy:tiles` | Empacota e envia os tiles para o servidor de produção |
 
 ## Arquitetura
 
@@ -32,7 +33,9 @@ src/
 ├── components/
 │   ├── MapContainer.vue   # instância do Leaflet; reage ao store
 │   ├── AppSidebar.vue     # painel lateral com controles de camadas
-│   └── LayerCard.vue      # card por camada (visibilidade, opacidade, legenda)
+│   ├── LayerCard.vue      # card por camada (visibilidade, opacidade, legenda)
+│   ├── GeoSearch.vue      # busca geocodificada + filtro por atributo (DD, DMS, endereço)
+│   └── CoordDisplay.vue   # overlay de coordenadas do cursor em tempo real (DD e DMS)
 ├── stores/
 │   └── mapStore.js        # Pinia — fonte única de verdade do estado das camadas
 ├── config/
@@ -297,6 +300,25 @@ O prefixo `stroke:` instrui o renderer a desenhar apenas o contorno do polígono
 
 ---
 
+## Deploy dos tiles para produção
+
+Após regenerar os tiles localmente (passos 2–3 acima), publique no servidor com:
+
+```bash
+npm run deploy:tiles
+```
+
+O script `scripts/deploy-tiles.sh` executa automaticamente:
+
+1. Compacta `public/tiles/insa_layers/` em `insa_layers.tar.gz` (~20 MB)
+2. Envia o arquivo via SCP para `ubuntu@geoserver.multisig.com.br`
+3. No servidor: remove os tiles antigos, extrai o novo arquivo em `/var/lib/tomcat9/webapps/tiles/`
+4. Remove o `.tar.gz` local e remoto
+
+> O servidor aceita chave SSH sem senha. Certifique-se de que sua chave pública está em `~/.ssh/authorized_keys` no servidor antes de executar.
+
+---
+
 ## Como adicionar uma nova camada
 
 Siga a checklist abaixo na ordem:
@@ -369,8 +391,10 @@ data/
 | Vue 3 (Composition API + `<script setup>`) | Framework UI |
 | Pinia | Gerenciamento de estado |
 | Leaflet 1.x | Renderização do mapa |
+| leaflet.vectorgrid | Plugin Leaflet para renderizar vector tiles `.pbf` |
 | Bootstrap 5 | Layout e componentes visuais |
-| FontAwesome 7 | Ícones (tree-shaken via `src/main.js`) |
+| Bootstrap Icons | Ícones carregados via CDN em `index.html` |
+| FontAwesome 7 | Ícones adicionais (tree-shaken via `src/main.js`) |
 | Oxlint + ESLint + Prettier | Qualidade de código |
 
 ## IDE recomendada
