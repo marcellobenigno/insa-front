@@ -39,6 +39,7 @@ No test suite is configured.
 | Vector tiles | `leaflet.vectorgrid` (Leaflet plugin) |
 | Layout / UI | Bootstrap 5 |
 | Icons | Bootstrap Icons 1.x — loaded via CDN in `index.html` (no npm package) |
+| Theming | `src/composables/useTheme.js` — dark/light toggle; `data-theme` attribute on `<html>`; persisted in `localStorage` key `insa-theme`; paleta claro baseada em gov.br (`#1351B4`) |
 | Linting | Oxlint + ESLint + Prettier |
 
 ---

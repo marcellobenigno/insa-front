@@ -69,17 +69,17 @@ const dms = computed(() => {
   z-index: 1000;
   padding: 5px 9px;
   border-radius: 8px;
-  background: rgba(10, 12, 16, 0.82);
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-color);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
   gap: 3px;
-  pointer-events: none; /* não intercepta cliques no mapa */
+  pointer-events: none;
   user-select: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, background 0.3s, border-color 0.3s;
 }
 
 /* Leve pulsação na primeira vez que aparece */

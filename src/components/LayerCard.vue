@@ -315,18 +315,18 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--card-bg);
   transition: background 0.2s, border-color 0.2s;
 }
 
 .layer-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--card-bg-hover);
+  border-color: var(--border-color);
 }
 
 .layer-card.is-active {
   border-left: 3px solid var(--accent);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--card-bg-active);
 }
 
 .layer-main-row {
@@ -343,7 +343,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   height: 32px;
   border: none;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--btn-bg);
   color: var(--text-dim);
   cursor: pointer;
   display: flex;
@@ -353,7 +353,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 .visibility-toggle:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--btn-bg-hover);
   color: var(--text-main);
 }
 
@@ -370,7 +370,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
 .layer-label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
   line-height: 1.2;
   color: var(--text-main);
@@ -415,8 +415,8 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
 /* ── Painéis expansíveis ─────────────────────────────────────────────────────── */
 .layer-sub-panel {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-app);
 }
 
 .panel-content {

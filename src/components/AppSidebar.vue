@@ -2,11 +2,13 @@
 import { ref, computed } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useSidebar } from '@/composables/useSidebar'
+import { useTheme } from '@/composables/useTheme'
 import LayerCard from './LayerCard.vue'
 import GeoSearch from './GeoSearch.vue'
 
 const store = useMapStore()
 const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase, toggleCategory } = useSidebar()
+const { isDark, toggleTheme } = useTheme()
 
 function clearAllAndCollapse() {
   store.clearAllOverlays()
@@ -55,15 +57,25 @@ const filteredLayerCount = computed(() =>
           INSA <span class="brand-accent">WebGIS</span>
         </div>
       </div>
-      <button 
-        class="toggle-btn" 
-        :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
-        :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
-        :aria-expanded="!isCollapsed"
-        @click="toggleSidebar"
-      >
-        <i class="bi" :class="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'" />
-      </button>
+      <div class="header-actions">
+        <button
+          class="toggle-btn"
+          :title="isDark ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
+          :aria-label="isDark ? 'Ativar tema claro' : 'Ativar tema escuro'"
+          @click="toggleTheme"
+        >
+          <i class="bi" :class="isDark ? 'bi-sun' : 'bi-moon-stars'" />
+        </button>
+        <button
+          class="toggle-btn"
+          :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
+          :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
+          :aria-expanded="!isCollapsed"
+          @click="toggleSidebar"
+        >
+          <i class="bi" :class="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'" />
+        </button>
+      </div>
     </header>
 
     <!-- Conteúdo Principal -->
@@ -281,12 +293,18 @@ const filteredLayerCount = computed(() =>
 
 .brand-accent { color: var(--accent); }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .toggle-btn {
   width: 32px;
   height: 32px;
   border-radius: 6px;
   border: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--btn-bg);
   color: var(--text-muted);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -322,7 +340,7 @@ const filteredLayerCount = computed(() =>
 
 /* ── Categorias ──────────────────────────────────────────────────────────────── */
 .category-block {
-  margin: 4px 8px;
+  margin: 6px;
 }
 
 .category-header {
@@ -336,7 +354,7 @@ const filteredLayerCount = computed(() =>
 }
 
 .category-header:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--hover-overlay);
   color: var(--text-main);
 }
 
@@ -355,8 +373,9 @@ const filteredLayerCount = computed(() =>
 
 .cat-label {
   flex: 1;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: var(--text-main);
   text-align: left;
   white-space: nowrap;
   overflow: hidden;

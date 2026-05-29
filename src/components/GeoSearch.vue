@@ -438,7 +438,7 @@ onUnmounted(() => {
 .gs-footer {
   flex-shrink: 0;
   border-top: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--bg-app);
 }
 
 .gs-footer--collapsed {
@@ -850,4 +850,46 @@ onUnmounted(() => {
 }
 
 .gs-active-clear:hover { color: #f87171; }
+
+/* ── Tema claro ──────────────────────────────────────────────────────────────── */
+[data-theme="light"] .gs-icon-btn {
+  background: var(--btn-bg);
+}
+
+[data-theme="light"] .gs-mode-btn {
+  background: var(--btn-bg);
+}
+
+[data-theme="light"] .gs-mode-btn:hover,
+[data-theme="light"] .gs-mode-wrap--open .gs-mode-btn {
+  background: var(--btn-bg-hover);
+  border-color: var(--border-color);
+}
+
+[data-theme="light"] .gs-menu-item:hover {
+  background: var(--hover-overlay);
+}
+
+[data-theme="light"] .gs-input {
+  background: #fff;
+  color: var(--text-main);
+}
+
+[data-theme="light"] .gs-input:focus {
+  background: #fff;
+}
+
+[data-theme="light"] .gs-suggestion:hover {
+  background: var(--hover-overlay);
+}
+
+[data-theme="light"] .gs-coord-input,
+[data-theme="light"] .gs-dms-input {
+  background: #fff;
+  color: var(--text-main);
+}
+
+[data-theme="light"] .gs-active-pin {
+  border-color: rgba(19, 81, 180, 0.3);
+}
 </style>
