@@ -97,41 +97,43 @@ onMounted(async () => {
         map.zoomOut()
       })
 
-      // ── 4. Tela cheia ───────────────────────────────────────────────────────────
-      const fsBtn = L.DomUtil.create('button', 'zoom-btn', container)
-      fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
-      fsBtn.title = 'Tela cheia'
+      // ── 4. Tela cheia (oculto em mobile — fullscreen API não suportada) ──────────
+      if (document.fullscreenEnabled) {
+        const fsBtn = L.DomUtil.create('button', 'zoom-btn', container)
+        fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
+        fsBtn.title = 'Tela cheia'
 
-      let sidebarWasExpanded = false
+        let sidebarWasExpanded = false
 
-      fullscreenChangeHandler = () => {
-        if (!document.fullscreenElement) {
-          fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
-          fsBtn.title = 'Tela cheia'
-          fsBtn.classList.remove('is-active')
-          if (sidebarWasExpanded) {
-            toggleSidebar()
-            sidebarWasExpanded = false
+        fullscreenChangeHandler = () => {
+          if (!document.fullscreenElement) {
+            fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
+            fsBtn.title = 'Tela cheia'
+            fsBtn.classList.remove('is-active')
+            if (sidebarWasExpanded) {
+              toggleSidebar()
+              sidebarWasExpanded = false
+            }
           }
         }
+        document.addEventListener('fullscreenchange', fullscreenChangeHandler)
+
+        L.DomEvent.on(fsBtn, 'click', (e) => {
+          L.DomEvent.stopPropagation(e)
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen?.()
+            fsBtn.innerHTML = '<i class="bi bi-arrows-angle-contract"></i>'
+            fsBtn.title = 'Sair da tela cheia'
+            fsBtn.classList.add('is-active')
+            if (!isCollapsed.value) {
+              sidebarWasExpanded = true
+              toggleSidebar()
+            }
+          } else {
+            document.exitFullscreen?.()
+          }
+        })
       }
-      document.addEventListener('fullscreenchange', fullscreenChangeHandler)
-
-      L.DomEvent.on(fsBtn, 'click', (e) => {
-        L.DomEvent.stopPropagation(e)
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen?.()
-          fsBtn.innerHTML = '<i class="bi bi-arrows-angle-contract"></i>'
-          fsBtn.title = 'Sair da tela cheia'
-          fsBtn.classList.add('is-active')
-          if (!isCollapsed.value) {
-            sidebarWasExpanded = true
-            toggleSidebar()
-          }
-        } else {
-          document.exitFullscreen?.()
-        }
-      })
 
       // ── 5. Localização GPS ──────────────────────────────────────────────────────
       let locMarker = null
