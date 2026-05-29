@@ -197,21 +197,18 @@ must use the `stroke:` prefix:
 > **all steps below must be re-run from scratch**. There is no partial update.
 > Always delete `public/tiles/insa_layers/` before re-extracting.
 
-All pipeline commands run from inside `data/`:
-
-```bash
-cd data/
-```
+Todos os comandos rodam a partir da **raiz do projeto**. Os scripts Python ficam
+em `scripts/` e resolvem os paths automaticamente via `Path(__file__).parent.parent`.
 
 ### Step 1 — Export each layer from GeoPackage to GeoJSON
 
 ```bash
 # List available layers
-ogrinfo -q dados_insa.gpkg
+ogrinfo -q data/dados_insa.gpkg
 
 # Export one layer (repeat for each)
-ogr2ogr -f GeoJSON geojson/<layer_name>.geojson \
-  dados_insa.gpkg <layer_name> \
+ogr2ogr -f GeoJSON data/geojson/<layer_name>.geojson \
+  data/dados_insa.gpkg <layer_name> \
   -t_srs EPSG:4326
 ```
 
@@ -219,32 +216,31 @@ ogr2ogr -f GeoJSON geojson/<layer_name>.geojson \
 
 ```bash
 tippecanoe \
-  -o mbtiles/insa_layers.mbtiles \
+  -o data/mbtiles/insa_layers.mbtiles \
   -z14 -Z2 \
   --no-feature-limit \
   --no-tile-size-limit \
   --extend-zooms-if-still-dropping \
   --no-tile-compression \
   --force \
-  geojson/declividade_sab_pb.geojson \
-  geojson/declividade_sab_pb_original.geojson \
-  geojson/declividade_sab_pb_pesos.geojson \
-  geojson/eto_sab_pb_original.geojson \
-  geojson/eto_sab_pb_pesos.geojson \
-  geojson/geologia_sab_pb_original.geojson \
-  geojson/geologia_sab_pb_pesos.geojson \
-  geojson/ia_sab_pb_original.geojson \
-  geojson/ia_sab_pb_pesos.geojson \
-  geojson/iqc_sab_pb.geojson \
-  geojson/iqs_sab_pb.geojson \
-  geojson/layer_styles.geojson \
-  geojson/municipios_pb_semiarido.geojson \
-  geojson/precipitacao_sab_pb_original.geojson \
-  geojson/precipitacao_sab_pb_pesos.geojson \
-  geojson/solos_tipos_sab_pb_original.geojson \
-  geojson/solos_tipos_sab_pb_pesos.geojson \
-  geojson/textura_sab_pb_original.geojson \
-  geojson/textura_sab_pb_pesos.geojson
+  data/geojson/declividade_sab_pb_original.geojson \
+  data/geojson/declividade_sab_pb_pesos.geojson \
+  data/geojson/eto_sab_pb_original.geojson \
+  data/geojson/eto_sab_pb_pesos.geojson \
+  data/geojson/geologia_sab_pb_original.geojson \
+  data/geojson/geologia_sab_pb_pesos.geojson \
+  data/geojson/ia_sab_pb_original.geojson \
+  data/geojson/ia_sab_pb_pesos.geojson \
+  data/geojson/iqc_sab_pb.geojson \
+  data/geojson/iqs_sab_pb.geojson \
+  data/geojson/layer_styles.geojson \
+  data/geojson/municipios_pb_semiarido.geojson \
+  data/geojson/precipitacao_sab_pb_original.geojson \
+  data/geojson/precipitacao_sab_pb_pesos.geojson \
+  data/geojson/solos_tipos_sab_pb_original.geojson \
+  data/geojson/solos_tipos_sab_pb_pesos.geojson \
+  data/geojson/textura_sab_pb_original.geojson \
+  data/geojson/textura_sab_pb_pesos.geojson
 ```
 
 > `layer_styles.geojson` is the QGIS style table — include it in the command but
@@ -255,14 +251,14 @@ tippecanoe \
 ### Step 3 — Delete old tiles and re-extract
 
 ```bash
-rm -rf ../public/tiles/insa_layers      # MANDATORY — never skip this
-python3 export.py                        # writes public/tiles/insa_layers/{z}/{x}/{y}.pbf
+rm -rf public/tiles/insa_layers      # MANDATORY — never skip this
+python scripts/export.py             # writes public/tiles/insa_layers/{z}/{x}/{y}.pbf
 ```
 
 ### Step 4 — Extract styles
 
 ```bash
-python3 styles.py    # writes src/assets/styles.json from layer_styles in the GeoPackage
+python scripts/styles.py    # writes src/assets/styles.json from layer_styles in the GeoPackage
 ```
 
 If a layer is styled as stroke-only in QGIS (no fill), `styles.py` will not capture it.
@@ -294,14 +290,11 @@ Add the entry manually to `src/assets/styles.json` using the `stroke:` prefix.
 ### Step 5 — Generate area statistics
 
 ```bash
-python3 stats.py    # writes src/assets/stats.json
+python scripts/stats.py    # writes src/assets/stats.json
 ```
 
 Calcula a área (km², EPSG:5880) de cada classe para todas as camadas em
 `styles.json`. Deve ser rodado sempre que `styles.json` for atualizado.
-
-> `data/stats.py` está no diretório `data/` que é gitignored. Para versionar
-> o script, adicione `!data/*.py` ao `.gitignore`.
 
 ### Required tools (macOS)
 
