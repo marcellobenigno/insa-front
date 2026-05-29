@@ -332,15 +332,15 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 .layer-main-row {
   display: flex;
   align-items: center;
-  padding: 10px;
-  gap: 12px;
+  padding: 7px 8px;
+  gap: 8px;
   cursor: pointer;
 }
 
 /* ── Botão de visibilidade ───────────────────────────────────────────────────── */
 .visibility-toggle {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   border: none;
   border-radius: 6px;
   background: var(--btn-bg);
@@ -390,8 +390,8 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 .action-btn {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border: none;
   border-radius: 4px;
   background: transparent;

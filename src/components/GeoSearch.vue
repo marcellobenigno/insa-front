@@ -16,6 +16,7 @@ const MODES = [
 const mode        = ref('address')
 const showMenu    = ref(false)
 const rootEl      = ref(null)
+const isPanelOpen = ref(true)
 const currentMode = computed(() => MODES.find(m => m.key === mode.value))
 
 // ── Estado compartilhado ───────────────────────────────────────────────────────
@@ -215,11 +216,11 @@ onUnmounted(() => {
     <!-- ── Sidebar expandida: painel completo ────────────────────────────────── -->
     <div v-else class="gs-panel">
 
-      <!-- Cabeçalho: rótulo + seletor de modo -->
+      <!-- Cabeçalho: sempre visível -->
       <div class="gs-header">
         <span class="gs-title">Busca</span>
 
-        <div class="gs-mode-wrap" :class="{ 'gs-mode-wrap--open': showMenu }">
+        <div v-if="isPanelOpen" class="gs-mode-wrap" :class="{ 'gs-mode-wrap--open': showMenu }">
           <button
             class="gs-mode-btn"
             :title="currentMode.label"
@@ -249,7 +250,20 @@ onUnmounted(() => {
             </li>
           </ul>
         </div>
+
+        <!-- Botão de toggle do painel -->
+        <button
+          class="gs-panel-toggle"
+          :title="isPanelOpen ? 'Ocultar busca' : 'Exibir busca'"
+          :aria-label="isPanelOpen ? 'Ocultar painel de busca' : 'Exibir painel de busca'"
+          @click="isPanelOpen = !isPanelOpen"
+        >
+          <i class="bi" :class="isPanelOpen ? 'bi-chevron-down' : 'bi-chevron-up'" aria-hidden="true" />
+        </button>
       </div>
+
+      <!-- ── Corpo colapsável ───────────────────────────────────────────────── -->
+      <div class="gs-collapsible" :class="{ 'gs-collapsible--closed': !isPanelOpen }">
 
       <!-- ── Modo: Endereço ──────────────────────────────────────────────────── -->
       <div v-if="mode === 'address'" class="gs-body">
@@ -429,6 +443,7 @@ onUnmounted(() => {
         </button>
       </div>
 
+      </div><!-- /gs-collapsible -->
     </div>
   </footer>
 </template>
@@ -475,7 +490,47 @@ onUnmounted(() => {
   padding: 12px;
   display: flex;
   flex-direction: column;
+}
+
+/* ── Toggle do painel ────────────────────────────────────────────────────────── */
+.gs-panel-toggle {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  padding: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.gs-panel-toggle:hover {
+  color: var(--accent);
+  background: var(--hover-overlay);
+}
+
+/* ── Corpo colapsável ────────────────────────────────────────────────────────── */
+.gs-collapsible {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  padding-top: 10px;
+  max-height: 500px;
+  overflow: hidden;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.25s ease, padding-top 0.3s ease;
+}
+
+.gs-collapsible--closed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
 }
 
 /* ── Cabeçalho ───────────────────────────────────────────────────────────────── */
