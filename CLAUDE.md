@@ -161,8 +161,7 @@ Each thematic variable has two variants: `_original` (raw values) and `_pesos` (
 
 | `sourceLayer` | Description |
 |---|---|
-| `declividade_sab_pb` | Slope (processed) |
-| `declividade_sab_pb_original` | Slope — raw values |
+| `declividade_sab_pb_original` | Slope — 6 named classes (Plano → Escarpado) |
 | `declividade_sab_pb_pesos` | Slope — weights |
 | `eto_sab_pb_original` | Evapotranspiration — raw |
 | `eto_sab_pb_pesos` | Evapotranspiration — weights |
@@ -269,15 +268,39 @@ If a layer is styled as stroke-only in QGIS (no fill), `styles.py` will not capt
 Add the entry manually to `src/assets/styles.json` using the `stroke:` prefix.
 
 > ⚠️ **`styles.py` overwrites `src/assets/styles.json` entirely.** Any manual entry
-> (such as `municipios_pb_semiarido`) will be lost after every pipeline run.
-> Always restore manual entries immediately after running `styles.py`.
+> will be lost after every pipeline run. Always restore manual entries immediately
+> after running `styles.py`.
 > Current manual entries that must be re-added:
 >
 > ```json
 > "municipios_pb_semiarido": {
 >   "Limite municipal": "stroke:#ffffff"
+> },
+> "declividade_sab_pb_original": {
+>   "Plano 0 a 3%":          "#30b000",
+>   "Suave Ondulado 3 a 8%": "#a5ff00",
+>   "Ondulado 8 a 20%":      "#ffff63",
+>   "Forte Ondulado 20 a 45%": "#fea700",
+>   "Montanhoso 45 a 75%":   "#ff4c00",
+>   "Escarpado > 75%":       "#b40000"
 > }
 > ```
+>
+> `declividade_sab_pb_original` usa chaves string com intervalos embutidos
+> ("X a Y%", "> X%"). O renderer e o `stats.py` reconhecem este formato
+> automaticamente e fazem classificação por intervalo.
+
+### Step 5 — Generate area statistics
+
+```bash
+python3 stats.py    # writes src/assets/stats.json
+```
+
+Calcula a área (km², EPSG:5880) de cada classe para todas as camadas em
+`styles.json`. Deve ser rodado sempre que `styles.json` for atualizado.
+
+> `data/stats.py` está no diretório `data/` que é gitignored. Para versionar
+> o script, adicione `!data/*.py` ao `.gitignore`.
 
 ### Required tools (macOS)
 
@@ -320,6 +343,7 @@ What the script does:
 - [ ] Re-run Step 4 (`python3 styles.py`)
 - [ ] Restore any manual entries in `src/assets/styles.json` (styles.py overwrites the file — see warning above)
 - [ ] If stroke-only, add entry manually to `src/assets/styles.json`
+- [ ] Re-run Step 5 (`python3 stats.py`) to update `src/assets/stats.json`
 
 ### Code side
 
@@ -334,6 +358,34 @@ What the script does:
 Reads `src/assets/styles.json` and paints each feature on a canvas based on its
 attribute values. When a new layer introduces field names not already listed in
 `possibleValues`, add them so the renderer can match feature values to legend colors.
+
+Suporta três modos de matching (em ordem de tentativa):
+1. **Exact string** — chave do estilo = valor do atributo como string
+2. **Numeric range** — chaves numéricas → `numVal <= limit` (classificação graduada)
+3. **Label range** — chaves string com intervalos embutidos (`"X a Y%"`, `"> X%"`)
+   → extrai limites por regex e aplica `numVal <= upper_bound`
+
+---
+
+## Statistics (`src/assets/stats.json`)
+
+Gerado por `data/stats.py`. Contém a área (km²) de cada classe para cada camada.
+Usado pelo frontend para exibir estatísticas na legenda.
+
+```json
+{
+  "layer_name": {
+    "classes": [
+      { "label": "Plano 0 a 3%", "area_km2": 9020.0, "color": "#30b000" }
+    ],
+    "total_km2": 53875.3,
+    "field_used": "classe"
+  },
+  "municipios_pb_semiarido": null
+}
+```
+
+Regenerar sempre que `styles.json` for atualizado: `python3 stats.py` (de dentro de `data/`).
 
 ---
 
