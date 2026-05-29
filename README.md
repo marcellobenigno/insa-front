@@ -57,7 +57,7 @@ src/
 ├── views/
 │   └── HomeView.vue       # layout principal
 └── assets/
-    └── styles.json        # estilos de legenda gerados por data/styles.py
+    └── styles.json        # estilos de legenda gerados por scripts/styles.py
 ```
 
 **Fluxo de dados das camadas:**
@@ -230,26 +230,22 @@ python3 --version   # Python 3.x
 
 ### Diretório de trabalho
 
-Todos os comandos a seguir devem ser executados **dentro de `data/`**:
-
-```bash
-cd data/
-```
+Todos os comandos a seguir devem ser executados da **raiz do projeto**.
 
 ### Passo 1 — Exportar camadas do GeoPackage para GeoJSON
 
 Use `ogr2ogr` para exportar **cada camada de interesse** para um arquivo GeoJSON reprojetado em WGS-84 (EPSG:4326). Um arquivo por camada:
 
 ```bash
-ogr2ogr -f GeoJSON geojson/<nome_da_camada>.geojson \
-  dados_insa.gpkg <nome_da_camada> \
+ogr2ogr -f GeoJSON data/geojson/<nome_da_camada>.geojson \
+  data/dados_insa.gpkg <nome_da_camada> \
   -t_srs EPSG:4326
 ```
 
 Para listar todas as camadas disponíveis no GeoPackage:
 
 ```bash
-ogrinfo -q dados_insa.gpkg
+ogrinfo -q data/dados_insa.gpkg
 ```
 
 > **Nota:** o arquivo `geojson/layer_styles.geojson` é gerado automaticamente ao exportar a tabela interna de estilos do QGIS. Ele deve ser incluído no comando do Tippecanoe (passo 2), mas não precisa ser cadastrado como camada na aplicação.
@@ -260,32 +256,31 @@ Este passo empacota **todos** os GeoJSONs em um único arquivo de vector tiles. 
 
 ```bash
 tippecanoe \
-  -o mbtiles/insa_layers.mbtiles \
+  -o data/mbtiles/insa_layers.mbtiles \
   -z14 -Z2 \
   --no-feature-limit \
   --no-tile-size-limit \
   --extend-zooms-if-still-dropping \
   --no-tile-compression \
   --force \
-  geojson/declividade_sab_pb.geojson \
-  geojson/declividade_sab_pb_original.geojson \
-  geojson/declividade_sab_pb_pesos.geojson \
-  geojson/eto_sab_pb_original.geojson \
-  geojson/eto_sab_pb_pesos.geojson \
-  geojson/geologia_sab_pb_original.geojson \
-  geojson/geologia_sab_pb_pesos.geojson \
-  geojson/ia_sab_pb_original.geojson \
-  geojson/ia_sab_pb_pesos.geojson \
-  geojson/iqc_sab_pb.geojson \
-  geojson/iqs_sab_pb.geojson \
-  geojson/layer_styles.geojson \
-  geojson/municipios_pb_semiarido.geojson \
-  geojson/precipitacao_sab_pb_original.geojson \
-  geojson/precipitacao_sab_pb_pesos.geojson \
-  geojson/solos_tipos_sab_pb_original.geojson \
-  geojson/solos_tipos_sab_pb_pesos.geojson \
-  geojson/textura_sab_pb_original.geojson \
-  geojson/textura_sab_pb_pesos.geojson
+  data/geojson/declividade_sab_pb_original.geojson \
+  data/geojson/declividade_sab_pb_pesos.geojson \
+  data/geojson/eto_sab_pb_original.geojson \
+  data/geojson/eto_sab_pb_pesos.geojson \
+  data/geojson/geologia_sab_pb_original.geojson \
+  data/geojson/geologia_sab_pb_pesos.geojson \
+  data/geojson/ia_sab_pb_original.geojson \
+  data/geojson/ia_sab_pb_pesos.geojson \
+  data/geojson/iqc_sab_pb.geojson \
+  data/geojson/iqs_sab_pb.geojson \
+  data/geojson/layer_styles.geojson \
+  data/geojson/municipios_pb_semiarido.geojson \
+  data/geojson/precipitacao_sab_pb_original.geojson \
+  data/geojson/precipitacao_sab_pb_pesos.geojson \
+  data/geojson/solos_tipos_sab_pb_original.geojson \
+  data/geojson/solos_tipos_sab_pb_pesos.geojson \
+  data/geojson/textura_sab_pb_original.geojson \
+  data/geojson/textura_sab_pb_pesos.geojson
 ```
 
 Flags usadas:
@@ -307,18 +302,18 @@ Flags usadas:
 
 ```bash
 # Apaga TODOS os tiles antigos
-rm -rf ../public/tiles/insa_layers
+rm -rf public/tiles/insa_layers
 
 # Reextrai do .mbtiles recém-gerado
-python3 export.py
+python scripts/export.py
 ```
 
-O script lê `mbtiles/insa_layers.mbtiles` e grava cada tile em `../public/tiles/insa_layers/{z}/{x}/{y}.pbf`, aplicando a inversão de eixo Y necessária para compatibilidade com o padrão XYZ do Leaflet.
+O script lê `data/mbtiles/insa_layers.mbtiles` e grava cada tile em `public/tiles/insa_layers/{z}/{x}/{y}.pbf`, aplicando a inversão de eixo Y necessária para compatibilidade com o padrão XYZ do Leaflet.
 
 ### Passo 4 — Extrair estilos do GeoPackage
 
 ```bash
-python3 styles.py
+python scripts/styles.py
 ```
 
 Lê a tabela `layer_styles` do GeoPackage (criada pelo QGIS ao salvar estilos), extrai as cores de preenchimento por categoria e grava em `../src/assets/styles.json`. Esse arquivo é consumido pelo componente `LayerCard.vue` para montar a legenda e por `mapRenderer.js` para colorir as feições no canvas.
@@ -369,11 +364,12 @@ Siga a checklist abaixo na ordem:
 ### 1. Dados
 
 - [ ] Adicione a camada ao `dados_insa.gpkg` no QGIS e salve o estilo
-- [ ] Exporte para GeoJSON: `ogr2ogr -f GeoJSON geojson/<camada>.geojson dados_insa.gpkg <camada> -t_srs EPSG:4326`
+- [ ] Exporte para GeoJSON: `ogr2ogr -f GeoJSON data/geojson/<camada>.geojson data/dados_insa.gpkg <camada> -t_srs EPSG:4326`
 - [ ] Adicione o novo `.geojson` ao comando do Tippecanoe no Passo 2 acima (e atualize este README)
 - [ ] Regere o `.mbtiles` (Passo 2)
-- [ ] Regere os tiles (Passo 3: `rm -rf` + `python3 export.py`)
-- [ ] Regere os estilos (Passo 4: `python3 styles.py`)
+- [ ] Regere os tiles (Passo 3: `rm -rf public/tiles/insa_layers` + `python scripts/export.py`)
+- [ ] Regere os estilos (Passo 4: `python scripts/styles.py`)
+- [ ] Regere as estatísticas (Passo 5: `python scripts/stats.py`)
 - [ ] Se a camada for stroke-only, adicione a entrada manualmente em `src/assets/styles.json`
 
 ### 2. Código
