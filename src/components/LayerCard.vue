@@ -2,6 +2,8 @@
 import { ref, computed, watch } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import stylesData from '@/assets/styles.json'
+import statsData  from '@/assets/stats.json'
+import LayerChartModal from './LayerChartModal.vue'
 
 const props = defineProps({
   layerKey:     { type: String,  required: true },
@@ -9,6 +11,7 @@ const props = defineProps({
   label:        { type: String,  required: true },
   meta:         { type: String,  default: '' },
   legend:       { type: String,  default: null },
+  sourceLayer:  { type: String,  default: '' },
   searchFields: { type: Array,   default: () => [] },
   fieldTypes:   { type: Object,  default: () => ({}) },
   descFields:   { type: Object,  default: () => ({}) },
@@ -28,6 +31,7 @@ const isVisible = computed(() =>
 const opacity = computed(() => store.layerOpacity[props.layerKey] ?? 1)
 
 const activePanel   = ref(null)
+const showChart     = ref(false)
 const searchQuery   = ref('')
 const searchOperator = ref('=')
 const selectedField  = ref(props.searchFields[0] ?? '')
@@ -39,6 +43,12 @@ const isNumericField = computed(() =>
 
 // Filtro ativo no store para esta camada
 const activeFilter = computed(() => store.layerSearchFilters?.[props.layerKey] ?? null)
+
+// Gráfico disponível se a entrada existe e tem classes
+const hasStats = computed(() => {
+  const entry = statsData[props.sourceLayer]
+  return entry != null && entry.classes?.length > 0
+})
 
 // Rótulo amigável de um campo — fallback para o próprio nome do campo
 function fieldLabel(fieldName) {
@@ -189,6 +199,16 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
           >
             <i class="bi bi-search" aria-hidden="true" />
           </button>
+
+          <button
+            v-if="hasStats"
+            class="action-btn"
+            :title="'Ver gráfico — ' + label"
+            aria-label="Ver gráfico de área"
+            @click.stop="showChart = true"
+          >
+            <i class="bi bi-bar-chart-fill" aria-hidden="true" />
+          </button>
         </template>
       </div>
     </div>
@@ -307,6 +327,13 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
       </div>
     </Transition>
   </div>
+
+  <LayerChartModal
+    v-if="showChart"
+    :source-layer="sourceLayer"
+    :label="label"
+    @close="showChart = false"
+  />
 </template>
 
 <style scoped>

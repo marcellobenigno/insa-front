@@ -209,6 +209,7 @@ const filteredLayerCount = computed(() =>
               :label="layer.label"
               :meta="layer.meta"
               :legend="layer.legend ?? null"
+              :source-layer="layer.sourceLayer ?? ''"
               :search-fields="layer.searchFields ?? []"
               :field-types="layer.fieldTypes ?? {}"
               :desc-fields="layer.descFields ?? {}"
