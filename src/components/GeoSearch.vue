@@ -189,6 +189,7 @@ function onDocClick(e) {
 
 // ── Sidebar colapsada ─────────────────────────────────────────────────────────
 function handleCollapsedClick() {
+  isPanelOpen.value = true
   toggleSidebar()
 }
 
