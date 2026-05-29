@@ -112,4 +112,10 @@ const dms = computed(() => {
   color: var(--text-dim);
   flex-shrink: 0;
 }
+
+@media (max-width: 768px) {
+  .coord-display {
+    display: none;
+  }
+}
 </style>

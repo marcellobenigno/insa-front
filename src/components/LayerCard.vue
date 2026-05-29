@@ -140,13 +140,13 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
     :class="{ 'is-active': isVisible }"
   >
     <!-- Linha Principal -->
-    <div class="layer-main-row">
+    <div class="layer-main-row" @click="toggleVisibility">
       <button
         class="visibility-toggle"
         :class="{ 'is-visible': isVisible }"
         :title="isVisible ? 'Ocultar camada' : 'Exibir camada'"
         :aria-label="isVisible ? `Ocultar ${label}` : `Exibir ${label}`"
-        @click="toggleVisibility"
+        @click.stop="toggleVisibility"
       >
         <i class="bi" :class="isVisible ? 'bi-eye-fill' : 'bi-eye-slash'" aria-hidden="true" />
       </button>
@@ -162,7 +162,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
           :class="{ 'is-panel-open': activePanel === 'opacity' }"
           title="Ajustar Opacidade"
           aria-label="Ajustar opacidade"
-          @click="togglePanel('opacity')"
+          @click.stop="togglePanel('opacity')"
         >
           <i class="bi bi-sliders" aria-hidden="true" />
         </button>
@@ -174,7 +174,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
             :class="{ 'is-panel-open': activePanel === 'legend' }"
             title="Ver Legenda"
             aria-label="Ver legenda"
-            @click="togglePanel('legend')"
+            @click.stop="togglePanel('legend')"
           >
             <i class="bi bi-palette" aria-hidden="true" />
           </button>
@@ -185,7 +185,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
             :class="{ 'is-panel-open': activePanel === 'search' }"
             title="Buscar na camada"
             aria-label="Buscar na camada"
-            @click="togglePanel('search')"
+            @click.stop="togglePanel('search')"
           >
             <i class="bi bi-search" aria-hidden="true" />
           </button>
@@ -334,6 +334,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   align-items: center;
   padding: 10px;
   gap: 12px;
+  cursor: pointer;
 }
 
 /* ── Botão de visibilidade ───────────────────────────────────────────────────── */
