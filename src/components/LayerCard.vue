@@ -274,7 +274,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
             <select
               v-if="searchFields.length > 1"
               v-model="selectedField"
-              class="form-select form-select-sm mb-2 bg-dark text-light border-secondary"
+              class="form-select form-select-sm mb-2 search-field"
             >
               <option v-for="f in searchFields" :key="f" :value="f">{{ fieldLabel(f) }}</option>
             </select>
@@ -284,7 +284,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
               <select
                 v-if="isNumericField"
                 v-model="searchOperator"
-                class="form-select form-select-sm operator-select bg-dark text-light border-secondary"
+                class="form-select form-select-sm operator-select search-field"
               >
                 <option value="=">=</option>
                 <option value=">">&gt;</option>
@@ -295,7 +295,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
               <input
                 v-model="searchQuery"
                 :type="isNumericField ? 'number' : 'text'"
-                class="form-control form-control-sm bg-dark text-light border-secondary"
+                class="form-control form-control-sm search-field"
                 :placeholder="isNumericField ? 'Valor numérico… ↵' : `Buscar em ${fieldLabel(selectedField)}… ↵`"
                 title="Pressione Enter para buscar"
                 @keyup.enter="executeSearch"
@@ -496,6 +496,20 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   min-width: 60px;
   padding: 0 4px;
   text-align: center;
+  background-image: none; /* remove Bootstrap dropdown arrow — too narrow to fit */
+}
+
+.search-field {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border-color);
+}
+
+.search-field:focus {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem var(--bg-accent-dim);
 }
 
 .filter-badge {
