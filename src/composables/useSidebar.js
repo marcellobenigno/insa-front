@@ -35,14 +35,6 @@ export function useSidebar() {
     }
   }
 
-  const initCategories = (keys) => {
-    keys.forEach(key => {
-      if (!(key in openCategories)) {
-        openCategories[key] = false
-      }
-    })
-  }
-
   return {
     isCollapsed,
     openBase,
@@ -50,6 +42,5 @@ export function useSidebar() {
     toggleSidebar,
     toggleBase,
     toggleCategory,
-    initCategories
   }
 }

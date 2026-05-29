@@ -40,7 +40,7 @@ No test suite is configured.
 | Layout / UI | Bootstrap 5 |
 | Icons | Bootstrap Icons 1.x — loaded via CDN in `index.html` (no npm package) |
 | Theming | `src/composables/useTheme.js` — dark/light toggle; `data-theme` attribute on `<html>`; persisted in `localStorage` key `insa-theme`; paleta claro baseada em gov.br (`#1351B4`) |
-| Leaflet controls | Fullscreen e Locate implementados **nativamente** dentro do `ZoomHomeControl` em `MapContainer.vue` (sem plugins de terceiros). Plugins `leaflet.fullscreen`, `leaflet.locatecontrol` instalados mas não usados — foram substituídos por implementação própria para evitar conflitos de ESM/Vite. |
+| Leaflet controls | Fullscreen, Locate, Medição e Escala implementados **nativamente** dentro do `ZoomHomeControl` em `MapContainer.vue` — sem plugins de terceiros. |
 | Linting | Oxlint + ESLint + Prettier |
 
 ---
