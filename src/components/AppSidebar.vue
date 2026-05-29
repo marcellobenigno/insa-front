@@ -24,13 +24,17 @@ function visibleCount(categoryKey) {
 // ── Filtro de camadas ──────────────────────────────────────────────────────────
 const searchTerm = ref('')
 
+function normalize(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+}
+
 const filteredCategories = computed(() => {
   if (!searchTerm.value.trim()) return store.availableCategories
-  const q = searchTerm.value.trim().toLowerCase()
+  const q = normalize(searchTerm.value.trim())
   return store.availableCategories
     .map(cat => ({
       ...cat,
-      layers: cat.layers.filter(l => l.label.toLowerCase().includes(q)),
+      layers: cat.layers.filter(l => normalize(l.label).includes(q)),
     }))
     .filter(cat => cat.layers.length > 0)
 })
