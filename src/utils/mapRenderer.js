@@ -55,7 +55,7 @@ export function getThematicColor(sourceLayer, featureProps) {
 
       if (numericKeys.length > 0) {
         const matchedLimit = numericKeys.find(limit => numVal <= limit)
-        
+
         if (matchedLimit !== undefined) {
           const originalKey = Object.keys(layerStyle).find(k => Number(k.trim()) === matchedLimit)
           if (originalKey) return layerStyle[originalKey]
@@ -63,6 +63,24 @@ export function getThematicColor(sourceLayer, featureProps) {
 
         const maxKey = Object.keys(layerStyle).find(k => Number(k.trim()) === numericKeys[numericKeys.length - 1])
         if (maxKey) return layerStyle[maxKey]
+      } else {
+        // String-labeled range classification: keys like "Plano 0 a 3%", "Escarpado > 75%"
+        const rangeKeys = Object.keys(layerStyle)
+          .filter(k => k !== 'default')
+          .map(k => {
+            const nums = k.match(/-?\d+\.?\d*/g)
+            if (!nums) return null
+            const upper = k.includes('>') ? Infinity : parseFloat(nums[nums.length - 1])
+            return { label: k, upper }
+          })
+          .filter(Boolean)
+          .sort((a, b) => a.upper - b.upper)
+
+        if (rangeKeys.length > 0) {
+          const matched = rangeKeys.find(e => numVal <= e.upper)
+          const entry = matched ?? rangeKeys[rangeKeys.length - 1]
+          return layerStyle[entry.label]
+        }
       }
     }
   }
