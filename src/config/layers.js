@@ -95,9 +95,9 @@ export const OVERLAY_CATEGORIES = {
     },
   },
 
-  // 2. Índices de Qualidade ──────────────────────────────────────────────────
+  // 2. Indicadores de Qualidade ─────────────────────────────────────────────
   indices_qualidade: {
-    label: 'Índices de Qualidade',
+    label: 'Indicadores de Qualidade',
     color: '#00d4aa',
     icon: 'bi-graph-up-arrow',
     layers: {
@@ -114,8 +114,8 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { IQS: 'Índice de Qualidade do Solo' },
       },
       iqc_sab_pb: {
-        label: 'IQC (Capacidade do Solo)',
-        meta: 'Índice de Capacidade de Carga',
+        label: 'IQC (Qualidade climática)',
+        meta: 'Índice de Qualidade Climática',
         url: VECTOR_TILES_URL,
         sourceLayer: 'iqc_sab_pb',
         zIndex: 11,
@@ -123,7 +123,7 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['IQC_Pes'],
         popUpFields:  ['IQC_Pes'],
         fieldTypes:   { IQC_Pes: 'number' },
-        descFields:   { IQC_Pes: 'Índice de Capacidade de Carga' },
+        descFields:   { IQC_Pes: 'Índice de Qualidade Climática' },
       },
     },
   },
@@ -251,14 +251,14 @@ export const OVERLAY_CATEGORIES = {
     },
   },
 
-  // 6. Agroclimatologia ──────────────────────────────────────────────────────
+  // 6. Climatologia ─────────────────────────────────────────────────────────
   agroclimatologia: {
-    label: 'Agroclimatologia',
+    label: 'Climatologia',
     color: '#3b82f6',
     icon: 'bi-cloud-rain',
     layers: {
       eto_sab_pb_original: {
-        label: 'Evapotranspiração (ETo)',
+        label: 'Evapotranspiração (ETo) (Original)',
         meta: 'Evapotranspiração de referência acumulada',
         url: VECTOR_TILES_URL,
         sourceLayer: 'eto_sab_pb_original',
@@ -283,7 +283,7 @@ export const OVERLAY_CATEGORIES = {
       },
       ia_sab_pb_original: {
         label: 'Índice de Aridez (IA)',
-        meta: 'Índice de aridez meteorológica',
+        meta: 'Índice de aridez',
         url: VECTOR_TILES_URL,
         sourceLayer: 'ia_sab_pb_original',
         zIndex: 23,
@@ -306,7 +306,7 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { IA_Pesos: 'Peso IA' },
       },
       precipitacao_sab_pb_original: {
-        label: 'Precipitação Pluviométrica',
+        label: 'Precipitação Pluviométrica (Original)',
         meta: 'Precipitação média anual acumulada',
         url: VECTOR_TILES_URL,
         sourceLayer: 'precipitacao_sab_pb_original',
