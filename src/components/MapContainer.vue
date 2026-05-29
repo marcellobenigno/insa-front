@@ -102,11 +102,17 @@ onMounted(async () => {
       fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
       fsBtn.title = 'Tela cheia'
 
+      let sidebarWasExpanded = false
+
       fullscreenChangeHandler = () => {
         if (!document.fullscreenElement) {
           fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
           fsBtn.title = 'Tela cheia'
           fsBtn.classList.remove('is-active')
+          if (sidebarWasExpanded) {
+            toggleSidebar()
+            sidebarWasExpanded = false
+          }
         }
       }
       document.addEventListener('fullscreenchange', fullscreenChangeHandler)
@@ -118,7 +124,10 @@ onMounted(async () => {
           fsBtn.innerHTML = '<i class="bi bi-arrows-angle-contract"></i>'
           fsBtn.title = 'Sair da tela cheia'
           fsBtn.classList.add('is-active')
-          if (!isCollapsed.value) toggleSidebar()
+          if (!isCollapsed.value) {
+            sidebarWasExpanded = true
+            toggleSidebar()
+          }
         } else {
           document.exitFullscreen?.()
         }
