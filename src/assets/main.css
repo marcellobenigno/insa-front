@@ -203,3 +203,19 @@ body,
   border-top: 1px solid var(--border-color);
   margin: 0;
 }
+
+/* ── Controles Leaflet nativos ───────────────────────────────────────────────── */
+
+/* Barra de escala */
+.leaflet-control-scale-line {
+  background: var(--bg-card);
+  border-color: var(--text-dim);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  border-radius: 0 0 4px 4px;
+}
+
+[data-theme="light"] .leaflet-control-scale-line {
+  background: #fff;
+}

@@ -16,13 +16,23 @@ import { getThematicColor, drawGeometryToContext, parseColor, matchesFilter } fr
 import { createPopupContent } from '@/utils/mapPopup'
 
 const mapStore = useMapStore()
-const { isCollapsed } = useSidebar()
+const { isCollapsed, toggleSidebar } = useSidebar()
 const mapEl = ref(null)
 
 let map = null
 let currentTileLayer = null
 let searchMarker = null
+let fullscreenChangeHandler = null
 const activeOverlays = new Map()
+
+// Estado de medição nativa
+let measureMode = false
+let measureClosed = false
+let measurePoints = []
+let measurePolyline = null
+let measureDotLayers = []
+let measureTooltip = null
+let measureBtnRef = null
 
 const paraibaBounds = [
   [-8.3, -38.76],
@@ -55,42 +65,143 @@ onMounted(async () => {
   map.options.maxBoundsViscosity = 1.0  // torna os bounds rígidos (sem elástico)
 
 
-  // Controle de zoom + home unificado
-const ZoomHomeControl = L.Control.extend({
-  onAdd(map) {
-    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control zoom-home-control')
+  // Controle unificado: Fullscreen + Locate + Zoom + Home
+  const ZoomHomeControl = L.Control.extend({
+    onAdd(map) {
+      const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control zoom-home-control')
 
-    // Botão zoom +
-    const zoomIn = L.DomUtil.create('button', 'zoom-btn', container)
-    zoomIn.innerHTML = '<i class="bi bi-plus"></i>'
-    zoomIn.title = 'Aproximar'
-    L.DomEvent.on(zoomIn, 'click', (e) => {
-      L.DomEvent.stopPropagation(e)
-      map.zoomIn()
-    })
+      // ── 1. Zoom In ──────────────────────────────────────────────────────────────
+      const zoomIn = L.DomUtil.create('button', 'zoom-btn', container)
+      zoomIn.innerHTML = '<i class="bi bi-plus"></i>'
+      zoomIn.title = 'Aproximar'
+      L.DomEvent.on(zoomIn, 'click', (e) => {
+        L.DomEvent.stopPropagation(e)
+        map.zoomIn()
+      })
 
-    // Botão home
-    const home = L.DomUtil.create('button', 'zoom-btn home-btn', container)
-    home.innerHTML = '<i class="bi bi-fullscreen"></i>'
-    home.title = 'Voltar à visão inicial'
-    L.DomEvent.on(home, 'click', (e) => {
-      L.DomEvent.stopPropagation(e)
-      map.fitBounds(paraibaBounds)
-    })
+      // ── 2. Home ─────────────────────────────────────────────────────────────────
+      const home = L.DomUtil.create('button', 'zoom-btn home-btn', container)
+      home.innerHTML = '<i class="bi bi-house"></i>'
+      home.title = 'Voltar à visão inicial'
+      L.DomEvent.on(home, 'click', (e) => {
+        L.DomEvent.stopPropagation(e)
+        map.fitBounds(paraibaBounds)
+      })
 
-    // Botão zoom -
-    const zoomOut = L.DomUtil.create('button', 'zoom-btn', container)
-    zoomOut.innerHTML = '<i class="bi bi-dash"></i>'
-    zoomOut.title = 'Afastar'
-    L.DomEvent.on(zoomOut, 'click', (e) => {
-      L.DomEvent.stopPropagation(e)
-      map.zoomOut()
-    })
+      // ── 3. Zoom Out ─────────────────────────────────────────────────────────────
+      const zoomOut = L.DomUtil.create('button', 'zoom-btn', container)
+      zoomOut.innerHTML = '<i class="bi bi-dash"></i>'
+      zoomOut.title = 'Afastar'
+      L.DomEvent.on(zoomOut, 'click', (e) => {
+        L.DomEvent.stopPropagation(e)
+        map.zoomOut()
+      })
 
-    return container
-  }
-})
-new ZoomHomeControl({ position: 'topleft' }).addTo(map)
+      // ── 4. Tela cheia ───────────────────────────────────────────────────────────
+      const fsBtn = L.DomUtil.create('button', 'zoom-btn', container)
+      fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
+      fsBtn.title = 'Tela cheia'
+
+      fullscreenChangeHandler = () => {
+        if (!document.fullscreenElement) {
+          fsBtn.innerHTML = '<i class="bi bi-arrows-angle-expand"></i>'
+          fsBtn.title = 'Tela cheia'
+          fsBtn.classList.remove('is-active')
+        }
+      }
+      document.addEventListener('fullscreenchange', fullscreenChangeHandler)
+
+      L.DomEvent.on(fsBtn, 'click', (e) => {
+        L.DomEvent.stopPropagation(e)
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen?.()
+          fsBtn.innerHTML = '<i class="bi bi-arrows-angle-contract"></i>'
+          fsBtn.title = 'Sair da tela cheia'
+          fsBtn.classList.add('is-active')
+          if (!isCollapsed.value) toggleSidebar()
+        } else {
+          document.exitFullscreen?.()
+        }
+      })
+
+      // ── 5. Localização GPS ──────────────────────────────────────────────────────
+      let locMarker = null
+      let locCircle = null
+      const locBtn = L.DomUtil.create('button', 'zoom-btn', container)
+      locBtn.innerHTML = '<i class="bi bi-crosshair"></i>'
+      locBtn.title = 'Minha localização'
+
+      L.DomEvent.on(locBtn, 'click', (e) => {
+        L.DomEvent.stopPropagation(e)
+        if (locMarker) {
+          map.removeLayer(locMarker)
+          if (locCircle) map.removeLayer(locCircle)
+          locMarker = null
+          locCircle = null
+          locBtn.innerHTML = '<i class="bi bi-crosshair"></i>'
+          locBtn.title = 'Minha localização'
+          locBtn.classList.remove('is-active')
+          return
+        }
+        if (!navigator.geolocation) {
+          locBtn.title = 'Geolocalização não suportada'
+          return
+        }
+        locBtn.innerHTML = '<i class="bi bi-arrow-repeat loc-spinner"></i>'
+        locBtn.title = 'Localizando…'
+
+        navigator.geolocation.getCurrentPosition(
+          ({ coords: { latitude: lat, longitude: lng, accuracy } }) => {
+            locBtn.innerHTML = '<i class="bi bi-crosshair2"></i>'
+            locBtn.title = 'Remover localização'
+            locBtn.classList.add('is-active')
+
+            locMarker = L.circleMarker([lat, lng], {
+              radius: 8, fillColor: 'var(--accent)',
+              color: '#fff', weight: 2.5, fillOpacity: 1,
+            }).addTo(map)
+
+            locCircle = L.circle([lat, lng], {
+              radius: accuracy, color: 'var(--accent)',
+              fillColor: 'var(--accent)', fillOpacity: 0.1, weight: 1,
+            }).addTo(map)
+
+            map.flyTo([lat, lng], 13, { duration: 1 })
+          },
+          (err) => {
+            locBtn.innerHTML = '<i class="bi bi-crosshair"></i>'
+            locBtn.title = 'Localização não disponível'
+            console.warn('[Locate]', err.message)
+          },
+          { enableHighAccuracy: true, timeout: 10000 },
+        )
+      })
+
+      // ── 6. Medição ──────────────────────────────────────────────────────────────
+      const measBtn = L.DomUtil.create('button', 'zoom-btn', container)
+      measBtn.innerHTML = '<i class="bi bi-rulers"></i>'
+      measBtn.title = 'Medir distância / área'
+      measureBtnRef = measBtn
+
+      L.DomEvent.on(measBtn, 'click', (e) => {
+        L.DomEvent.stopPropagation(e)
+        if (measureMode || measurePoints.length > 0) {
+          clearMeasure()
+        } else {
+          measureMode = true
+          measBtn.classList.add('is-active')
+          measBtn.title = 'Cancelar medição'
+          map.getContainer().style.cursor = 'crosshair'
+        }
+      })
+
+      return container
+    },
+  })
+  new ZoomHomeControl({ position: 'topleft' }).addTo(map)
+
+  // Barra de escala (nativo Leaflet)
+  L.control.scale({ imperial: false, position: 'bottomright' }).addTo(map)
 
   renderTileLayer()
   syncVectorOverlays(mapStore.visibleOverlays)
@@ -103,6 +214,11 @@ new ZoomHomeControl({ position: 'topleft' }).addTo(map)
 })
 
 onUnmounted(() => {
+  clearMeasure()
+  if (fullscreenChangeHandler) {
+    document.removeEventListener('fullscreenchange', fullscreenChangeHandler)
+    fullscreenChangeHandler = null
+  }
   if (map) {
     map.off('click', handleMapClick)
     map.remove()
@@ -120,6 +236,111 @@ function makeSearchIcon() {
     iconAnchor: [14, 36],
     popupAnchor:[0, -36],
   })
+}
+
+// ── Medição nativa ────────────────────────────────────────────────────────────
+function formatDist(m) {
+  return m >= 1000 ? `${(m / 1000).toFixed(2)} km` : `${Math.round(m)} m`
+}
+
+function formatArea(m2) {
+  if (m2 >= 1_000_000) return `${(m2 / 1_000_000).toFixed(2)} km²`
+  if (m2 >= 10_000)    return `${(m2 / 10_000).toFixed(2)} ha`
+  return `${Math.round(m2)} m²`
+}
+
+function calcTotalDist() {
+  let d = 0
+  for (let i = 1; i < measurePoints.length; i++)
+    d += measurePoints[i - 1].distanceTo(measurePoints[i])
+  return d
+}
+
+function calcArea() {
+  // Exclui o ponto de fechamento (repetido) antes de calcular
+  const pts = measureClosed ? measurePoints.slice(0, -1) : measurePoints
+  const n = pts.length
+  if (n < 3) return 0
+  const toRad = Math.PI / 180
+  const R = 6_371_000
+  const lat0 = pts[0].lat * toRad
+  let area = 0
+  for (let i = 0; i < n; i++) {
+    const j = (i + 1) % n
+    area += pts[i].lng * pts[j].lat
+    area -= pts[j].lng * pts[i].lat
+  }
+  return Math.abs(area / 2) * toRad * toRad * R * R * Math.cos(lat0)
+}
+
+function updateMeasureTooltip() {
+  if (measureTooltip) map.removeLayer(measureTooltip)
+  if (measurePoints.length < 2) return
+  const last = measurePoints[measurePoints.length - 1]
+  const dist = calcTotalDist()
+  const area = calcArea()
+  const html = `<div class="meas-tip">
+    <span>📏 ${formatDist(dist)}</span>
+    ${measureClosed && area > 0 ? `<span>📐 ${formatArea(area)}</span>` : ''}
+  </div>`
+  measureTooltip = L.tooltip({ permanent: true, direction: 'right', className: 'meas-tooltip', offset: [10, 0] })
+    .setLatLng(last).setContent(html).addTo(map)
+}
+
+function clearMeasure() {
+  measureMode = false
+  measureClosed = false
+  measurePoints = []
+  if (measurePolyline) { map?.removeLayer(measurePolyline); measurePolyline = null }
+  measureDotLayers.forEach(l => map?.removeLayer(l))
+  measureDotLayers = []
+  if (measureTooltip) { map?.removeLayer(measureTooltip); measureTooltip = null }
+  if (measureBtnRef) {
+    measureBtnRef.classList.remove('is-active')
+    measureBtnRef.title = 'Medir distância / área'
+    measureBtnRef.innerHTML = '<i class="bi bi-rulers"></i>'
+  }
+  if (map) map.getContainer().style.cursor = ''
+}
+
+function addMeasurePoint(latlng) {
+  // Detecta fechamento: clique dentro de 15px do primeiro ponto (≥ 3 pontos)
+  if (measurePoints.length >= 3) {
+    const firstPx = map.latLngToContainerPoint(measurePoints[0])
+    const clickPx = map.latLngToContainerPoint(latlng)
+    if (firstPx.distanceTo(clickPx) <= 15) {
+      measurePoints.push(measurePoints[0]) // fecha o polígono
+      measureClosed = true
+      measureMode = false
+      map.getContainer().style.cursor = ''
+      if (measureBtnRef) {
+        measureBtnRef.classList.remove('is-active')
+        measureBtnRef.title = 'Limpar medição'
+      }
+      // Redesenha como linha sólida fechada
+      if (measurePolyline) map.removeLayer(measurePolyline)
+      measurePolyline = L.polyline(measurePoints, {
+        color: 'var(--accent)', weight: 2,
+      }).addTo(map)
+      updateMeasureTooltip()
+      return
+    }
+  }
+
+  measurePoints.push(latlng)
+
+  const dot = L.circleMarker(latlng, {
+    radius: 4, fillColor: 'var(--accent)', color: '#fff', weight: 2, fillOpacity: 1,
+  }).addTo(map)
+  measureDotLayers.push(dot)
+
+  if (measurePolyline) map.removeLayer(measurePolyline)
+  if (measurePoints.length > 1) {
+    measurePolyline = L.polyline(measurePoints, {
+      color: 'var(--accent)', weight: 2, dashArray: '6 4',
+    }).addTo(map)
+  }
+  updateMeasureTooltip()
 }
 
 // ── 1. Gerenciamento do Mapa de Fundo ──────────────────────────────────────────
@@ -269,6 +490,8 @@ function syncVectorOverlays(desired) {
 
 // ── 3. Identificação Unificada Multicamadas (Corrigida) ───────
 async function handleMapClick(e) {
+  if (measureMode) { addMeasurePoint(e.latlng); return }
+
   const zoom = map.getZoom()
   const point = map.project(e.latlng, zoom)
   const layerPoint = point.divideBy(256).floor()
@@ -495,6 +718,11 @@ watch(
   color: var(--accent);
 }
 
+:deep(.zoom-btn.is-active) {
+  color: var(--text-on-accent);
+  background: var(--accent);
+}
+
 :deep(.home-btn) {
   font-size: 0.9rem;
   color: var(--text-dim);
@@ -504,6 +732,37 @@ watch(
 
 :deep(.home-btn:hover) {
   color: var(--accent);
+}
+
+:deep(.loc-spinner) {
+  display: inline-block;
+  animation: loc-spin 0.8s linear infinite;
+}
+
+@keyframes loc-spin { to { transform: rotate(360deg); } }
+
+/* ── Tooltip de medição ──────────────────────────────────────────────────────── */
+:deep(.meas-tooltip) {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+}
+
+:deep(.meas-tooltip::before) {
+  border-right-color: var(--border-color);
+}
+
+:deep(.meas-tip) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--text-main);
+  white-space: nowrap;
 }
 
 /* ── Marcador de busca geoespacial ───────────────────────────────────────────── */

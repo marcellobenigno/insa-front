@@ -59,6 +59,7 @@ const filteredLayerCount = computed(() =>
       </div>
       <div class="header-actions">
         <button
+          v-show="!isCollapsed"
           class="toggle-btn"
           :title="isDark ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
           :aria-label="isDark ? 'Ativar tema claro' : 'Ativar tema escuro'"
