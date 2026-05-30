@@ -221,7 +221,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
         <div v-if="activePanel === 'opacity'" class="panel-content">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <label class="panel-label">Opacidade</label>
-            <span class="badge bg-dark">{{ Math.round(opacity * 100) }}%</span>
+            <span class="badge opacity-value-badge">{{ Math.round(opacity * 100) }}%</span>
           </div>
           <input
             type="range"
@@ -565,6 +565,11 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   border: 1px solid rgba(248, 113, 113, 0.35);
   font-size: 0.75rem;
   color: #f87171;
+}
+
+.opacity-value-badge {
+  background: var(--btn-bg);
+  color: var(--text-main);
 }
 
 .btn-clear-search {
