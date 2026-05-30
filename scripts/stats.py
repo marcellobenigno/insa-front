@@ -7,8 +7,7 @@ import fiona
 import geopandas as gpd
 import pandas as pd
 
-# Paths resolvidos relativamente à localização deste script (scripts/)
-BASE_DIR    = Path(__file__).parent.parent           # raiz do projeto
+BASE_DIR    = Path(__file__).parent.parent
 GPKG        = BASE_DIR / "data" / "dados_insa.gpkg"
 STYLES_JSON = BASE_DIR / "src" / "assets" / "styles.json"
 OUTPUT_JSON = BASE_DIR / "src" / "assets" / "stats.json"
@@ -108,19 +107,12 @@ def parse_label_bounds(keys):
     return result if len(result) == len(keys) else None
 
 
-def color_for_exact_value(val, layer_styles, expected_floats):
-    str_val = str(val)
-    if str_val in layer_styles:
-        return layer_styles[str_val]
-    if expected_floats:
-        try:
-            val_f = float(val)
-            for k, kf in expected_floats.items():
-                if abs(val_f - kf) < FLOAT_TOL:
-                    return layer_styles[k]
-        except (ValueError, TypeError):
-            pass
-    return None
+def _fill_missing(classes, layer_styles):
+    """Append 0-area entries for style keys absent from computed classes."""
+    found = {c["label"] for c in classes}
+    for key, color in layer_styles.items():
+        if key not in found and not color.startswith("stroke:"):
+            classes.append({"label": key, "area_km2": 0.0, "color": color})
 
 
 def compute_stats(layer_name, layer_styles):
@@ -129,27 +121,40 @@ def compute_stats(layer_name, layer_styles):
     all_numeric = len(expected_floats) == len(expected_keys)
 
     gdf = gpd.read_file(GPKG, layer=layer_name)
+    gdf = gdf.to_crs(TARGET_CRS)
 
-    field, _, n_unique = find_exact_field(gdf, expected_keys)
-    if field is not None and all_numeric and n_unique > len(expected_keys) * 2:
+    field, field_score, n_unique = find_exact_field(gdf, expected_keys)
+    # score < 1.0: partial match may be coincidental in a continuous field; redirect to range path
+    if field is not None and all_numeric and field_score < 1.0 and n_unique > len(expected_keys) * 2:
         field = None
 
     if field is not None:
-        gdf_proj = gdf.to_crs(TARGET_CRS)
-        gdf_proj = gdf_proj.assign(_area_km2=gdf_proj.geometry.area / 1e6)
-        grouped = gdf_proj.groupby(field)["_area_km2"].sum()
+        if pd.api.types.is_numeric_dtype(gdf[field]):
+            def normalizar_chave(val):
+                try:
+                    vf = float(val)
+                    for k, kf in expected_floats.items():
+                        if abs(vf - kf) < FLOAT_TOL:
+                            return k
+                except (ValueError, TypeError):
+                    pass
+                return str(val)
+            col = gdf[field].apply(normalizar_chave)
+        else:
+            col = gdf[field].fillna("Não Informado").astype(str).str.strip()
+
+        gdf_d = gdf.assign(_class=col).dissolve(by="_class", as_index=False)
+        gdf_d["_area_km2"] = gdf_d.geometry.area / 1e6
 
         classes = []
-        for val, area in grouped.items():
-            color = color_for_exact_value(val, layer_styles, expected_floats)
+        for _, row in gdf_d.iterrows():
+            key = row["_class"]
+            color = layer_styles.get(key)
             if color is None:
                 continue
-            classes.append({
-                "label": str(val),
-                "area_km2": round(float(area), 1),
-                "color": color,
-            })
+            classes.append({"label": key, "area_km2": round(float(row["_area_km2"]), 1), "color": color})
 
+        _fill_missing(classes, layer_styles)
         classes.sort(key=lambda x: x["area_km2"], reverse=True)
         total_km2 = round(sum(c["area_km2"] for c in classes), 1)
         return {"classes": classes, "total_km2": total_km2, "field_used": field}, None
@@ -171,31 +176,24 @@ def compute_stats(layer_name, layer_styles):
     if field is None:
         return None, "nenhum campo numérico com intervalo compatível encontrado"
 
-    gdf_proj = gdf.to_crs(TARGET_CRS)
-    gdf_proj = gdf_proj.assign(_area_km2=gdf_proj.geometry.area / 1e6)
-    gdf_proj["_class"] = gdf_proj[field].apply(
-        lambda v: assign_range_class(v, sorted_bounds) if pd.notna(v) else None
+    gdf = gdf.assign(
+        _class=gdf[field].apply(
+            lambda v: bounds_map[assign_range_class(v, sorted_bounds)] if pd.notna(v) else None
+        )
     )
-
-    grouped = gdf_proj.dropna(subset=["_class"]).groupby("_class")["_area_km2"].sum()
+    gdf_d = gdf.dropna(subset=["_class"]).dissolve(by="_class", as_index=False)
+    gdf_d["_area_km2"] = gdf_d.geometry.area / 1e6
 
     classes = []
-    for boundary, area in grouped.items():
-        key = bounds_map[boundary]
+    for _, row in gdf_d.iterrows():
+        key = row["_class"]
         color = layer_styles[key]
-        classes.append({
-            "label": key,
-            "area_km2": round(float(area), 1),
-            "color": color,
-        })
+        classes.append({"label": key, "area_km2": round(float(row["_area_km2"]), 1), "color": color})
 
+    _fill_missing(classes, layer_styles)
     classes.sort(key=lambda x: x["area_km2"], reverse=True)
     total_km2 = round(sum(c["area_km2"] for c in classes), 1)
-    return {
-        "classes": classes,
-        "total_km2": total_km2,
-        "field_used": field,
-    }, None
+    return {"classes": classes, "total_km2": total_km2, "field_used": field}, None
 
 
 def main():

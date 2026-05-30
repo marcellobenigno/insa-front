@@ -9,7 +9,7 @@
       },
       {
         "label": "1.71999999999999997",
-        "area_km2": 18361.5,
+        "area_km2": 18361.4,
         "color": "#960d00"
       },
       {
@@ -28,14 +28,14 @@
         "color": "#005400"
       }
     ],
-    "total_km2": 53248.7,
+    "total_km2": 53248.6,
     "field_used": "IQS"
   },
   "declividade_sab_pb": null,
   "declividade_sab_pb_pesos": {
     "classes": [
       {
-        "label": "1.3",
+        "label": "1.30000000000000004",
         "area_km2": 21100.3,
         "color": "#c6a86c"
       },
@@ -45,17 +45,17 @@
         "color": "#7a8624"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 14656.9,
         "color": "#f6f6d3"
       },
       {
-        "label": "1.8",
+        "label": "1.80000000000000004",
         "area_km2": 856.3,
         "color": "#de4000"
       },
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 66.3,
         "color": "#610004"
       }
@@ -324,6 +324,21 @@
         "label": "Arenito, Conglomerado",
         "area_km2": 12.7,
         "color": "#fed976"
+      },
+      {
+        "label": "Anfibolito, Paragnaisse, Quartzito, Xisto",
+        "area_km2": 0.0,
+        "color": "#ffeda0"
+      },
+      {
+        "label": "Calcarenito, Calcario, Fosforito",
+        "area_km2": 0.0,
+        "color": "#fed976"
+      },
+      {
+        "label": "Fonolito, Riolito",
+        "area_km2": 0.0,
+        "color": "#feb24c"
       }
     ],
     "total_km2": 53528.0,
@@ -332,12 +347,12 @@
   "geologia_sab_pb_pesos": {
     "classes": [
       {
-        "label": "1.3",
+        "label": "1.30000000000000004",
         "area_km2": 24634.5,
         "color": "#b3844a"
       },
       {
-        "label": "1.8",
+        "label": "1.80000000000000004",
         "area_km2": 9408.7,
         "color": "#ab4d00"
       },
@@ -347,12 +362,12 @@
         "color": "#e37716"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 8423.6,
         "color": "#e2c590"
       },
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 1737.2,
         "color": "#76440b"
       }
@@ -446,6 +461,26 @@
         "label": "Neossolo quartzaranico Artico",
         "area_km2": 0.0,
         "color": "#e64900"
+      },
+      {
+        "label": "Argilossolo vermelho-amarelo Distrofico",
+        "area_km2": 0.0,
+        "color": "#ffdd93"
+      },
+      {
+        "label": "Espodossolo ferrocarbico Hidromorfico",
+        "area_km2": 0.0,
+        "color": "#e6c3a1"
+      },
+      {
+        "label": "Gleissolo salico Sodido",
+        "area_km2": 0.0,
+        "color": "#e4ab72"
+      },
+      {
+        "label": "Massa Dagua Costeira - Mar Territorial, 12 milhas",
+        "area_km2": 0.0,
+        "color": "#b3551b"
       }
     ],
     "total_km2": 53967.8,
@@ -454,22 +489,22 @@
   "solos_tipos_sab_pb_pesos": {
     "classes": [
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 27162.9,
         "color": "#b3562b"
       },
       {
-        "label": "1.7",
+        "label": "1.69999999999999996",
         "area_km2": 24917.4,
         "color": "#d79867"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 1744.7,
         "color": "#ffffc2"
       },
       {
-        "label": "1.3",
+        "label": "1.30000000000000004",
         "area_km2": 142.8,
         "color": "#d78022"
       }
@@ -501,17 +536,17 @@
   "textura_sab_pb_pesos": {
     "classes": [
       {
-        "label": "1.6",
+        "label": "1.60000000000000009",
         "area_km2": 30015.4,
         "color": "#bd9857"
       },
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 12866.9,
         "color": "#97621c"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 11085.5,
         "color": "#d5bb87"
       }
@@ -553,7 +588,7 @@
   "eto_sab_pb_pesos": {
     "classes": [
       {
-        "label": "1.8",
+        "label": "1.80000000000000004",
         "area_km2": 20192.9,
         "color": "#eda334"
       },
@@ -563,17 +598,17 @@
         "color": "#ffffbf"
       },
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 11211.0,
         "color": "#cc540a"
       },
       {
-        "label": "1.2",
+        "label": "1.19999999999999996",
         "area_km2": 7387.6,
         "color": "#9be185"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 132.0,
         "color": "#0a9346"
       }
@@ -585,22 +620,37 @@
     "classes": [
       {
         "label": "0.5",
-        "area_km2": 46341.9,
+        "area_km2": 46341.5,
         "color": "#aaddbd"
       },
       {
         "label": "0.65000000000000002",
         "area_km2": 5521.2,
         "color": "#2b83ba"
+      },
+      {
+        "label": "0",
+        "area_km2": 0.0,
+        "color": "#e47893"
+      },
+      {
+        "label": "0.03",
+        "area_km2": 0.0,
+        "color": "#fdcb6f"
+      },
+      {
+        "label": "0.20000000000000001",
+        "area_km2": 0.0,
+        "color": "#ffffbf"
       }
     ],
-    "total_km2": 51863.1,
+    "total_km2": 51862.7,
     "field_used": "IA_climat"
   },
   "ia_sab_pb_pesos": {
     "classes": [
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 48117.3,
         "color": "#e4785a"
       },
@@ -610,7 +660,7 @@
         "color": "#fdcb6f"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 1160.9,
         "color": "#2b83ba"
       }
@@ -683,7 +733,7 @@
   "precipitacao_sab_pb_pesos": {
     "classes": [
       {
-        "label": "1.2",
+        "label": "1.19999999999999996",
         "area_km2": 31255.9,
         "color": "#abdda4"
       },
@@ -693,12 +743,12 @@
         "color": "#fdae61"
       },
       {
-        "label": "1.0",
+        "label": "1",
         "area_km2": 1234.1,
         "color": "#2b83ba"
       },
       {
-        "label": "2.0",
+        "label": "2",
         "area_km2": 253.8,
         "color": "#d7191c"
       }
@@ -710,7 +760,7 @@
     "classes": [
       {
         "label": "Suave Ondulado 3 a 8%",
-        "area_km2": 24214.2,
+        "area_km2": 24214.1,
         "color": "#a5ff00"
       },
       {
@@ -739,7 +789,7 @@
         "color": "#b40000"
       }
     ],
-    "total_km2": 53875.3,
+    "total_km2": 53875.2,
     "field_used": "classe"
   }
 }

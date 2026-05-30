@@ -379,6 +379,10 @@ Usado pelo frontend para exibir estatísticas na legenda.
 }
 ```
 
+Todas as classes definidas em `styles.json` aparecem no array `classes`, mesmo que
+`area_km2` seja `0.0` (classe presente no estilo mas sem polígonos no recorte PB).
+Isso garante que o gráfico do frontend exiba o mesmo número de barras que a legenda.
+
 Regenerar sempre que `styles.json` for atualizado: `python scripts/stats.py`.
 
 ---
