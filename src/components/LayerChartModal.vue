@@ -109,10 +109,6 @@ onUnmounted(() => {
         <div class="chart-header">
           <div>
             <div class="chart-title">{{ label }}</div>
-            <div class="chart-subtitle">
-              Área total:
-              {{ totalKm2.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) }} km²
-            </div>
           </div>
           <button class="chart-close" aria-label="Fechar" @click="emit('close')">
             <i class="bi bi-x-lg" />
