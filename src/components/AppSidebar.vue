@@ -128,7 +128,11 @@ const filteredLayerCount = computed(() =>
       <div class="section-divider" v-show="!isCollapsed">
         <span class="divider-text">Análise Temática</span>
         <div class="divider-actions">
-          <span class="badge overlay-count-badge" :class="{ 'is-filtered': searchTerm }">
+          <span
+            v-if="store.activeOverlayCount > 0"
+            class="badge rounded-pill bg-accent-dim text-accent me-1"
+          >{{ store.activeOverlayCount }}</span>
+          <span class="text-muted small">
             <template v-if="searchTerm">{{ filteredLayerCount }} de </template>{{ store.availableOverlays.length }}
           </span>
           <Transition name="clear-btn">
@@ -466,21 +470,6 @@ const filteredLayerCount = computed(() =>
 }
 
 .layer-search-clear:hover { color: var(--text-main); }
-
-/* ── Badge de contagem de camadas ────────────────────────────────────────────── */
-.overlay-count-badge {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-main);
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.overlay-count-badge.is-filtered {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--bg-accent-dim);
-}
 
 /* ── Limpar camadas ──────────────────────────────────────────────────────────── */
 .divider-actions {
