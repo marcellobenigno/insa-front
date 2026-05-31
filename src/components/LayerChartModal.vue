@@ -142,7 +142,7 @@ onUnmounted(() => {
 
         <!-- Footer -->
         <div class="chart-footer">
-          <button class="btn btn-sm btn-secondary" @click="emit('close')">Fechar</button>
+          <button class="chart-close-btn" @click="emit('close')">Fechar</button>
         </div>
       </div>
     </div>
@@ -154,8 +154,10 @@ onUnmounted(() => {
 .chart-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 1055;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 /* ── Wrapper de posicionamento ───────────────────────────────────────────────── */
@@ -178,10 +180,10 @@ onUnmounted(() => {
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  border-radius: 12px;
-  background: var(--bg-card);
+  border-radius: 18px;
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-lg);
+  box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
   color: var(--text-main);
   overflow: hidden;
 }
@@ -189,54 +191,56 @@ onUnmounted(() => {
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 .chart-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 16px 20px 14px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
 }
 
 .chart-title {
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.374px;
   color: var(--text-main);
-  line-height: 1.3;
-}
-
-.chart-subtitle {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-top: 3px;
+  line-height: 1.24;
 }
 
 .chart-close {
-  background: transparent;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   border: none;
+  background: var(--btn-bg);
   color: var(--text-muted);
   cursor: pointer;
-  padding: 2px 4px;
-  font-size: 1rem;
-  line-height: 1;
-  border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   flex-shrink: 0;
   margin-left: 12px;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
 }
 
 .chart-close:hover {
-  color: var(--text-main);
   background: var(--btn-bg-hover);
+  color: var(--text-main);
+}
+
+.chart-close:active {
+  transform: scale(0.92);
 }
 
 /* ── Body ────────────────────────────────────────────────────────────────────── */
 .chart-body {
-  padding: 16px 20px;
+  padding: 20px 24px;
   overflow-y: auto;
   flex: 1;
 }
 
 .chart-canvas-wrap {
-  height: 300px;
+  height: 280px;
   position: relative;
   margin-bottom: 20px;
 }
@@ -244,29 +248,31 @@ onUnmounted(() => {
 /* ── Legenda ─────────────────────────────────────────────────────────────────── */
 .chart-legend {
   border-top: 1px solid var(--border-color);
-  padding-top: 12px;
+  padding-top: 14px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .legend-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
 }
 
 .legend-dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .legend-label {
   flex: 1;
-  font-size: 0.78rem;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.224px;
   color: var(--text-main);
   white-space: nowrap;
   overflow: hidden;
@@ -275,28 +281,48 @@ onUnmounted(() => {
 }
 
 .legend-area {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--text-muted);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .legend-pct {
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
   flex-shrink: 0;
-  min-width: 52px;
+  min-width: 48px;
   text-align: right;
 }
 
 /* ── Footer ──────────────────────────────────────────────────────────────────── */
 .chart-footer {
-  padding: 12px 20px;
+  padding: 14px 24px;
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
   flex-shrink: 0;
+}
+
+.chart-close-btn {
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+
+.chart-close-btn:hover {
+  background: var(--bg-accent-dim);
+}
+
+.chart-close-btn:active {
+  transform: scale(0.97);
 }
 </style>

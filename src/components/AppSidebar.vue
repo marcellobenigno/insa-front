@@ -239,7 +239,6 @@ const filteredLayerCount = computed(() =>
   flex-direction: column;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border-color);
-  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
   transition: width var(--transition-speed) ease-in-out;
 }
 
@@ -266,8 +265,8 @@ const filteredLayerCount = computed(() =>
 
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 .sidebar-header {
-  height: 64px;
-  padding: 0 16px;
+  height: 52px;
+  padding: 0 14px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -278,25 +277,27 @@ const filteredLayerCount = computed(() =>
 .brand-wrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
 }
 
 .brand-logo {
-  width: 32px;
-  height: 32px;
-  font-size: 1.2rem;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 13px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  color: var(--text-on-accent);
 }
 
 .brand-name {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
   color: var(--text-main);
   white-space: nowrap;
 }
@@ -306,30 +307,38 @@ const filteredLayerCount = computed(() =>
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .toggle-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
   background: var(--btn-bg);
   color: var(--text-muted);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .toggle-btn:hover {
-  background: var(--accent);
-  color: var(--text-on-accent);
+  background: var(--btn-bg-hover);
+  color: var(--text-main);
+}
+
+.toggle-btn:active {
+  transform: scale(0.95);
 }
 
 /* ── Conteúdo ────────────────────────────────────────────────────────────────── */
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
-  padding: 12px 0;
+  padding: 8px 0;
 }
 
 .sidebar-content::-webkit-scrollbar       { width: 4px; }
@@ -337,30 +346,30 @@ const filteredLayerCount = computed(() =>
 .sidebar-content::-webkit-scrollbar-thumb  { background: var(--border-color); border-radius: 10px; }
 
 .section-divider {
-  padding: 24px 16px 8px;
+  padding: 20px 16px 6px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 1px;
   color: var(--text-dim);
 }
 
 /* ── Categorias ──────────────────────────────────────────────────────────────── */
 .category-block {
-  margin: 6px;
+  margin: 2px 8px;
 }
 
 .category-header {
   width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   color: var(--text-muted);
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.15s, color 0.15s;
 }
 
 .category-header:hover {
@@ -372,19 +381,21 @@ const filteredLayerCount = computed(() =>
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-right: 12px;
+  margin-right: 10px;
   flex-shrink: 0;
 }
 
 .cat-icon {
-  font-size: 1rem;
-  margin-right: 12px;
+  font-size: 16px;
+  margin-right: 10px;
+  color: var(--text-main);
 }
 
 .cat-label {
   flex: 1;
-  font-size: 0.93rem;
+  font-size: 15px;
   font-weight: 700;
+  letter-spacing: -0.3px;
   color: var(--text-main);
   text-align: left;
   white-space: nowrap;
@@ -398,7 +409,8 @@ const filteredLayerCount = computed(() =>
 }
 
 .cat-chevron {
-  font-size: 0.8rem;
+  font-size: 11px;
+  color: var(--text-dim);
   transition: transform var(--transition-speed);
 }
 
@@ -407,13 +419,13 @@ const filteredLayerCount = computed(() =>
 }
 
 .category-body {
-  padding-top: 4px;
+  padding-top: 3px;
 }
 
 .category-body-inner {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 /* ── Reset de botão ──────────────────────────────────────────────────────────── */
@@ -429,44 +441,52 @@ const filteredLayerCount = computed(() =>
   position: relative;
   display: flex;
   align-items: center;
-  margin: 0 10px 10px;
+  margin: 0 10px 8px;
 }
 
 .layer-search-icon {
   position: absolute;
-  left: 10px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  left: 12px;
+  font-size: 12px;
+  color: var(--text-dim);
   pointer-events: none;
 }
 
 .layer-search-input {
   width: 100%;
-  padding: 6px 32px 6px 30px;
-  background: rgba(255, 255, 255, 0.05);
+  padding: 7px 30px 7px 32px;
+  background: var(--btn-bg);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 9999px;
   color: var(--text-main);
-  font-size: 0.8rem;
+  font-size: 13px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.layer-search-input::placeholder { color: var(--text-muted); }
+.layer-search-input::placeholder { color: var(--text-dim); }
 
-.layer-search-input:focus { border-color: var(--accent); }
+.layer-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg-accent-dim);
+}
 
 .layer-search-clear {
   position: absolute;
-  right: 6px;
+  right: 8px;
   border: none;
   background: none;
-  color: var(--text-muted);
+  color: var(--text-dim);
   cursor: pointer;
-  padding: 2px 4px;
-  line-height: 1;
-  border-radius: 4px;
-  transition: color 0.2s;
+  padding: 2px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  transition: color 0.15s;
 }
 
 .layer-search-clear:hover { color: var(--text-main); }
@@ -482,26 +502,30 @@ const filteredLayerCount = computed(() =>
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 7px 2px 5px;
-  border: 1px solid rgba(255, 80, 80, 0.35);
-  border-radius: 10px;
-  background: rgba(255, 80, 80, 0.08);
-  color: rgba(255, 120, 120, 0.85);
-  font-size: 0.7rem;
+  padding: 2px 8px 2px 6px;
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  border-radius: 9999px;
+  background: rgba(255, 59, 48, 0.06);
+  color: rgba(255, 59, 48, 0.85);
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
   white-space: nowrap;
 }
 
 .clear-overlays-btn:hover {
-  background: rgba(255, 80, 80, 0.22);
-  border-color: rgba(255, 80, 80, 0.7);
-  color: #ff8080;
+  background: rgba(255, 59, 48, 0.12);
+  border-color: rgba(255, 59, 48, 0.5);
+  color: rgb(255, 59, 48);
+}
+
+.clear-overlays-btn:active {
+  transform: scale(0.95);
 }
 
 .clear-overlays-btn .bi {
-  font-size: 0.75rem;
+  font-size: 11px;
 }
 
 .clear-btn-enter-active,
@@ -512,6 +536,6 @@ const filteredLayerCount = computed(() =>
 .clear-btn-enter-from,
 .clear-btn-leave-to {
   opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.85);
 }
 </style>

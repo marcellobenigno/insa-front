@@ -61,10 +61,10 @@ const { isCollapsed, toggleSidebar } = useSidebar()
     position: fixed;
     inset: 0;
     z-index: 1090;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
   }
 
   .sidebar-backdrop.is-visible {
@@ -77,25 +77,35 @@ const { isCollapsed, toggleSidebar } = useSidebar()
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: 12px;
+    right: 12px;
     z-index: 1000;
     width: 44px;
     height: 44px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-sidebar);
-    color: var(--text-muted);
-    font-size: 1.2rem;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    color: #1d1d1f;
+    font-size: 18px;
     cursor: pointer;
-    box-shadow: var(--shadow-lg);
-    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s, color 0.2s;
+    box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.15s;
+  }
+
+  [data-theme="dark"] .sidebar-fab {
+    background: rgba(28, 28, 30, 0.85);
+    color: #f5f5f7;
   }
 
   .sidebar-fab:hover {
-    background: var(--accent);
-    color: var(--text-on-accent);
-    border-color: var(--accent);
+    background: #0066cc;
+    color: #ffffff;
+  }
+
+  .sidebar-fab:active {
+    transform: scale(0.95);
   }
 
   .sidebar-fab.is-hidden {

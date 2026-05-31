@@ -1,111 +1,103 @@
 @import './base.css';
 
-/* ── Design Tokens ───────────────────────────────────────────────────────────── */
+/* ── Apple Design Tokens ─────────────────────────────────────────────────────── */
 :root {
   /* Layout */
   --sidebar-w:           340px;
   --sidebar-collapsed-w: 68px;
   --sidebar-mobile-w:    min(85vw, 320px);
 
-  /* Transições */
-  --transition-speed:  0.3s;
-  --transition-curve:  cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transitions */
+  --transition-speed: 0.25s;
+  --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Superfícies */
-  --bg-app:          #0a0c10;
-  --bg-sidebar:      #111418;
-  --bg-card:         #1a1f26;
-  --bg-card-hover:   #232932;
-  --bg-accent-dim:   rgba(0, 212, 170, 0.1);
+  /* Light mode defaults (prevents flash before JS runs) */
+  --accent:           #0066cc;
+  --accent-hover:     #0071e3;
+  --accent-secondary: #0066cc;
 
-  /* Cores de destaque */
-  --accent:           #00d4aa;
-  --accent-hover:     #00f2c3;
-  --accent-secondary: #3b82f6;
+  --bg-app:           #f5f5f7;
+  --bg-sidebar:       #ffffff;
+  --bg-card:          #ffffff;
+  --bg-card-hover:    #f5f5f7;
+  --bg-accent-dim:    rgba(0, 102, 204, 0.08);
 
-  /* Tipografia */
-  --text-main:       #f1f5f9;
-  --text-muted:      #94a3b8;
-  --text-dim:        #64748b;
-  --text-on-accent:  #0f172a;   /* texto escuro sobre fundo accent */
+  --text-main:        #1d1d1f;
+  --text-muted:       #6e6e73;
+  --text-dim:         #7a7a7a;
+  --text-on-accent:   #ffffff;
 
-  /* Bordas & sombras */
-  --border-color: rgba(255, 255, 255, 0.08);
-  --shadow-lg:    0 10px 25px -5px rgba(0, 0, 0, 0.4),
-                  0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  --border-color:     #e0e0e0;
+  --border-soft:      rgba(0, 0, 0, 0.06);
+  --shadow-lg:        0 2px 12px rgba(0, 0, 0, 0.08);
 
-  /* Overlays adaptativos (claros no tema escuro) */
-  --hover-overlay:    rgba(255, 255, 255, 0.05);
-  --card-bg:          rgba(255, 255, 255, 0.03);
-  --card-bg-hover:    rgba(255, 255, 255, 0.06);
-  --card-bg-active:   rgba(255, 255, 255, 0.05);
-  --btn-bg:           rgba(255, 255, 255, 0.05);
-  --btn-bg-hover:     rgba(255, 255, 255, 0.1);
-}
-
-/* ── Tema claro — paleta gov.br / INSA ──────────────────────────────────────── */
-[data-theme="light"] {
-  /* Superfícies */
-  --bg-app:          #EFF3FB;
-  --bg-sidebar:      #FFFFFF;
-  --bg-card:         #FFFFFF;
-  --bg-card-hover:   #E8EEF8;
-  --bg-accent-dim:   rgba(19, 81, 180, 0.14);
-
-  /* Cores de destaque — azul gov.br */
-  --accent:           #1351B4;
-  --accent-hover:     #2670E8;
-  --accent-secondary: #168821;
-
-  /* Tipografia */
-  --text-main:       #1C1C2E;
-  --text-muted:      #4A5568;
-  --text-dim:        #718096;
-  --text-on-accent:  #FFFFFF;
-
-  /* Bordas & sombras */
-  --border-color: rgba(0, 0, 0, 0.1);
-  --shadow-lg:    0 10px 25px -5px rgba(0, 0, 0, 0.1),
-                  0 8px 10px -6px rgba(0, 0, 0, 0.06);
-
-  /* Overlays adaptativos (escuros no tema claro) */
-  --hover-overlay:    rgba(0, 0, 0, 0.05);
-  --card-bg:          rgba(0, 0, 0, 0.02);
-  --card-bg-hover:    rgba(0, 0, 0, 0.04);
-  --card-bg-active:   rgba(19, 81, 180, 0.06);
+  --hover-overlay:    rgba(0, 0, 0, 0.04);
+  --card-bg:          #ffffff;
+  --card-bg-hover:    #f5f5f7;
+  --card-bg-active:   rgba(0, 102, 204, 0.03);
   --btn-bg:           rgba(0, 0, 0, 0.06);
   --btn-bg-hover:     rgba(0, 0, 0, 0.1);
 }
 
-/* Leaflet popup no tema claro */
-[data-theme="light"] .popup-dark .leaflet-popup-content-wrapper {
-  background: var(--bg-card);
-  border-color: var(--border-color);
-  box-shadow: var(--shadow-lg);
-  color: var(--text-main);
+/* ── Explicit light mode ─────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --accent:           #0066cc;
+  --accent-hover:     #0071e3;
+  --accent-secondary: #0066cc;
+
+  --bg-app:           #f5f5f7;
+  --bg-sidebar:       #ffffff;
+  --bg-card:          #ffffff;
+  --bg-card-hover:    #f5f5f7;
+  --bg-accent-dim:    rgba(0, 102, 204, 0.08);
+
+  --text-main:        #1d1d1f;
+  --text-muted:       #6e6e73;
+  --text-dim:         #7a7a7a;
+  --text-on-accent:   #ffffff;
+
+  --border-color:     #e0e0e0;
+  --border-soft:      rgba(0, 0, 0, 0.06);
+  --shadow-lg:        0 2px 12px rgba(0, 0, 0, 0.08);
+
+  --hover-overlay:    rgba(0, 0, 0, 0.04);
+  --card-bg:          #ffffff;
+  --card-bg-hover:    #f5f5f7;
+  --card-bg-active:   rgba(0, 102, 204, 0.03);
+  --btn-bg:           rgba(0, 0, 0, 0.06);
+  --btn-bg-hover:     rgba(0, 0, 0, 0.1);
 }
 
-[data-theme="light"] .popup-dark .leaflet-popup-tip {
-  background: var(--bg-card);
+/* ── Dark mode (Apple near-black surfaces) ───────────────────────────────────── */
+[data-theme="dark"] {
+  --accent:           #2997ff;
+  --accent-hover:     #3da8ff;
+  --accent-secondary: #2997ff;
+
+  --bg-app:           #000000;
+  --bg-sidebar:       #1c1c1e;
+  --bg-card:          #2c2c2e;
+  --bg-card-hover:    #3a3a3c;
+  --bg-accent-dim:    rgba(41, 151, 255, 0.12);
+
+  --text-main:        #f5f5f7;
+  --text-muted:       #aeaeb2;
+  --text-dim:         #636366;
+  --text-on-accent:   #ffffff;
+
+  --border-color:     rgba(255, 255, 255, 0.12);
+  --border-soft:      rgba(255, 255, 255, 0.06);
+  --shadow-lg:        0 2px 16px rgba(0, 0, 0, 0.5);
+
+  --hover-overlay:    rgba(255, 255, 255, 0.06);
+  --card-bg:          #2c2c2e;
+  --card-bg-hover:    #3a3a3c;
+  --card-bg-active:   rgba(41, 151, 255, 0.06);
+  --btn-bg:           rgba(255, 255, 255, 0.08);
+  --btn-bg-hover:     rgba(255, 255, 255, 0.14);
 }
 
-/* Controles do Leaflet (zoom, atribuição) no tema claro */
-[data-theme="light"] .leaflet-control-zoom a {
-  background: #FFFFFF;
-  color: #1C1C2E;
-  border-color: rgba(0, 0, 0, 0.2);
-}
-
-[data-theme="light"] .leaflet-control-zoom a:hover {
-  background: #EFF3FB;
-}
-
-[data-theme="light"] .leaflet-control-attribution {
-  background: rgba(255, 255, 255, 0.85);
-  color: #4A5568;
-}
-
-/* ── Fundação da aplicação ───────────────────────────────────────────────────── */
+/* ── App foundation ──────────────────────────────────────────────────────────── */
 html,
 body,
 #app {
@@ -114,23 +106,23 @@ body,
   overflow: hidden;
   background: var(--bg-app);
   color: var(--text-main);
-  font-family: 'Inter', sans-serif;
 }
 
-/* ── Utilitários globais ─────────────────────────────────────────────────────── */
-.text-accent    { color: var(--accent); }
-.bg-accent-dim  { background: var(--bg-accent-dim); }
+/* ── Bootstrap overrides ─────────────────────────────────────────────────────── */
+.text-muted {
+  color: var(--text-muted) !important;
+}
 
-/* ── Leaflet popup — dark theme ──────────────────────────────────────────────
-   O DOM do popup é criado pelo Leaflet fora da árvore Vue,
-   então scoped CSS não alcança. Todos os seletores usam .popup-dark
-   adicionada via L.popup({ className: 'popup-dark' }).
-   ──────────────────────────────────────────────────────────────────────────── */
+/* ── Utility classes ─────────────────────────────────────────────────────────── */
+.text-accent   { color: var(--accent); }
+.bg-accent-dim { background: var(--bg-accent-dim); }
+
+/* ── Leaflet popup ───────────────────────────────────────────────────────────── */
 .popup-dark .leaflet-popup-content-wrapper {
-  background: var(--bg-card);
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
-  box-shadow: var(--shadow-lg);
+  border-radius: 14px;
+  box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
   padding: 0;
   max-height: 300px;
   overflow-y: auto;
@@ -138,7 +130,7 @@ body,
 }
 
 .popup-dark .leaflet-popup-tip {
-  background: var(--bg-card);
+  background: var(--bg-sidebar);
 }
 
 .popup-dark .leaflet-popup-content {
@@ -158,43 +150,48 @@ body,
   background: transparent;
 }
 
-/* ── Conteúdo GFI (GetFeatureInfo popup) ─────────────────────────────────────── */
+/* ── GFI popup content ───────────────────────────────────────────────────────── */
 .gfi-popup {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   min-width: 200px;
   max-width: 300px;
 }
 
 .gfi-section {
-  padding: 12px 14px;
+  padding: 8px 12px;
 }
 
 .gfi-title {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .gfi-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.78rem;
+  font-size: 13px;
 }
 
 .gfi-key {
-  color: var(--text-dim);
-  padding: 3px 10px 3px 0;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.12px;
+  color: var(--text-muted);
+  padding: 1px 8px 1px 0;
   white-space: nowrap;
   vertical-align: top;
-  font-weight: 500;
 }
 
 .gfi-val {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.224px;
   color: var(--text-main);
-  padding: 3px 0;
+  padding: 1px 0;
   word-break: break-word;
 }
 
@@ -204,18 +201,34 @@ body,
   margin: 0;
 }
 
-/* ── Controles Leaflet nativos ───────────────────────────────────────────────── */
+/* ── Leaflet controls ────────────────────────────────────────────────────────── */
+.leaflet-control-zoom a {
+  background: var(--bg-sidebar) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+  font-weight: 400;
+}
 
-/* Barra de escala */
+.leaflet-control-zoom a:hover {
+  background: var(--bg-card-hover) !important;
+}
+
 .leaflet-control-scale-line {
-  background: var(--bg-card);
-  border-color: var(--text-dim);
+  background: var(--bg-sidebar);
+  border-color: var(--border-color);
   color: var(--text-muted);
-  font-size: 0.65rem;
+  font-size: 11px;
   padding: 1px 5px;
   border-radius: 0 0 4px 4px;
 }
 
-[data-theme="light"] .leaflet-control-scale-line {
-  background: #fff;
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: var(--text-dim) !important;
+  font-size: 11px;
+}
+
+[data-theme="dark"] .leaflet-control-attribution {
+  background: rgba(28, 28, 30, 0.85) !important;
+  color: var(--text-muted) !important;
 }

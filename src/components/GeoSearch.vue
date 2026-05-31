@@ -454,30 +454,30 @@ onUnmounted(() => {
 .gs-footer {
   flex-shrink: 0;
   border-top: 1px solid var(--border-color);
-  background: var(--bg-app);
+  background: var(--card-bg-hover);
 }
 
 .gs-footer--collapsed {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 0;
+  padding: 12px 0;
 }
 
 /* ── Ícone colapsado ─────────────────────────────────────────────────────────── */
 .gs-icon-btn {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--btn-bg);
   color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  font-size: 14px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .gs-icon-btn:hover {
@@ -488,7 +488,7 @@ onUnmounted(() => {
 
 /* ── Painel expandido ────────────────────────────────────────────────────────── */
 .gs-panel {
-  padding: 12px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
 }
@@ -502,11 +502,11 @@ onUnmounted(() => {
   background: none;
   color: var(--text-dim);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 11px;
   padding: 0;
   transition: color 0.15s, background 0.15s;
 }
@@ -520,12 +520,12 @@ onUnmounted(() => {
 .gs-collapsible {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-top: 10px;
+  gap: 8px;
+  padding-top: 8px;
   max-height: 500px;
   overflow: hidden;
   opacity: 1;
-  transition: max-height 0.3s ease, opacity 0.25s ease, padding-top 0.3s ease;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding-top 0.25s ease;
 }
 
 .gs-collapsible--closed {
@@ -543,10 +543,10 @@ onUnmounted(() => {
 }
 
 .gs-title {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--text-dim);
   white-space: nowrap;
 }
@@ -562,23 +562,23 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   padding: 5px 8px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  background: var(--btn-bg);
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 12px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   overflow: hidden;
 }
 
 .gs-mode-btn:hover,
 .gs-mode-wrap--open .gs-mode-btn {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--btn-bg-hover);
   color: var(--text-main);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--accent);
 }
 
 .gs-mode-label {
@@ -590,7 +590,7 @@ onUnmounted(() => {
 }
 
 .gs-caret {
-  font-size: 0.65rem;
+  font-size: 10px;
   flex-shrink: 0;
   transition: transform 0.2s;
 }
@@ -602,15 +602,15 @@ onUnmounted(() => {
 /* ── Menu dropdown ───────────────────────────────────────────────────────────── */
 .gs-menu {
   position: absolute;
-  bottom: calc(100% + 6px);
+  bottom: calc(100% + 4px);
   left: 0;
   right: 0;
   list-style: none;
   margin: 0;
   padding: 4px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  background: var(--bg-card);
+  border-radius: 12px;
+  background: var(--bg-sidebar);
   box-shadow: var(--shadow-lg);
   z-index: 200;
 }
@@ -620,15 +620,15 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  border-radius: 5px;
-  font-size: 0.78rem;
+  border-radius: 8px;
+  font-size: 13px;
   color: var(--text-muted);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 
 .gs-menu-item:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--hover-overlay);
   color: var(--text-main);
 }
 
@@ -653,38 +653,37 @@ onUnmounted(() => {
 
 .gs-input-icon {
   position: absolute;
-  left: 9px;
+  left: 12px;
   color: var(--text-dim);
-  font-size: 0.8rem;
+  font-size: 12px;
   pointer-events: none;
 }
 
 .gs-input {
   width: 100%;
-  padding: 7px 32px 7px 28px;
-  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 30px 8px 32px;
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 9999px;
   color: var(--text-main);
-  font-size: 0.8rem;
+  font-size: 13px;
   outline: none;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .gs-input::placeholder { color: var(--text-dim); }
 
 .gs-input:focus {
   border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 3px var(--bg-accent-dim);
 }
 
-/* Remove os ícones nativos do input type="search" */
 .gs-input::-webkit-search-cancel-button,
 .gs-input::-webkit-search-decoration { display: none; }
 
 .gs-clear-btn {
   position: absolute;
-  right: 6px;
+  right: 8px;
   width: 20px;
   height: 20px;
   border: none;
@@ -694,7 +693,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 3px;
+  border-radius: 50%;
+  font-size: 14px;
   transition: color 0.15s;
 }
 
@@ -702,9 +702,9 @@ onUnmounted(() => {
 
 .gs-spinner {
   position: absolute;
-  right: 8px;
+  right: 10px;
   color: var(--accent);
-  font-size: 0.85rem;
+  font-size: 14px;
   animation: spin 0.8s linear infinite;
 }
 
@@ -716,10 +716,10 @@ onUnmounted(() => {
   margin: 0;
   padding: 4px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  background: var(--bg-card);
+  border-radius: 12px;
+  background: var(--bg-sidebar);
   box-shadow: var(--shadow-lg);
-  max-height: 200px;
+  max-height: 180px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
@@ -729,16 +729,16 @@ onUnmounted(() => {
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  padding: 7px 8px;
-  border-radius: 5px;
+  padding: 7px 10px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.76rem;
+  font-size: 12px;
   color: var(--text-muted);
   transition: background 0.15s, color 0.15s;
 }
 
 .gs-suggestion:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--hover-overlay);
   color: var(--text-main);
 }
 
@@ -753,7 +753,7 @@ onUnmounted(() => {
 .gs-coords {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .gs-coord-row {
@@ -763,7 +763,7 @@ onUnmounted(() => {
 }
 
 .gs-coord-label {
-  font-size: 0.7rem;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-dim);
   white-space: nowrap;
@@ -773,20 +773,23 @@ onUnmounted(() => {
 
 .gs-coord-input {
   flex: 1;
-  padding: 6px 8px;
-  background: rgba(255, 255, 255, 0.05);
+  padding: 7px 10px;
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--text-main);
-  font-size: 0.8rem;
+  font-size: 13px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .gs-coord-input::placeholder { color: var(--text-dim); }
-.gs-coord-input:focus { border-color: var(--accent); }
 
-/* Remove setas do input number */
+.gs-coord-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg-accent-dim);
+}
+
 .gs-coord-input::-webkit-inner-spin-button,
 .gs-coord-input::-webkit-outer-spin-button { appearance: none; }
 
@@ -808,23 +811,28 @@ onUnmounted(() => {
   flex: 1;
   min-width: 0;
   padding: 6px 4px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-sidebar);
   border: 1px solid var(--border-color);
-  border-radius: 5px;
+  border-radius: 8px;
   color: var(--text-main);
-  font-size: 0.78rem;
+  font-size: 12px;
   text-align: center;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .gs-dms-input::placeholder { color: var(--text-dim); }
-.gs-dms-input:focus { border-color: var(--accent); }
+
+.gs-dms-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg-accent-dim);
+}
+
 .gs-dms-input::-webkit-inner-spin-button,
 .gs-dms-input::-webkit-outer-spin-button { appearance: none; }
 
 .gs-dms-sep {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--text-dim);
   padding: 0 1px;
   flex-shrink: 0;
@@ -836,37 +844,38 @@ onUnmounted(() => {
   margin-left: 4px;
 }
 
-/* ── Botão submeter ──────────────────────────────────────────────────────────── */
+/* ── Botão submeter — Apple primary pill ─────────────────────────────────────── */
 .gs-submit-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   width: 100%;
-  padding: 7px;
+  padding: 9px;
   border: none;
-  border-radius: 6px;
+  border-radius: 9999px;
   background: var(--accent);
-  color: var(--text-on-accent);
-  font-size: 0.8rem;
-  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.15s, transform 0.1s;
 }
 
 .gs-submit-btn:hover { background: var(--accent-hover); }
+.gs-submit-btn:active { transform: scale(0.97); }
 
 /* ── Erro ────────────────────────────────────────────────────────────────────── */
 .gs-error {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 9px;
-  border-radius: 6px;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  color: #f87171;
-  font-size: 0.75rem;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(255, 59, 48, 0.06);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  color: rgb(255, 59, 48);
+  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -875,12 +884,16 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 8px;
-  border-radius: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
   background: var(--bg-accent-dim);
-  border: 1px solid rgba(0, 212, 170, 0.25);
+  border: 1px solid rgba(0, 102, 204, 0.2);
   color: var(--accent);
-  font-size: 0.75rem;
+  font-size: 12px;
+}
+
+[data-theme="dark"] .gs-active-pin {
+  border-color: rgba(41, 151, 255, 0.25);
 }
 
 .gs-active-label {
@@ -901,51 +914,9 @@ onUnmounted(() => {
   padding: 0;
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 16px;
   transition: color 0.15s;
 }
 
-.gs-active-clear:hover { color: #f87171; }
-
-/* ── Tema claro ──────────────────────────────────────────────────────────────── */
-[data-theme="light"] .gs-icon-btn {
-  background: var(--btn-bg);
-}
-
-[data-theme="light"] .gs-mode-btn {
-  background: var(--btn-bg);
-}
-
-[data-theme="light"] .gs-mode-btn:hover,
-[data-theme="light"] .gs-mode-wrap--open .gs-mode-btn {
-  background: var(--btn-bg-hover);
-  border-color: var(--border-color);
-}
-
-[data-theme="light"] .gs-menu-item:hover {
-  background: var(--hover-overlay);
-}
-
-[data-theme="light"] .gs-input {
-  background: #fff;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .gs-input:focus {
-  background: #fff;
-}
-
-[data-theme="light"] .gs-suggestion:hover {
-  background: var(--hover-overlay);
-}
-
-[data-theme="light"] .gs-coord-input,
-[data-theme="light"] .gs-dms-input {
-  background: #fff;
-  color: var(--text-main);
-}
-
-[data-theme="light"] .gs-active-pin {
-  border-color: rgba(19, 81, 180, 0.3);
-}
+.gs-active-clear:hover { color: rgb(255, 59, 48); }
 </style>

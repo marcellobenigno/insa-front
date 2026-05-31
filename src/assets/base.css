@@ -1,4 +1,4 @@
-/* Reset & fundação global */
+/* Reset & global foundation */
 *,
 *::before,
 *::after {
@@ -9,8 +9,9 @@
 
 body {
   min-height: 100vh;
-  line-height: 1.6;
+  line-height: 1.47;
   font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

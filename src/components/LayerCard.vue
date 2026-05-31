@@ -339,27 +339,26 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 <style scoped>
 /* ── Card ────────────────────────────────────────────────────────────────────── */
 .layer-card {
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border-color);
   background: var(--card-bg);
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .layer-card:hover {
   background: var(--card-bg-hover);
-  border-color: var(--border-color);
 }
 
 .layer-card.is-active {
-  border-left: 3px solid var(--accent);
+  border: 1px solid var(--accent);
   background: var(--card-bg-active);
 }
 
 .layer-main-row {
   display: flex;
   align-items: center;
-  padding: 7px 8px;
+  padding: 8px 8px 8px 10px;
   gap: 8px;
   cursor: pointer;
 }
@@ -373,10 +372,12 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   background: var(--btn-bg);
   color: var(--text-dim);
   cursor: pointer;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, color 0.2s;
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .visibility-toggle:hover {
@@ -384,9 +385,13 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   color: var(--text-main);
 }
 
+.visibility-toggle:active {
+  transform: scale(0.95);
+}
+
 .visibility-toggle.is-visible {
-  color: var(--accent);
   background: var(--bg-accent-dim);
+  color: var(--accent);
 }
 
 /* ── Info da camada ──────────────────────────────────────────────────────────── */
@@ -397,69 +402,109 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
 .layer-label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 13px;
   font-weight: 600;
-  line-height: 1.2;
+  letter-spacing: -0.224px;
+  line-height: 1.3;
   color: var(--text-main);
 }
 
 .layer-meta {
   display: block;
-  font-size: 0.7rem;
-  margin-top: 2px;
-  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 1px;
+  color: var(--text-dim);
 }
 
 /* ── Ações ───────────────────────────────────────────────────────────────────── */
 .layer-actions {
   display: flex;
-  gap: 4px;
+  gap: 3px;
 }
 
 .action-btn {
   width: 24px;
   height: 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, color 0.2s;
+  font-size: 12px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .action-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--hover-overlay);
   color: var(--text-main);
 }
 
+.action-btn:active {
+  transform: scale(0.92);
+}
+
 .action-btn.is-panel-open {
-  background: var(--accent-secondary);
-  color: white;
+  background: var(--accent);
+  color: #ffffff;
 }
 
 /* ── Painéis expansíveis ─────────────────────────────────────────────────────── */
 .layer-sub-panel {
   border-top: 1px solid var(--border-color);
-  background: var(--bg-app);
+  background: var(--card-bg-hover);
 }
 
 .panel-content {
-  padding: 12px;
+  padding: 11px 12px;
 }
 
 .panel-label {
   margin: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
 }
 
 .custom-slider {
   accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.custom-slider::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border-color);
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: -5.5px;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.custom-slider::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border-color);
+}
+
+.custom-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
 }
 
 /* ── Legenda dinâmica ────────────────────────────────────────────────────────── */
@@ -467,16 +512,16 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
   padding-right: 4px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  scrollbar-color: var(--border-color) transparent;
 }
 
 .legend-list::-webkit-scrollbar       { width: 4px; }
 .legend-list::-webkit-scrollbar-track  { background: transparent; }
-.legend-list::-webkit-scrollbar-thumb  { background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+.legend-list::-webkit-scrollbar-thumb  { background: var(--border-color); border-radius: 2px; }
 
 .legend-item {
   display: flex;
@@ -486,15 +531,16 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 
 .legend-swatch {
   flex-shrink: 0;
-  width: 22px;
-  height: 14px;
-  border-radius: 3px;
+  width: 20px;
+  height: 12px;
+  border-radius: 4px;
 }
 
 .legend-item-label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.12px;
+  line-height: 1.4;
   word-break: break-word;
   color: var(--text-main);
 }
@@ -502,8 +548,8 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 /* ── Legenda estática (imagem) ───────────────────────────────────────────────── */
 .legend-container {
   padding: 8px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  background: var(--btn-bg);
 }
 
 /* ── Busca ───────────────────────────────────────────────────────────────────── */
@@ -519,24 +565,26 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
 }
 
 .operator-select {
-  flex: 0 0 60px;
-  min-width: 60px;
+  flex: 0 0 58px;
+  min-width: 58px;
   padding: 0 4px;
   text-align: center;
-  background-image: none; /* remove Bootstrap dropdown arrow — too narrow to fit */
+  background-image: none;
 }
 
 .search-field {
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  border-color: var(--border-color);
+  background-color: var(--bg-sidebar) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
 }
 
 .search-field:focus {
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 0.2rem var(--bg-accent-dim);
+  background-color: var(--bg-sidebar) !important;
+  color: var(--text-main) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--bg-accent-dim) !important;
 }
 
 .filter-badge {
@@ -544,15 +592,19 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   align-items: center;
   gap: 5px;
   padding: 4px 8px;
-  border-radius: 4px;
-  background: rgba(251, 191, 36, 0.12);
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  font-size: 0.75rem;
-  color: #fbbf24;
+  border-radius: 8px;
+  background: var(--bg-accent-dim);
+  border: 1px solid rgba(0, 102, 204, 0.2);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+[data-theme="dark"] .filter-badge {
+  border-color: rgba(41, 151, 255, 0.25);
 }
 
 .filter-badge strong {
-  color: #fde68a;
+  color: var(--accent);
 }
 
 .no-results-badge {
@@ -560,16 +612,20 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   align-items: center;
   gap: 5px;
   padding: 4px 8px;
-  border-radius: 4px;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.35);
-  font-size: 0.75rem;
-  color: #f87171;
+  border-radius: 8px;
+  background: rgba(255, 59, 48, 0.06);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  font-size: 12px;
+  color: rgb(255, 59, 48);
 }
 
 .opacity-value-badge {
   background: var(--btn-bg);
   color: var(--text-main);
+  border-radius: 6px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .btn-clear-search {
@@ -578,30 +634,30 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   gap: 4px;
   border: none;
   background: none;
-  font-size: 0.7rem;
+  font-size: 12px;
   color: var(--text-dim);
   cursor: pointer;
   padding: 2px 6px;
-  border-radius: 4px;
-  transition: color 0.2s, background 0.2s;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
 }
 
 .btn-clear-search:hover {
-  color: #f87171;
-  background: rgba(248, 113, 113, 0.1);
+  color: rgb(255, 59, 48);
+  background: rgba(255, 59, 48, 0.06);
 }
 
 /* ── Transição de painel ─────────────────────────────────────────────────────── */
 .panel-fade-enter-active,
 .panel-fade-leave-active {
   max-height: 300px;
-  transition: opacity 0.25s ease, max-height 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.2s ease, max-height 0.2s ease, transform 0.2s ease;
 }
 
 .panel-fade-enter-from,
 .panel-fade-leave-to {
   opacity: 0;
   max-height: 0;
-  transform: translateY(-10px);
+  transform: translateY(-8px);
 }
 </style>

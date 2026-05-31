@@ -81,88 +81,103 @@ const dms = computed(() => {
 <style scoped>
 .coord-display {
   position: absolute;
-  bottom: 8px;
+  bottom: 10px;
   left: 10px;
   z-index: 1000;
-  padding: 5px 6px 5px 9px;
-  border-radius: 8px;
-  background: var(--bg-sidebar);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: var(--shadow-lg);
+  padding: 6px 8px 6px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 6px;
   user-select: none;
-  transition: opacity 0.2s, background 0.3s, border-color 0.3s;
+  transition: opacity 0.2s;
+}
+
+[data-theme="dark"] .coord-display {
+  background: rgba(28, 28, 30, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .coord-display--collapsed {
-  padding: 5px 6px;
+  padding: 6px 8px;
 }
 
-/* Coluna de linhas de coordenadas */
 .coord-rows {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .coord-row {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.66rem;
+  font-size: 11px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  color: var(--text-main);
+  color: #1d1d1f;
   white-space: nowrap;
   pointer-events: none;
 }
 
+[data-theme="dark"] .coord-row {
+  color: #f5f5f7;
+}
+
 .coord-row--hint {
-  font-family: 'Inter', sans-serif;
-  color: var(--text-dim);
-  font-size: 0.66rem;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #7a7a7a;
+  font-size: 11px;
 }
 
 .coord-val {
-  color: var(--text-main);
-  min-width: 90px;
+  min-width: 88px;
 }
 
 .coord-sep {
-  color: var(--text-dim);
+  color: #c7c7cc;
   flex-shrink: 0;
+}
+
+[data-theme="dark"] .coord-sep {
+  color: rgba(255, 255, 255, 0.2);
 }
 
 /* ── Botão de toggle ─────────────────────────────────────────────────────────── */
 .coord-toggle {
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border: none;
   background: none;
-  color: var(--text-dim);
+  color: #7a7a7a;
   cursor: pointer;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 11px;
   padding: 0;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.15s, transform 0.1s;
 }
 
 .coord-toggle:hover {
-  color: var(--accent);
-  background: var(--hover-overlay);
+  color: #1d1d1f;
+}
+
+[data-theme="dark"] .coord-toggle:hover {
+  color: #f5f5f7;
+}
+
+.coord-toggle:active {
+  transform: scale(0.9);
 }
 
 @media (max-width: 768px) {
-  .coord-display {
-    display: none;
-  }
+  .coord-display { display: none; }
 }
 </style>
