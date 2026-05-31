@@ -388,7 +388,7 @@ function handleCategoryClick(key) {
 
 /* ── Categorias ──────────────────────────────────────────────────────────────── */
 .category-block {
-  margin: 2px 8px;
+  margin: 12px 10px;
 }
 
 .category-header {
