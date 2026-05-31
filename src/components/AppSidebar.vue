@@ -42,6 +42,24 @@ const filteredCategories = computed(() => {
 const filteredLayerCount = computed(() =>
   filteredCategories.value.reduce((sum, cat) => sum + cat.layers.length, 0)
 )
+
+function handleBaseClick() {
+  if (isCollapsed.value) {
+    toggleSidebar()
+    if (!openBase.value) toggleBase()
+  } else {
+    toggleBase()
+  }
+}
+
+function handleCategoryClick(key) {
+  if (isCollapsed.value) {
+    toggleSidebar()
+    if (!openCategories[key]) toggleCategory(key)
+  } else {
+    toggleCategory(key)
+  }
+}
 </script>
 
 <template>
@@ -92,10 +110,9 @@ const filteredLayerCount = computed(() =>
           class="category-header btn-reset"
           :aria-expanded="openBase"
           aria-controls="base-layers-content"
-          @click="toggleBase"
+          @click="handleBaseClick"
         >
-          <span class="cat-dot bg-secondary" aria-hidden="true" />
-          <i class="bi bi-map cat-icon" aria-hidden="true" />
+          <i class="bi bi-globe cat-icon" aria-hidden="true" />
           <span class="cat-label" v-show="!isCollapsed">Camadas Base</span>
           
           <div class="cat-meta" v-show="!isCollapsed">
@@ -181,9 +198,8 @@ const filteredLayerCount = computed(() =>
           class="category-header btn-reset"
           :aria-expanded="searchTerm ? true : openCategories[cat.key]"
           :aria-controls="`cat-content-${cat.key}`"
-          @click="toggleCategory(cat.key)"
+          @click="handleCategoryClick(cat.key)"
         >
-          <span class="cat-dot" :style="{ background: cat.color }" aria-hidden="true" />
           <i class="bi cat-icon" :class="cat.icon" aria-hidden="true" />
           <span class="cat-label" v-show="!isCollapsed">{{ cat.label }}</span>
 
@@ -244,6 +260,19 @@ const filteredLayerCount = computed(() =>
 
 #sidebar.is-collapsed {
   width: var(--sidebar-collapsed-w);
+}
+
+#sidebar.is-collapsed .category-block {
+  margin: 2px 4px;
+}
+
+#sidebar.is-collapsed .category-header {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+#sidebar.is-collapsed .cat-icon {
+  margin-right: 0;
 }
 
 @media (max-width: 768px) {
@@ -364,7 +393,7 @@ const filteredLayerCount = computed(() =>
 
 .category-header {
   width: 100%;
-  padding: 8px 10px;
+  padding: 9px 12px 9px 14px;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -377,17 +406,10 @@ const filteredLayerCount = computed(() =>
   color: var(--text-main);
 }
 
-.cat-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 10px;
-  flex-shrink: 0;
-}
 
 .cat-icon {
   font-size: 16px;
-  margin-right: 10px;
+  margin-right: 12px;
   color: var(--text-main);
 }
 
