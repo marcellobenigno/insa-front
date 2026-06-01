@@ -413,7 +413,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   display: block;
   font-size: 11px;
   margin-top: 1px;
-  color: var(--text-dim);
+  color: var(--text-muted);
 }
 
 /* ── Ações ───────────────────────────────────────────────────────────────────── */

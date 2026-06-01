@@ -68,7 +68,7 @@ const VECTOR_TILES_URL = import.meta.env.VITE_TILES_URL
 // Cada categoria possui:
 //   key:    identificador único (usado como chave de accordion na sidebar)
 //   label:  nome exibido ao usuário
-//   color:  cor do ponto indicador na sidebar (CSS color)
+
 //   icon:   classe Bootstrap Icons para o cabeçalho da categoria
 //   layers: objeto de camadas (mesma estrutura anterior por camada)
 //
@@ -77,12 +77,11 @@ export const OVERLAY_CATEGORIES = {
   // 1. Semiárido PB ──────────────────────────────────────────────────────────
   semiarido_pb: {
     label: 'Semiárido PB',
-    color: '#f97316',
     icon: 'bi-map',
     layers: {
       municipios_pb_semiarido: {
         label: 'Municípios',
-        meta: 'Limites municipais do semiárido paraibano',
+        meta: 'Limites Municipais do Semiárido Paraibano',
         url: VECTOR_TILES_URL,
         sourceLayer: 'municipios_pb_semiarido',
         zIndex: 30,
@@ -98,11 +97,10 @@ export const OVERLAY_CATEGORIES = {
   // 2. Indicadores de Qualidade ─────────────────────────────────────────────
   indices_qualidade: {
     label: 'Indicadores de Qualidade',
-    color: '#00d4aa',
     icon: 'bi-graph-up-arrow',
     layers: {
       iqs_sab_pb: {
-        label: 'IQS (Qualidade do Solo)',
+        label: 'Índice de Qualidade do Solo (IQS)',
         meta: 'Índice de Qualidade do Solo',
         url: VECTOR_TILES_URL,
         sourceLayer: 'iqs_sab_pb',
@@ -114,7 +112,7 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { IQS: 'Índice de Qualidade do Solo' },
       },
       iqc_sab_pb: {
-        label: 'IQC (Qualidade climática)',
+        label: 'Índice de Qualidade Climática (IQC)',
         meta: 'Índice de Qualidade Climática',
         url: VECTOR_TILES_URL,
         sourceLayer: 'iqc_sab_pb',
@@ -131,11 +129,10 @@ export const OVERLAY_CATEGORIES = {
   // 3. Declividade ───────────────────────────────────────────────────────────
   declividade: {
     label: 'Declividade',
-    color: '#f59e0b',
     icon: 'bi-bar-chart-steps',
     layers: {
       declividade_sab_pb_original: {
-        label: 'Declividade (Original)',
+        label: 'Declividade',
         meta: 'Classes de declividade em %',
         url: VECTOR_TILES_URL,
         sourceLayer: 'declividade_sab_pb_original',
@@ -147,16 +144,16 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { DN: 'Declividade (%)' },
       },
       declividade_sab_pb_pesos: {
-        label: 'Declividade (Pesos)',
-        meta: 'Pesos atribuídos à declividade',
+        label: 'Declividade (Escores de Qualidade)',
+        meta: 'Escores de qualidade atribuídos à declividade',
         url: VECTOR_TILES_URL,
         sourceLayer: 'declividade_sab_pb_pesos',
         zIndex: 13,
         active: false,
-        searchFields: ['PesDecl', 'PesosX10Ve'],
-        popUpFields:  ['PesDecl', 'PesosX10Ve'],
-        fieldTypes:   { PesDecl: 'number', PesosX10Ve: 'number' },
-        descFields:   { PesDecl: 'Peso da Declividade', PesosX10Ve: 'Peso × 10 (Vetorial)' },
+        searchFields: ['PesDecl'],
+        popUpFields:  ['PesDecl'],
+        fieldTypes:   { PesDecl: 'number' },
+        descFields:   { PesDecl: 'Escore de Qualidade da Declividade' },
       },
     },
   },
@@ -164,11 +161,10 @@ export const OVERLAY_CATEGORIES = {
   // 4. Geologia ──────────────────────────────────────────────────────────────
   geologia: {
     label: 'Geologia',
-    color: '#8b5cf6',
     icon: 'bi-layers',
     layers: {
       geologia_sab_pb_original: {
-        label: 'Geologia (Original)',
+        label: 'Geologia',
         meta: 'Formações litológicas e rochas',
         url: VECTOR_TILES_URL,
         sourceLayer: 'geologia_sab_pb_original',
@@ -180,8 +176,8 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { GLO_DS_LIT: 'Descrição Litológica' },
       },
       geologia_sab_pb_pesos: {
-        label: 'Geologia (Pesos)',
-        meta: 'Pesos atribuídos às formações rochosas',
+        label: 'Geologia (Escores de Qualidade)',
+        meta: 'Escores de Qualidade atribuídos às formações rochosas',
         url: VECTOR_TILES_URL,
         sourceLayer: 'geologia_sab_pb_pesos',
         zIndex: 16,
@@ -189,7 +185,7 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['GLO_DS_LIT', 'pes_Peso'],
         popUpFields:  ['GLO_DS_LIT', 'pes_Peso'],
         fieldTypes:   { GLO_DS_LIT: 'string', pes_Peso: 'number' },
-        descFields:   { GLO_DS_LIT: 'Descrição Litológica', pes_Peso: 'Peso (Geologia)' },
+        descFields:   { GLO_DS_LIT: 'Descrição Litológica', pes_Peso: 'Escores de Qualidade (Geologia)' },
       },
     },
   },
@@ -197,11 +193,10 @@ export const OVERLAY_CATEGORIES = {
   // 5. Solos ─────────────────────────────────────────────────────────────────
   solos: {
     label: 'Solos',
-    color: '#ec4899',
     icon: 'bi-geo',
     layers: {
       solos_tipos_sab_pb_original: {
-        label: 'Tipos de Solos (Original)',
+        label: 'Tipos de Solos',
         meta: 'Classificação pedológica (SiBCS)',
         url: VECTOR_TILES_URL,
         sourceLayer: 'solos_tipos_sab_pb_original',
@@ -213,8 +208,8 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { DSC_COMPON: 'Componente Pedológico' },
       },
       solos_tipos_sab_pb_pesos: {
-        label: 'Tipos de Solos (Pesos)',
-        meta: 'Pesos atribuídos aos tipos de solo',
+        label: 'Tipos de Solos (Escores de Qualidade)',
+        meta: 'Escores de Qualidade atribuídos aos tipos de solo',
         url: VECTOR_TILES_URL,
         sourceLayer: 'solos_tipos_sab_pb_pesos',
         zIndex: 18,
@@ -222,10 +217,10 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['DSC_COMPON', 'TipSoilPes'],
         popUpFields:  ['DSC_COMPON', 'TipSoilPes'],
         fieldTypes:   { DSC_COMPON: 'string', TipSoilPes: 'number' },
-        descFields:   { DSC_COMPON: 'Componente Pedológico', TipSoilPes: 'Peso Tipo de Solo' },
+        descFields:   { DSC_COMPON: 'Componente Pedológico', TipSoilPes: 'Escores de Qualidade do Tipo de Solo' },
       },
       textura_sab_pb_original: {
-        label: 'Textura do Solo (Original)',
+        label: 'Textura do Solo',
         meta: 'Grupamento de textura física',
         url: VECTOR_TILES_URL,
         sourceLayer: 'textura_sab_pb_original',
@@ -237,8 +232,8 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { DSC_TEXTUR: 'Textura do Solo' },
       },
       textura_sab_pb_pesos: {
-        label: 'Textura do Solo (Pesos)',
-        meta: 'Pesos atribuídos à textura do solo',
+        label: 'Textura do Solo (Escores de Qualidade)',
+        meta: 'Escores de Qualidade atribuídos à textura do solo',
         url: VECTOR_TILES_URL,
         sourceLayer: 'textura_sab_pb_pesos',
         zIndex: 20,
@@ -246,7 +241,7 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['DSC_TEXTUR', 'SoilTextur'],
         popUpFields:  ['DSC_TEXTUR', 'SoilTextur'],
         fieldTypes:   { DSC_TEXTUR: 'string', SoilTextur: 'number' },
-        descFields:   { DSC_TEXTUR: 'Textura do Solo', SoilTextur: 'Peso Textura' },
+        descFields:   { DSC_TEXTUR: 'Textura do Solo', SoilTextur: 'Escores de Qualidade da Textura' },
       },
     },
   },
@@ -254,12 +249,11 @@ export const OVERLAY_CATEGORIES = {
   // 6. Climatologia ─────────────────────────────────────────────────────────
   agroclimatologia: {
     label: 'Climatologia',
-    color: '#3b82f6',
     icon: 'bi-cloud-rain',
     layers: {
       eto_sab_pb_original: {
-        label: 'Evapotranspiração (ETo) (Original)',
-        meta: 'Evapotranspiração de referência acumulada',
+        label: 'Evapotranspiração (ETo)',
+        meta: 'Evapotranspiração de referência acumulada (climatologia 1996-2025)',
         url: VECTOR_TILES_URL,
         sourceLayer: 'eto_sab_pb_original',
         zIndex: 21,
@@ -267,11 +261,11 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['ETo_Climat'],
         popUpFields:  ['ETo_Climat'],
         fieldTypes:   { ETo_Climat: 'number' },
-        descFields:   { ETo_Climat: 'ETo Climatológica (mm/ano)' },
+        descFields:   { ETo_Climat: 'ETo Climatologia (1996-2025) (mm/ano)' },
       },
       eto_sab_pb_pesos: {
-        label: 'Evapotranspiração (Pesos)',
-        meta: 'Pesos atribuídos à ETo regional',
+        label: 'Evapotranspiração (Escores de Qualidade)',
+        meta: 'Escores de Qualidade atribuídos à ETo',
         url: VECTOR_TILES_URL,
         sourceLayer: 'eto_sab_pb_pesos',
         zIndex: 22,
@@ -279,11 +273,11 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['ETo_Pesos'],
         popUpFields:  ['ETo_Pesos'],
         fieldTypes:   { ETo_Pesos: 'number' },
-        descFields:   { ETo_Pesos: 'Peso ETo' },
+        descFields:   { ETo_Pesos: 'Escore de Qualidade ETo' },
       },
       ia_sab_pb_original: {
         label: 'Índice de Aridez (IA)',
-        meta: 'Índice de aridez',
+        meta: 'Índice de aridez (climatologia 1996-2025)',
         url: VECTOR_TILES_URL,
         sourceLayer: 'ia_sab_pb_original',
         zIndex: 23,
@@ -294,8 +288,8 @@ export const OVERLAY_CATEGORIES = {
         descFields:   { IA_climat: 'Índice de Aridez' },
       },
       ia_sab_pb_pesos: {
-        label: 'Índice de Aridez (Pesos)',
-        meta: 'Pesos atribuídos ao Índice de Aridez',
+        label: 'Índice de Aridez (Escores de Qualidade)',
+        meta: 'Escores de Qualidade atribuídos ao Índice de Aridez',
         url: VECTOR_TILES_URL,
         sourceLayer: 'ia_sab_pb_pesos',
         zIndex: 24,
@@ -303,11 +297,11 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['IA_Pesos'],
         popUpFields:  ['IA_Pesos'],
         fieldTypes:   { IA_Pesos: 'number' },
-        descFields:   { IA_Pesos: 'Peso IA' },
+        descFields:   { IA_Pesos: 'Escore de Qualidade IA' },
       },
       precipitacao_sab_pb_original: {
-        label: 'Precipitação Pluviométrica (Original)',
-        meta: 'Precipitação média anual acumulada',
+        label: 'Precipitação Pluviométrica',
+        meta: 'Precipitação acumulada anual (climatologia 1996-2025)',
         url: VECTOR_TILES_URL,
         sourceLayer: 'precipitacao_sab_pb_original',
         zIndex: 25,
@@ -315,11 +309,11 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['Clim_Prec'],
         popUpFields:  ['Clim_Prec'],
         fieldTypes:   { Clim_Prec: 'number' },
-        descFields:   { Clim_Prec: 'Precipitação Anual (mm)' },
+        descFields:   { Clim_Prec: 'Precipitação Climatologia (1996-2025) (mm/ano)' },
       },
       precipitacao_sab_pb_pesos: {
-        label: 'Precipitação (Pesos)',
-        meta: 'Pesos atribuídos às faixas de chuva',
+        label: 'Precipitação (Escores de Qualidade)',
+        meta: 'Escores de Qualidade atribuída a Precipitação acumulada anual',
         url: VECTOR_TILES_URL,
         sourceLayer: 'precipitacao_sab_pb_pesos',
         zIndex: 26,
@@ -327,7 +321,7 @@ export const OVERLAY_CATEGORIES = {
         searchFields: ['Pesos_Prec'],
         popUpFields:  ['Pesos_Prec'],
         fieldTypes:   { Pesos_Prec: 'number' },
-        descFields:   { Pesos_Prec: 'Peso Precipitação' },
+        descFields:   { Pesos_Prec: 'Escore de Qualidade Precipitação' },
       },
     },
   },
