@@ -153,8 +153,7 @@ body,
 /* ── GFI popup content ───────────────────────────────────────────────────────── */
 .gfi-popup {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  min-width: 200px;
-  max-width: 300px;
+  width: 280px;
 }
 
 .gfi-section {
@@ -172,26 +171,31 @@ body,
 
 .gfi-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: 13px;
 }
 
 .gfi-key {
+  width: 40%;
   font-size: 12px;
   font-weight: 400;
   letter-spacing: -0.12px;
   color: var(--text-muted);
   padding: 1px 8px 1px 0;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
   vertical-align: top;
 }
 
 .gfi-val {
+  width: 60%;
   font-size: 13px;
   font-weight: 400;
   letter-spacing: -0.224px;
   color: var(--text-main);
   padding: 1px 0;
+  overflow-wrap: break-word;
   word-break: break-word;
 }
 
