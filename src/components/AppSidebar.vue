@@ -116,8 +116,8 @@ function handleCategoryClick(key) {
           <span class="cat-label" v-show="!isCollapsed">Camadas Base</span>
           
           <div class="cat-meta" v-show="!isCollapsed">
-            <span class="badge rounded-pill bg-accent-dim text-accent me-1">1</span>
-            <span class="text-muted small">{{ store.availableBaseLayers.length }}</span>
+            <span class="cat-badge me-1">1</span>
+            <span class="cat-count">{{ store.availableBaseLayers.length }}</span>
             <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': openBase }" />
           </div>
         </button>
@@ -147,9 +147,9 @@ function handleCategoryClick(key) {
         <div class="divider-actions">
           <span
             v-if="store.activeOverlayCount > 0"
-            class="badge rounded-pill bg-accent-dim text-accent me-1"
+            class="cat-badge me-1"
           >{{ store.activeOverlayCount }}</span>
-          <span class="text-muted small">
+          <span class="cat-count">
             <template v-if="searchTerm">{{ filteredLayerCount }} de </template>{{ store.availableOverlays.length }}
           </span>
           <Transition name="clear-btn">
@@ -206,11 +206,11 @@ function handleCategoryClick(key) {
           <div class="cat-meta" v-show="!isCollapsed">
             <span
               v-if="visibleCount(cat.key) > 0"
-              class="badge rounded-pill bg-accent-dim text-accent me-1"
+              class="cat-badge me-1"
             >
               {{ visibleCount(cat.key) }}
             </span>
-            <span class="text-muted small">{{ cat.layers.length }}</span>
+            <span class="cat-count">{{ cat.layers.length }}</span>
             <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': searchTerm || openCategories[cat.key] }" />
           </div>
         </button>
@@ -559,5 +559,27 @@ function handleCategoryClick(key) {
 .clear-btn-leave-to {
   opacity: 0;
   transform: scale(0.85);
+}
+
+/* ── Badges de contagem ──────────────────────────────────────────────────────── */
+.cat-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.cat-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-main);
+  opacity: 0.55;
 }
 </style>
