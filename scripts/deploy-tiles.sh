@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REMOTE_HOST="ubuntu@geoserver.multisig.com.br"
+REMOTE_HOST="ubuntu@2.25.137.181"
 REMOTE_DEST="/home/ubuntu"
-REMOTE_TILES_DIR="/var/lib/tomcat9/webapps/tiles"
+REMOTE_TILES_DIR="/var/www/html/tiles"
 TILES_DIR="$(cd "$(dirname "$0")/../public/tiles" && pwd)"
 ARCHIVE="insa_layers.tar.gz"
 
