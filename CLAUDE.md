@@ -313,8 +313,8 @@ npm run deploy:tiles
 ```
 
 **Script:** `scripts/deploy-tiles.sh`
-**Server:** `ubuntu@geoserver.multisig.com.br` — SSH key access, no password
-**Remote path:** `/var/lib/tomcat9/webapps/tiles/insa_layers/`
+**Server:** `ubuntu@2.25.137.181` (`sistema.sigrural.com.br`) — SSH key access, no password
+**Remote path:** `/var/www/html/tiles/insa_layers/`
 
 What the script does:
 1. Packs `public/tiles/insa_layers/` → `insa_layers.tar.gz` (~20 MB) using `COPYFILE_DISABLE=1`
