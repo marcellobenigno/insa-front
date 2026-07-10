@@ -97,47 +97,14 @@ function clearSearch() {
 
 // ── Legenda dinâmica via styles.json ──────────────────────────────────────────
 
-function formatNum(n) {
-  // Remove casas decimais desnecessárias (ex: 1.30000000004 → "1.3")
-  return parseFloat(n.toFixed(3)).toString()
-}
-
-/** Parseia cores no formato "stroke:#rrggbb" → { strokeOnly, color } */
-function parseColorEntry(rawColor) {
-  if (typeof rawColor === 'string' && rawColor.startsWith('stroke:')) {
-    return { strokeOnly: true, color: rawColor.slice(7) }
-  }
-  return { strokeOnly: false, color: rawColor }
-}
-
 const legendItems = computed(() => {
-  const styleEntry = stylesData[props.layerKey]
-  if (!styleEntry) return []
+  const style = stylesData[props.layerKey]
+  if (!style?.classes?.length) return []
 
-  const entries = Object.entries(styleEntry)
-  if (entries.length === 0) return []
-
-  // Detecta se as chaves são numéricas
-  const isNumeric = entries.every(([key]) => !isNaN(parseFloat(key)) && isFinite(key))
-
-  if (isNumeric) {
-    const sorted = entries
-      .map(([key, rawColor]) => ({ value: parseFloat(key), ...parseColorEntry(rawColor) }))
-      .sort((a, b) => a.value - b.value)
-
-    return sorted.map((item, i) => {
-      const next = sorted[i + 1]
-      const label = next
-        ? `${formatNum(item.value)} – ${formatNum(next.value)}`
-        : `≥ ${formatNum(item.value)}`
-      return { label, color: item.color, strokeOnly: item.strokeOnly }
-    })
-  }
-
-  // Categórico: retorna chave como label
-  return entries.map(([key, rawColor]) => ({
-    label: key,
-    ...parseColorEntry(rawColor),
+  return style.classes.map(c => ({
+    label: c.label,
+    color: c.color,
+    strokeOnly: style.type === 'stroke',
   }))
 })
 

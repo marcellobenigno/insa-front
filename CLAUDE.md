@@ -149,45 +149,48 @@ layer_key: {
 | Range | Use |
 |---|---|
 | 1 | Base tile layers |
-| 10–19 | Indices and thematic data |
-| 20–29 | Soils and texture |
+| 10–28 | Composite quality indices (IVS, IQS, IQV, IQC, IQM) and their "Escores de Qualidade" components, ordered by category |
 | 30+ | Administrative boundaries (always on top) |
 
 ---
 
 ## Existing layers (current state)
 
-All layers cover the **Paraíba semi-arid region (Semiárido da PB)**.
-Each thematic variable has two variants: `_original` (raw values) and `_pesos` (weighted scores).
+All layers cover the **Paraíba semi-arid region (Semiárido da PB)**. They come from
+the delivered branch of the information tree — IVS → Índices de Qualidade →
+IQS/IQV/IQC/IQM → Escores de Qualidade. The "Indicadores de Qualidade" branch (raw
+Pedologia/Geomorfologia/Litologia/Vegetação/Climáticos/Manejo data) has not been
+delivered yet and has no layers in the app.
 
-| `sourceLayer` | Description |
-|---|---|
-| `declividade_sab_pb_original` | Slope — 6 named classes (Plano → Escarpado) |
-| `declividade_sab_pb_pesos` | Slope — weights |
-| `eto_sab_pb_original` | Evapotranspiration — raw |
-| `eto_sab_pb_pesos` | Evapotranspiration — weights |
-| `geologia_sab_pb_original` | Geology — raw |
-| `geologia_sab_pb_pesos` | Geology — weights |
-| `ia_sab_pb_original` | Aridity index — raw |
-| `ia_sab_pb_pesos` | Aridity index — weights |
-| `iqc_sab_pb` | IQC — water quality index |
-| `iqs_sab_pb` | IQS — soil quality index |
-| `municipios_pb_semiarido` | Municipal boundaries (stroke-only) |
-| `precipitacao_sab_pb_original` | Rainfall — raw |
-| `precipitacao_sab_pb_pesos` | Rainfall — weights |
-| `solos_tipos_sab_pb_original` | Soil types — raw |
-| `solos_tipos_sab_pb_pesos` | Soil types — weights |
-| `textura_sab_pb_original` | Soil texture — raw |
-| `textura_sab_pb_pesos` | Soil texture — weights |
+Every score field (`iqs`, `iqv`, `iqcescores`, `iqm`, `ivd`, and all `*escores*`
+fields below) is a **continuous numeric index**, not discrete classes — matched via
+the numeric-range mode in `mapRenderer.js`/`stats.py`.
+
+| `sourceLayer` | Category | Description |
+|---|---|---|
+| `municipios_pb_semiarido` | Semiárido PB | Municipal boundaries (stroke-only) |
+| `ivd_sab` | IVS | Índice de Vulnerabilidade à Desertificação (composite) |
+| `iqs` | IQS | Índice de Qualidade do Solo (composite) |
+| `declividade_escores_de_qualidade` | IQS | Slope — quality score |
+| `geologia_escores_de_qualidade` | IQS | Geology — quality score |
+| `textura_escores_de_qualidade` | IQS | Soil texture — description + quality score |
+| `tipos_de_solos_escores_de_qualidade` | IQS | Soil types — description + quality score |
+| `iqv` | IQV | Índice de Qualidade da Vegetação (composite) |
+| `ndvi_escore_de_qualidade` | IQV | NDVI — quality score |
+| `carbono_organico_escores_de_qualidade` | IQV | Soil organic carbon — quality score |
+| `suscetibilidade_erosao_escore_de_qualidade` | IQV | Water erosion susceptibility — quality score |
+| `iqc` | IQC | Índice de Qualidade Climática (composite) |
+| `ia_escores_de_qualidade` | IQC | Aridity index — quality score |
+| `precipitacao_escores_de_qualidade` | IQC | Rainfall — quality score |
+| `eto_escores_de_qualidade` | IQC | Evapotranspiration — quality score |
+| `iqm` | IQM | Índice de Qualidade de Manejo (composite) |
+| `pressao_animal_escores_de_qualidade` | IQM | Animal pressure — quality score |
+| `focos_queimadas_escores_dequalidade` | IQM | Fire outbreaks — quality score |
+| `densidade_demografica_rural_escores_de_qualidade` | IQM | Rural demographic density — quality score |
+| `idhm_escores_de_qualidade` | IQM | Municipal HDI — quality score |
 
 **`municipios_pb_semiarido` is stroke-only** — its entry in `src/assets/styles.json`
-must use the `stroke:` prefix:
-
-```json
-"municipios_pb_semiarido": {
-  "Limite municipal": "stroke:#ffffff"
-}
-```
+must use `"type": "stroke"` (see the Styles section below for the full schema).
 
 ---
 
@@ -223,24 +226,27 @@ tippecanoe \
   --extend-zooms-if-still-dropping \
   --no-tile-compression \
   --force \
-  data/geojson/declividade_sab_pb_original.geojson \
-  data/geojson/declividade_sab_pb_pesos.geojson \
-  data/geojson/eto_sab_pb_original.geojson \
-  data/geojson/eto_sab_pb_pesos.geojson \
-  data/geojson/geologia_sab_pb_original.geojson \
-  data/geojson/geologia_sab_pb_pesos.geojson \
-  data/geojson/ia_sab_pb_original.geojson \
-  data/geojson/ia_sab_pb_pesos.geojson \
-  data/geojson/iqc_sab_pb.geojson \
-  data/geojson/iqs_sab_pb.geojson \
-  data/geojson/layer_styles.geojson \
   data/geojson/municipios_pb_semiarido.geojson \
-  data/geojson/precipitacao_sab_pb_original.geojson \
-  data/geojson/precipitacao_sab_pb_pesos.geojson \
-  data/geojson/solos_tipos_sab_pb_original.geojson \
-  data/geojson/solos_tipos_sab_pb_pesos.geojson \
-  data/geojson/textura_sab_pb_original.geojson \
-  data/geojson/textura_sab_pb_pesos.geojson
+  data/geojson/ivd_sab.geojson \
+  data/geojson/iqs.geojson \
+  data/geojson/iqv.geojson \
+  data/geojson/iqc.geojson \
+  data/geojson/iqm.geojson \
+  data/geojson/declividade_escores_de_qualidade.geojson \
+  data/geojson/geologia_escores_de_qualidade.geojson \
+  data/geojson/textura_escores_de_qualidade.geojson \
+  data/geojson/tipos_de_solos_escores_de_qualidade.geojson \
+  data/geojson/ndvi_escore_de_qualidade.geojson \
+  data/geojson/carbono_organico_escores_de_qualidade.geojson \
+  data/geojson/suscetibilidade_erosao_escore_de_qualidade.geojson \
+  data/geojson/ia_escores_de_qualidade.geojson \
+  data/geojson/precipitacao_escores_de_qualidade.geojson \
+  data/geojson/eto_escores_de_qualidade.geojson \
+  data/geojson/pressao_animal_escores_de_qualidade.geojson \
+  data/geojson/focos_queimadas_escores_dequalidade.geojson \
+  data/geojson/densidade_demografica_rural_escores_de_qualidade.geojson \
+  data/geojson/idhm_escores_de_qualidade.geojson \
+  data/geojson/layer_styles.geojson
 ```
 
 > `layer_styles.geojson` is the QGIS style table — include it in the command but
@@ -258,11 +264,18 @@ python scripts/export.py             # writes public/tiles/insa_layers/{z}/{x}/{
 ### Step 4 — Extract styles
 
 ```bash
-python scripts/styles.py    # writes src/assets/styles.json from layer_styles in the GeoPackage
+python scripts/styles.py    # writes src/assets/styles.json from layer_styles (QML) in the GeoPackage
 ```
 
-If a layer is styled as stroke-only in QGIS (no fill), `styles.py` will not capture it.
-Add the entry manually to `src/assets/styles.json` using the `stroke:` prefix.
+`styles.py` parses the **QML** (QGIS's native XML style format, stored in the
+`layer_styles.styleQML` column), not the SLD — QML preserves the renderer type
+(categorized vs. graduated) and each class's human-authored label
+(e.g. `"Alta"`, `"Moderada"`), which the SLD/regex approach used to discard.
+Rows whose `f_table_name` isn't a real table in the GeoPackage are skipped
+automatically (the GeoPackage can contain stray/duplicate style rows).
+
+`singleSymbol`-styled layers (e.g. `municipios_pb_semiarido`, which the app
+renders stroke-only) are **not** captured automatically — add them manually.
 
 > ⚠️ **`styles.py` overwrites `src/assets/styles.json` entirely.** Any manual entry
 > will be lost after every pipeline run. Always restore manual entries immediately
@@ -271,21 +284,13 @@ Add the entry manually to `src/assets/styles.json` using the `stroke:` prefix.
 >
 > ```json
 > "municipios_pb_semiarido": {
->   "Limite municipal": "stroke:#ffffff"
-> },
-> "declividade_sab_pb_original": {
->   "Plano 0 a 3%":          "#30b000",
->   "Suave Ondulado 3 a 8%": "#a5ff00",
->   "Ondulado 8 a 20%":      "#ffff63",
->   "Forte Ondulado 20 a 45%": "#fea700",
->   "Montanhoso 45 a 75%":   "#ff4c00",
->   "Escarpado > 75%":       "#b40000"
+>   "type": "stroke",
+>   "field": null,
+>   "classes": [
+>     { "label": "Limite municipal", "color": "#ffffff" }
+>   ]
 > }
 > ```
->
-> `declividade_sab_pb_original` usa chaves string com intervalos embutidos
-> ("X a Y%", "> X%"). O renderer e o `stats.py` reconhecem este formato
-> automaticamente e fazem classificação por intervalo.
 
 ### Step 5 — Generate area statistics
 
@@ -343,21 +348,29 @@ What the script does:
 
 - [ ] Add the layer object to the correct category in `src/config/layers.js`
 - [ ] Set `sourceLayer` to exactly match the GeoPackage layer name
-- [ ] If the layer has new field names not yet in `src/utils/mapRenderer.js → possibleValues`, add them
 
 ---
 
 ## Renderer (`src/utils/mapRenderer.js`)
 
 Reads `src/assets/styles.json` and paints each feature on a canvas based on its
-attribute values. When a new layer introduces field names not already listed in
-`possibleValues`, add them so the renderer can match feature values to legend colors.
+attribute values. `styles.json` already carries the field name to read
+(`style.field`, extracted from the QML `attr` in Step 4) and the classification
+type, so the renderer never needs a hardcoded list of field names — adding a
+layer to `layers.js` with the right `sourceLayer` is enough.
 
-Suporta três modos de matching (em ordem de tentativa):
-1. **Exact string** — chave do estilo = valor do atributo como string
-2. **Numeric range** — chaves numéricas → `numVal <= limit` (classificação graduada)
-3. **Label range** — chaves string com intervalos embutidos (`"X a Y%"`, `"> X%"`)
-   → extrai limites por regex e aplica `numVal <= upper_bound`
+`getThematicColor(sourceLayer, featureProps)` branches on `style.type`:
+1. **`categorized`** — exact match: picks the class whose `value` is closest
+   to `featureProps[style.field]` (QGIS "Categorized" symbology).
+2. **`graduated`** — range match: first class whose `max` (upper bound) is
+   `>= featureProps[style.field]` (QGIS "Graduated" symbology).
+3. **`stroke` / `single`** — fixed color, no attribute lookup (e.g. municipal
+   boundaries).
+
+Getting `categorized` vs `graduated` wrong produces a legend that *looks*
+plausible (colors still render) but shows synthesized numeric ranges instead
+of the real QGIS class labels — always re-run Step 4 after any style change
+in QGIS rather than hand-editing `styles.json`.
 
 ---
 
@@ -370,14 +383,19 @@ Usado pelo frontend para exibir estatísticas na legenda.
 {
   "layer_name": {
     "classes": [
-      { "label": "Plano 0 a 3%", "area_km2": 9020.0, "color": "#30b000" }
+      { "label": "Alta", "area_km2": 9020.0, "color": "#30b000" }
     ],
     "total_km2": 53875.3,
-    "field_used": "classe"
+    "field_used": "iqcescores"
   },
   "municipios_pb_semiarido": null
 }
 ```
+
+`stats.py` reads `style.field`/`style.type`/`style.classes` from `styles.json`
+directly (no column-guessing) and classifies each feature the same way the
+frontend renderer does — `categorized` (exact value match) or `graduated`
+(upper-bound range match) — so areas always line up with what's shown on the map.
 
 Todas as classes definidas em `styles.json` aparecem no array `classes`, mesmo que
 `area_km2` seja `0.0` (classe presente no estilo mas sem polígonos no recorte PB).
@@ -389,19 +407,43 @@ Regenerar sempre que `styles.json` for atualizado: `python scripts/stats.py`.
 
 ## Styles (`src/assets/styles.json`)
 
-Auto-generated by `scripts/styles.py`. Structure:
+Auto-generated by `scripts/styles.py` from each layer's QML (`layer_styles.styleQML`
+in the GeoPackage). Structure:
 
 ```json
 {
   "layer_name": {
-    "Legend label": "#rrggbb",
-    "Another label": "stroke:#rrggbb"
+    "type": "categorized",
+    "field": "etoescores",
+    "classes": [
+      { "value": 1, "label": "1- Muito Alta", "color": "#2b83ba" },
+      { "value": 1.2, "label": "1,2 - Alta", "color": "#aaddd9" }
+    ]
+  },
+  "other_layer": {
+    "type": "graduated",
+    "field": "iqcescores",
+    "classes": [
+      { "max": 1.216, "label": "1 - 1,22 - Alta", "color": "#2b83ba" },
+      { "max": 1.48, "label": "1,22 - 1,48 -Moderada", "color": "#c7e8ad" }
+    ]
+  },
+  "municipios_pb_semiarido": {
+    "type": "stroke",
+    "field": null,
+    "classes": [{ "label": "Limite municipal", "color": "#ffffff" }]
   }
 }
 ```
 
-- Plain hex `"#rrggbb"` → filled polygon
-- `"stroke:#rrggbb"` → outline only, no fill
+- `type: "categorized"` — QGIS "Categorized" symbology; classes match by exact `value`.
+- `type: "graduated"` — QGIS "Graduated" symbology; classes match by `max` (upper bound of the range).
+- `type: "stroke"` / `"single"` — fixed color, no attribute lookup; `"stroke"` renders outline-only.
+- `label` is the **exact text authored in QGIS** (not reformatted) — it's what
+  the sidebar legend and the stats chart both display, so getting the QGIS
+  classification right is what makes the frontend right.
+- `field` is the attribute QGIS classified on (`renderer-v2[@attr]` in the QML) —
+  used by both the map renderer and `stats.py` to read the right property.
 
 ---
 

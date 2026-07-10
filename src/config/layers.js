@@ -63,278 +63,439 @@ export const BASE_LAYERS = {
 const VECTOR_TILES_URL = import.meta.env.VITE_TILES_URL
 
 
-// ─── CAMADAS DE SOBREPOSIÇÃO AGRUPADAS POR CATEGORIA ─────────────────────────
+// ─── CAMADAS DE SOBREPOSIÇÃO EM ÁRVORE HIERÁRQUICA ───────────────────────────
 //
-// Cada categoria possui:
-//   key:    identificador único (usado como chave de accordion na sidebar)
-//   label:  nome exibido ao usuário
-
-//   icon:   classe Bootstrap Icons para o cabeçalho da categoria
-//   layers: objeto de camadas (mesma estrutura anterior por camada)
+// OVERLAY_TREE é uma lista de nós recursivos. Cada nó é um dos dois formatos:
 //
-export const OVERLAY_CATEGORIES = {
+//   Nó de grupo (accordion, sem camada própria):
+//     { key, label, icon, layer: null, children: [ ...nós ] }
+//
+//   Nó folha (uma camada de fato, renderizada como LayerCard):
+//     { key, layer: { label, meta, url, sourceLayer, zIndex, active,
+//                      searchFields, popUpFields, fieldTypes, descFields } }
+//
+// A ordem de cada array `children` É a ordem exibida na sidebar — não há
+// reordenação em tempo de execução, então a ordem aqui deve refletir
+// exatamente a hierarquia do projeto (Semiárido → Índices de Qualidade →
+// IQS/IQV/IQC/IQM → Escores de Qualidade → camada).
+//
+export const OVERLAY_TREE = [
 
   // 1. Semiárido PB ──────────────────────────────────────────────────────────
-  semiarido_pb: {
+  {
+    key: 'semiarido_pb',
     label: 'Semiárido PB',
     icon: 'bi-map',
-    layers: {
-      municipios_pb_semiarido: {
-        label: 'Municípios',
-        meta: 'Limites Municipais do Semiárido Paraibano',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'municipios_pb_semiarido',
-        zIndex: 30,
-        active: true,
-        searchFields: ['nm_municip'],
-        popUpFields:  ['nm_municip', 'cod_ibge_m'],
-        fieldTypes:   { nm_municip: 'string', cod_ibge_m: 'string', slug: 'string' },
-        descFields:   { nm_municip: 'Município', cod_ibge_m: 'Código IBGE' },
+    layer: null,
+    children: [
+      {
+        key: 'municipios_pb_semiarido',
+        layer: {
+          label: 'Municípios',
+          meta: 'Limites Municipais do Semiárido Paraibano',
+          url: VECTOR_TILES_URL,
+          sourceLayer: 'municipios_pb_semiarido',
+          zIndex: 30,
+          active: true,
+          searchFields: ['nm_municip'],
+          popUpFields:  ['nm_municip', 'cod_ibge_m'],
+          fieldTypes:   { nm_municip: 'string', cod_ibge_m: 'string', slug: 'string' },
+          descFields:   { nm_municip: 'Município', cod_ibge_m: 'Código IBGE' },
+        },
       },
-    },
+    ],
   },
 
-  // 2. Indicadores de Qualidade ─────────────────────────────────────────────
-  indices_qualidade: {
-    label: 'Indicadores de Qualidade',
+  // 2. IVS — Índice de Vulnerabilidade à Desertificação ─────────────────────
+  {
+    key: 'ivs',
+    label: 'IVD — Vulnerabilidade à Desertificação',
+    icon: 'bi-exclamation-triangle',
+    layer: null,
+    children: [
+      {
+        key: 'ivd_sab',
+        layer: {
+          label: 'IVD — Índice de Vulnerabilidade à Desertificação',
+          meta: 'Síntese dos índices de qualidade do solo, vegetação, clima e manejo',
+          url: VECTOR_TILES_URL,
+          sourceLayer: 'ivd_sab',
+          zIndex: 10,
+          active: true,
+          searchFields: ['ivd'],
+          popUpFields:  ['ivd'],
+          fieldTypes:   { ivd: 'number' },
+          descFields:   { ivd: 'Índice de Vulnerabilidade à Desertificação' },
+        },
+      },
+    ],
+  },
+
+  // 3. Índices de Qualidade → IQS / IQV / IQC / IQM ──────────────────────────
+  {
+    key: 'indices_qualidade',
+    label: 'Índices de Qualidade',
     icon: 'bi-graph-up-arrow',
-    layers: {
-      iqs_sab_pb: {
-        label: 'Índice de Qualidade do Solo (IQS)',
-        meta: 'Índice de Qualidade do Solo',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'iqs_sab_pb',
-        zIndex: 10,
-        active: true,
-        searchFields: ['IQS'],
-        popUpFields:  ['IQS'],
-        fieldTypes:   { IQS: 'number' },
-        descFields:   { IQS: 'Índice de Qualidade do Solo' },
-      },
-      iqc_sab_pb: {
-        label: 'Índice de Qualidade Climática (IQC)',
-        meta: 'Índice de Qualidade Climática',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'iqc_sab_pb',
-        zIndex: 11,
-        active: false,
-        searchFields: ['IQC_Pes'],
-        popUpFields:  ['IQC_Pes'],
-        fieldTypes:   { IQC_Pes: 'number' },
-        descFields:   { IQC_Pes: 'Índice de Qualidade Climática' },
-      },
-    },
-  },
+    layer: null,
+    children: [
 
-  // 3. Declividade ───────────────────────────────────────────────────────────
-  declividade: {
-    label: 'Declividade',
-    icon: 'bi-bar-chart-steps',
-    layers: {
-      declividade_sab_pb_original: {
-        label: 'Declividade',
-        meta: 'Classes de declividade em %',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'declividade_sab_pb_original',
-        zIndex: 12,
-        active: false,
-        searchFields: ['DN'],
-        popUpFields:  ['DN'],
-        fieldTypes:   { DN: 'number' },
-        descFields:   { DN: 'Declividade (%)' },
+      // 3.1 IQS — Índice de Qualidade do Solo ───────────────────────────────
+      {
+        key: 'iqs_group',
+        label: 'IQS — Qualidade do Solo',
+        icon: 'bi-geo',
+        layer: null,
+        children: [
+          {
+            key: 'iqs',
+            layer: {
+              label: 'Índice de Qualidade do Solo (IQS)',
+              meta: 'Síntese de declividade, geologia, textura e tipos de solo',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'iqs',
+              zIndex: 11,
+              active: false,
+              searchFields: ['iqs'],
+              popUpFields:  ['iqs'],
+              fieldTypes:   { iqs: 'number' },
+              descFields:   { iqs: 'Índice de Qualidade do Solo' },
+            },
+          },
+          {
+            key: 'iqs_escores',
+            label: 'Escores de Qualidade',
+            icon: 'bi-list-nested',
+            layer: null,
+            children: [
+              {
+                key: 'textura_escores_de_qualidade',
+                layer: {
+                  label: 'Textura do Solo',
+                  meta: 'Escores de qualidade atribuídos à textura do solo',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'textura_escores_de_qualidade',
+                  zIndex: 12,
+                  active: false,
+                  searchFields: ['dsc_textur', 'texescores'],
+                  popUpFields:  ['dsc_textur', 'texescores'],
+                  fieldTypes:   { dsc_textur: 'string', texescores: 'number' },
+                  descFields:   { dsc_textur: 'Textura do Solo', texescores: 'Escore de Qualidade da Textura' },
+                },
+              },
+              {
+                key: 'tipos_de_solos_escores_de_qualidade',
+                layer: {
+                  label: 'Tipos de Solos',
+                  meta: 'Escores de qualidade atribuídos aos tipos de solo',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'tipos_de_solos_escores_de_qualidade',
+                  zIndex: 13,
+                  active: false,
+                  searchFields: ['dsc_compon', 'solescores'],
+                  popUpFields:  ['dsc_compon', 'solescores'],
+                  fieldTypes:   { dsc_compon: 'string', solescores: 'number' },
+                  descFields:   { dsc_compon: 'Componente Pedológico', solescores: 'Escore de Qualidade do Tipo de Solo' },
+                },
+              },
+              {
+                key: 'declividade_escores_de_qualidade',
+                layer: {
+                  label: 'Declividade',
+                  meta: 'Escores de qualidade atribuídos à declividade do terreno',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'declividade_escores_de_qualidade',
+                  zIndex: 14,
+                  active: false,
+                  searchFields: ['decescores'],
+                  popUpFields:  ['decescores'],
+                  fieldTypes:   { decescores: 'number' },
+                  descFields:   { decescores: 'Escore de Qualidade da Declividade' },
+                },
+              },
+              {
+                key: 'geologia_escores_de_qualidade',
+                layer: {
+                  label: 'Geologia',
+                  meta: 'Escores de qualidade atribuídos às formações geológicas',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'geologia_escores_de_qualidade',
+                  zIndex: 15,
+                  active: false,
+                  searchFields: ['geoescores'],
+                  popUpFields:  ['geoescores'],
+                  fieldTypes:   { geoescores: 'number' },
+                  descFields:   { geoescores: 'Escore de Qualidade da Geologia' },
+                },
+              },
+            ],
+          },
+        ],
       },
-      declividade_sab_pb_pesos: {
-        label: 'Declividade (Escores de Qualidade)',
-        meta: 'Escores de qualidade atribuídos à declividade',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'declividade_sab_pb_pesos',
-        zIndex: 13,
-        active: false,
-        searchFields: ['PesDecl'],
-        popUpFields:  ['PesDecl'],
-        fieldTypes:   { PesDecl: 'number' },
-        descFields:   { PesDecl: 'Escore de Qualidade da Declividade' },
-      },
-    },
-  },
 
-  // 4. Geologia ──────────────────────────────────────────────────────────────
-  geologia: {
-    label: 'Geologia',
-    icon: 'bi-layers',
-    layers: {
-      geologia_sab_pb_original: {
-        label: 'Geologia',
-        meta: 'Formações litológicas e rochas',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'geologia_sab_pb_original',
-        zIndex: 15,
-        active: false,
-        searchFields: ['GLO_DS_LIT'],
-        popUpFields:  ['GLO_DS_LIT'],
-        fieldTypes:   { GLO_DS_LIT: 'string' },
-        descFields:   { GLO_DS_LIT: 'Descrição Litológica' },
+      // 3.2 IQV — Índice de Qualidade da Vegetação ──────────────────────────
+      {
+        key: 'iqv_group',
+        label: 'IQV — Qualidade da Vegetação',
+        icon: 'bi-tree',
+        layer: null,
+        children: [
+          {
+            key: 'iqv',
+            layer: {
+              label: 'Índice de Qualidade da Vegetação (IQV)',
+              meta: 'Síntese de NDVI, carbono orgânico e suscetibilidade à erosão hídrica',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'iqv',
+              zIndex: 16,
+              active: false,
+              searchFields: ['iqv'],
+              popUpFields:  ['iqv'],
+              fieldTypes:   { iqv: 'number' },
+              descFields:   { iqv: 'Índice de Qualidade da Vegetação' },
+            },
+          },
+          {
+            key: 'iqv_escores',
+            label: 'Escores de Qualidade',
+            icon: 'bi-list-nested',
+            layer: null,
+            children: [
+              {
+                key: 'ndvi_escore_de_qualidade',
+                layer: {
+                  label: 'NDVI',
+                  meta: 'Escores de qualidade atribuídos ao índice de vegetação NDVI',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'ndvi_escore_de_qualidade',
+                  zIndex: 17,
+                  active: false,
+                  searchFields: ['ndviscores'],
+                  popUpFields:  ['ndviscores'],
+                  fieldTypes:   { ndviscores: 'number' },
+                  descFields:   { ndviscores: 'Escore de Qualidade do NDVI' },
+                },
+              },
+              {
+                key: 'carbono_organico_escores_de_qualidade',
+                layer: {
+                  label: 'Carbono Orgânico',
+                  meta: 'Escores de qualidade atribuídos ao teor de carbono orgânico do solo',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'carbono_organico_escores_de_qualidade',
+                  zIndex: 18,
+                  active: false,
+                  searchFields: ['co_scores'],
+                  popUpFields:  ['co_scores'],
+                  fieldTypes:   { co_scores: 'number' },
+                  descFields:   { co_scores: 'Escore de Qualidade do Carbono Orgânico' },
+                },
+              },
+              {
+                key: 'suscetibilidade_erosao_escore_de_qualidade',
+                layer: {
+                  label: 'Suscetibilidade à Erosão Hídrica',
+                  meta: 'Escores de qualidade atribuídos à suscetibilidade dos solos à erosão hídrica',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'suscetibilidade_erosao_escore_de_qualidade',
+                  zIndex: 19,
+                  active: false,
+                  searchFields: ['sucescores'],
+                  popUpFields:  ['sucescores'],
+                  fieldTypes:   { sucescores: 'number' },
+                  descFields:   { sucescores: 'Escore de Qualidade da Suscetibilidade à Erosão' },
+                },
+              },
+            ],
+          },
+        ],
       },
-      geologia_sab_pb_pesos: {
-        label: 'Geologia (Escores de Qualidade)',
-        meta: 'Escores de Qualidade atribuídos às formações rochosas',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'geologia_sab_pb_pesos',
-        zIndex: 16,
-        active: false,
-        searchFields: ['GLO_DS_LIT', 'pes_Peso'],
-        popUpFields:  ['GLO_DS_LIT', 'pes_Peso'],
-        fieldTypes:   { GLO_DS_LIT: 'string', pes_Peso: 'number' },
-        descFields:   { GLO_DS_LIT: 'Descrição Litológica', pes_Peso: 'Escores de Qualidade (Geologia)' },
-      },
-    },
-  },
 
-  // 5. Solos ─────────────────────────────────────────────────────────────────
-  solos: {
-    label: 'Solos',
-    icon: 'bi-geo',
-    layers: {
-      solos_tipos_sab_pb_original: {
-        label: 'Tipos de Solos',
-        meta: 'Classificação pedológica (SiBCS)',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'solos_tipos_sab_pb_original',
-        zIndex: 17,
-        active: false,
-        searchFields: ['DSC_COMPON'],
-        popUpFields:  ['DSC_COMPON'],
-        fieldTypes:   { DSC_COMPON: 'string' },
-        descFields:   { DSC_COMPON: 'Componente Pedológico' },
+      // 3.3 IQC — Índice de Qualidade Climática ─────────────────────────────
+      {
+        key: 'iqc_group',
+        label: 'IQC — Qualidade Climática',
+        icon: 'bi-cloud-rain',
+        layer: null,
+        children: [
+          {
+            key: 'iqc',
+            layer: {
+              label: 'Índice de Qualidade Climática (IQC)',
+              meta: 'Síntese de índice de aridez, precipitação e evapotranspiração',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'iqc',
+              zIndex: 20,
+              active: false,
+              searchFields: ['iqcescores'],
+              popUpFields:  ['iqcescores'],
+              fieldTypes:   { iqcescores: 'number' },
+              descFields:   { iqcescores: 'Índice de Qualidade Climática' },
+            },
+          },
+          {
+            key: 'iqc_escores',
+            label: 'Escores de Qualidade',
+            icon: 'bi-list-nested',
+            layer: null,
+            children: [
+              {
+                key: 'ia_escores_de_qualidade',
+                layer: {
+                  label: 'Índice de Aridez',
+                  meta: 'Escores de qualidade atribuídos ao índice de aridez',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'ia_escores_de_qualidade',
+                  zIndex: 21,
+                  active: false,
+                  searchFields: ['ia_escores'],
+                  popUpFields:  ['ia_escores'],
+                  fieldTypes:   { ia_escores: 'number' },
+                  descFields:   { ia_escores: 'Escore de Qualidade do Índice de Aridez' },
+                },
+              },
+              {
+                key: 'precipitacao_escores_de_qualidade',
+                layer: {
+                  label: 'Precipitação',
+                  meta: 'Escores de qualidade atribuídos à precipitação pluviométrica',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'precipitacao_escores_de_qualidade',
+                  zIndex: 22,
+                  active: false,
+                  searchFields: ['pcpescores'],
+                  popUpFields:  ['pcpescores'],
+                  fieldTypes:   { pcpescores: 'number' },
+                  descFields:   { pcpescores: 'Escore de Qualidade da Precipitação' },
+                },
+              },
+              {
+                key: 'eto_escores_de_qualidade',
+                layer: {
+                  label: 'Evapotranspiração (ETo)',
+                  meta: 'Escores de qualidade atribuídos à evapotranspiração de referência',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'eto_escores_de_qualidade',
+                  zIndex: 23,
+                  active: false,
+                  searchFields: ['etoescores'],
+                  popUpFields:  ['etoescores'],
+                  fieldTypes:   { etoescores: 'number' },
+                  descFields:   { etoescores: 'Escore de Qualidade da Evapotranspiração' },
+                },
+              },
+            ],
+          },
+        ],
       },
-      solos_tipos_sab_pb_pesos: {
-        label: 'Tipos de Solos (Escores de Qualidade)',
-        meta: 'Escores de Qualidade atribuídos aos tipos de solo',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'solos_tipos_sab_pb_pesos',
-        zIndex: 18,
-        active: false,
-        searchFields: ['DSC_COMPON', 'TipSoilPes'],
-        popUpFields:  ['DSC_COMPON', 'TipSoilPes'],
-        fieldTypes:   { DSC_COMPON: 'string', TipSoilPes: 'number' },
-        descFields:   { DSC_COMPON: 'Componente Pedológico', TipSoilPes: 'Escores de Qualidade do Tipo de Solo' },
-      },
-      textura_sab_pb_original: {
-        label: 'Textura do Solo',
-        meta: 'Grupamento de textura física',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'textura_sab_pb_original',
-        zIndex: 19,
-        active: false,
-        searchFields: ['DSC_TEXTUR'],
-        popUpFields:  ['DSC_TEXTUR'],
-        fieldTypes:   { DSC_TEXTUR: 'string' },
-        descFields:   { DSC_TEXTUR: 'Textura do Solo' },
-      },
-      textura_sab_pb_pesos: {
-        label: 'Textura do Solo (Escores de Qualidade)',
-        meta: 'Escores de Qualidade atribuídos à textura do solo',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'textura_sab_pb_pesos',
-        zIndex: 20,
-        active: false,
-        searchFields: ['DSC_TEXTUR', 'SoilTextur'],
-        popUpFields:  ['DSC_TEXTUR', 'SoilTextur'],
-        fieldTypes:   { DSC_TEXTUR: 'string', SoilTextur: 'number' },
-        descFields:   { DSC_TEXTUR: 'Textura do Solo', SoilTextur: 'Escores de Qualidade da Textura' },
-      },
-    },
-  },
 
-  // 6. Climatologia ─────────────────────────────────────────────────────────
-  agroclimatologia: {
-    label: 'Climatologia',
-    icon: 'bi-cloud-rain',
-    layers: {
-      eto_sab_pb_original: {
-        label: 'Evapotranspiração (ETo)',
-        meta: 'Evapotranspiração de referência acumulada (climatologia 1996-2025)',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'eto_sab_pb_original',
-        zIndex: 21,
-        active: false,
-        searchFields: ['ETo_Climat'],
-        popUpFields:  ['ETo_Climat'],
-        fieldTypes:   { ETo_Climat: 'number' },
-        descFields:   { ETo_Climat: 'ETo Climatologia (1996-2025) (mm/ano)' },
+      // 3.4 IQM — Índice de Qualidade de Manejo ─────────────────────────────
+      {
+        key: 'iqm_group',
+        label: 'IQM — Qualidade de Manejo',
+        icon: 'bi-people',
+        layer: null,
+        children: [
+          {
+            key: 'iqm',
+            layer: {
+              label: 'Índice de Qualidade de Manejo (IQM)',
+              meta: 'Síntese de pressão animal, focos de queimada, densidade demográfica rural e IDHM',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'iqm',
+              zIndex: 24,
+              active: false,
+              searchFields: ['iqm'],
+              popUpFields:  ['iqm'],
+              fieldTypes:   { iqm: 'number' },
+              descFields:   { iqm: 'Índice de Qualidade de Manejo' },
+            },
+          },
+          {
+            key: 'iqm_escores',
+            label: 'Escores de Qualidade',
+            icon: 'bi-list-nested',
+            layer: null,
+            children: [
+              {
+                key: 'pressao_animal_escores_de_qualidade',
+                layer: {
+                  label: 'Pressão Animal',
+                  meta: 'Escores de qualidade atribuídos à pressão animal sobre o território',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'pressao_animal_escores_de_qualidade',
+                  zIndex: 25,
+                  active: false,
+                  searchFields: ['paescores'],
+                  popUpFields:  ['paescores'],
+                  fieldTypes:   { paescores: 'number' },
+                  descFields:   { paescores: 'Escore de Qualidade da Pressão Animal' },
+                },
+              },
+              {
+                key: 'focos_queimadas_escores_dequalidade',
+                layer: {
+                  label: 'Focos de Queimada',
+                  meta: 'Escores de qualidade atribuídos à ocorrência de focos de queimada',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'focos_queimadas_escores_dequalidade',
+                  zIndex: 26,
+                  active: false,
+                  searchFields: ['fqescores'],
+                  popUpFields:  ['fqescores'],
+                  fieldTypes:   { fqescores: 'number' },
+                  descFields:   { fqescores: 'Escore de Qualidade dos Focos de Queimada' },
+                },
+              },
+              {
+                key: 'densidade_demografica_rural_escores_de_qualidade',
+                layer: {
+                  label: 'Densidade Demográfica Rural',
+                  meta: 'Escores de qualidade atribuídos à densidade demográfica rural',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'densidade_demografica_rural_escores_de_qualidade',
+                  zIndex: 27,
+                  active: false,
+                  searchFields: ['drescores'],
+                  popUpFields:  ['drescores'],
+                  fieldTypes:   { drescores: 'number' },
+                  descFields:   { drescores: 'Escore de Qualidade da Densidade Demográfica Rural' },
+                },
+              },
+              {
+                key: 'idhm_escores_de_qualidade',
+                layer: {
+                  label: 'IDHM',
+                  meta: 'Escores de qualidade atribuídos ao Índice de Desenvolvimento Humano Municipal',
+                  url: VECTOR_TILES_URL,
+                  sourceLayer: 'idhm_escores_de_qualidade',
+                  zIndex: 28,
+                  active: false,
+                  searchFields: ['idhmescore'],
+                  popUpFields:  ['idhmescore'],
+                  fieldTypes:   { idhmescore: 'number' },
+                  descFields:   { idhmescore: 'Escore de Qualidade do IDHM' },
+                },
+              },
+            ],
+          },
+        ],
       },
-      eto_sab_pb_pesos: {
-        label: 'Evapotranspiração (Escores de Qualidade)',
-        meta: 'Escores de Qualidade atribuídos à ETo',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'eto_sab_pb_pesos',
-        zIndex: 22,
-        active: false,
-        searchFields: ['ETo_Pesos'],
-        popUpFields:  ['ETo_Pesos'],
-        fieldTypes:   { ETo_Pesos: 'number' },
-        descFields:   { ETo_Pesos: 'Escore de Qualidade ETo' },
-      },
-      ia_sab_pb_original: {
-        label: 'Índice de Aridez (IA)',
-        meta: 'Índice de aridez (climatologia 1996-2025)',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'ia_sab_pb_original',
-        zIndex: 23,
-        active: false,
-        searchFields: ['IA_climat'],
-        popUpFields:  ['IA_climat'],
-        fieldTypes:   { IA_climat: 'number' },
-        descFields:   { IA_climat: 'Índice de Aridez' },
-      },
-      ia_sab_pb_pesos: {
-        label: 'Índice de Aridez (Escores de Qualidade)',
-        meta: 'Escores de Qualidade atribuídos ao Índice de Aridez',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'ia_sab_pb_pesos',
-        zIndex: 24,
-        active: false,
-        searchFields: ['IA_Pesos'],
-        popUpFields:  ['IA_Pesos'],
-        fieldTypes:   { IA_Pesos: 'number' },
-        descFields:   { IA_Pesos: 'Escore de Qualidade IA' },
-      },
-      precipitacao_sab_pb_original: {
-        label: 'Precipitação Pluviométrica',
-        meta: 'Precipitação acumulada anual (climatologia 1996-2025)',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'precipitacao_sab_pb_original',
-        zIndex: 25,
-        active: false,
-        searchFields: ['Clim_Prec'],
-        popUpFields:  ['Clim_Prec'],
-        fieldTypes:   { Clim_Prec: 'number' },
-        descFields:   { Clim_Prec: 'Precipitação Climatologia (1996-2025) (mm/ano)' },
-      },
-      precipitacao_sab_pb_pesos: {
-        label: 'Precipitação (Escores de Qualidade)',
-        meta: 'Escores de Qualidade atribuída a Precipitação acumulada anual',
-        url: VECTOR_TILES_URL,
-        sourceLayer: 'precipitacao_sab_pb_pesos',
-        zIndex: 26,
-        active: false,
-        searchFields: ['Pesos_Prec'],
-        popUpFields:  ['Pesos_Prec'],
-        fieldTypes:   { Pesos_Prec: 'number' },
-        descFields:   { Pesos_Prec: 'Escore de Qualidade Precipitação' },
-      },
-    },
+    ],
   },
-}
+]
 
 // ─── OVERLAY_LAYERS PLANO (retrocompatibilidade com mapStore / MapContainer) ──
 //
-// Gerado automaticamente a partir de OVERLAY_CATEGORIES para que MapContainer.vue
-// e mapStore.js não precisem ser reescritos. Qualquer novo código deve preferir
-// consumir OVERLAY_CATEGORIES diretamente.
+// Gerado automaticamente a partir de OVERLAY_TREE (percorrido recursivamente)
+// para que MapContainer.vue não precise saber nada sobre hierarquia — ele só
+// enxerga a lista plana de camadas, igual antes. Nunca editar diretamente.
 //
-export const OVERLAY_LAYERS = Object.fromEntries(
-  Object.values(OVERLAY_CATEGORIES).flatMap(cat =>
-    Object.entries(cat.layers)
-  )
-)
+function collectLayers(nodes, acc = {}) {
+  for (const node of nodes) {
+    if (node.layer) acc[node.key] = node.layer
+    if (node.children) collectLayers(node.children, acc)
+  }
+  return acc
+}
+
+export const OVERLAY_LAYERS = collectLayers(OVERLAY_TREE)

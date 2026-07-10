@@ -4,21 +4,16 @@ import { useMapStore } from '@/stores/mapStore'
 import { useSidebar } from '@/composables/useSidebar'
 import { useTheme } from '@/composables/useTheme'
 import LayerCard from './LayerCard.vue'
+import SidebarTreeGroup from './SidebarTreeGroup.vue'
 import GeoSearch from './GeoSearch.vue'
 
 const store = useMapStore()
-const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase, toggleCategory } = useSidebar()
+const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase } = useSidebar()
 const { isDark, toggleTheme } = useTheme()
 
 function clearAllAndCollapse() {
   store.clearAllOverlays()
   Object.keys(openCategories).forEach(k => { openCategories[k] = false })
-}
-
-// Conta camadas visíveis por categoria para feedback visual no badge
-function visibleCount(categoryKey) {
-  const cat = store.availableCategories.find(c => c.key === categoryKey)
-  return cat ? cat.layers.filter(l => l.visible).length : 0
 }
 
 // ── Filtro de camadas ──────────────────────────────────────────────────────────
@@ -28,20 +23,31 @@ function normalize(s) {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 }
 
-const filteredCategories = computed(() => {
-  if (!searchTerm.value.trim()) return store.availableCategories
+// Poda recursivamente a árvore mantendo só folhas cujo label bate com a busca
+// (e os grupos ancestrais que têm ao menos uma folha correspondente).
+function filterNode(node, q) {
+  if (node.layer) {
+    return normalize(node.layer.label).includes(q) ? node : null
+  }
+  const children = (node.children ?? []).map(child => filterNode(child, q)).filter(Boolean)
+  return children.length > 0 ? { ...node, children } : null
+}
+
+function countLeaves(nodes) {
+  let total = 0
+  for (const node of nodes) {
+    total += node.layer ? 1 : countLeaves(node.children ?? [])
+  }
+  return total
+}
+
+const filteredTree = computed(() => {
+  if (!searchTerm.value.trim()) return store.availableTree
   const q = normalize(searchTerm.value.trim())
-  return store.availableCategories
-    .map(cat => ({
-      ...cat,
-      layers: cat.layers.filter(l => normalize(l.label).includes(q)),
-    }))
-    .filter(cat => cat.layers.length > 0)
+  return store.availableTree.map(node => filterNode(node, q)).filter(Boolean)
 })
 
-const filteredLayerCount = computed(() =>
-  filteredCategories.value.reduce((sum, cat) => sum + cat.layers.length, 0)
-)
+const filteredLayerCount = computed(() => countLeaves(filteredTree.value))
 
 function handleBaseClick() {
   if (isCollapsed.value) {
@@ -49,15 +55,6 @@ function handleBaseClick() {
     if (!openBase.value) toggleBase()
   } else {
     toggleBase()
-  }
-}
-
-function handleCategoryClick(key) {
-  if (isCollapsed.value) {
-    toggleSidebar()
-    if (!openCategories[key]) toggleCategory(key)
-  } else {
-    toggleCategory(key)
   }
 }
 </script>
@@ -187,57 +184,14 @@ function handleCategoryClick(key) {
         </button>
       </div>
 
-      <!-- Categorias de Overlay -->
-      <section
-        v-for="cat in filteredCategories"
-        :key="cat.key"
-        class="category-block"
-        :class="{ 'is-open': searchTerm || openCategories[cat.key] }"
-      >
-        <button
-          class="category-header btn-reset"
-          :aria-expanded="searchTerm ? true : openCategories[cat.key]"
-          :aria-controls="`cat-content-${cat.key}`"
-          @click="handleCategoryClick(cat.key)"
-        >
-          <i class="bi cat-icon" :class="cat.icon" aria-hidden="true" />
-          <span class="cat-label" v-show="!isCollapsed">{{ cat.label }}</span>
-
-          <div class="cat-meta" v-show="!isCollapsed">
-            <span
-              v-if="visibleCount(cat.key) > 0"
-              class="cat-badge me-1"
-            >
-              {{ visibleCount(cat.key) }}
-            </span>
-            <span class="cat-count">{{ cat.layers.length }}</span>
-            <i class="bi bi-chevron-down cat-chevron ms-2" :class="{ 'is-rotated': searchTerm || openCategories[cat.key] }" />
-          </div>
-        </button>
-
-        <div
-          :id="`cat-content-${cat.key}`"
-          class="category-body"
-          v-show="(searchTerm || openCategories[cat.key]) && !isCollapsed"
-        >
-          <div class="category-body-inner">
-            <LayerCard
-              v-for="layer in cat.layers"
-              :key="layer.key"
-              type="overlay"
-              :layer-key="layer.key"
-              :label="layer.label"
-              :meta="layer.meta"
-              :legend="layer.legend ?? null"
-              :source-layer="layer.sourceLayer ?? ''"
-              :search-fields="layer.searchFields ?? []"
-              :field-types="layer.fieldTypes ?? {}"
-              :desc-fields="layer.descFields ?? {}"
-              :collapsed="isCollapsed"
-            />
-          </div>
-        </div>
-      </section>
+      <!-- Árvore hierárquica de camadas de sobreposição -->
+      <SidebarTreeGroup
+        v-for="node in filteredTree"
+        :key="node.key"
+        :node="node"
+        :depth="0"
+        :force-open="!!searchTerm"
+      />
     </div>
 
     <!-- Rodapé / Busca Geoespacial -->
@@ -262,18 +216,7 @@ function handleCategoryClick(key) {
   width: var(--sidebar-collapsed-w);
 }
 
-#sidebar.is-collapsed .category-block {
-  margin: 2px 4px;
-}
-
-#sidebar.is-collapsed .category-header {
-  justify-content: center;
-  padding: 10px 0;
-}
-
-#sidebar.is-collapsed .cat-icon {
-  margin-right: 0;
-}
+/* is-collapsed overrides para .category-block/.category-header/.cat-icon agora vivem em main.css */
 
 @media (max-width: 768px) {
   #sidebar {
@@ -387,76 +330,8 @@ function handleCategoryClick(key) {
 }
 
 /* ── Categorias ──────────────────────────────────────────────────────────────── */
-.category-block {
-  margin: 12px 10px;
-}
-
-.category-header {
-  width: 100%;
-  padding: 9px 12px 9px 14px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  color: var(--text-muted);
-  transition: background 0.15s, color 0.15s;
-}
-
-.category-header:hover {
-  background: var(--hover-overlay);
-  color: var(--text-main);
-}
-
-
-.cat-icon {
-  font-size: 16px;
-  margin-right: 12px;
-  color: var(--text-main);
-}
-
-.cat-label {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  color: var(--text-main);
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cat-meta {
-  display: flex;
-  align-items: center;
-}
-
-.cat-chevron {
-  font-size: 11px;
-  color: var(--text-dim);
-  transition: transform var(--transition-speed);
-}
-
-.cat-chevron.is-rotated {
-  transform: rotate(-180deg);
-}
-
-.category-body {
-  padding-top: 3px;
-}
-
-.category-body-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-/* ── Reset de botão ──────────────────────────────────────────────────────────── */
-.btn-reset {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
+/* .category-block / .category-header / .cat-* / .category-body / .btn-reset     */
+/* agora vivem em src/assets/main.css (compartilhado com SidebarTreeGroup.vue)   */
 
 /* ── Filtro de camadas ───────────────────────────────────────────────────────── */
 .layer-search-box {
@@ -561,25 +436,5 @@ function handleCategoryClick(key) {
   transform: scale(0.85);
 }
 
-/* ── Badges de contagem ──────────────────────────────────────────────────────── */
-.cat-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  padding: 1px 6px;
-  border-radius: 9999px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.4;
-  background: var(--accent);
-  color: var(--text-on-accent);
-}
-
-.cat-count {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-main);
-  opacity: 0.55;
-}
+/* .cat-badge / .cat-count agora vivem em src/assets/main.css */
 </style>

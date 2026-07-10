@@ -1,7 +1,7 @@
 // src/stores/mapStore.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { BASE_LAYERS, OVERLAY_LAYERS, OVERLAY_CATEGORIES } from '@/config/layers'
+import { BASE_LAYERS, OVERLAY_LAYERS, OVERLAY_TREE } from '@/config/layers'
 
 export const useMapStore = defineStore('map', () => {
   // ── Estado ──────────────────────────────────────────────────────────────────
@@ -56,21 +56,30 @@ export const useMapStore = defineStore('map', () => {
     Object.entries(OVERLAY_LAYERS).map(([key, cfg]) => ({ key, ...cfg })),
   )
 
-  // Lista de categorias enriquecida com estado reativo de visibilidade
-  const availableCategories = computed(() =>
-    Object.entries(OVERLAY_CATEGORIES).map(([catKey, cat]) => ({
-      key: catKey,
-      label: cat.label,
-      color: cat.color,
-      icon: cat.icon,
-      layers: Object.entries(cat.layers).map(([lKey, l]) => ({
-        key: lKey,
-        ...l,
-        visible: visibleOverlays.value[lKey] ?? false,
-        opacity: layerOpacity.value[lKey] ?? 1,
-      })),
-    }))
-  )
+  // Árvore de camadas enriquecida com estado reativo de visibilidade/opacidade,
+  // percorrendo OVERLAY_TREE recursivamente (qualquer profundidade).
+  function enrichNode(node) {
+    if (node.layer) {
+      return {
+        key: node.key,
+        layer: {
+          ...node.layer,
+          visible: visibleOverlays.value[node.key] ?? false,
+          opacity: layerOpacity.value[node.key] ?? 1,
+        },
+        children: (node.children ?? []).map(enrichNode),
+      }
+    }
+    return {
+      key: node.key,
+      label: node.label,
+      icon: node.icon,
+      layer: null,
+      children: (node.children ?? []).map(enrichNode),
+    }
+  }
+
+  const availableTree = computed(() => OVERLAY_TREE.map(enrichNode))
 
   // ── Ações ───────────────────────────────────────────────────────────────────
 
@@ -133,7 +142,7 @@ export const useMapStore = defineStore('map', () => {
     availableBaseLayers,
     visibleOverlays,
     availableOverlays,
-    availableCategories,
+    availableTree,
     layerOpacity,
     layerSearchFilters,
     activeOverlayCount,

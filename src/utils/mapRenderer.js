@@ -3,90 +3,37 @@ import gpkgStyles from '@/assets/styles.json'
 
 /**
  * Resolve a cor temática com base nas propriedades da feição e nos estilos do QGIS.
+ *
+ * `styles.json` guarda, por camada, o tipo de classificação do QGIS
+ * ("categorized": correspondência exata de valor; "graduated": faixas por
+ * limite superior; "stroke"/"single": cor fixa) e o campo (`field`) usado
+ * para classificar — ambos extraídos diretamente do QML pelo `scripts/styles.py`.
  */
 export function getThematicColor(sourceLayer, featureProps) {
-  const layerStyle = gpkgStyles[sourceLayer]
-  if (!layerStyle) return '#9ca3af'
+  const style = gpkgStyles[sourceLayer]
+  if (!style || !style.classes?.length) return '#9ca3af'
 
-  // 🔑 Injeção das novas colunas detectadas no console do navegador
-  const possibleValues = [
-    featureProps?.IQC_Pes,
-    featureProps?.ETo_Climat,    // ETo Original
-    featureProps?.ETo_Pesos,     // ETo Pesos
-    featureProps?.IA_climat,     // IA Original
-    featureProps?.IA_Pesos,      // IA Pesos
-    featureProps?.Clim_Prec,     // Precipitação Original
-    featureProps?.Pesos_Prec,    // Precipitação Pesos
-    featureProps?.IQS,
-    featureProps?.TipSoilPes,
-    featureProps?.SoilTextur,
-    featureProps?.pes_Peso,
-    featureProps?.PesDecl,
-    featureProps?.PesosX10Ve,
-    featureProps?.DN,
-    featureProps?.dn,
-    featureProps?.DSC_COMPON,
-    featureProps?.DSC_TEXTUR,
-    featureProps?.GLO_DS_LIT,
-    featureProps?.peso,
-    featureProps?.classes,
-    featureProps?.textura,
-    featureProps?.solo,
-    featureProps?.tipo,
-    featureProps?.Geologia
-  ].filter(v => v !== undefined && v !== null)
+  if (style.type === 'stroke') return `stroke:${style.classes[0].color}`
+  if (style.type === 'single') return style.classes[0].color
 
-  for (let rawVal of possibleValues) {
-    const valStr = String(rawVal)
-      .replace(/\u00a0/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
+  const numVal = Number(featureProps?.[style.field])
+  if (Number.isNaN(numVal)) return '#9ca3af'
 
-    if (layerStyle[valStr]) {
-      return layerStyle[valStr]
+  if (style.type === 'categorized') {
+    let best = style.classes[0]
+    let bestDiff = Math.abs(numVal - best.value)
+    for (const c of style.classes) {
+      const diff = Math.abs(numVal - c.value)
+      if (diff < bestDiff) { best = c; bestDiff = diff }
     }
-
-    if (!isNaN(Number(valStr))) {
-      const numVal = Number(valStr)
-      const numericKeys = Object.keys(layerStyle)
-        .map(k => Number(k.trim()))
-        .filter(n => !isNaN(n))
-        .sort((a, b) => a - b)
-
-      if (numericKeys.length > 0) {
-        const matchedLimit = numericKeys.find(limit => numVal <= limit)
-
-        if (matchedLimit !== undefined) {
-          const originalKey = Object.keys(layerStyle).find(k => Number(k.trim()) === matchedLimit)
-          if (originalKey) return layerStyle[originalKey]
-        }
-
-        const maxKey = Object.keys(layerStyle).find(k => Number(k.trim()) === numericKeys[numericKeys.length - 1])
-        if (maxKey) return layerStyle[maxKey]
-      } else {
-        // String-labeled range classification: keys like "Plano 0 a 3%", "Escarpado > 75%"
-        const rangeKeys = Object.keys(layerStyle)
-          .filter(k => k !== 'default')
-          .map(k => {
-            const nums = k.match(/-?\d+\.?\d*/g)
-            if (!nums) return null
-            const upper = k.includes('>') ? Infinity : parseFloat(nums[nums.length - 1])
-            return { label: k, upper }
-          })
-          .filter(Boolean)
-          .sort((a, b) => a.upper - b.upper)
-
-        if (rangeKeys.length > 0) {
-          const matched = rangeKeys.find(e => numVal <= e.upper)
-          const entry = matched ?? rangeKeys[rangeKeys.length - 1]
-          return layerStyle[entry.label]
-        }
-      }
-    }
+    return best.color
   }
 
-  // Fallback: "default" explícito → primeiro valor do estilo (símbolo único) → cinza neutro
-  return layerStyle["default"] ?? Object.values(layerStyle)[0] ?? '#4b5563'
+  // graduated: primeira classe cujo limite superior comporta o valor
+  for (const c of style.classes) {
+    if (numVal <= c.max + 1e-6) return c.color
+  }
+  return style.classes[style.classes.length - 1].color
 }
 
 /**

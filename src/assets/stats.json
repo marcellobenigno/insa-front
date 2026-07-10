@@ -1,795 +1,507 @@
 {
   "municipios_pb_semiarido": null,
-  "iqs_sab_pb": {
+  "eto_escores_de_qualidade": {
     "classes": [
       {
-        "label": "1.54000000000000004",
-        "area_km2": 25482.7,
-        "color": "#d57814"
-      },
-      {
-        "label": "1.71999999999999997",
-        "area_km2": 18361.4,
-        "color": "#960d00"
-      },
-      {
-        "label": "1.3600000000000001",
-        "area_km2": 8847.7,
-        "color": "#efd67f"
-      },
-      {
-        "label": "1.17999999999999994",
-        "area_km2": 529.9,
-        "color": "#85c343"
-      },
-      {
-        "label": "1",
-        "area_km2": 26.9,
-        "color": "#005400"
-      }
-    ],
-    "total_km2": 53248.6,
-    "field_used": "IQS"
-  },
-  "declividade_sab_pb": null,
-  "declividade_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "1.30000000000000004",
-        "area_km2": 21100.3,
-        "color": "#c6a86c"
-      },
-      {
-        "label": "1.5",
-        "area_km2": 17042.3,
-        "color": "#7a8624"
-      },
-      {
-        "label": "1",
-        "area_km2": 14656.9,
-        "color": "#f6f6d3"
-      },
-      {
-        "label": "1.80000000000000004",
-        "area_km2": 856.3,
-        "color": "#de4000"
-      },
-      {
-        "label": "2",
-        "area_km2": 66.3,
-        "color": "#610004"
-      }
-    ],
-    "total_km2": 53722.1,
-    "field_used": "PesDecl"
-  },
-  "geologia_sab_pb_original": {
-    "classes": [
-      {
-        "label": "Granito, Granodiorito",
-        "area_km2": 8412.4,
-        "color": "#fd8d3c"
-      },
-      {
-        "label": "Metagranito, Metagranodiorito, Metatonalito, Metatrondhjemito, Migmatito",
-        "area_km2": 3817.0,
-        "color": "#bd0026"
-      },
-      {
-        "label": "Gnaisse, MetaCalcario, Quartzito",
-        "area_km2": 3746.9,
-        "color": "#feb24c"
-      },
-      {
-        "label": "Metabasalto, Metachert, Metadacito, Metagrauvaca, Metarriodacito, Paragnaisse",
-        "area_km2": 2995.8,
-        "color": "#fc4e2a"
-      },
-      {
-        "label": "Metaconglomerado, Metagrauvaca, Metarenito Litico, Metarritmito, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida",
-        "area_km2": 2821.8,
-        "color": "#fc4e2a"
-      },
-      {
-        "label": "Metagranito, Metamonzogranito, Metassienito, Metassienogranito, Migmatito",
-        "area_km2": 2701.5,
-        "color": "#bd0026"
-      },
-      {
-        "label": "Anfibolito, Metacalcario, Metagranito, Metagranodiorito",
-        "area_km2": 2620.1,
-        "color": "#ffffcc"
-      },
-      {
-        "label": "Metagranito, Metagranodiorito, Metatrondhjemito",
-        "area_km2": 2024.8,
-        "color": "#bd0026"
-      },
-      {
-        "label": "Anfibolito, Metagranodiorito, Metatonalito, Migmatito",
-        "area_km2": 1873.1,
-        "color": "#ffffcc"
-      },
-      {
-        "label": "MetaCalcario, Quartzito, Xisto",
-        "area_km2": 1635.3,
-        "color": "#fc4e2a"
-      },
-      {
-        "label": "Marmore, Paragnaisse, Quartzito, Rocha Calcissilicatica, Xisto",
-        "area_km2": 1593.7,
-        "color": "#fc4e2a"
-      },
-      {
-        "label": "Monzodiorito, Quartzo Monzonito, Sienito, Sienogranito",
-        "area_km2": 1423.0,
-        "color": "#800026"
-      },
-      {
-        "label": "Filito, Metarritmito, Metatufo, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida, Xisto",
-        "area_km2": 1345.0,
-        "color": "#feb24c"
-      },
-      {
-        "label": "Granito",
-        "area_km2": 1246.3,
-        "color": "#fd8d3c"
-      },
-      {
-        "label": "Metagranito",
-        "area_km2": 1224.1,
-        "color": "#e31a1c"
-      },
-      {
-        "label": "Formacao Ferrifera Bandada, Metagabro, Metapiroxenito, Marmore, Ortognaisse, Rocha Calcissilicatica",
-        "area_km2": 1187.5,
-        "color": "#feb24c"
-      },
-      {
-        "label": "Metagranito, Metagranodiorito",
-        "area_km2": 1040.8,
-        "color": "#e31a1c"
-      },
-      {
-        "label": "Sedimento Aluvionar, Sedimento Detrito-Lateritico",
-        "area_km2": 992.6,
-        "color": "#800026"
-      },
-      {
-        "label": "Anfibolito, Gnaisse, Rocha Calcissilicatica",
-        "area_km2": 987.6,
-        "color": "#ffffcc"
-      },
-      {
-        "label": "Metadacito, Metapelito, Paragnaisse, Quartzito, Rocha Metavulcanica",
-        "area_km2": 975.8,
-        "color": "#e31a1c"
-      },
-      {
-        "label": "Anfibolito, Metagranodiorito, Metatonalito",
-        "area_km2": 807.3,
-        "color": "#ffffcc"
-      },
-      {
-        "label": "Anfibolito, Gnaisse, MetaCalcario, Xisto",
-        "area_km2": 617.7,
-        "color": "#ffffcc"
-      },
-      {
-        "label": "Gnaisse, MetaCalcario, Quartzito, Xisto",
-        "area_km2": 571.1,
-        "color": "#feb24c"
-      },
-      {
-        "label": "Monzogranito, Monzonito, Quartzo Monzonito, Sienogranito",
-        "area_km2": 571.0,
-        "color": "#800026"
-      },
-      {
-        "label": "Monzogranito, Monzonito, Quartzo Diorito, Quartzo Monzonito",
-        "area_km2": 568.0,
-        "color": "#800026"
-      },
-      {
-        "label": "Arenito, Arenito Arcoseano",
-        "area_km2": 467.5,
-        "color": "#ffeda0"
-      },
-      {
-        "label": "Metagranito, Metamonzonito, Metassienito, Metatonalito, Metatrondhjemito, Ortognaisse",
-        "area_km2": 461.2,
-        "color": "#bd0026"
-      },
-      {
-        "label": "Monzogranito, Sienogranito",
-        "area_km2": 440.6,
-        "color": "#800026"
-      },
-      {
-        "label": "Granito, Granodiorito, Monzogranito",
-        "area_km2": 428.3,
-        "color": "#fd8d3c"
-      },
-      {
-        "label": "Granito, Quartzo Monzonito, Quartzo Sienito, Sienito",
-        "area_km2": 396.4,
-        "color": "#fd8d3c"
-      },
-      {
-        "label": "Anfibolito, Gnaisse, Itabirito, Metacalcario, Quartzito, Quartzito Ferruginoso, Xisto",
-        "area_km2": 373.4,
-        "color": "#ffffcc"
-      },
-      {
-        "label": "Argilito, Folhelho, Siltito",
-        "area_km2": 359.8,
-        "color": "#fed976"
-      },
-      {
-        "label": "Arenito",
-        "area_km2": 329.4,
-        "color": "#ffeda0"
-      },
-      {
-        "label": "Ortognaisse, Paragnaisse",
-        "area_km2": 285.8,
-        "color": "#800026"
-      },
-      {
-        "label": "Diorito, Gabro, Quartzo Diorito, Tonalito",
-        "area_km2": 255.4,
-        "color": "#fed976"
-      },
-      {
-        "label": "Metagranito, Metagranodiorito, Metatonalito, Migmatito",
-        "area_km2": 248.6,
-        "color": "#bd0026"
-      },
-      {
-        "label": "Metadiorito, Metagabro, Metagranodiorito, Metatonalito",
-        "area_km2": 231.6,
-        "color": "#e31a1c"
-      },
-      {
-        "label": "Metaconglomerado, Metagrauvaca, Metarenito",
-        "area_km2": 230.7,
-        "color": "#fc4e2a"
-      },
-      {
-        "label": "Metaconglomerado, Quartzito",
-        "area_km2": 230.5,
-        "color": "#fc4e2a"
-      },
-      {
-        "label": "Arenito, Arenito conglomeratico, Argilito Arenoso",
-        "area_km2": 221.4,
-        "color": "#ffeda0"
-      },
-      {
-        "label": "Granito, Granodiorito, Monzodiorito, Monzonito, Tonalito",
-        "area_km2": 172.9,
-        "color": "#fd8d3c"
-      },
-      {
-        "label": "Areia, Argila, Cascalho",
-        "area_km2": 144.8,
-        "color": "#ffeda0"
-      },
-      {
-        "label": "Arenito, Argilito",
-        "area_km2": 109.8,
-        "color": "#fed976"
-      },
-      {
-        "label": "Ortognaisse",
-        "area_km2": 92.3,
-        "color": "#800026"
-      },
-      {
-        "label": "Granito, Migmatito",
-        "area_km2": 69.1,
-        "color": "#fd8d3c"
-      },
-      {
-        "label": "Diorito, Gabro, Gabronorito, Hornblendito, Piroxenito",
-        "area_km2": 52.2,
-        "color": "#fed976"
-      },
-      {
-        "label": "Metaconglomerado, Rocha Metavulcanica, Xisto",
-        "area_km2": 34.4,
-        "color": "#e31a1c"
-      },
-      {
-        "label": "Gnaisse, MetaCalcario, Quartzito, Rocha Calcissilicatica, Xisto",
-        "area_km2": 26.8,
-        "color": "#feb24c"
-      },
-      {
-        "label": "Metagranito, Metagranodiorito, Metamonzodiorito",
-        "area_km2": 19.1,
-        "color": "#bd0026"
-      },
-      {
-        "label": "Areia, Argila",
-        "area_km2": 18.6,
-        "color": "#ffeda0"
-      },
-      {
-        "label": "Metadiorito, Metagabro, Metanortosito",
-        "area_km2": 14.5,
-        "color": "#e31a1c"
-      },
-      {
-        "label": "Arenito, Conglomerado",
-        "area_km2": 12.7,
-        "color": "#fed976"
-      },
-      {
-        "label": "Anfibolito, Paragnaisse, Quartzito, Xisto",
-        "area_km2": 0.0,
-        "color": "#ffeda0"
-      },
-      {
-        "label": "Calcarenito, Calcario, Fosforito",
-        "area_km2": 0.0,
-        "color": "#fed976"
-      },
-      {
-        "label": "Fonolito, Riolito",
-        "area_km2": 0.0,
-        "color": "#feb24c"
-      }
-    ],
-    "total_km2": 53528.0,
-    "field_used": "GLO_DS_LIT"
-  },
-  "geologia_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "1.30000000000000004",
-        "area_km2": 24634.5,
-        "color": "#b3844a"
-      },
-      {
-        "label": "1.80000000000000004",
-        "area_km2": 9408.7,
-        "color": "#ab4d00"
-      },
-      {
-        "label": "1.5",
-        "area_km2": 9323.8,
-        "color": "#e37716"
-      },
-      {
-        "label": "1",
-        "area_km2": 8423.6,
-        "color": "#e2c590"
-      },
-      {
-        "label": "2",
-        "area_km2": 1737.2,
-        "color": "#76440b"
-      }
-    ],
-    "total_km2": 53527.8,
-    "field_used": "pes_Peso"
-  },
-  "solos_tipos_sab_pb_original": {
-    "classes": [
-      {
-        "label": "Luvissolo cromico Artico",
-        "area_km2": 20223.3,
-        "color": "#e48c44"
-      },
-      {
-        "label": "Neossolo litolico Eutrofico",
-        "area_km2": 17024.5,
-        "color": "#b34f12"
-      },
-      {
-        "label": "Argilossolo vermelho-amarelo Eutrofico",
-        "area_km2": 6246.3,
-        "color": "#f0cc83"
-      },
-      {
-        "label": "Planossolo natrico Artico",
-        "area_km2": 3332.1,
-        "color": "#732402"
-      },
-      {
-        "label": "Luvissolo cromico Palico",
-        "area_km2": 1912.6,
-        "color": "#ea782b"
-      },
-      {
-        "label": "Planossolo haplico Eutrofico",
-        "area_km2": 995.7,
-        "color": "#8b2a00"
-      },
-      {
-        "label": "Vertissolo cromado Artico",
-        "area_km2": 853.8,
-        "color": "#671d00"
-      },
-      {
-        "label": "Neossolo regola­tico Eutrafico",
-        "area_km2": 817.6,
-        "color": "#cc4101"
-      },
-      {
-        "label": "Luvissolo crOmico Palico",
-        "area_km2": 699.2,
-        "color": "#b68664"
-      },
-      {
-        "label": "Neossolo regola­tico Eutrofico",
-        "area_km2": 659.2,
-        "color": "#b33901"
-      },
-      {
-        "label": "Vertissolo ebanico Artico",
-        "area_km2": 412.1,
-        "color": "#450e00"
-      },
-      {
-        "label": "Massa Dagua Continental",
-        "area_km2": 319.0,
-        "color": "#b37448"
-      },
-      {
-        "label": "Latossolo amarelo Distrofico",
-        "area_km2": 159.8,
-        "color": "#e69a5c"
-      },
-      {
-        "label": "Cambissolo haplico Argila de atividade baixa Eutrofico",
-        "area_km2": 142.8,
-        "color": "#b09858"
-      },
-      {
-        "label": "Argissolo acinzentado Distrofico",
-        "area_km2": 86.7,
-        "color": "#d8b169"
-      },
-      {
-        "label": "Argilossolo vermelho Eutrofico",
-        "area_km2": 83.1,
-        "color": "#ffe8af"
-      },
-      {
-        "label": "Neossolo quartzaranico Artico",
-        "area_km2": 0.0,
-        "color": "#e64900"
-      },
-      {
-        "label": "Argilossolo vermelho-amarelo Distrofico",
-        "area_km2": 0.0,
-        "color": "#ffdd93"
-      },
-      {
-        "label": "Espodossolo ferrocarbico Hidromorfico",
-        "area_km2": 0.0,
-        "color": "#e6c3a1"
-      },
-      {
-        "label": "Gleissolo salico Sodido",
-        "area_km2": 0.0,
-        "color": "#e4ab72"
-      },
-      {
-        "label": "Massa Dagua Costeira - Mar Territorial, 12 milhas",
-        "area_km2": 0.0,
-        "color": "#b3551b"
-      }
-    ],
-    "total_km2": 53967.8,
-    "field_used": "DSC_COMPON"
-  },
-  "solos_tipos_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "2",
-        "area_km2": 27162.9,
-        "color": "#b3562b"
-      },
-      {
-        "label": "1.69999999999999996",
-        "area_km2": 24917.4,
-        "color": "#d79867"
-      },
-      {
-        "label": "1",
-        "area_km2": 1744.7,
-        "color": "#ffffc2"
-      },
-      {
-        "label": "1.30000000000000004",
-        "area_km2": 142.8,
-        "color": "#d78022"
-      }
-    ],
-    "total_km2": 53967.8,
-    "field_used": "TipSoilPes"
-  },
-  "textura_sab_pb_original": {
-    "classes": [
-      {
-        "label": "argilosa  ou muito argilosa",
-        "area_km2": 30402.1,
-        "color": "#dbaa5a"
-      },
-      {
-        "label": "arenosa",
-        "area_km2": 11799.5,
-        "color": "#edde94"
-      },
-      {
-        "label": "media",
-        "area_km2": 11447.2,
-        "color": "#875528"
-      }
-    ],
-    "total_km2": 53648.8,
-    "field_used": "DSC_TEXTUR"
-  },
-  "textura_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "1.60000000000000009",
-        "area_km2": 30015.4,
-        "color": "#bd9857"
-      },
-      {
-        "label": "2",
-        "area_km2": 12866.9,
-        "color": "#97621c"
-      },
-      {
-        "label": "1",
-        "area_km2": 11085.5,
-        "color": "#d5bb87"
-      }
-    ],
-    "total_km2": 53967.8,
-    "field_used": "SoilTextur"
-  },
-  "eto_sab_pb_original": {
-    "classes": [
-      {
-        "label": "2022.29799999999977445",
-        "area_km2": 19912.9,
-        "color": "#cc540a"
-      },
-      {
-        "label": "1891.50599999999985812",
-        "area_km2": 12066.6,
-        "color": "#eda334"
-      },
-      {
-        "label": "1629.92200000000002547",
-        "area_km2": 11294.5,
-        "color": "#9be185"
-      },
-      {
-        "label": "1760.71399999999994179",
-        "area_km2": 8460.6,
-        "color": "#ffffbf"
-      },
-      {
-        "label": "1499.13000000000010914",
-        "area_km2": 128.5,
-        "color": "#0a9346"
-      }
-    ],
-    "total_km2": 51863.1,
-    "field_used": "ETo_Climat"
-  },
-  "eto_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "1.80000000000000004",
+        "label": "1,8 - Baixa",
         "area_km2": 20192.9,
-        "color": "#eda334"
+        "color": "#fdcb6f"
       },
       {
-        "label": "1.5",
+        "label": "1,5 - Moderada",
         "area_km2": 14678.8,
         "color": "#ffffbf"
       },
       {
-        "label": "2",
+        "label": "2 - Muito Baixa",
         "area_km2": 11211.0,
-        "color": "#cc540a"
+        "color": "#e4785a"
       },
       {
-        "label": "1.19999999999999996",
+        "label": "1,2 - Alta",
         "area_km2": 7387.6,
-        "color": "#9be185"
+        "color": "#aaddd9"
       },
       {
-        "label": "1",
+        "label": "1- Muito Alta",
         "area_km2": 132.0,
-        "color": "#0a9346"
+        "color": "#2b83ba"
       }
     ],
     "total_km2": 53602.3,
-    "field_used": "ETo_Pesos"
+    "field_used": "etoescores"
   },
-  "ia_sab_pb_original": {
+  "ia_escores_de_qualidade": {
     "classes": [
       {
-        "label": "0.5",
-        "area_km2": 46341.5,
-        "color": "#aaddbd"
-      },
-      {
-        "label": "0.65000000000000002",
-        "area_km2": 5521.2,
-        "color": "#2b83ba"
-      },
-      {
-        "label": "0",
-        "area_km2": 0.0,
-        "color": "#e47893"
-      },
-      {
-        "label": "0.03",
-        "area_km2": 0.0,
-        "color": "#fdcb6f"
-      },
-      {
-        "label": "0.20000000000000001",
-        "area_km2": 0.0,
-        "color": "#ffffbf"
-      }
-    ],
-    "total_km2": 51862.7,
-    "field_used": "IA_climat"
-  },
-  "ia_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "2",
+        "label": "2-Baixa",
         "area_km2": 48117.3,
         "color": "#e4785a"
       },
       {
-        "label": "1.5",
+        "label": "1,5-Moderada",
         "area_km2": 4388.2,
         "color": "#fdcb6f"
       },
       {
-        "label": "1",
+        "label": "1-Alta",
         "area_km2": 1160.9,
         "color": "#2b83ba"
       }
     ],
     "total_km2": 53666.4,
-    "field_used": "IA_Pesos"
+    "field_used": "ia_escores"
   },
-  "iqc_sab_pb": {
+  "iqc": {
     "classes": [
       {
-        "label": "1.65359999999999996",
-        "area_km2": 46205.0,
-        "color": "#e4785a"
+        "label": "1,48 - 1,69 - Baixa",
+        "area_km2": 37594.6,
+        "color": "#fec980"
       },
       {
-        "label": "1.32679999999999998",
-        "area_km2": 3527.2,
-        "color": "#ffffbf"
+        "label": "1,69 - 1,82 - Muito Baixa",
+        "area_km2": 8610.4,
+        "color": "#d7191c"
       },
       {
-        "label": "1.49019999999999997",
-        "area_km2": 2644.2,
-        "color": "#fdcb6f"
+        "label": "1,22 - 1,48 -Moderada",
+        "area_km2": 5951.0,
+        "color": "#c7e8ad"
       },
       {
-        "label": "1.16339999999999999",
-        "area_km2": 1033.3,
-        "color": "#aaddd9"
-      },
-      {
-        "label": "1",
-        "area_km2": 127.6,
+        "label": "1 - 1,22 - Alta",
+        "area_km2": 1381.3,
         "color": "#2b83ba"
       }
     ],
     "total_km2": 53537.3,
-    "field_used": "IQC_Pes"
+    "field_used": "iqcescores"
   },
-  "precipitacao_sab_pb_original": {
+  "precipitacao_escores_de_qualidade": {
     "classes": [
       {
-        "label": "852.21399999999994179",
-        "area_km2": 19920.4,
-        "color": "#abd9e9"
-      },
-      {
-        "label": "547.37799999999992906",
-        "area_km2": 13712.0,
-        "color": "#fdae61"
-      },
-      {
-        "label": "699.79599999999993543",
-        "area_km2": 9923.8,
-        "color": "#ffffbf"
-      },
-      {
-        "label": "1004.63199999999994816",
-        "area_km2": 8254.0,
-        "color": "#2c7bb6"
-      },
-      {
-        "label": "394.95999999999997954",
-        "area_km2": 127.8,
-        "color": "#d7191c"
-      }
-    ],
-    "total_km2": 51938.0,
-    "field_used": "Clim_Prec"
-  },
-  "precipitacao_sab_pb_pesos": {
-    "classes": [
-      {
-        "label": "1.19999999999999996",
+        "label": "1,2- Alta",
         "area_km2": 31255.9,
-        "color": "#abdda4"
+        "color": "#aaddd9"
       },
       {
-        "label": "1.5",
+        "label": "1,5- Moderada",
         "area_km2": 20947.0,
-        "color": "#fdae61"
+        "color": "#fdcb6f"
       },
       {
-        "label": "1",
+        "label": "1- Muito Alta",
         "area_km2": 1234.1,
         "color": "#2b83ba"
       },
       {
-        "label": "2",
+        "label": "2- Baixa",
         "area_km2": 253.8,
-        "color": "#d7191c"
+        "color": "#e4785a"
       }
     ],
     "total_km2": 53690.8,
-    "field_used": "Pesos_Prec"
+    "field_used": "pcpescores"
   },
-  "declividade_sab_pb_original": {
+  "focos_queimadas_escores_dequalidade": {
     "classes": [
       {
-        "label": "Suave Ondulado 3 a 8%",
-        "area_km2": 24214.1,
-        "color": "#a5ff00"
+        "label": "1 - Alta",
+        "area_km2": 25531.6,
+        "color": "#99d594"
       },
       {
-        "label": "Ondulado 8 a 20%",
-        "area_km2": 14014.2,
-        "color": "#ffff63"
+        "label": "1,5 - Moderada",
+        "area_km2": 24653.5,
+        "color": "#ffffbf"
       },
       {
-        "label": "Plano 0 a 3%",
-        "area_km2": 9020.0,
-        "color": "#30b000"
-      },
-      {
-        "label": "Forte Ondulado 20 a 45%",
-        "area_km2": 5780.8,
-        "color": "#fea700"
-      },
-      {
-        "label": "Montanhoso 45 a 75%",
-        "area_km2": 804.6,
-        "color": "#ff4c00"
-      },
-      {
-        "label": "Escarpado > 75%",
-        "area_km2": 41.5,
-        "color": "#b40000"
+        "label": "2 - Baixa",
+        "area_km2": 2942.3,
+        "color": "#f75c0f"
       }
     ],
-    "total_km2": 53875.2,
-    "field_used": "classe"
+    "total_km2": 53127.4,
+    "field_used": "fqescores"
+  },
+  "idhm_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "2 - Baixa",
+        "area_km2": 33451.0,
+        "color": "#fc8d59"
+      },
+      {
+        "label": "1,5 - Moderada",
+        "area_km2": 18581.2,
+        "color": "#ffffbf"
+      },
+      {
+        "label": "1 - Alta",
+        "area_km2": 940.3,
+        "color": "#91cf60"
+      }
+    ],
+    "total_km2": 52972.5,
+    "field_used": "idhmescore"
+  },
+  "iqm": {
+    "classes": [
+      {
+        "label": "1 - 1,23 - Alta",
+        "area_km2": 20560.1,
+        "color": "#1a9641"
+      },
+      {
+        "label": "1,23 - 1,35 - Moderada",
+        "area_km2": 16361.2,
+        "color": "#c4e687"
+      },
+      {
+        "label": "1,35 - 1,54 - Baixa",
+        "area_km2": 11605.8,
+        "color": "#fec981"
+      },
+      {
+        "label": "1,54 - 1,86 - Muito Baixa",
+        "area_km2": 4445.4,
+        "color": "#d7191c"
+      }
+    ],
+    "total_km2": 52972.5,
+    "field_used": "iqm"
+  },
+  "pressao_animal_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "1 - Alta",
+        "area_km2": 25509.6,
+        "color": "#91cf60"
+      },
+      {
+        "label": "1,5 - Moderada",
+        "area_km2": 25382.1,
+        "color": "#ffffbf"
+      },
+      {
+        "label": "2 - Baixa",
+        "area_km2": 2783.9,
+        "color": "#fc8d59"
+      }
+    ],
+    "total_km2": 53675.6,
+    "field_used": "paescores"
+  },
+  "densidade_demografica_rural_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "1 - Muito alta",
+        "area_km2": 46476.7,
+        "color": "#ffffb2"
+      },
+      {
+        "label": "1,4 - Alta",
+        "area_km2": 5406.1,
+        "color": "#fecc5c"
+      },
+      {
+        "label": "1,7 - Moderada",
+        "area_km2": 569.0,
+        "color": "#f03b20"
+      },
+      {
+        "label": "2 - Baixa",
+        "area_km2": 215.3,
+        "color": "#bd0026"
+      }
+    ],
+    "total_km2": 52667.1,
+    "field_used": "drescores"
+  },
+  "declividade_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "1,3-Alta",
+        "area_km2": 21100.3,
+        "color": "#c6a86c"
+      },
+      {
+        "label": "1,5-Moderada",
+        "area_km2": 17042.3,
+        "color": "#7a8624"
+      },
+      {
+        "label": "1-Muito Alta",
+        "area_km2": 14656.9,
+        "color": "#f6f6d3"
+      },
+      {
+        "label": "1,8-Baixa",
+        "area_km2": 856.3,
+        "color": "#de4000"
+      },
+      {
+        "label": "2-Muito Baixa",
+        "area_km2": 66.3,
+        "color": "#610004"
+      }
+    ],
+    "total_km2": 53722.1,
+    "field_used": "decescores"
+  },
+  "geologia_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "1,3-Alta",
+        "area_km2": 24480.5,
+        "color": "#b3844a"
+      },
+      {
+        "label": "1,5-Moderada",
+        "area_km2": 9365.9,
+        "color": "#e37716"
+      },
+      {
+        "label": "1,8-Baixa",
+        "area_km2": 9280.2,
+        "color": "#ab4d00"
+      },
+      {
+        "label": "1-Muito Alta",
+        "area_km2": 8710.8,
+        "color": "#e2c590"
+      },
+      {
+        "label": "2-Muito Baixa",
+        "area_km2": 1734.6,
+        "color": "#76440b"
+      }
+    ],
+    "total_km2": 53572.0,
+    "field_used": "geoescores"
+  },
+  "iqs": {
+    "classes": [
+      {
+        "label": "1,33 - 1,48 - Moderada",
+        "area_km2": 21036.7,
+        "color": "#ffffc0"
+      },
+      {
+        "label": "1,48 - 1,61 - Baixa",
+        "area_km2": 19794.4,
+        "color": "#fdae61"
+      },
+      {
+        "label": "1,61 - 1,9 - Muito Baixa",
+        "area_km2": 7090.0,
+        "color": "#d7191c"
+      },
+      {
+        "label": "1 - 1,33 - Alta",
+        "area_km2": 5327.5,
+        "color": "#8fba5b"
+      }
+    ],
+    "total_km2": 53248.6,
+    "field_used": "iqs"
+  },
+  "textura_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "1,6 - Moderada",
+        "area_km2": 30015.4,
+        "color": "#bd9857"
+      },
+      {
+        "label": "2 - Baixa",
+        "area_km2": 12866.9,
+        "color": "#97621c"
+      },
+      {
+        "label": "1 - Alta",
+        "area_km2": 11085.5,
+        "color": "#d5bb87"
+      }
+    ],
+    "total_km2": 53967.8,
+    "field_used": "texescores"
+  },
+  "tipos_de_solos_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "2-Baixa",
+        "area_km2": 27162.9,
+        "color": "#b3562b"
+      },
+      {
+        "label": "1,7-Moderada-Baixa",
+        "area_km2": 24917.4,
+        "color": "#d79867"
+      },
+      {
+        "label": "1-Alta",
+        "area_km2": 1744.7,
+        "color": "#ffffc2"
+      },
+      {
+        "label": "1,3-Moderada",
+        "area_km2": 142.8,
+        "color": "#d78022"
+      }
+    ],
+    "total_km2": 53967.8,
+    "field_used": "solescores"
+  },
+  "carbono_organico_escores_de_qualidade": {
+    "classes": [
+      {
+        "label": "1,8 - Baixa",
+        "area_km2": 35565.5,
+        "color": "#f0a336"
+      },
+      {
+        "label": "1,5 - Moderada",
+        "area_km2": 14682.6,
+        "color": "#fff7bc"
+      },
+      {
+        "label": "2 - Muito Baixa",
+        "area_km2": 2216.2,
+        "color": "#b14200"
+      },
+      {
+        "label": "1,2 -Alta",
+        "area_km2": 1286.5,
+        "color": "#41ba45"
+      },
+      {
+        "label": "1 - Muito Alta",
+        "area_km2": 16.4,
+        "color": "#006800"
+      }
+    ],
+    "total_km2": 53767.2,
+    "field_used": "co_scores"
+  },
+  "iqv": {
+    "classes": [
+      {
+        "label": "1,35 - 1,49 -Moderada",
+        "area_km2": 25551.9,
+        "color": "#ffffc0"
+      },
+      {
+        "label": "1,49 - 1,63 - Baixa",
+        "area_km2": 13746.4,
+        "color": "#fdae61"
+      },
+      {
+        "label": "1 - 1,35 - Alta",
+        "area_km2": 9591.5,
+        "color": "#4ca102"
+      },
+      {
+        "label": "1,63 - 2 -Muito Baixa",
+        "area_km2": 4690.0,
+        "color": "#d7191c"
+      }
+    ],
+    "total_km2": 53579.8,
+    "field_used": "iqv"
+  },
+  "ndvi_escore_de_qualidade": {
+    "classes": [
+      {
+        "label": "1 -Muito Alta",
+        "area_km2": 29591.1,
+        "color": "#007e11"
+      },
+      {
+        "label": "1,1 - Alta",
+        "area_km2": 13258.9,
+        "color": "#1bbe30"
+      },
+      {
+        "label": "1,5 -Moderada Alta",
+        "area_km2": 5395.6,
+        "color": "#fe931e"
+      },
+      {
+        "label": "1,3 -Moderada",
+        "area_km2": 4380.9,
+        "color": "#fffd03"
+      },
+      {
+        "label": "1,8 -Baixa",
+        "area_km2": 681.8,
+        "color": "#ff1e00"
+      },
+      {
+        "label": "2 -Muito Baixa",
+        "area_km2": 489.1,
+        "color": "#772100"
+      }
+    ],
+    "total_km2": 53797.4,
+    "field_used": "ndviscores"
+  },
+  "suscetibilidade_erosao_escore_de_qualidade": {
+    "classes": [
+      {
+        "label": "1,5 -Moderada",
+        "area_km2": 21183.5,
+        "color": "#fff8ab"
+      },
+      {
+        "label": "2 -Muito Baixa",
+        "area_km2": 16749.7,
+        "color": "#d05803"
+      },
+      {
+        "label": "1,8 - Baixa",
+        "area_km2": 9430.4,
+        "color": "#e69e20"
+      },
+      {
+        "label": "1,2 - Alta",
+        "area_km2": 5884.7,
+        "color": "#5ed200"
+      },
+      {
+        "label": "1 - Muito Alta",
+        "area_km2": 433.4,
+        "color": "#006a00"
+      }
+    ],
+    "total_km2": 53681.7,
+    "field_used": "sucescores"
+  },
+  "ivd_sab": {
+    "classes": [
+      {
+        "label": "1,438 - 1,502 - Alta",
+        "area_km2": 22690.7,
+        "color": "#fdae61"
+      },
+      {
+        "label": "1,361 - 1,438 - Moderada",
+        "area_km2": 14763.9,
+        "color": "#e8ffc0"
+      },
+      {
+        "label": "1,502 - 1,712 - Muito Alta",
+        "area_km2": 12749.7,
+        "color": "#d7191c"
+      },
+      {
+        "label": "1 - 1,361 - Baixa",
+        "area_km2": 2386.1,
+        "color": "#a6d96a"
+      }
+    ],
+    "total_km2": 52590.4,
+    "field_used": "ivd"
   }
 }
