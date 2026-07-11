@@ -36,7 +36,7 @@ No test suite is configured.
 | UI framework | Vue 3 — Composition API, `<script setup>` — JavaScript, NOT TypeScript |
 | State | Pinia (`src/stores/mapStore.js`) |
 | Map | Leaflet 1.x |
-| Vector tiles | `leaflet.vectorgrid` (Leaflet plugin) |
+| Vector tiles | Custom `L.GridLayer` (`MapContainer.vue`) — fetches `.pbf` per tile, decodes with `vector-tile` + `pbf`, paints to a `<canvas>` via `mapRenderer.js`. NOT `leaflet.vectorgrid` — that package isn't a dependency. |
 | Layout / UI | Bootstrap 5 |
 | Icons | Bootstrap Icons 1.x — loaded via CDN in `index.html` (no npm package) |
 | Theming | `src/composables/useTheme.js` — dark/light toggle; `data-theme` attribute on `<html>`; persisted in `localStorage` key `insa-theme`; paleta claro baseada em gov.br (`#1351B4`) |
@@ -90,6 +90,13 @@ Other components (not part of the layer flow):
 5. **`sourceLayer` must exactly match the layer name in the GeoPackage** (and the
    GeoJSON filename without extension used by Tippecanoe). Any divergence causes
    tiles to silently not render.
+
+6. **Never add a per-layer `bounds` option to the `CustomMVTLayer` (`L.GridLayer`)
+   in `MapContainer.vue`.** It was set to the tight `paraibaBounds` box until this
+   bug: any layer whose real-world extent exceeds that box (e.g. `estados_ne`,
+   which spans the whole Northeast) had every tile outside the box silently never
+   fetched, rendering as disconnected line fragments. The map's own
+   `map.setMaxBounds()` (with padding) already constrains panning — that's enough.
 
 ---
 
@@ -375,11 +382,22 @@ npm run deploy:tiles
 **Remote path:** `/var/www/html/tiles/insa_layers/`
 
 What the script does:
-1. Packs `public/tiles/insa_layers/` → `insa_layers.tar.gz` (~20 MB) using `COPYFILE_DISABLE=1`
+1. Packs `public/tiles/insa_layers/` → `insa_layers.tar.gz` (~42 MB) using `COPYFILE_DISABLE=1`
    to suppress macOS extended-attribute warnings on the Linux server
 2. Sends via SCP to `/home/ubuntu/`
 3. On the server: removes old tiles (`rm -rf insa_layers`), extracts, removes the archive
 4. Cleans up the local `.tar.gz`
+
+---
+
+## Deploying the app (GitHub Pages)
+
+`.github/workflows/deploy.yml` builds and deploys automatically on every push to
+`main` (`npm run build` → `dist/` → GitHub Pages). No manual step needed beyond
+`git push origin main`. The production build reads `.env.production`
+(`VITE_TILES_URL=https://sistema.sigrural.com.br/tiles/...`), so **tiles must be
+deployed to the tile server (`npm run deploy:tiles`) before or alongside pushing
+app code** — otherwise the live site points at tiles that don't exist yet.
 
 ---
 
@@ -523,6 +541,9 @@ in the GeoPackage). Structure:
 - Do not assume `sourceLayer` is flexible — it must be byte-identical to the GeoPackage layer name
 - Do not register Chart.js globally — always import only the needed modules in the component that uses it
 - Do not forget to call `chartInstance?.destroy()` in `onUnmounted` when using Chart.js
+- Do not add a `bounds` option to the overlay `CustomMVTLayer` in `MapContainer.vue`
+  — it silently drops tiles outside that box for any layer with a wider extent
+  than the Semiárido PB region (see Key design constraint #6)
 
 ---
 
