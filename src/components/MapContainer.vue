@@ -481,7 +481,6 @@ function syncVectorOverlays(desired) {
         minZoom: 2,
         maxZoom: 14,
         zIndex: zIndex,
-        bounds: paraibaBounds
       }).addTo(map)
 
       activeOverlays.set(key, layer)
@@ -513,7 +512,7 @@ async function handleMapClick(e) {
   
   const targetY = layerPoint.y
 
-  const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key])
+  const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key] && !layer.noPopup)
   if (layersToQuery.length === 0) return
 
   const popupPromises = layersToQuery.map(async (overlay) => {

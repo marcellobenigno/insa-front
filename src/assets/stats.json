@@ -1,5 +1,7 @@
 {
   "municipios_pb_semiarido": null,
+  "limite_semiarido_pb": null,
+  "estados_ne": null,
   "eto_escores_de_qualidade": {
     "classes": [
       {

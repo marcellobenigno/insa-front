@@ -3,7 +3,21 @@
     "type": "stroke",
     "field": null,
     "classes": [
-      { "label": "Limite municipal", "color": "#ffffff" }
+      { "label": "Limite municipal", "color": "#000000" }
+    ]
+  },
+  "limite_semiarido_pb": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite do Semiárido PB", "color": "#ff2424" }
+    ]
+  },
+  "estados_ne": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite estadual", "color": "#000000" }
     ]
   },
   "eto_escores_de_qualidade": {
@@ -48,7 +62,7 @@
       },
       {
         "value": 1.5,
-        "label": "1,5-Moderada",
+        "label": "1,5 - Moderada",
         "color": "#fdcb6f"
       },
       {
@@ -69,7 +83,7 @@
       },
       {
         "max": 1.48,
-        "label": "1,22 - 1,48 -Moderada",
+        "label": "1,22 - 1,48 - Moderada",
         "color": "#c7e8ad"
       },
       {
@@ -90,22 +104,22 @@
     "classes": [
       {
         "value": 1.0,
-        "label": "1- Muito Alta",
+        "label": "1 - Muito Alta",
         "color": "#2b83ba"
       },
       {
         "value": 1.2,
-        "label": "1,2- Alta",
+        "label": "1,2 - Alta",
         "color": "#aaddd9"
       },
       {
         "value": 1.5,
-        "label": "1,5- Moderada",
+        "label": "1,5 - Moderada",
         "color": "#fdcb6f"
       },
       {
         "value": 2.0,
-        "label": "2- Baixa",
+        "label": "2 - Baixa",
         "color": "#e4785a"
       }
     ]
@@ -231,27 +245,27 @@
     "classes": [
       {
         "value": 1.0,
-        "label": "1-Muito Alta",
+        "label": "1 - Muito Alta",
         "color": "#f6f6d3"
       },
       {
         "value": 1.3,
-        "label": "1,3-Alta",
+        "label": "1,3 - Alta",
         "color": "#c6a86c"
       },
       {
         "value": 1.5,
-        "label": "1,5-Moderada",
+        "label": "1,5 - Moderada",
         "color": "#7a8624"
       },
       {
         "value": 1.8,
-        "label": "1,8-Baixa",
+        "label": "1,8 - Baixa",
         "color": "#de4000"
       },
       {
         "value": 2.0,
-        "label": "2-Muito Baixa",
+        "label": "2 - Muito Baixa",
         "color": "#610004"
       }
     ]
@@ -262,27 +276,27 @@
     "classes": [
       {
         "value": 1.0,
-        "label": "1-Muito Alta",
+        "label": "1 - Muito Alta",
         "color": "#e2c590"
       },
       {
         "value": 1.3,
-        "label": "1,3-Alta",
+        "label": "1,3 - Alta",
         "color": "#b3844a"
       },
       {
         "value": 1.5,
-        "label": "1,5-Moderada",
+        "label": "1,5 - Moderada",
         "color": "#e37716"
       },
       {
         "value": 1.8,
-        "label": "1,8-Baixa",
+        "label": "1,8 - Baixa",
         "color": "#ab4d00"
       },
       {
         "value": 2.0,
-        "label": "2-Muito Baixa",
+        "label": "2 - Muito Baixa",
         "color": "#76440b"
       }
     ]
@@ -345,17 +359,17 @@
       },
       {
         "value": 1.3,
-        "label": "1,3-Moderada",
+        "label": "1,3 - Moderada",
         "color": "#d78022"
       },
       {
         "value": 1.7,
-        "label": "1,7-Moderada-Baixa",
+        "label": "1,7 - Moderada-Baixa",
         "color": "#d79867"
       },
       {
         "value": 2.0,
-        "label": "2-Baixa",
+        "label": "2 - Baixa",
         "color": "#b3562b"
       }
     ]
@@ -371,7 +385,7 @@
       },
       {
         "value": 1.2,
-        "label": "1,2 -Alta",
+        "label": "1,2 - Alta",
         "color": "#41ba45"
       },
       {
@@ -402,7 +416,7 @@
       },
       {
         "max": 1.489,
-        "label": "1,35 - 1,49 -Moderada",
+        "label": "1,35 - 1,49 - Moderada",
         "color": "#ffffc0"
       },
       {
@@ -412,7 +426,7 @@
       },
       {
         "max": 2.0,
-        "label": "1,63 - 2 -Muito Baixa",
+        "label": "1,63 - 2 - Muito Baixa",
         "color": "#d7191c"
       }
     ]
@@ -423,7 +437,7 @@
     "classes": [
       {
         "value": 1.0,
-        "label": "1 -Muito Alta",
+        "label": "1 - Muito Alta",
         "color": "#007e11"
       },
       {
@@ -433,22 +447,22 @@
       },
       {
         "value": 1.3,
-        "label": "1,3 -Moderada",
+        "label": "1,3 - Moderada",
         "color": "#fffd03"
       },
       {
         "value": 1.5,
-        "label": "1,5 -Moderada Alta",
+        "label": "1,5 - Moderada Alta",
         "color": "#fe931e"
       },
       {
         "value": 1.8,
-        "label": "1,8 -Baixa",
+        "label": "1,8 - Baixa",
         "color": "#ff1e00"
       },
       {
         "value": 2.0,
-        "label": "2 -Muito Baixa",
+        "label": "2 - Muito Baixa",
         "color": "#772100"
       }
     ]
@@ -469,7 +483,7 @@
       },
       {
         "value": 1.5,
-        "label": "1,5 -Moderada",
+        "label": "1,5 - Moderada",
         "color": "#fff8ab"
       },
       {
@@ -479,7 +493,7 @@
       },
       {
         "value": 2.0,
-        "label": "2 -Muito Baixa",
+        "label": "2 - Muito Baixa",
         "color": "#d05803"
       }
     ]

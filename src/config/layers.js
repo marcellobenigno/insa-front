@@ -81,26 +81,50 @@ const VECTOR_TILES_URL = import.meta.env.VITE_TILES_URL
 //
 export const OVERLAY_TREE = [
 
-  // 1. Semiárido PB ──────────────────────────────────────────────────────────
+  // 1. Limites ───────────────────────────────────────────────────────────────
   {
     key: 'semiarido_pb',
-    label: 'Semiárido PB',
+    label: 'Limites',
     icon: 'bi-map',
     layer: null,
     children: [
       {
+        key: 'limite_semiarido_pb',
+        layer: {
+          label: 'Limites do Semiárido PB',
+          meta: 'Contorno da região do Semiárido Paraibano',
+          url: VECTOR_TILES_URL,
+          sourceLayer: 'limite_semiarido_pb',
+          zIndex: 31,
+          active: true,
+          noPopup: true,
+        },
+      },
+      {
         key: 'municipios_pb_semiarido',
         layer: {
-          label: 'Municípios',
+          label: 'Municípios do Semiárido',
           meta: 'Limites Municipais do Semiárido Paraibano',
           url: VECTOR_TILES_URL,
           sourceLayer: 'municipios_pb_semiarido',
-          zIndex: 30,
+          zIndex: 32,
           active: true,
           searchFields: ['nm_municip'],
           popUpFields:  ['nm_municip', 'cod_ibge_m'],
           fieldTypes:   { nm_municip: 'string', cod_ibge_m: 'string', slug: 'string' },
           descFields:   { nm_municip: 'Município', cod_ibge_m: 'Código IBGE' },
+        },
+      },
+      {
+        key: 'estados_ne',
+        layer: {
+          label: 'Limites Estaduais',
+          meta: 'Fronteiras dos estados do Nordeste',
+          url: VECTOR_TILES_URL,
+          sourceLayer: 'estados_ne',
+          zIndex: 35,
+          active: true,
+          noPopup: true,
         },
       },
     ],

@@ -158,6 +158,10 @@ layer: {
                                            // if omitted: shows all fields except id/gid/fid
   descFields:   { field1: 'Friendly label',
                   field2: 'Another label' }, // human-readable label per field
+  noPopup:      true,                      // omit or false = normal popup behavior;
+                                           // true = layer is excluded entirely from
+                                           // click-popup queries (e.g. pure boundary
+                                           // layers with nothing meaningful to show)
 }
 ```
 
@@ -194,7 +198,9 @@ the numeric-range mode in `mapRenderer.js`/`stats.py`.
 
 | `sourceLayer` | Category | Description |
 |---|---|---|
-| `municipios_pb_semiarido` | Semiárido PB | Municipal boundaries (stroke-only) |
+| `limite_semiarido_pb` | Limites | Semiárido PB region outline (stroke-only, no popup, no chart) |
+| `municipios_pb_semiarido` | Limites | Municipal boundaries (stroke-only) |
+| `estados_ne` | Limites | Northeast state boundaries (stroke-only, no popup, no chart) |
 | `ivd_sab` | IVS | Índice de Vulnerabilidade à Desertificação (composite) |
 | `iqs` | IQS | Índice de Qualidade do Solo (composite) |
 | `declividade_escores_de_qualidade` | IQS | Slope — quality score |
@@ -215,8 +221,12 @@ the numeric-range mode in `mapRenderer.js`/`stats.py`.
 | `densidade_demografica_rural_escores_de_qualidade` | IQM | Rural demographic density — quality score |
 | `idhm_escores_de_qualidade` | IQM | Municipal HDI — quality score |
 
-**`municipios_pb_semiarido` is stroke-only** — its entry in `src/assets/styles.json`
-must use `"type": "stroke"` (see the Styles section below for the full schema).
+**`municipios_pb_semiarido`, `limite_semiarido_pb` and `estados_ne` are stroke-only**
+— their entries in `src/assets/styles.json` must use `"type": "stroke"` (see the
+Styles section below for the full schema). `limite_semiarido_pb` and `estados_ne`
+also set `noPopup: true` in `layers.js` — they're pure boundary outlines with no
+attributes worth surfacing in a popup, and being stroke-only they're automatically
+skipped by `stats.py` so no chart button appears either.
 
 ---
 
@@ -253,6 +263,8 @@ tippecanoe \
   --no-tile-compression \
   --force \
   data/geojson/municipios_pb_semiarido.geojson \
+  data/geojson/limite_semiarido_pb.geojson \
+  data/geojson/estados_ne.geojson \
   data/geojson/ivd_sab.geojson \
   data/geojson/iqs.geojson \
   data/geojson/iqv.geojson \
@@ -300,8 +312,9 @@ python scripts/styles.py    # writes src/assets/styles.json from layer_styles (Q
 Rows whose `f_table_name` isn't a real table in the GeoPackage are skipped
 automatically (the GeoPackage can contain stray/duplicate style rows).
 
-`singleSymbol`-styled layers (e.g. `municipios_pb_semiarido`, which the app
-renders stroke-only) are **not** captured automatically — add them manually.
+`singleSymbol`-styled layers (e.g. `municipios_pb_semiarido`, `limite_semiarido_pb`,
+`estados_ne` — all rendered stroke-only) are **not** captured automatically —
+add them manually.
 
 > ⚠️ **`styles.py` overwrites `src/assets/styles.json` entirely.** Any manual entry
 > will be lost after every pipeline run. Always restore manual entries immediately
@@ -314,6 +327,20 @@ renders stroke-only) are **not** captured automatically — add them manually.
 >   "field": null,
 >   "classes": [
 >     { "label": "Limite municipal", "color": "#ffffff" }
+>   ]
+> },
+> "limite_semiarido_pb": {
+>   "type": "stroke",
+>   "field": null,
+>   "classes": [
+>     { "label": "Limite do Semiárido PB", "color": "#ff2424" }
+>   ]
+> },
+> "estados_ne": {
+>   "type": "stroke",
+>   "field": null,
+>   "classes": [
+>     { "label": "Limite estadual", "color": "#000000" }
 >   ]
 > }
 > ```

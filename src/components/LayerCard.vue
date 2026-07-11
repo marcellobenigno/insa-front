@@ -134,16 +134,6 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
       </div>
 
       <div class="layer-actions">
-        <button
-          class="action-btn"
-          :class="{ 'is-panel-open': activePanel === 'opacity' }"
-          title="Ajustar Opacidade"
-          aria-label="Ajustar opacidade"
-          @click.stop="togglePanel('opacity')"
-        >
-          <i class="bi bi-sliders" aria-hidden="true" />
-        </button>
-
         <template v-if="type === 'overlay'">
           <button
             v-if="hasLegend"
@@ -155,7 +145,7 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
           >
             <i class="bi bi-palette" aria-hidden="true" />
           </button>
-          
+
           <button
             v-if="searchFields.length > 0"
             class="action-btn"
@@ -166,7 +156,19 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
           >
             <i class="bi bi-search" aria-hidden="true" />
           </button>
+        </template>
 
+        <button
+          class="action-btn"
+          :class="{ 'is-panel-open': activePanel === 'opacity' }"
+          title="Ajustar Opacidade"
+          aria-label="Ajustar opacidade"
+          @click.stop="togglePanel('opacity')"
+        >
+          <i class="bi bi-sliders" aria-hidden="true" />
+        </button>
+
+        <template v-if="type === 'overlay'">
           <button
             v-if="hasStats"
             class="action-btn"
