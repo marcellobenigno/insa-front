@@ -3,14 +3,14 @@
     "type": "stroke",
     "field": null,
     "classes": [
-      { "label": "Limite municipal", "color": "#000000" }
+      { "label": "Limite municipal", "color": "#e8e8e8" }
     ]
   },
   "limite_semiarido_pb": {
     "type": "stroke",
     "field": null,
     "classes": [
-      { "label": "Limite do Semiárido PB", "color": "#ff2424" }
+      { "label": "Limite do Semiárido PB", "color": "#f5ff00" }
     ]
   },
   "estados_ne": {

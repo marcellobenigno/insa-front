@@ -95,7 +95,7 @@ export const OVERLAY_TREE = [
           meta: 'Contorno da região do Semiárido Paraibano',
           url: VECTOR_TILES_URL,
           sourceLayer: 'limite_semiarido_pb',
-          zIndex: 31,
+          zIndex: 36,
           active: true,
           noPopup: true,
         },

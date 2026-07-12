@@ -11,6 +11,18 @@
  *     descFields:  Record<string, string> | undefined, // Rótulo amigável por campo; fallback = nome do campo
  *   }
  */
+/**
+ * Formata um valor de atributo para exibição no popup, arredondando
+ * números para no máximo 3 casas decimais (sem zeros à direita).
+ */
+function formatPopupValue(value) {
+  if (value === null || value === undefined) return '-'
+  if (typeof value === 'number' && !Number.isInteger(value)) {
+    return Number(value.toFixed(3)).toString()
+  }
+  return value
+}
+
 export function createPopupContent(layersData) {
   // Regex flexível para pular chaves de identificação técnica (id, gid, fid, objectid…)
   const idPattern = /^(fid|id|gid|objectid)$/i
@@ -34,7 +46,7 @@ export function createPopupContent(layersData) {
       const rows = entries
         .map(([key, value]) => {
           const displayKey   = descFields[key] ?? key
-          const displayValue = value !== null && value !== undefined ? value : '-'
+          const displayValue = formatPopupValue(value)
           return `
             <tr>
               <td class="gfi-key">${displayKey}</td>
