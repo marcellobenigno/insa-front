@@ -33,6 +33,12 @@ const steps = ref([
     beforeShow: () => { ensureSidebarOpen(); if (!openBase.value) toggleBase() },
   },
   {
+    target: '.layer-search-box',
+    title: 'Filtrar Camadas',
+    text: 'Digite aqui para filtrar rapidamente a árvore de camadas pelo nome — útil quando há muitas camadas disponíveis.',
+    beforeShow: () => { ensureSidebarOpen() },
+  },
+  {
     target: '#cat-content-semiarido_pb',
     title: 'Camadas Temáticas',
     text: 'Explore os limites, municípios e índices de qualidade do Semiárido Paraibano. Ative quantas camadas quiser para sobrepor no mapa e comparar informações.',
@@ -40,6 +46,21 @@ const steps = ref([
       ensureSidebarOpen()
       if (!openCategories.semiarido_pb) toggleCategory('semiarido_pb')
     },
+  },
+  {
+    target: '#cat-content-ivs .layer-actions',
+    title: 'Controles de Camada',
+    text: 'Cada camada ativa oferece controles próprios: veja a legenda de cores, busque por atributos, ajuste a opacidade e visualize um gráfico com a distribuição das classes.',
+    beforeShow: () => {
+      ensureSidebarOpen()
+      if (!openCategories.ivs) toggleCategory('ivs')
+    },
+  },
+  {
+    target: '.clear-overlays-btn',
+    title: 'Limpar Camadas',
+    text: 'Use este botão para desligar de uma só vez todas as camadas de sobreposição ativas no mapa.',
+    beforeShow: () => { ensureSidebarOpen() },
   },
   {
     target: '.gs-footer',
