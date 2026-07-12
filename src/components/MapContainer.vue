@@ -1,11 +1,15 @@
 <template>
-  <div ref="mapEl" class="map-container" />
+  <div class="map-shell">
+    <div ref="mapEl" class="map-container" />
+    <WebGisTour />
+  </div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useSidebar } from '@/composables/useSidebar'
+import WebGisTour from './WebGisTour.vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { VectorTile } from 'vector-tile'
@@ -689,6 +693,12 @@ watch(
 </script>
 
 <style scoped>
+.map-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .map-container {
   width: 100%;
   height: 100%;

@@ -87,7 +87,7 @@ function handleBaseClick() {
           <i class="bi" :class="isDark ? 'bi-sun' : 'bi-moon-stars'" />
         </button>
         <button
-          class="toggle-btn"
+          class="toggle-btn toggle-btn--collapse"
           :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
           :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
           :aria-expanded="!isCollapsed"
