@@ -17,31 +17,31 @@ function ensureSidebarOpen() {
 const steps = ref([
   {
     target: null,
-    title: 'Bem-vindo ao guia de ajuda do Geovisualizador',
-    text: 'Este guia tem como objetivo orientar na usabilidade dos recursos e funcionalidades desta plataforma. Navegue por meio das setas logo abaixo para acompanhar as etapas deste guia.',
+    title: 'Conheça o WebGIS do Semiárido PB',
+    text: 'Esta ferramenta tem como objetivo apoiar o monitoramento da desertificação e da degradação das terras no Semiárido Paraibano. Aqui você visualiza o mapeamento produzido pelo INSA das áreas desertificadas e em processo de desertificação no estado da Paraíba. Use as setas abaixo para explorar os recursos disponíveis.',
   },
   {
     target: '.toggle-btn.toggle-btn--collapse',
     title: 'Painel de Camadas',
-    text: 'Ao clicar em "Habilitar Camadas", é possível realizar a consulta e obtenção das camadas de informação geográfica disponibilizadas pelo sistema. Clique na seta que aponta para a direita para entender como é a estrutura do painel.',
+    text: 'Este botão abre e fecha o painel lateral. É por aqui que você acessa todo o acervo de camadas temáticas — desde os limites municipais até os índices de qualidade do semiárido paraibano.',
     beforeShow: () => { ensureSidebarOpen() },
   },
   {
     target: '[aria-controls="base-layers-content"]',
-    title: 'Camadas Base',
-    text: 'Aqui você escolhe o mapa de fundo — satélite, ruas ou relevo — que serve de base para todas as camadas temáticas exibidas sobre ele.',
+    title: 'Mapa de Fundo',
+    text: 'Escolha o contexto visual que melhor se adapta à sua análise: imagem de satélite para identificar feições no campo, mapa com a malha viária para referências urbanas, ou relevo para entender a topografia da região.',
     beforeShow: () => { ensureSidebarOpen(); if (!openBase.value) toggleBase() },
   },
   {
     target: '.layer-search-box',
-    title: 'Filtrar Camadas',
-    text: 'Digite aqui para filtrar rapidamente a árvore de camadas pelo nome — útil quando há muitas camadas disponíveis.',
+    title: 'Busca Rápida de Camadas',
+    text: 'Com dezenas de camadas disponíveis, use este campo para localizar rapidamente o dado que você precisa — basta digitar parte do nome, como "solos" ou "ndvi".',
     beforeShow: () => { ensureSidebarOpen() },
   },
   {
     target: '#cat-content-semiarido_pb',
-    title: 'Camadas Temáticas',
-    text: 'Explore os limites, municípios e índices de qualidade do Semiárido Paraibano. Ative quantas camadas quiser para sobrepor no mapa e comparar informações.',
+    title: 'Camadas do Semiárido PB',
+    text: 'Aqui estão os dados territoriais do Semiárido Paraibano: limites do semiárido, municípios e os índices integrados de qualidade — IQS, IQV, IQC e IQM. Ative mais de uma camada ao mesmo tempo para cruzar planos de informações.',
     beforeShow: () => {
       ensureSidebarOpen()
       if (!openCategories.semiarido_pb) toggleCategory('semiarido_pb')
@@ -49,8 +49,8 @@ const steps = ref([
   },
   {
     target: '#cat-content-ivs .layer-actions',
-    title: 'Controles de Camada',
-    text: 'Cada camada ativa oferece controles próprios: veja a legenda de cores, busque por atributos, ajuste a opacidade e visualize um gráfico com a distribuição das classes.',
+    title: 'Ferramentas de Cada Camada',
+    text: 'Com uma camada ativa, você tem à disposição: legenda de classes, busca por município ou atributo específico, controle de opacidade para sobrepor camadas com clareza, e um gráfico com a distribuição de área por classe.',
     beforeShow: () => {
       ensureSidebarOpen()
       if (!openCategories.ivs) toggleCategory('ivs')
@@ -58,20 +58,20 @@ const steps = ref([
   },
   {
     target: '.clear-overlays-btn',
-    title: 'Limpar Camadas',
-    text: 'Use este botão para desligar de uma só vez todas as camadas de sobreposição ativas no mapa.',
+    title: 'Recomeçar a Visualização',
+    text: 'Ativou muitas camadas e quer começar do zero? Este botão desliga todas de uma só vez, sem precisar desativar uma a uma.',
     beforeShow: () => { ensureSidebarOpen() },
   },
   {
     target: '.gs-footer',
-    title: 'Busca Geoespacial',
-    text: 'Procure um endereço, um local ou informe coordenadas diretamente para ir até o ponto desejado no mapa.',
+    title: 'Localizar no Mapa',
+    text: 'Informe o nome de um município, um endereço ou coordenadas geográficas para navegar diretamente até o ponto de interesse — ideal para trabalhos de campo ou análises por localidade.',
     beforeShow: () => { ensureSidebarOpen() },
   },
   {
     target: '.coord-display',
-    title: 'Coordenadas em Tempo Real',
-    text: 'Acompanhe aqui a latitude e a longitude sob o cursor, em graus decimais e em graus/minutos/segundos.',
+    title: 'Coordenadas sob o Cursor',
+    text: 'Ao mover o mouse sobre o mapa, as coordenadas do ponto são exibidas aqui em tempo real — tanto em graus decimais quanto em graus, minutos e segundos. Útil para registrar localizações com precisão.',
     placement: 'top',
   },
 ])
