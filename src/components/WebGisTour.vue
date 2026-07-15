@@ -39,12 +39,14 @@ const steps = ref([
     beforeShow: () => { ensureSidebarOpen() },
   },
   {
-    target: '#cat-content-semiarido_pb',
+    target: ['#cat-block-semiarido_pb', '#cat-block-ivs', '#cat-block-indices_qualidade'],
     title: 'Camadas do Semiárido PB',
     text: 'Aqui estão os dados territoriais do Semiárido Paraibano: limites do semiárido, municípios e os índices integrados de qualidade — IQS, IQV, IQC e IQM. Ative mais de uma camada ao mesmo tempo para cruzar planos de informações.',
     beforeShow: () => {
       ensureSidebarOpen()
       if (!openCategories.semiarido_pb) toggleCategory('semiarido_pb')
+      if (!openCategories.ivs) toggleCategory('ivs')
+      if (!openCategories.indices_qualidade) toggleCategory('indices_qualidade')
     },
   },
   {
@@ -81,7 +83,7 @@ const visible = ref(false)
 const currentStepIndex = ref(0)
 const targetRect = ref(null)
 const placement = ref('bottom')
-let targetEl = null
+let targetEls = []
 let cleanupFns = []
 
 const currentStep = computed(() => steps.value[currentStepIndex.value] ?? steps.value[0])
@@ -110,6 +112,13 @@ function waitForElement(selector, { timeout = 3000, interval = 50 } = {}) {
   })
 }
 
+// Aceita um seletor único ou uma lista — várias seções destacadas de uma vez,
+// combinadas depois em um único retângulo delimitador (measureTarget).
+function waitForElements(target, options) {
+  const selectors = Array.isArray(target) ? target : [target]
+  return Promise.all(selectors.map(selector => waitForElement(selector, options)))
+}
+
 function computePlacement(rect) {
   const vw = window.innerWidth
   const vh = window.innerHeight
@@ -128,10 +137,15 @@ function computePlacement(rect) {
 }
 
 function measureTarget() {
-  if (!targetEl) { targetRect.value = null; return }
-  const r = targetEl.getBoundingClientRect()
-  targetRect.value = { top: r.top, left: r.left, width: r.width, height: r.height }
-  placement.value = computePlacement(r)
+  if (!targetEls.length) { targetRect.value = null; return }
+  const rects = targetEls.map(el => el.getBoundingClientRect())
+  const top = Math.min(...rects.map(r => r.top))
+  const left = Math.min(...rects.map(r => r.left))
+  const right = Math.max(...rects.map(r => r.right))
+  const bottom = Math.max(...rects.map(r => r.bottom))
+  const merged = { top, left, right, bottom, width: right - left, height: bottom - top }
+  targetRect.value = { top: merged.top, left: merged.left, width: merged.width, height: merged.height }
+  placement.value = computePlacement(merged)
 }
 
 function attachReactiveListeners() {
@@ -143,7 +157,7 @@ function attachReactiveListeners() {
   ro.observe(document.body)
   const sidebarEl = document.getElementById('sidebar')
   if (sidebarEl) ro.observe(sidebarEl)
-  if (targetEl) ro.observe(targetEl)
+  targetEls.forEach(el => ro.observe(el))
 
   cleanupFns.push(() => {
     window.removeEventListener('resize', recompute)
@@ -173,15 +187,15 @@ async function goToStep(index) {
   }
 
   if (!step.target) {
-    targetEl = null
+    targetEls = []
     targetRect.value = null
     return
   }
 
   try {
-    const el = await waitForElement(step.target)
-    targetEl = el
-    el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' })
+    const els = await waitForElements(step.target)
+    targetEls = els
+    els[0].scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' })
     await new Promise(resolve => setTimeout(resolve, 350))
     measureTarget()
     attachReactiveListeners()
@@ -286,7 +300,12 @@ defineExpose({ startTour })
     <div v-if="visible" class="tour-root">
       <div class="tour-blocker" :style="blockerStyle" @click.stop.prevent />
 
-      <div v-if="targetRect" class="tour-spotlight" :style="spotlightStyle" />
+      <div
+        v-if="targetRect"
+        :key="currentStepIndex"
+        class="tour-spotlight"
+        :style="spotlightStyle"
+      />
 
       <div
         class="tour-tooltip"
@@ -385,9 +404,40 @@ defineExpose({ startTour })
 .tour-spotlight {
   position: fixed;
   border-radius: 12px;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  box-shadow:
+    0 0 0 9999px rgba(0, 0, 0, 0.6),
+    0 0 0 3px var(--accent),
+    0 0 0 6px rgba(255, 255, 255, 0.25),
+    0 0 24px 4px var(--accent);
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
+  animation: tour-spotlight-in 0.35s ease-out, tour-spotlight-pulse 1.8s ease-in-out 0.35s infinite;
+}
+
+@keyframes tour-spotlight-in {
+  from { outline: 4px solid transparent; transform: scale(0.94); opacity: 0.4; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes tour-spotlight-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 9999px rgba(0, 0, 0, 0.6),
+      0 0 0 3px var(--accent),
+      0 0 0 6px rgba(255, 255, 255, 0.25),
+      0 0 20px 2px var(--accent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 9999px rgba(0, 0, 0, 0.6),
+      0 0 0 4px var(--accent),
+      0 0 0 8px rgba(255, 255, 255, 0.18),
+      0 0 30px 8px var(--accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-spotlight { animation: none; }
 }
 
 /* ── Tooltip ───────────────────────────────────────────────────────────────── */
@@ -410,6 +460,45 @@ defineExpose({ startTour })
 .tour-tooltip--right  { transform: translate(0, -50%); }
 .tour-tooltip--left   { transform: translate(-100%, -50%); }
 .tour-tooltip--center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+/* ── Seta apontando para o elemento em destaque ───────────────────────────── */
+.tour-tooltip::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+}
+
+.tour-tooltip--bottom::after {
+  top: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: var(--bg-sidebar);
+}
+
+.tour-tooltip--top::after {
+  bottom: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: var(--bg-sidebar);
+}
+
+.tour-tooltip--right::after {
+  left: -17px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right-color: var(--bg-sidebar);
+}
+
+.tour-tooltip--left::after {
+  right: -17px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left-color: var(--bg-sidebar);
+}
+
+.tour-tooltip--center::after { display: none; }
 
 .tour-tooltip-header {
   display: flex;

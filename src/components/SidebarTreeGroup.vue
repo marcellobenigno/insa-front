@@ -44,6 +44,7 @@ const counts = computed(() => countLayers(props.node))
 
 <template>
   <section
+    :id="`cat-block-${node.key}`"
     class="category-block"
     :class="{ 'is-open': isOpen, 'is-nested': depth > 0 }"
   >
