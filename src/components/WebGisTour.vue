@@ -22,21 +22,37 @@ const steps = ref([
   },
   {
     target: '.toggle-btn.toggle-btn--collapse',
+    title: 'Exibir/ocultar painel de camadas',
+    text: 'Este botão abre e fecha o painel lateral, liberando mais espaço para o mapa quando você não precisa consultar as camadas.',
+    beforeShow: () => {
+      ensureSidebarOpen()
+    },
+  },
+  {
+    target: '#sidebar',
     title: 'Painel de Camadas',
-    text: 'Este botão abre e fecha o painel lateral. É por aqui que você acessa todo o acervo de camadas temáticas — desde os limites municipais até os índices de qualidade do semiárido paraibano.',
-    beforeShow: () => { ensureSidebarOpen() },
+    text: 'É por aqui que você acessa todo o acervo de camadas temáticas do WebGIS — desde os limites municipais até os índices de qualidade do semiárido paraibano. Cada camada pode ser ativada, combinada com outras e personalizada individualmente.',
+    placement: 'right',
+    beforeShow: () => {
+      ensureSidebarOpen()
+    },
   },
   {
     target: '[aria-controls="base-layers-content"]',
     title: 'Mapa de Fundo',
     text: 'Escolha o contexto visual que melhor se adapta à sua análise: imagem de satélite para identificar feições no campo, mapa com a malha viária para referências urbanas, ou relevo para entender a topografia da região.',
-    beforeShow: () => { ensureSidebarOpen(); if (!openBase.value) toggleBase() },
+    beforeShow: () => {
+      ensureSidebarOpen()
+      if (!openBase.value) toggleBase()
+    },
   },
   {
     target: '.layer-search-box',
     title: 'Busca Rápida de Camadas',
     text: 'Com dezenas de camadas disponíveis, use este campo para localizar rapidamente o dado que você precisa — basta digitar parte do nome, como "solos" ou "ndvi".',
-    beforeShow: () => { ensureSidebarOpen() },
+    beforeShow: () => {
+      ensureSidebarOpen()
+    },
   },
   {
     target: ['#cat-block-semiarido_pb', '#cat-block-ivs', '#cat-block-indices_qualidade'],
@@ -62,13 +78,17 @@ const steps = ref([
     target: '.clear-overlays-btn',
     title: 'Recomeçar a Visualização',
     text: 'Ativou muitas camadas e quer começar do zero? Este botão desliga todas de uma só vez, sem precisar desativar uma a uma.',
-    beforeShow: () => { ensureSidebarOpen() },
+    beforeShow: () => {
+      ensureSidebarOpen()
+    },
   },
   {
     target: '.gs-footer',
     title: 'Localizar no Mapa',
     text: 'Informe o nome de um município, um endereço ou coordenadas geográficas para navegar diretamente até o ponto de interesse — ideal para trabalhos de campo ou análises por localidade.',
-    beforeShow: () => { ensureSidebarOpen() },
+    beforeShow: () => {
+      ensureSidebarOpen()
+    },
   },
   {
     target: '.coord-display',
@@ -116,7 +136,7 @@ function waitForElement(selector, { timeout = 3000, interval = 50 } = {}) {
 // combinadas depois em um único retângulo delimitador (measureTarget).
 function waitForElements(target, options) {
   const selectors = Array.isArray(target) ? target : [target]
-  return Promise.all(selectors.map(selector => waitForElement(selector, options)))
+  return Promise.all(selectors.map((selector) => waitForElement(selector, options)))
 }
 
 function computePlacement(rect) {
@@ -137,14 +157,22 @@ function computePlacement(rect) {
 }
 
 function measureTarget() {
-  if (!targetEls.length) { targetRect.value = null; return }
-  const rects = targetEls.map(el => el.getBoundingClientRect())
-  const top = Math.min(...rects.map(r => r.top))
-  const left = Math.min(...rects.map(r => r.left))
-  const right = Math.max(...rects.map(r => r.right))
-  const bottom = Math.max(...rects.map(r => r.bottom))
+  if (!targetEls.length) {
+    targetRect.value = null
+    return
+  }
+  const rects = targetEls.map((el) => el.getBoundingClientRect())
+  const top = Math.min(...rects.map((r) => r.top))
+  const left = Math.min(...rects.map((r) => r.left))
+  const right = Math.max(...rects.map((r) => r.right))
+  const bottom = Math.max(...rects.map((r) => r.bottom))
   const merged = { top, left, right, bottom, width: right - left, height: bottom - top }
-  targetRect.value = { top: merged.top, left: merged.left, width: merged.width, height: merged.height }
+  targetRect.value = {
+    top: merged.top,
+    left: merged.left,
+    width: merged.width,
+    height: merged.height,
+  }
   placement.value = computePlacement(merged)
 }
 
@@ -157,7 +185,7 @@ function attachReactiveListeners() {
   ro.observe(document.body)
   const sidebarEl = document.getElementById('sidebar')
   if (sidebarEl) ro.observe(sidebarEl)
-  targetEls.forEach(el => ro.observe(el))
+  targetEls.forEach((el) => ro.observe(el))
 
   cleanupFns.push(() => {
     window.removeEventListener('resize', recompute)
@@ -167,7 +195,7 @@ function attachReactiveListeners() {
 }
 
 function cleanupListeners() {
-  cleanupFns.forEach(fn => fn())
+  cleanupFns.forEach((fn) => fn())
   cleanupFns = []
 }
 
@@ -176,13 +204,20 @@ async function goToStep(index) {
   cleanupListeners()
 
   if (index < 0) return
-  if (index >= steps.value.length) { finishTour(); return }
+  if (index >= steps.value.length) {
+    finishTour()
+    return
+  }
 
   currentStepIndex.value = index
   const step = steps.value[index]
 
   if (typeof step.beforeShow === 'function') {
-    try { step.beforeShow() } catch (e) { console.warn('[WebGisTour] beforeShow falhou:', e) }
+    try {
+      step.beforeShow()
+    } catch (e) {
+      console.warn('[WebGisTour] beforeShow falhou:', e)
+    }
     await nextTick()
   }
 
@@ -196,7 +231,7 @@ async function goToStep(index) {
     const els = await waitForElements(step.target)
     targetEls = els
     els[0].scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' })
-    await new Promise(resolve => setTimeout(resolve, 350))
+    await new Promise((resolve) => setTimeout(resolve, 350))
     measureTarget()
     attachReactiveListeners()
   } catch (err) {
@@ -210,11 +245,19 @@ function startTour() {
   goToStep(0)
 }
 
-function nextStep() { goToStep(currentStepIndex.value + 1) }
-function prevStep() { goToStep(currentStepIndex.value - 1) }
+function nextStep() {
+  goToStep(currentStepIndex.value + 1)
+}
+function prevStep() {
+  goToStep(currentStepIndex.value - 1)
+}
 
 function persistCompleted() {
-  try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* localStorage indisponível */ }
+  try {
+    localStorage.setItem(STORAGE_KEY, '1')
+  } catch {
+    /* localStorage indisponível */
+  }
 }
 
 function skipTour() {
@@ -231,7 +274,11 @@ function finishTour() {
 
 onMounted(() => {
   let alreadySeen = true
-  try { alreadySeen = !!localStorage.getItem(STORAGE_KEY) } catch { /* localStorage indisponível */ }
+  try {
+    alreadySeen = !!localStorage.getItem(STORAGE_KEY)
+  } catch {
+    /* localStorage indisponível */
+  }
   if (!alreadySeen) setTimeout(startTour, 800)
 })
 
@@ -278,7 +325,10 @@ const tooltipStyle = computed(() => {
       styleTop = top + height + GAP
       styleLeft = left + width / 2
   }
-  const clampedLeft = Math.min(Math.max(styleLeft, TOOLTIP_WIDTH / 2 + 12), vw - TOOLTIP_WIDTH / 2 - 12)
+  const clampedLeft = Math.min(
+    Math.max(styleLeft, TOOLTIP_WIDTH / 2 + 12),
+    vw - TOOLTIP_WIDTH / 2 - 12,
+  )
   const clampedTop = Math.min(Math.max(styleTop, 12), vh - 12)
   return { top: `${clampedTop}px`, left: `${clampedLeft}px` }
 })
@@ -371,20 +421,30 @@ defineExpose({ startTour })
   font-size: 17px;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
-  transition: background 0.15s, color 0.15s, transform 0.1s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    transform 0.1s;
 }
 
-[data-theme="dark"] .tour-trigger-btn {
+[data-theme='dark'] .tour-trigger-btn {
   background: rgba(28, 28, 30, 0.85);
   color: #f5f5f7;
 }
 
-.tour-trigger-btn:hover { background: var(--accent); color: #ffffff; }
-.tour-trigger-btn:active { transform: scale(0.95); }
+.tour-trigger-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+.tour-trigger-btn:active {
+  transform: scale(0.95);
+}
 
 @media (max-width: 768px) {
   /* Evita colidir com o .sidebar-fab (top:12px right:12px em mobile) */
-  .tour-trigger-btn { top: 64px; }
+  .tour-trigger-btn {
+    top: 64px;
+  }
 }
 
 /* ── Overlay (blocker + spotlight), fora do fluxo via Teleport ────────────── */
@@ -410,17 +470,31 @@ defineExpose({ startTour })
     0 0 0 6px rgba(255, 255, 255, 0.25),
     0 0 24px 4px var(--accent);
   pointer-events: none;
-  transition: top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease;
-  animation: tour-spotlight-in 0.35s ease-out, tour-spotlight-pulse 1.8s ease-in-out 0.35s infinite;
+  transition:
+    top 0.3s ease,
+    left 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease;
+  animation:
+    tour-spotlight-in 0.35s ease-out,
+    tour-spotlight-pulse 1.8s ease-in-out 0.35s infinite;
 }
 
 @keyframes tour-spotlight-in {
-  from { outline: 4px solid transparent; transform: scale(0.94); opacity: 0.4; }
-  to   { transform: scale(1); opacity: 1; }
+  from {
+    outline: 4px solid transparent;
+    transform: scale(0.94);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes tour-spotlight-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow:
       0 0 0 9999px rgba(0, 0, 0, 0.6),
       0 0 0 3px var(--accent),
@@ -437,7 +511,9 @@ defineExpose({ startTour })
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tour-spotlight { animation: none; }
+  .tour-spotlight {
+    animation: none;
+  }
 }
 
 /* ── Tooltip ───────────────────────────────────────────────────────────────── */
@@ -452,14 +528,28 @@ defineExpose({ startTour })
   border: 1px solid var(--border-color);
   box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
   color: var(--text-main);
-  transition: top 0.3s ease, left 0.3s ease;
+  transition:
+    top 0.3s ease,
+    left 0.3s ease;
 }
 
-.tour-tooltip--bottom { transform: translate(-50%, 0); }
-.tour-tooltip--top    { transform: translate(-50%, -100%); }
-.tour-tooltip--right  { transform: translate(0, -50%); }
-.tour-tooltip--left   { transform: translate(-100%, -50%); }
-.tour-tooltip--center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.tour-tooltip--bottom {
+  transform: translate(-50%, 0);
+}
+.tour-tooltip--top {
+  transform: translate(-50%, -100%);
+}
+.tour-tooltip--right {
+  transform: translate(0, -50%);
+}
+.tour-tooltip--left {
+  transform: translate(-100%, -50%);
+}
+.tour-tooltip--center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 /* ── Seta apontando para o elemento em destaque ───────────────────────────── */
 .tour-tooltip::after {
@@ -498,7 +588,9 @@ defineExpose({ startTour })
   border-left-color: var(--bg-sidebar);
 }
 
-.tour-tooltip--center::after { display: none; }
+.tour-tooltip--center::after {
+  display: none;
+}
 
 .tour-tooltip-header {
   display: flex;
@@ -527,10 +619,15 @@ defineExpose({ startTour })
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
-.tour-close:hover { background: var(--btn-bg-hover); color: var(--text-main); }
+.tour-close:hover {
+  background: var(--btn-bg-hover);
+  color: var(--text-main);
+}
 
 .tour-title {
   font-size: 16px;
@@ -560,7 +657,9 @@ defineExpose({ startTour })
   transition: background 0.2s;
 }
 
-.tour-dot.is-active { background: var(--accent); }
+.tour-dot.is-active {
+  background: var(--accent);
+}
 
 .tour-actions {
   display: flex;
@@ -575,12 +674,27 @@ defineExpose({ startTour })
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
+  transition:
+    background 0.15s,
+    transform 0.1s;
 }
 
-.tour-btn--ghost { background: var(--btn-bg); color: var(--text-muted); }
-.tour-btn--ghost:hover { background: var(--btn-bg-hover); color: var(--text-main); }
-.tour-btn--primary { background: var(--accent); color: var(--text-on-accent); }
-.tour-btn--primary:hover { background: var(--accent-hover); }
-.tour-btn:active { transform: scale(0.96); }
+.tour-btn--ghost {
+  background: var(--btn-bg);
+  color: var(--text-muted);
+}
+.tour-btn--ghost:hover {
+  background: var(--btn-bg-hover);
+  color: var(--text-main);
+}
+.tour-btn--primary {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.tour-btn--primary:hover {
+  background: var(--accent-hover);
+}
+.tour-btn:active {
+  transform: scale(0.96);
+}
 </style>
