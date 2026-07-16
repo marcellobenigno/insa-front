@@ -11,7 +11,7 @@ const { isCollapsed, toggleSidebar } = useSidebar()
 <template>
   <header class="app-navbar">
     <button
-      v-if="route.path === '/'"
+      v-if="route.path === '/mapa'"
       class="toggle-btn toggle-btn--collapse"
       :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
       :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
@@ -28,6 +28,9 @@ const { isCollapsed, toggleSidebar } = useSidebar()
 
     <nav class="navbar-links" aria-label="Navegação principal">
       <RouterLink to="/" class="nav-link" exact-active-class="is-active">
+        <i class="bi bi-house" aria-hidden="true" /> Início
+      </RouterLink>
+      <RouterLink to="/mapa" class="nav-link" active-class="is-active">
         <i class="bi bi-map" aria-hidden="true" /> Mapa
       </RouterLink>
       <RouterLink to="/dashboard" class="nav-link" active-class="is-active">

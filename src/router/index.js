@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-  { path: '/', name: 'map', component: () => import('@/views/HomeView.vue') },
+  { path: '/', name: 'inicio', component: () => import('@/views/InicioView.vue') },
+  { path: '/mapa', name: 'map', component: () => import('@/views/HomeView.vue') },
   { path: '/dashboard', name: 'dashboard', component: () => import('@/views/DashboardView.vue') },
 ]
 
