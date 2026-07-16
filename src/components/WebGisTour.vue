@@ -21,9 +21,9 @@ const steps = ref([
     text: 'Esta ferramenta tem como objetivo apoiar o monitoramento da desertificação e da degradação das terras no Semiárido Paraibano. Aqui você visualiza o mapeamento produzido pelo INSA das áreas desertificadas e em processo de desertificação no estado da Paraíba. Use as setas abaixo para explorar os recursos disponíveis.',
   },
   {
-    target: '.toggle-btn.toggle-btn--collapse',
+    target: '.sidebar-collapse-btn',
     title: 'Exibir/ocultar painel de camadas',
-    text: 'Este botão abre e fecha o painel lateral, liberando mais espaço para o mapa quando você não precisa consultar as camadas.',
+    text: 'Este botão, sempre no topo do painel lateral, abre e fecha o painel, liberando mais espaço para o mapa quando você não precisa consultar as camadas.',
     beforeShow: () => {
       ensureSidebarOpen()
     },
