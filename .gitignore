@@ -38,7 +38,7 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 
-data/
+/data/
 
 public/tiles/
 
