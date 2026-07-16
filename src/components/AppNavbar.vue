@@ -1,26 +1,11 @@
 <script setup>
-import { useRoute } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
-import { useSidebar } from '@/composables/useSidebar'
 
-const route = useRoute()
 const { isDark, toggleTheme } = useTheme()
-const { isCollapsed, toggleSidebar } = useSidebar()
 </script>
 
 <template>
   <header class="app-navbar">
-    <button
-      v-if="route.path === '/mapa'"
-      class="toggle-btn toggle-btn--collapse"
-      :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
-      :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
-      :aria-expanded="!isCollapsed"
-      @click="toggleSidebar"
-    >
-      <i class="bi" :class="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'" />
-    </button>
-
     <RouterLink to="/" class="navbar-brand">
       <span class="brand-logo" aria-hidden="true"><i class="bi bi-geo-alt-fill" /></span>
       <span class="brand-name">INSA <span class="brand-accent">WebGIS</span></span>

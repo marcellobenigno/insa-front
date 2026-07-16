@@ -66,6 +66,24 @@ function handleBaseClick() {
     role="complementary"
     aria-label="Painel de Controle do Mapa"
   >
+    <!-- Recolher / Expandir painel -->
+    <div class="sidebar-collapse-row">
+      <button
+        class="sidebar-collapse-btn btn-reset"
+        :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
+        :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
+        :aria-expanded="!isCollapsed"
+        @click="toggleSidebar"
+      >
+        <i
+          class="bi sidebar-collapse-icon"
+          :class="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"
+          aria-hidden="true"
+        />
+        <span class="sidebar-collapse-label" v-show="!isCollapsed">Recolher painel</span>
+      </button>
+    </div>
+
     <!-- Conteúdo Principal -->
     <div class="sidebar-content custom-scrollbar">
       <!-- Camadas Base -->
@@ -180,6 +198,61 @@ function handleBaseClick() {
 }
 
 /* is-collapsed overrides para .category-block/.category-header/.cat-icon agora vivem em main.css */
+
+/* ── Recolher / Expandir painel ─────────────────────────────────────────────── */
+.sidebar-collapse-row {
+  flex-shrink: 0;
+  padding: 6px 10px 5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#sidebar.is-collapsed .sidebar-collapse-row {
+  padding: 6px 4px 5px;
+}
+
+.sidebar-collapse-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px 5px 14px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+#sidebar.is-collapsed .sidebar-collapse-btn {
+  justify-content: center;
+  padding: 6px 0;
+}
+
+.sidebar-collapse-btn:hover {
+  background: var(--hover-overlay);
+  color: var(--text-main);
+}
+
+.sidebar-collapse-btn:active {
+  transform: scale(0.97);
+}
+
+.sidebar-collapse-icon {
+  font-size: 14px;
+  color: var(--text-main);
+  flex-shrink: 0;
+}
+
+.sidebar-collapse-label {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 @media (max-width: 768px) {
   #sidebar {
