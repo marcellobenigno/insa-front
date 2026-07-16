@@ -1,0 +1,6362 @@
+{
+  "indices_meta": {
+    "iqs": {
+      "sourceLayer": "iqs",
+      "field_used": "iqs"
+    },
+    "iqv": {
+      "sourceLayer": "iqv",
+      "field_used": "iqv"
+    },
+    "iqc": {
+      "sourceLayer": "iqc",
+      "field_used": "iqcescores"
+    },
+    "iqm": {
+      "sourceLayer": "iqm",
+      "field_used": "iqm"
+    },
+    "ivd_sab": {
+      "sourceLayer": "ivd_sab",
+      "field_used": "ivd"
+    }
+  },
+  "municipios": {
+    "2501534": {
+      "cod_ibge_m": "2501534",
+      "nm_municip": "Baraúna",
+      "slug": "barauna",
+      "indices": {
+        "iqs": {
+          "value": 1.402,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.523,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.652,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.293,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.457,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501575": {
+      "cod_ibge_m": "2501575",
+      "nm_municip": "Barra de Santana",
+      "slug": "barra-de-santana",
+      "indices": {
+        "iqs": {
+          "value": 1.5,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.585,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.313,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.504,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2502508": {
+      "cod_ibge_m": "2502508",
+      "nm_municip": "Boqueirão",
+      "slug": "boqueirao",
+      "indices": {
+        "iqs": {
+          "value": 1.44,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.597,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.652,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.111,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.43,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2504009": {
+      "cod_ibge_m": "2504009",
+      "nm_municip": "Campina Grande",
+      "slug": "campina-grande",
+      "indices": {
+        "iqs": {
+          "value": 1.366,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.537,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.534,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.191,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.396,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2506905": {
+      "cod_ibge_m": "2506905",
+      "nm_municip": "Itabaiana",
+      "slug": "itabaiana",
+      "indices": {
+        "iqs": {
+          "value": 1.549,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.483,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.393,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.249,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.413,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513653": {
+      "cod_ibge_m": "2513653",
+      "nm_municip": "Joca Claudino",
+      "slug": "joca-claudino",
+      "indices": {
+        "iqs": {
+          "value": 1.504,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.443,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.335,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.473,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2508307": {
+      "cod_ibge_m": "2508307",
+      "nm_municip": "Lagoa Seca",
+      "slug": "lagoa-seca",
+      "indices": {
+        "iqs": {
+          "value": 1.464,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.484,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.316,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.824,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.509,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2508554": {
+      "cod_ibge_m": "2508554",
+      "nm_municip": "Logradouro",
+      "slug": "logradouro",
+      "indices": {
+        "iqs": {
+          "value": 1.317,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.447,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.375,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.416,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.386,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2509156": {
+      "cod_ibge_m": "2509156",
+      "nm_municip": "Marizópolis",
+      "slug": "marizopolis",
+      "indices": {
+        "iqs": {
+          "value": 1.323,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.39,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.442,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.441,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509503": {
+      "cod_ibge_m": "2509503",
+      "nm_municip": "Montadas",
+      "slug": "montadas",
+      "indices": {
+        "iqs": {
+          "value": 1.514,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.542,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.417,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.59,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.513,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2510006": {
+      "cod_ibge_m": "2510006",
+      "nm_municip": "Nazarezinho",
+      "slug": "nazarezinho",
+      "indices": {
+        "iqs": {
+          "value": 1.472,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.401,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.619,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.357,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.456,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2510105": {
+      "cod_ibge_m": "2510105",
+      "nm_municip": "Nova Floresta",
+      "slug": "nova-floresta",
+      "indices": {
+        "iqs": {
+          "value": 1.322,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.363,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.303,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.401,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2510659": {
+      "cod_ibge_m": "2510659",
+      "nm_municip": "Parari",
+      "slug": "parari",
+      "indices": {
+        "iqs": {
+          "value": 1.49,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.497,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.109,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.442,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512507": {
+      "cod_ibge_m": "2512507",
+      "nm_municip": "Queimadas",
+      "slug": "queimadas",
+      "indices": {
+        "iqs": {
+          "value": 1.267,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.517,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.571,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.374,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.424,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513901": {
+      "cod_ibge_m": "2513901",
+      "nm_municip": "São Bento",
+      "slug": "sao-bento",
+      "indices": {
+        "iqs": {
+          "value": 1.442,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.426,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.449,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.497,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516607": {
+      "cod_ibge_m": "2516607",
+      "nm_municip": "Tavares",
+      "slug": "tavares",
+      "indices": {
+        "iqs": {
+          "value": 1.553,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.385,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.562,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.53,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2512077": {
+      "cod_ibge_m": "2512077",
+      "nm_municip": "Poço de José de Moura",
+      "slug": "poco-de-jose-de-moura",
+      "indices": {
+        "iqs": {
+          "value": 1.493,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.411,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.46,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.498,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2505006": {
+      "cod_ibge_m": "2505006",
+      "nm_municip": "Cubati",
+      "slug": "cubati",
+      "indices": {
+        "iqs": {
+          "value": 1.391,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.474,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.189,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.416,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2517407": {
+      "cod_ibge_m": "2517407",
+      "nm_municip": "Zabelê",
+      "slug": "zabele",
+      "indices": {
+        "iqs": {
+          "value": 1.598,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.438,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.234,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.47,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501906": {
+      "cod_ibge_m": "2501906",
+      "nm_municip": "Belém",
+      "slug": "belem",
+      "indices": {
+        "iqs": {
+          "value": 1.43,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.38,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.239,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.331,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.341,
+          "class_label": "1 - 1,361 - Baixa",
+          "class_color": "#a6d96a"
+        }
+      }
+    },
+    "2507408": {
+      "cod_ibge_m": "2507408",
+      "nm_municip": "Jericó",
+      "slug": "jerico",
+      "indices": {
+        "iqs": {
+          "value": 1.45,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.43,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.354,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.475,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2507606": {
+      "cod_ibge_m": "2507606",
+      "nm_municip": "Juarez Távora",
+      "slug": "juarez-tavora",
+      "indices": {
+        "iqs": {
+          "value": 1.555,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.448,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.458,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.435,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2504108": {
+      "cod_ibge_m": "2504108",
+      "nm_municip": "Carrapateira",
+      "slug": "carrapateira",
+      "indices": {
+        "iqs": {
+          "value": 1.694,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.428,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.24,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.485,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512804": {
+      "cod_ibge_m": "2512804",
+      "nm_municip": "Riacho dos Cavalos",
+      "slug": "riacho-dos-cavalos",
+      "indices": {
+        "iqs": {
+          "value": 1.451,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.428,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.434,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.497,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2508802": {
+      "cod_ibge_m": "2508802",
+      "nm_municip": "Malta",
+      "slug": "malta",
+      "indices": {
+        "iqs": {
+          "value": 1.476,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.444,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.317,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.475,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514602": {
+      "cod_ibge_m": "2514602",
+      "nm_municip": "São José do Bonfim",
+      "slug": "sao-jose-do-bonfim",
+      "indices": {
+        "iqs": {
+          "value": 1.566,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.474,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.686,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.316,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.503,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2505303": {
+      "cod_ibge_m": "2505303",
+      "nm_municip": "Curral Velho",
+      "slug": "curral-velho",
+      "indices": {
+        "iqs": {
+          "value": 1.611,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.494,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.625,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.24,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.481,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514453": {
+      "cod_ibge_m": "2514453",
+      "nm_municip": "São José dos Ramos",
+      "slug": "sao-jose-dos-ramos",
+      "indices": {
+        "iqs": {
+          "value": 1.537,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.483,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.315,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.539,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.464,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500106": {
+      "cod_ibge_m": "2500106",
+      "nm_municip": "Água Branca",
+      "slug": "agua-branca",
+      "indices": {
+        "iqs": {
+          "value": 1.501,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.411,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.471,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.499,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2513208": {
+      "cod_ibge_m": "2513208",
+      "nm_municip": "Santa Cruz",
+      "slug": "santa-cruz",
+      "indices": {
+        "iqs": {
+          "value": 1.472,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.423,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.665,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.357,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.475,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2513802": {
+      "cod_ibge_m": "2513802",
+      "nm_municip": "Santa Teresinha",
+      "slug": "santa-teresinha",
+      "indices": {
+        "iqs": {
+          "value": 1.599,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.456,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.686,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.328,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.51,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2512747": {
+      "cod_ibge_m": "2512747",
+      "nm_municip": "Riachão",
+      "slug": "riachao",
+      "indices": {
+        "iqs": {
+          "value": 1.437,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.461,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.439,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.44,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.445,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2515104": {
+      "cod_ibge_m": "2515104",
+      "nm_municip": "São Sebastião de Lagoa de Roça",
+      "slug": "sao-sebastiao-de-lagoa-de-roca",
+      "indices": {
+        "iqs": {
+          "value": 1.481,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.456,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.719,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.478,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2510501": {
+      "cod_ibge_m": "2510501",
+      "nm_municip": "Olivedos",
+      "slug": "olivedos",
+      "indices": {
+        "iqs": {
+          "value": 1.353,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.481,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.115,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.384,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2500502": {
+      "cod_ibge_m": "2500502",
+      "nm_municip": "Alagoinha",
+      "slug": "alagoinha",
+      "indices": {
+        "iqs": {
+          "value": 1.478,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.377,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.14,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.559,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.375,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2500734": {
+      "cod_ibge_m": "2500734",
+      "nm_municip": "Amparo",
+      "slug": "amparo",
+      "indices": {
+        "iqs": {
+          "value": 1.467,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.427,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.35,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.493,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500700": {
+      "cod_ibge_m": "2500700",
+      "nm_municip": "São João do Rio do Peixe",
+      "slug": "sao-joao-do-rio-do-peixe",
+      "indices": {
+        "iqs": {
+          "value": 1.394,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.384,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.619,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.358,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.435,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2515807": {
+      "cod_ibge_m": "2515807",
+      "nm_municip": "Serra Redonda",
+      "slug": "serra-redonda",
+      "indices": {
+        "iqs": {
+          "value": 1.41,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.479,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.308,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.747,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.476,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500577": {
+      "cod_ibge_m": "2500577",
+      "nm_municip": "Algodão de Jandaíra",
+      "slug": "algodao-de-jandaira",
+      "indices": {
+        "iqs": {
+          "value": 1.61,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.585,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.544,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.195,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.47,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500775": {
+      "cod_ibge_m": "2500775",
+      "nm_municip": "Aparecida",
+      "slug": "aparecida",
+      "indices": {
+        "iqs": {
+          "value": 1.506,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.404,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.686,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.453,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.508,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2503605": {
+      "cod_ibge_m": "2503605",
+      "nm_municip": "Caiçara",
+      "slug": "caicara",
+      "indices": {
+        "iqs": {
+          "value": 1.342,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.446,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.332,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.329,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.359,
+          "class_label": "1 - 1,361 - Baixa",
+          "class_color": "#a6d96a"
+        }
+      }
+    },
+    "2501708": {
+      "cod_ibge_m": "2501708",
+      "nm_municip": "Barra de São Miguel",
+      "slug": "barra-de-sao-miguel",
+      "indices": {
+        "iqs": {
+          "value": 1.524,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.541,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.709,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.189,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.476,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501153": {
+      "cod_ibge_m": "2501153",
+      "nm_municip": "Areia de Baraúnas",
+      "slug": "areia-de-baraunas",
+      "indices": {
+        "iqs": {
+          "value": 1.664,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.481,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.695,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.186,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.491,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501351": {
+      "cod_ibge_m": "2501351",
+      "nm_municip": "Assunção",
+      "slug": "assuncao",
+      "indices": {
+        "iqs": {
+          "value": 1.358,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.468,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.111,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.402,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2502151": {
+      "cod_ibge_m": "2502151",
+      "nm_municip": "Boa Vista",
+      "slug": "boa-vista",
+      "indices": {
+        "iqs": {
+          "value": 1.357,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.545,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.643,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.108,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.394,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2502102": {
+      "cod_ibge_m": "2502102",
+      "nm_municip": "Boa Ventura",
+      "slug": "boa-ventura",
+      "indices": {
+        "iqs": {
+          "value": 1.408,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.441,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.452,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.479,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2502300": {
+      "cod_ibge_m": "2502300",
+      "nm_municip": "Bom Sucesso",
+      "slug": "bom-sucesso",
+      "indices": {
+        "iqs": {
+          "value": 1.423,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.417,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.68,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.426,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.482,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2502706": {
+      "cod_ibge_m": "2502706",
+      "nm_municip": "Borborema",
+      "slug": "borborema",
+      "indices": {
+        "iqs": {
+          "value": 1.521,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.308,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.034,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.573,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.339,
+          "class_label": "1 - 1,361 - Baixa",
+          "class_color": "#a6d96a"
+        }
+      }
+    },
+    "2502607": {
+      "cod_ibge_m": "2502607",
+      "nm_municip": "Igaracy",
+      "slug": "igaracy",
+      "indices": {
+        "iqs": {
+          "value": 1.493,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.423,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.358,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.471,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2502904": {
+      "cod_ibge_m": "2502904",
+      "nm_municip": "Brejo dos Santos",
+      "slug": "brejo-dos-santos",
+      "indices": {
+        "iqs": {
+          "value": 1.388,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.399,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.653,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.15,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.388,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2503308": {
+      "cod_ibge_m": "2503308",
+      "nm_municip": "Cachoeira dos Índios",
+      "slug": "cachoeira-dos-indios",
+      "indices": {
+        "iqs": {
+          "value": 1.525,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.394,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.633,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.542,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2503407": {
+      "cod_ibge_m": "2503407",
+      "nm_municip": "Cacimba de Areia",
+      "slug": "cacimba-de-areia",
+      "indices": {
+        "iqs": {
+          "value": 1.577,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.464,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.692,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.377,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.521,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2508505": {
+      "cod_ibge_m": "2508505",
+      "nm_municip": "Livramento",
+      "slug": "livramento",
+      "indices": {
+        "iqs": {
+          "value": 1.474,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.47,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.728,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.218,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.46,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2503753": {
+      "cod_ibge_m": "2503753",
+      "nm_municip": "Cajazeirinhas",
+      "slug": "cajazeirinhas",
+      "indices": {
+        "iqs": {
+          "value": 1.515,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.417,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.302,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.473,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2503902": {
+      "cod_ibge_m": "2503902",
+      "nm_municip": "Camalaú",
+      "slug": "camalau",
+      "indices": {
+        "iqs": {
+          "value": 1.564,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.509,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.705,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.189,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.479,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2504504": {
+      "cod_ibge_m": "2504504",
+      "nm_municip": "Condado",
+      "slug": "condado",
+      "indices": {
+        "iqs": {
+          "value": 1.524,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.434,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.283,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.473,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2504207": {
+      "cod_ibge_m": "2504207",
+      "nm_municip": "Catingueira",
+      "slug": "catingueira",
+      "indices": {
+        "iqs": {
+          "value": 1.633,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.427,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.671,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.317,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.503,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2504355": {
+      "cod_ibge_m": "2504355",
+      "nm_municip": "Caturité",
+      "slug": "caturite",
+      "indices": {
+        "iqs": {
+          "value": 1.307,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.55,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.321,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.449,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2504801": {
+      "cod_ibge_m": "2504801",
+      "nm_municip": "Coremas",
+      "slug": "coremas",
+      "indices": {
+        "iqs": {
+          "value": 1.42,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.453,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.661,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.451,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.489,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2505808": {
+      "cod_ibge_m": "2505808",
+      "nm_municip": "Duas Estradas",
+      "slug": "duas-estradas",
+      "indices": {
+        "iqs": {
+          "value": 1.414,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.481,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.472,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.411,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2511806": {
+      "cod_ibge_m": "2511806",
+      "nm_municip": "Pirpirituba",
+      "slug": "pirpirituba",
+      "indices": {
+        "iqs": {
+          "value": 1.473,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.433,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.169,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.387,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.359,
+          "class_label": "1 - 1,361 - Baixa",
+          "class_color": "#a6d96a"
+        }
+      }
+    },
+    "2506608": {
+      "cod_ibge_m": "2506608",
+      "nm_municip": "Ibiara",
+      "slug": "ibiara",
+      "indices": {
+        "iqs": {
+          "value": 1.413,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.428,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.551,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.502,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2505501": {
+      "cod_ibge_m": "2505501",
+      "nm_municip": "Vista Serrana",
+      "slug": "vista-serrana",
+      "indices": {
+        "iqs": {
+          "value": 1.465,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.473,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.542,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.538,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2506301": {
+      "cod_ibge_m": "2506301",
+      "nm_municip": "Guarabira",
+      "slug": "guarabira",
+      "indices": {
+        "iqs": {
+          "value": 1.4,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.426,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.225,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.457,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.374,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2505907": {
+      "cod_ibge_m": "2505907",
+      "nm_municip": "Emas",
+      "slug": "emas",
+      "indices": {
+        "iqs": {
+          "value": 1.547,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.412,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.294,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.476,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2506202": {
+      "cod_ibge_m": "2506202",
+      "nm_municip": "Frei Martinho",
+      "slug": "frei-martinho",
+      "indices": {
+        "iqs": {
+          "value": 1.462,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.596,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.11,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.458,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2507705": {
+      "cod_ibge_m": "2507705",
+      "nm_municip": "Juazeirinho",
+      "slug": "juazeirinho",
+      "indices": {
+        "iqs": {
+          "value": 1.341,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.477,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.741,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.108,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.396,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2507804": {
+      "cod_ibge_m": "2507804",
+      "nm_municip": "Junco do Seridó",
+      "slug": "junco-do-serido",
+      "indices": {
+        "iqs": {
+          "value": 1.616,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.484,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.187,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.493,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2508208": {
+      "cod_ibge_m": "2508208",
+      "nm_municip": "Lagoa de Dentro",
+      "slug": "lagoa-de-dentro",
+      "indices": {
+        "iqs": {
+          "value": 1.388,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.444,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.516,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.408,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2515930": {
+      "cod_ibge_m": "2515930",
+      "nm_municip": "Sertãozinho",
+      "slug": "sertaozinho",
+      "indices": {
+        "iqs": {
+          "value": 1.377,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.43,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.474,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.391,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2507002": {
+      "cod_ibge_m": "2507002",
+      "nm_municip": "Itaporanga",
+      "slug": "itaporanga",
+      "indices": {
+        "iqs": {
+          "value": 1.431,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.388,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.368,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.448,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2507200": {
+      "cod_ibge_m": "2507200",
+      "nm_municip": "Itatuba",
+      "slug": "itatuba",
+      "indices": {
+        "iqs": {
+          "value": 1.48,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.513,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.545,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.369,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.473,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2508000": {
+      "cod_ibge_m": "2508000",
+      "nm_municip": "Juru",
+      "slug": "juru",
+      "indices": {
+        "iqs": {
+          "value": 1.634,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.431,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.532,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.553,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2512200": {
+      "cod_ibge_m": "2512200",
+      "nm_municip": "Prata",
+      "slug": "prata",
+      "indices": {
+        "iqs": {
+          "value": 1.451,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.397,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.229,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.445,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509370": {
+      "cod_ibge_m": "2509370",
+      "nm_municip": "Mato Grosso",
+      "slug": "mato-grosso",
+      "indices": {
+        "iqs": {
+          "value": 1.479,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.447,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.455,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.514,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2508703": {
+      "cod_ibge_m": "2508703",
+      "nm_municip": "Mãe D'água",
+      "slug": "mae-d-agua",
+      "indices": {
+        "iqs": {
+          "value": 1.608,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.455,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.639,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.254,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.481,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2510204": {
+      "cod_ibge_m": "2510204",
+      "nm_municip": "Nova Olinda",
+      "slug": "nova-olinda",
+      "indices": {
+        "iqs": {
+          "value": 1.634,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.443,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.748,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.61,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2509800": {
+      "cod_ibge_m": "2509800",
+      "nm_municip": "Mulungu",
+      "slug": "mulungu",
+      "indices": {
+        "iqs": {
+          "value": 1.494,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.42,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.287,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.332,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.38,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2510600": {
+      "cod_ibge_m": "2510600",
+      "nm_municip": "Ouro Velho",
+      "slug": "ouro-velho",
+      "indices": {
+        "iqs": {
+          "value": 1.486,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.423,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.315,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.486,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509107": {
+      "cod_ibge_m": "2509107",
+      "nm_municip": "Mari",
+      "slug": "mari",
+      "indices": {
+        "iqs": {
+          "value": 1.464,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.417,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.235,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.335,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.357,
+          "class_label": "1 - 1,361 - Baixa",
+          "class_color": "#a6d96a"
+        }
+      }
+    },
+    "2513984": {
+      "cod_ibge_m": "2513984",
+      "nm_municip": "São Francisco",
+      "slug": "sao-francisco",
+      "indices": {
+        "iqs": {
+          "value": 1.497,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.435,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.682,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.44,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.51,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2509602": {
+      "cod_ibge_m": "2509602",
+      "nm_municip": "Monte Horebe",
+      "slug": "monte-horebe",
+      "indices": {
+        "iqs": {
+          "value": 1.443,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.337,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.597,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.239,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.402,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2510709": {
+      "cod_ibge_m": "2510709",
+      "nm_municip": "Passagem",
+      "slug": "passagem",
+      "indices": {
+        "iqs": {
+          "value": 1.62,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.508,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.766,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.012,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.445,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2510907": {
+      "cod_ibge_m": "2510907",
+      "nm_municip": "Paulista",
+      "slug": "paulista",
+      "indices": {
+        "iqs": {
+          "value": 1.474,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.44,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.419,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.501,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2513505": {
+      "cod_ibge_m": "2513505",
+      "nm_municip": "Santana de Mangueira",
+      "slug": "santana-de-mangueira",
+      "indices": {
+        "iqs": {
+          "value": 1.519,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.503,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.626,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.392,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.506,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2512606": {
+      "cod_ibge_m": "2512606",
+      "nm_municip": "Quixaba",
+      "slug": "quixaba",
+      "indices": {
+        "iqs": {
+          "value": 1.535,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.476,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.161,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.451,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2511301": {
+      "cod_ibge_m": "2511301",
+      "nm_municip": "Piancó",
+      "slug": "pianco",
+      "indices": {
+        "iqs": {
+          "value": 1.5,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.409,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.643,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.357,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.472,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512036": {
+      "cod_ibge_m": "2512036",
+      "nm_municip": "Poço Dantas",
+      "slug": "poco-dantas",
+      "indices": {
+        "iqs": {
+          "value": 1.529,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.429,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.355,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.479,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512788": {
+      "cod_ibge_m": "2512788",
+      "nm_municip": "Riacho de Santo Antônio",
+      "slug": "riacho-de-santo-antonio",
+      "indices": {
+        "iqs": {
+          "value": 1.57,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.503,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.186,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.465,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2513851": {
+      "cod_ibge_m": "2513851",
+      "nm_municip": "Santo André",
+      "slug": "santo-andre",
+      "indices": {
+        "iqs": {
+          "value": 1.396,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.524,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.107,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.422,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513943": {
+      "cod_ibge_m": "2513943",
+      "nm_municip": "São Domingos do Cariri",
+      "slug": "sao-domingos-do-cariri",
+      "indices": {
+        "iqs": {
+          "value": 1.455,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.561,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.679,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.188,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.457,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514552": {
+      "cod_ibge_m": "2514552",
+      "nm_municip": "São José de Princesa",
+      "slug": "sao-jose-de-princesa",
+      "indices": {
+        "iqs": {
+          "value": 1.503,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.423,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.569,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.494,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.499,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2514701": {
+      "cod_ibge_m": "2514701",
+      "nm_municip": "São José do Sabugi",
+      "slug": "sao-jose-do-sabugi",
+      "indices": {
+        "iqs": {
+          "value": 1.534,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.497,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.816,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.107,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.465,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2515401": {
+      "cod_ibge_m": "2515401",
+      "nm_municip": "São Vicente do Seridó",
+      "slug": "sao-vicente-do-serido",
+      "indices": {
+        "iqs": {
+          "value": 1.453,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.518,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.67,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.185,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.444,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516151": {
+      "cod_ibge_m": "2516151",
+      "nm_municip": "Sossêgo",
+      "slug": "sossego",
+      "indices": {
+        "iqs": {
+          "value": 1.552,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.516,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.307,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.499,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2515609": {
+      "cod_ibge_m": "2515609",
+      "nm_municip": "Serra da Raiz",
+      "slug": "serra-da-raiz",
+      "indices": {
+        "iqs": {
+          "value": 1.423,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.347,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.427,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.369,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2515708": {
+      "cod_ibge_m": "2515708",
+      "nm_municip": "Serra Grande",
+      "slug": "serra-grande",
+      "indices": {
+        "iqs": {
+          "value": 1.496,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.421,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.628,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.451,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.495,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516201": {
+      "cod_ibge_m": "2516201",
+      "nm_municip": "Sousa",
+      "slug": "sousa",
+      "indices": {
+        "iqs": {
+          "value": 1.433,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.385,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.357,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.451,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2517100": {
+      "cod_ibge_m": "2517100",
+      "nm_municip": "Várzea",
+      "slug": "varzea",
+      "indices": {
+        "iqs": {
+          "value": 1.563,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.456,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.782,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.023,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.427,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2516706": {
+      "cod_ibge_m": "2516706",
+      "nm_municip": "Teixeira",
+      "slug": "teixeira",
+      "indices": {
+        "iqs": {
+          "value": 1.537,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.41,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.631,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.466,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.507,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2516904": {
+      "cod_ibge_m": "2516904",
+      "nm_municip": "Uiraúna",
+      "slug": "uirauna",
+      "indices": {
+        "iqs": {
+          "value": 1.513,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.418,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.356,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.475,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500205": {
+      "cod_ibge_m": "2500205",
+      "nm_municip": "Aguiar",
+      "slug": "aguiar",
+      "indices": {
+        "iqs": {
+          "value": 1.621,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.411,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.47,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.53,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2500304": {
+      "cod_ibge_m": "2500304",
+      "nm_municip": "Alagoa Grande",
+      "slug": "alagoa-grande",
+      "indices": {
+        "iqs": {
+          "value": 1.521,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.379,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.263,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.499,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.409,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2501005": {
+      "cod_ibge_m": "2501005",
+      "nm_municip": "Araruna",
+      "slug": "araruna",
+      "indices": {
+        "iqs": {
+          "value": 1.552,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.401,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.444,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.541,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.478,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500403": {
+      "cod_ibge_m": "2500403",
+      "nm_municip": "Alagoa Nova",
+      "slug": "alagoa-nova",
+      "indices": {
+        "iqs": {
+          "value": 1.504,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.434,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.179,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.611,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.42,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2502805": {
+      "cod_ibge_m": "2502805",
+      "nm_municip": "Brejo do Cruz",
+      "slug": "brejo-do-cruz",
+      "indices": {
+        "iqs": {
+          "value": 1.484,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.432,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.403,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.497,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500536": {
+      "cod_ibge_m": "2500536",
+      "nm_municip": "Alcantil",
+      "slug": "alcantil",
+      "indices": {
+        "iqs": {
+          "value": 1.57,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.556,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.19,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.478,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2502052": {
+      "cod_ibge_m": "2502052",
+      "nm_municip": "Bernardino Batista",
+      "slug": "bernardino-batista",
+      "indices": {
+        "iqs": {
+          "value": 1.564,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.42,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.569,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.546,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2516755": {
+      "cod_ibge_m": "2516755",
+      "nm_municip": "Tenório",
+      "slug": "tenorio",
+      "indices": {
+        "iqs": {
+          "value": 1.42,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.557,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.177,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.459,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500908": {
+      "cod_ibge_m": "2500908",
+      "nm_municip": "Arara",
+      "slug": "arara",
+      "indices": {
+        "iqs": {
+          "value": 1.543,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.44,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.078,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.554,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.388,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2515500": {
+      "cod_ibge_m": "2515500",
+      "nm_municip": "Serra Branca",
+      "slug": "serra-branca",
+      "indices": {
+        "iqs": {
+          "value": 1.503,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.526,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.744,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.108,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.45,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2500809": {
+      "cod_ibge_m": "2500809",
+      "nm_municip": "Araçagi",
+      "slug": "aracagi",
+      "indices": {
+        "iqs": {
+          "value": 1.361,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.443,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.272,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.603,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.414,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2504850": {
+      "cod_ibge_m": "2504850",
+      "nm_municip": "Coxixola",
+      "slug": "coxixola",
+      "indices": {
+        "iqs": {
+          "value": 1.535,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.55,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.733,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.111,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.46,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501104": {
+      "cod_ibge_m": "2501104",
+      "nm_municip": "Areia",
+      "slug": "areia",
+      "indices": {
+        "iqs": {
+          "value": 1.474,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.409,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.167,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.573,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.395,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2517209": {
+      "cod_ibge_m": "2517209",
+      "nm_municip": "Vieirópolis",
+      "slug": "vieiropolis",
+      "indices": {
+        "iqs": {
+          "value": 1.435,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.403,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.45,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.476,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501203": {
+      "cod_ibge_m": "2501203",
+      "nm_municip": "Areial",
+      "slug": "areial",
+      "indices": {
+        "iqs": {
+          "value": 1.533,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.489,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.422,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.332,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.441,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2502201": {
+      "cod_ibge_m": "2502201",
+      "nm_municip": "Bom Jesus",
+      "slug": "bom-jesus",
+      "indices": {
+        "iqs": {
+          "value": 1.49,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.39,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.628,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.459,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.485,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2501302": {
+      "cod_ibge_m": "2501302",
+      "nm_municip": "Aroeiras",
+      "slug": "aroeiras",
+      "indices": {
+        "iqs": {
+          "value": 1.528,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.521,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.545,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.325,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.476,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2513000": {
+      "cod_ibge_m": "2513000",
+      "nm_municip": "Salgadinho",
+      "slug": "salgadinho",
+      "indices": {
+        "iqs": {
+          "value": 1.617,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.491,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.749,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.188,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.496,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2501500": {
+      "cod_ibge_m": "2501500",
+      "nm_municip": "Bananeiras",
+      "slug": "bananeiras",
+      "indices": {
+        "iqs": {
+          "value": 1.475,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.369,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.171,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.528,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.375,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2503506": {
+      "cod_ibge_m": "2503506",
+      "nm_municip": "Cacimba de Dentro",
+      "slug": "cacimba-de-dentro",
+      "indices": {
+        "iqs": {
+          "value": 1.33,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.411,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.417,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.441,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.398,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2501609": {
+      "cod_ibge_m": "2501609",
+      "nm_municip": "Barra de Santa Rosa",
+      "slug": "barra-de-santa-rosa",
+      "indices": {
+        "iqs": {
+          "value": 1.541,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.509,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.645,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.236,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.471,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2503555": {
+      "cod_ibge_m": "2503555",
+      "nm_municip": "Cacimbas",
+      "slug": "cacimbas",
+      "indices": {
+        "iqs": {
+          "value": 1.585,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.491,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.69,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.461,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.552,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2502003": {
+      "cod_ibge_m": "2502003",
+      "nm_municip": "Belém do Brejo do Cruz",
+      "slug": "belem-do-brejo-do-cruz",
+      "indices": {
+        "iqs": {
+          "value": 1.449,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.431,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.233,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.439,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513604": {
+      "cod_ibge_m": "2513604",
+      "nm_municip": "Santana dos Garrotes",
+      "slug": "santana-dos-garrotes",
+      "indices": {
+        "iqs": {
+          "value": 1.622,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.423,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.373,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.507,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2502409": {
+      "cod_ibge_m": "2502409",
+      "nm_municip": "Bonito de Santa Fé",
+      "slug": "bonito-de-santa-fe",
+      "indices": {
+        "iqs": {
+          "value": 1.524,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.378,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.57,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.474,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.484,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2503100": {
+      "cod_ibge_m": "2503100",
+      "nm_municip": "Cabaceiras",
+      "slug": "cabaceiras",
+      "indices": {
+        "iqs": {
+          "value": 1.412,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.566,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.108,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.416,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2503704": {
+      "cod_ibge_m": "2503704",
+      "nm_municip": "Cajazeiras",
+      "slug": "cajazeiras",
+      "indices": {
+        "iqs": {
+          "value": 1.497,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.406,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.522,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.357,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.443,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2503803": {
+      "cod_ibge_m": "2503803",
+      "nm_municip": "Caldas Brandão",
+      "slug": "caldas-brandao",
+      "indices": {
+        "iqs": {
+          "value": 1.542,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.419,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.428,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.416,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2504157": {
+      "cod_ibge_m": "2504157",
+      "nm_municip": "Casserengue",
+      "slug": "casserengue",
+      "indices": {
+        "iqs": {
+          "value": 1.563,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.502,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.453,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.315,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.454,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2504306": {
+      "cod_ibge_m": "2504306",
+      "nm_municip": "Catolé do Rocha",
+      "slug": "catole-do-rocha",
+      "indices": {
+        "iqs": {
+          "value": 1.415,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.41,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.675,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.216,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.419,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2512408": {
+      "cod_ibge_m": "2512408",
+      "nm_municip": "Puxinanã",
+      "slug": "puxinana",
+      "indices": {
+        "iqs": {
+          "value": 1.506,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.528,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.437,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.604,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.514,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2504074": {
+      "cod_ibge_m": "2504074",
+      "nm_municip": "Caraúbas",
+      "slug": "caraubas",
+      "indices": {
+        "iqs": {
+          "value": 1.558,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.588,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.224,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.494,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514651": {
+      "cod_ibge_m": "2514651",
+      "nm_municip": "São José do Brejo do Cruz",
+      "slug": "sao-jose-do-brejo-do-cruz",
+      "indices": {
+        "iqs": {
+          "value": 1.454,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.427,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.319,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.466,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2504405": {
+      "cod_ibge_m": "2504405",
+      "nm_municip": "Conceição",
+      "slug": "conceicao",
+      "indices": {
+        "iqs": {
+          "value": 1.391,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.414,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.615,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.539,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.486,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2515906": {
+      "cod_ibge_m": "2515906",
+      "nm_municip": "Serraria",
+      "slug": "serraria",
+      "indices": {
+        "iqs": {
+          "value": 1.519,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.366,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.063,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.463,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.338,
+          "class_label": "1 - 1,361 - Baixa",
+          "class_color": "#a6d96a"
+        }
+      }
+    },
+    "2504702": {
+      "cod_ibge_m": "2504702",
+      "nm_municip": "Congo",
+      "slug": "congo",
+      "indices": {
+        "iqs": {
+          "value": 1.55,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.575,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.674,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.242,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.499,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2505105": {
+      "cod_ibge_m": "2505105",
+      "nm_municip": "Cuité",
+      "slug": "cuite",
+      "indices": {
+        "iqs": {
+          "value": 1.474,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.5,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.641,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.192,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.44,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2505352": {
+      "cod_ibge_m": "2505352",
+      "nm_municip": "Damião",
+      "slug": "damiao",
+      "indices": {
+        "iqs": {
+          "value": 1.476,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.483,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.615,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.314,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.466,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2505204": {
+      "cod_ibge_m": "2505204",
+      "nm_municip": "Cuitegi",
+      "slug": "cuitegi",
+      "indices": {
+        "iqs": {
+          "value": 1.493,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.36,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.108,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.62,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.381,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2505238": {
+      "cod_ibge_m": "2505238",
+      "nm_municip": "Cuité de Mamanguape",
+      "slug": "cuite-de-mamanguape",
+      "indices": {
+        "iqs": {
+          "value": 1.467,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.432,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.108,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.595,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.386,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2509339": {
+      "cod_ibge_m": "2509339",
+      "nm_municip": "Matinhas",
+      "slug": "matinhas",
+      "indices": {
+        "iqs": {
+          "value": 1.504,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.405,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.276,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.712,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.464,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2505402": {
+      "cod_ibge_m": "2505402",
+      "nm_municip": "Desterro",
+      "slug": "desterro",
+      "indices": {
+        "iqs": {
+          "value": 1.495,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.429,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.35,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.467,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509396": {
+      "cod_ibge_m": "2509396",
+      "nm_municip": "Maturéia",
+      "slug": "matureia",
+      "indices": {
+        "iqs": {
+          "value": 1.541,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.377,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.322,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.463,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2505600": {
+      "cod_ibge_m": "2505600",
+      "nm_municip": "Diamante",
+      "slug": "diamante",
+      "indices": {
+        "iqs": {
+          "value": 1.418,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.403,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.628,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.33,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.44,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2506707": {
+      "cod_ibge_m": "2506707",
+      "nm_municip": "Imaculada",
+      "slug": "imaculada",
+      "indices": {
+        "iqs": {
+          "value": 1.513,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.356,
+          "class_label": "1 - 1,35 - Alta",
+          "class_color": "#4ca102"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.452,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.485,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2505709": {
+      "cod_ibge_m": "2505709",
+      "nm_municip": "Dona Inês",
+      "slug": "dona-ines",
+      "indices": {
+        "iqs": {
+          "value": 1.451,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.452,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.369,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.464,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.431,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2508109": {
+      "cod_ibge_m": "2508109",
+      "nm_municip": "Lagoa",
+      "slug": "lagoa",
+      "indices": {
+        "iqs": {
+          "value": 1.466,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.434,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.685,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.451,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.505,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2506004": {
+      "cod_ibge_m": "2506004",
+      "nm_municip": "Esperança",
+      "slug": "esperanca",
+      "indices": {
+        "iqs": {
+          "value": 1.584,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.455,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.415,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.401,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.46,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2506103": {
+      "cod_ibge_m": "2506103",
+      "nm_municip": "Fagundes",
+      "slug": "fagundes",
+      "indices": {
+        "iqs": {
+          "value": 1.321,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.442,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.51,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.565,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.455,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2506806": {
+      "cod_ibge_m": "2506806",
+      "nm_municip": "Ingá",
+      "slug": "inga",
+      "indices": {
+        "iqs": {
+          "value": 1.486,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.456,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.481,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.436,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.463,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2506251": {
+      "cod_ibge_m": "2506251",
+      "nm_municip": "Gado Bravo",
+      "slug": "gado-bravo",
+      "indices": {
+        "iqs": {
+          "value": 1.552,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.564,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.609,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.428,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.535,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2510303": {
+      "cod_ibge_m": "2510303",
+      "nm_municip": "Nova Palmeira",
+      "slug": "nova-palmeira",
+      "indices": {
+        "iqs": {
+          "value": 1.442,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.578,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.714,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.189,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.467,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2506400": {
+      "cod_ibge_m": "2506400",
+      "nm_municip": "Gurinhém",
+      "slug": "gurinhem",
+      "indices": {
+        "iqs": {
+          "value": 1.519,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.434,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.311,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.386,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.41,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2511004": {
+      "cod_ibge_m": "2511004",
+      "nm_municip": "Pedra Branca",
+      "slug": "pedra-branca",
+      "indices": {
+        "iqs": {
+          "value": 1.627,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.43,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.454,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.531,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2506509": {
+      "cod_ibge_m": "2506509",
+      "nm_municip": "Gurjão",
+      "slug": "gurjao",
+      "indices": {
+        "iqs": {
+          "value": 1.472,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.573,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.107,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.44,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509404": {
+      "cod_ibge_m": "2509404",
+      "nm_municip": "Mogeiro",
+      "slug": "mogeiro",
+      "indices": {
+        "iqs": {
+          "value": 1.525,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.443,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.471,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.573,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.501,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2508406": {
+      "cod_ibge_m": "2508406",
+      "nm_municip": "Lastro",
+      "slug": "lastro",
+      "indices": {
+        "iqs": {
+          "value": 1.47,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.414,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.318,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.452,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509008": {
+      "cod_ibge_m": "2509008",
+      "nm_municip": "Manaíra",
+      "slug": "manaira",
+      "indices": {
+        "iqs": {
+          "value": 1.566,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.448,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.55,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.537,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.521,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2509206": {
+      "cod_ibge_m": "2509206",
+      "nm_municip": "Massaranduba",
+      "slug": "massaranduba",
+      "indices": {
+        "iqs": {
+          "value": 1.43,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.475,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.307,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.504,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.424,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513406": {
+      "cod_ibge_m": "2513406",
+      "nm_municip": "Santa Luzia",
+      "slug": "santa-luzia",
+      "indices": {
+        "iqs": {
+          "value": 1.547,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.508,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.758,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.108,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.459,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2509701": {
+      "cod_ibge_m": "2509701",
+      "nm_municip": "Monteiro",
+      "slug": "monteiro",
+      "indices": {
+        "iqs": {
+          "value": 1.496,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.402,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.74,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.426,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.509,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2509909": {
+      "cod_ibge_m": "2509909",
+      "nm_municip": "Natuba",
+      "slug": "natuba",
+      "indices": {
+        "iqs": {
+          "value": 1.503,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.438,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.37,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.557,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.468,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2516102": {
+      "cod_ibge_m": "2516102",
+      "nm_municip": "Soledade",
+      "slug": "soledade",
+      "indices": {
+        "iqs": {
+          "value": 1.326,
+          "class_label": "1 - 1,33 - Alta",
+          "class_color": "#8fba5b"
+        },
+        "iqv": {
+          "value": 1.499,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.107,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.379,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2510402": {
+      "cod_ibge_m": "2510402",
+      "nm_municip": "Olho D'água",
+      "slug": "olho-d-agua",
+      "indices": {
+        "iqs": {
+          "value": 1.647,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.393,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.648,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.356,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.504,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2514206": {
+      "cod_ibge_m": "2514206",
+      "nm_municip": "São José da Lagoa Tapada",
+      "slug": "sao-jose-da-lagoa-tapada",
+      "indices": {
+        "iqs": {
+          "value": 1.442,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.406,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.64,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.454,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.48,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2511400": {
+      "cod_ibge_m": "2511400",
+      "nm_municip": "Picuí",
+      "slug": "picui",
+      "indices": {
+        "iqs": {
+          "value": 1.368,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.541,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.72,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.189,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.44,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2510808": {
+      "cod_ibge_m": "2510808",
+      "nm_municip": "Patos",
+      "slug": "patos",
+      "indices": {
+        "iqs": {
+          "value": 1.512,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.476,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.316,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.491,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512754": {
+      "cod_ibge_m": "2512754",
+      "nm_municip": "Riachão do Bacamarte",
+      "slug": "riachao-do-bacamarte",
+      "indices": {
+        "iqs": {
+          "value": 1.354,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.487,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.512,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.519,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.464,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2511103": {
+      "cod_ibge_m": "2511103",
+      "nm_municip": "Pedra Lavrada",
+      "slug": "pedra-lavrada",
+      "indices": {
+        "iqs": {
+          "value": 1.454,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.524,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.686,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.19,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.451,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2511608": {
+      "cod_ibge_m": "2511608",
+      "nm_municip": "Pilões",
+      "slug": "piloes",
+      "indices": {
+        "iqs": {
+          "value": 1.485,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.42,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.063,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.697,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.396,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2511707": {
+      "cod_ibge_m": "2511707",
+      "nm_municip": "Pilõezinhos",
+      "slug": "piloezinhos",
+      "indices": {
+        "iqs": {
+          "value": 1.442,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.416,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.063,
+          "class_label": "1 - 1,22 - Alta",
+          "class_color": "#2b83ba"
+        },
+        "iqm": {
+          "value": 1.65,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.377,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513307": {
+      "cod_ibge_m": "2513307",
+      "nm_municip": "Santa Helena",
+      "slug": "santa-helena",
+      "indices": {
+        "iqs": {
+          "value": 1.429,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.4,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.453,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.473,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512002": {
+      "cod_ibge_m": "2512002",
+      "nm_municip": "Pocinhos",
+      "slug": "pocinhos",
+      "indices": {
+        "iqs": {
+          "value": 1.442,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.558,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.565,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.194,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.429,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2512101": {
+      "cod_ibge_m": "2512101",
+      "nm_municip": "Pombal",
+      "slug": "pombal",
+      "indices": {
+        "iqs": {
+          "value": 1.517,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.434,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.68,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.358,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.492,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512762": {
+      "cod_ibge_m": "2512762",
+      "nm_municip": "Riachão do Poço",
+      "slug": "riachao-do-poco",
+      "indices": {
+        "iqs": {
+          "value": 1.545,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.485,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.293,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.723,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.503,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516300": {
+      "cod_ibge_m": "2516300",
+      "nm_municip": "Sumé",
+      "slug": "sume",
+      "indices": {
+        "iqs": {
+          "value": 1.449,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.441,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.154,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.432,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2513356": {
+      "cod_ibge_m": "2513356",
+      "nm_municip": "Santa Inês",
+      "slug": "santa-ines",
+      "indices": {
+        "iqs": {
+          "value": 1.426,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.425,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.582,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.26,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.419,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2512309": {
+      "cod_ibge_m": "2512309",
+      "nm_municip": "Princesa Isabel",
+      "slug": "princesa-isabel",
+      "indices": {
+        "iqs": {
+          "value": 1.569,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.477,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.614,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.442,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.524,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2513927": {
+      "cod_ibge_m": "2513927",
+      "nm_municip": "São Bentinho",
+      "slug": "sao-bentinho",
+      "indices": {
+        "iqs": {
+          "value": 1.495,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.419,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.352,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.483,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2512705": {
+      "cod_ibge_m": "2512705",
+      "nm_municip": "Remígio",
+      "slug": "remigio",
+      "indices": {
+        "iqs": {
+          "value": 1.556,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.484,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.441,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.316,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.445,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2513968": {
+      "cod_ibge_m": "2513968",
+      "nm_municip": "São Domingos",
+      "slug": "sao-domingos",
+      "indices": {
+        "iqs": {
+          "value": 1.55,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.414,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.454,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.522,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2513109": {
+      "cod_ibge_m": "2513109",
+      "nm_municip": "Salgado de São Félix",
+      "slug": "salgado-de-sao-felix",
+      "indices": {
+        "iqs": {
+          "value": 1.483,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.429,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.486,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.567,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.489,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2513158": {
+      "cod_ibge_m": "2513158",
+      "nm_municip": "Santa Cecília",
+      "slug": "santa-cecilia",
+      "indices": {
+        "iqs": {
+          "value": 1.631,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.601,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.626,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.268,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.524,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2514305": {
+      "cod_ibge_m": "2514305",
+      "nm_municip": "São José de Caiana",
+      "slug": "sao-jose-de-caiana",
+      "indices": {
+        "iqs": {
+          "value": 1.517,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.411,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.626,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.325,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.465,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514404": {
+      "cod_ibge_m": "2514404",
+      "nm_municip": "São José de Espinharas",
+      "slug": "sao-jose-de-espinharas",
+      "indices": {
+        "iqs": {
+          "value": 1.466,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.443,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.687,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.316,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.472,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2515971": {
+      "cod_ibge_m": "2515971",
+      "nm_municip": "Sobrado",
+      "slug": "sobrado",
+      "indices": {
+        "iqs": {
+          "value": 1.575,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.532,
+          "class_label": "1,49 - 1,63 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqc": {
+          "value": 1.303,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.806,
+          "class_label": "1,54 - 1,86 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "ivd_sab": {
+          "value": 1.542,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2516003": {
+      "cod_ibge_m": "2516003",
+      "nm_municip": "Solânea",
+      "slug": "solanea",
+      "indices": {
+        "iqs": {
+          "value": 1.626,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.437,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.204,
+          "class_label": "1,22 - 1,48 - Moderada",
+          "class_color": "#c7e8ad"
+        },
+        "iqm": {
+          "value": 1.321,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.386,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2514503": {
+      "cod_ibge_m": "2514503",
+      "nm_municip": "São José de Piranhas",
+      "slug": "sao-jose-de-piranhas",
+      "indices": {
+        "iqs": {
+          "value": 1.555,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.414,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.594,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.461,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.502,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    },
+    "2514800": {
+      "cod_ibge_m": "2514800",
+      "nm_municip": "São José dos Cordeiros",
+      "slug": "sao-jose-dos-cordeiros",
+      "indices": {
+        "iqs": {
+          "value": 1.457,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.469,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.754,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.184,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.45,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514008": {
+      "cod_ibge_m": "2514008",
+      "nm_municip": "São João do Cariri",
+      "slug": "sao-joao-do-cariri",
+      "indices": {
+        "iqs": {
+          "value": 1.517,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.612,
+          "class_label": "1,63 - 2 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqc": {
+          "value": 1.664,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.109,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.457,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514107": {
+      "cod_ibge_m": "2514107",
+      "nm_municip": "São João do Tigre",
+      "slug": "sao-joao-do-tigre",
+      "indices": {
+        "iqs": {
+          "value": 1.553,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.462,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.189,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.454,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516805": {
+      "cod_ibge_m": "2516805",
+      "nm_municip": "Triunfo",
+      "slug": "triunfo",
+      "indices": {
+        "iqs": {
+          "value": 1.492,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.408,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.629,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.358,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.468,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2514909": {
+      "cod_ibge_m": "2514909",
+      "nm_municip": "São Mamede",
+      "slug": "sao-mamede",
+      "indices": {
+        "iqs": {
+          "value": 1.511,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.455,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.713,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.176,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.45,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516409": {
+      "cod_ibge_m": "2516409",
+      "nm_municip": "Tacima",
+      "slug": "tacima",
+      "indices": {
+        "iqs": {
+          "value": 1.334,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.447,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.457,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.329,
+          "class_label": "1,23 - 1,35 - Moderada",
+          "class_color": "#c4e687"
+        },
+        "ivd_sab": {
+          "value": 1.388,
+          "class_label": "1,361 - 1,438 - Moderada",
+          "class_color": "#e8ffc0"
+        }
+      }
+    },
+    "2515203": {
+      "cod_ibge_m": "2515203",
+      "nm_municip": "São Sebastião do Umbuzeiro",
+      "slug": "sao-sebastiao-do-umbuzeiro",
+      "indices": {
+        "iqs": {
+          "value": 1.551,
+          "class_label": "1,48 - 1,61 - Baixa",
+          "class_color": "#fdae61"
+        },
+        "iqv": {
+          "value": 1.431,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.651,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.201,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.449,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2516508": {
+      "cod_ibge_m": "2516508",
+      "nm_municip": "Taperoá",
+      "slug": "taperoa",
+      "indices": {
+        "iqs": {
+          "value": 1.49,
+          "class_label": "1,33 - 1,48 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqv": {
+          "value": 1.46,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.752,
+          "class_label": "1,69 - 1,82 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqm": {
+          "value": 1.218,
+          "class_label": "1 - 1,23 - Alta",
+          "class_color": "#1a9641"
+        },
+        "ivd_sab": {
+          "value": 1.466,
+          "class_label": "1,438 - 1,502 - Alta",
+          "class_color": "#fdae61"
+        }
+      }
+    },
+    "2517001": {
+      "cod_ibge_m": "2517001",
+      "nm_municip": "Umbuzeiro",
+      "slug": "umbuzeiro",
+      "indices": {
+        "iqs": {
+          "value": 1.598,
+          "class_label": "1,61 - 1,9 - Muito Baixa",
+          "class_color": "#d7191c"
+        },
+        "iqv": {
+          "value": 1.535,
+          "class_label": "1,35 - 1,49 - Moderada",
+          "class_color": "#ffffc0"
+        },
+        "iqc": {
+          "value": 1.542,
+          "class_label": "1,48 - 1,69 - Baixa",
+          "class_color": "#fec980"
+        },
+        "iqm": {
+          "value": 1.503,
+          "class_label": "1,35 - 1,54 - Baixa",
+          "class_color": "#fec981"
+        },
+        "ivd_sab": {
+          "value": 1.547,
+          "class_label": "1,502 - 1,712 - Muito Alta",
+          "class_color": "#d7191c"
+        }
+      }
+    }
+  }
+}
