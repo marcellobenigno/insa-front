@@ -41,7 +41,7 @@
         "color": "#e4785a"
       },
       {
-        "label": "1,5-Moderada",
+        "label": "1,5 - Moderada",
         "area_km2": 4388.2,
         "color": "#fdcb6f"
       },
@@ -67,7 +67,7 @@
         "color": "#d7191c"
       },
       {
-        "label": "1,22 - 1,48 -Moderada",
+        "label": "1,22 - 1,48 - Moderada",
         "area_km2": 5951.0,
         "color": "#c7e8ad"
       },
@@ -83,22 +83,22 @@
   "precipitacao_escores_de_qualidade": {
     "classes": [
       {
-        "label": "1,2- Alta",
+        "label": "1,2 - Alta",
         "area_km2": 31255.9,
         "color": "#aaddd9"
       },
       {
-        "label": "1,5- Moderada",
+        "label": "1,5 - Moderada",
         "area_km2": 20947.0,
         "color": "#fdcb6f"
       },
       {
-        "label": "1- Muito Alta",
+        "label": "1 - Muito Alta",
         "area_km2": 1234.1,
         "color": "#2b83ba"
       },
       {
-        "label": "2- Baixa",
+        "label": "2 - Baixa",
         "area_km2": 253.8,
         "color": "#e4785a"
       }
@@ -224,27 +224,27 @@
   "declividade_escores_de_qualidade": {
     "classes": [
       {
-        "label": "1,3-Alta",
+        "label": "1,3 - Alta",
         "area_km2": 21100.3,
         "color": "#c6a86c"
       },
       {
-        "label": "1,5-Moderada",
+        "label": "1,5 - Moderada",
         "area_km2": 17042.3,
         "color": "#7a8624"
       },
       {
-        "label": "1-Muito Alta",
+        "label": "1 - Muito Alta",
         "area_km2": 14656.9,
         "color": "#f6f6d3"
       },
       {
-        "label": "1,8-Baixa",
+        "label": "1,8 - Baixa",
         "area_km2": 856.3,
         "color": "#de4000"
       },
       {
-        "label": "2-Muito Baixa",
+        "label": "2 - Muito Baixa",
         "area_km2": 66.3,
         "color": "#610004"
       }
@@ -255,27 +255,27 @@
   "geologia_escores_de_qualidade": {
     "classes": [
       {
-        "label": "1,3-Alta",
+        "label": "1,3 - Alta",
         "area_km2": 24480.5,
         "color": "#b3844a"
       },
       {
-        "label": "1,5-Moderada",
+        "label": "1,5 - Moderada",
         "area_km2": 9365.9,
         "color": "#e37716"
       },
       {
-        "label": "1,8-Baixa",
+        "label": "1,8 - Baixa",
         "area_km2": 9280.2,
         "color": "#ab4d00"
       },
       {
-        "label": "1-Muito Alta",
+        "label": "1 - Muito Alta",
         "area_km2": 8710.8,
         "color": "#e2c590"
       },
       {
-        "label": "2-Muito Baixa",
+        "label": "2 - Muito Baixa",
         "area_km2": 1734.6,
         "color": "#76440b"
       }
@@ -333,12 +333,12 @@
   "tipos_de_solos_escores_de_qualidade": {
     "classes": [
       {
-        "label": "2-Baixa",
+        "label": "2 - Baixa",
         "area_km2": 27162.9,
         "color": "#b3562b"
       },
       {
-        "label": "1,7-Moderada-Baixa",
+        "label": "1,7 - Moderada-Baixa",
         "area_km2": 24917.4,
         "color": "#d79867"
       },
@@ -348,7 +348,7 @@
         "color": "#ffffc2"
       },
       {
-        "label": "1,3-Moderada",
+        "label": "1,3 - Moderada",
         "area_km2": 142.8,
         "color": "#d78022"
       }
@@ -374,7 +374,7 @@
         "color": "#b14200"
       },
       {
-        "label": "1,2 -Alta",
+        "label": "1,2 - Alta",
         "area_km2": 1286.5,
         "color": "#41ba45"
       },
@@ -390,7 +390,7 @@
   "iqv": {
     "classes": [
       {
-        "label": "1,35 - 1,49 -Moderada",
+        "label": "1,35 - 1,49 - Moderada",
         "area_km2": 25551.9,
         "color": "#ffffc0"
       },
@@ -405,7 +405,7 @@
         "color": "#4ca102"
       },
       {
-        "label": "1,63 - 2 -Muito Baixa",
+        "label": "1,63 - 2 - Muito Baixa",
         "area_km2": 4690.0,
         "color": "#d7191c"
       }
@@ -416,7 +416,7 @@
   "ndvi_escore_de_qualidade": {
     "classes": [
       {
-        "label": "1 -Muito Alta",
+        "label": "1 - Muito Alta",
         "area_km2": 29591.1,
         "color": "#007e11"
       },
@@ -426,22 +426,22 @@
         "color": "#1bbe30"
       },
       {
-        "label": "1,5 -Moderada Alta",
+        "label": "1,5 - Moderada Alta",
         "area_km2": 5395.6,
         "color": "#fe931e"
       },
       {
-        "label": "1,3 -Moderada",
+        "label": "1,3 - Moderada",
         "area_km2": 4380.9,
         "color": "#fffd03"
       },
       {
-        "label": "1,8 -Baixa",
+        "label": "1,8 - Baixa",
         "area_km2": 681.8,
         "color": "#ff1e00"
       },
       {
-        "label": "2 -Muito Baixa",
+        "label": "2 - Muito Baixa",
         "area_km2": 489.1,
         "color": "#772100"
       }
@@ -452,12 +452,12 @@
   "suscetibilidade_erosao_escore_de_qualidade": {
     "classes": [
       {
-        "label": "1,5 -Moderada",
+        "label": "1,5 - Moderada",
         "area_km2": 21183.5,
         "color": "#fff8ab"
       },
       {
-        "label": "2 -Muito Baixa",
+        "label": "2 - Muito Baixa",
         "area_km2": 16749.7,
         "color": "#d05803"
       },
