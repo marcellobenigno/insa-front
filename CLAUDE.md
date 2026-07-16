@@ -41,7 +41,8 @@ No test suite is configured.
 | Icons | Bootstrap Icons 1.x — loaded via CDN in `index.html` (no npm package) |
 | Theming | `src/composables/useTheme.js` — dark/light toggle; `data-theme` attribute on `<html>`; persisted in `localStorage` key `insa-theme`; paleta claro baseada em gov.br (`#1351B4`) |
 | Leaflet controls | Fullscreen, Locate, Medição e Escala implementados **nativamente** dentro do `ZoomHomeControl` em `MapContainer.vue` — sem plugins de terceiros. |
-| Charts | Chart.js 4.x — importado modularmente em `LayerChartModal.vue` (não registrar globalmente) |
+| Charts | Chart.js 4.x — importado modularmente em `LayerChartModal.vue`/`DashboardChart.vue`/`DashboardPieChart.vue` (não registrar globalmente) |
+| Routing | vue-router 4.x — `createWebHashHistory` (GitHub Pages não tem rewrite de servidor para SPA) |
 | Linting | Oxlint + ESLint + Prettier |
 
 ---
@@ -72,6 +73,21 @@ Other components (not part of the layer flow):
 - `GeoSearch.vue` — geocoding / coordinate search (address, DD, DMS); pans the map via the store
 - `CoordDisplay.vue` — real-time cursor coordinates overlay (DD and DMS)
 
+`src/views/DashboardView.vue` (and its subcomponents `DashboardMiniMap.vue`,
+`DashboardPieChart.vue`, `DashboardChart.vue`, `DashboardTable.vue`) form an
+**independent flow**, unrelated to `OVERLAY_TREE`/`mapStore.js`: they consume
+`src/assets/dashboard_stats.json` (crossed with municípios) and `src/assets/stats.json`
+(single-layer class breakdown, no crossing) directly, and are reached via
+`src/router/index.js`, not through the sidebar.
+`DashboardMiniMap.vue` keeps its **own** Leaflet map instance, separate from
+`MapContainer.vue`'s, using `src/utils/createDashboardMvtLayer.js` for the índice
+tile layer — a deliberate, simplified duplicate of the MVT tile-rendering logic
+(see "Routing & navegação" below). The município boundary layer on the mini-map
+is **not** MVT tiles — it's `public/data/municipios_pb_semiarido.geojson` loaded
+via `L.geoJSON()`, so individual município polygons can be looked up by
+`cod_ibge_m` and restyled (selection highlight, `fitBounds`) — something tile-based
+rendering can't do, since a canvas tile has no addressable per-feature DOM/layer.
+
 ### Key design constraints — NEVER violate these
 
 1. **Leaflet is client-only.** Initialize the map in `onMounted`, destroy in `onUnmounted`.
@@ -97,6 +113,43 @@ Other components (not part of the layer flow):
    which spans the whole Northeast) had every tile outside the box silently never
    fetched, rendering as disconnected line fragments. The map's own
    `map.setMaxBounds()` (with padding) already constrains panning — that's enough.
+
+---
+
+## Routing & navegação
+
+The app has two routes, defined in `src/router/index.js`:
+
+| Path | Component | Purpose |
+|---|---|---|
+| `/` | `src/views/HomeView.vue` | Map (sidebar + `MapContainer`) — the original single-screen app |
+| `/dashboard` | `src/views/DashboardView.vue` | Município comparison dashboard |
+
+Both are lazy-loaded (`component: () => import(...)`) for automatic code-splitting.
+`createWebHashHistory` is required, not `createWebHistory` — the production build
+is published to GitHub Pages (`.github/workflows/deploy.yml`), which has no
+server-side rewrite for SPA routing; a direct reload on `/dashboard` would 404
+under history mode.
+
+`src/App.vue` renders `AppNavbar.vue` (fixed header, `<RouterLink>` to both
+routes) above `<RouterView />`, instead of rendering `HomeView` directly. The
+theme toggle lives in `AppNavbar.vue` now (moved out of `AppSidebar.vue`) so
+it's available on both screens — `useTheme()` is a module-level singleton, so
+moving the button doesn't duplicate state.
+
+`AppSidebar.vue` has **no header of its own anymore** — its old `<header class="sidebar-header">`
+(brand + collapse toggle) was removed because the brand duplicated `AppNavbar.vue`.
+The sidebar-collapse toggle moved to `AppNavbar.vue` too, rendered conditionally
+(`v-if="route.path === '/'"`, via `useRoute()`) since collapsing only makes sense
+on the map screen — it reuses `useSidebar()` (also a module-level singleton, same
+reasoning as the theme toggle).
+
+**Layout consequence:** introducing a fixed-height navbar above everything means
+`AppSidebar.vue`'s `#sidebar` can no longer be `height: 100vh` (it would overflow
+its now-shorter container and clip `GeoSearch.vue` at the bottom) — it must be
+`height: 100%`, relying on the `html/body/#app { height: 100% }` chain already in
+`main.css`. If you add more views, keep following this pattern rather than
+reintroducing a `100vh` rule anywhere below the navbar.
 
 ---
 
@@ -361,6 +414,18 @@ python scripts/stats.py    # writes src/assets/stats.json
 Calcula a área (km², EPSG:5880) de cada classe para todas as camadas em
 `styles.json`. Deve ser rodado sempre que `styles.json` for atualizado.
 
+### Step 6 — Generate dashboard comparison stats
+
+```bash
+python scripts/dashboard_stats.py    # writes src/assets/dashboard_stats.json
+```
+
+Cruza (overlay geométrico) `municipios_pb_semiarido` com cada uma das 5 camadas
+de índice composto (`iqs`, `iqv`, `iqc`, `iqm`, `ivd_sab`), produzindo valor médio
+ponderado por área + classe dominante por município. Depende de `styles.json`
+(Step 4) — re-executar sempre que o estilo de qualquer uma dessas 5 camadas mudar.
+Veja "Dashboard de comparação" abaixo para o schema completo.
+
 ### Required tools (macOS)
 
 ```bash
@@ -414,6 +479,8 @@ app code** — otherwise the live site points at tiles that don't exist yet.
 - [ ] Restore any manual entries in `src/assets/styles.json` (styles.py overwrites the file — see warning above)
 - [ ] If stroke-only, add entry manually to `src/assets/styles.json`
 - [ ] Re-run Step 5 (`python scripts/stats.py`) to update `src/assets/stats.json`
+- [ ] If the changed layer is one of the 5 composite indices (`iqs`/`iqv`/`iqc`/`iqm`/`ivd_sab`),
+      also re-run Step 6 (`python scripts/dashboard_stats.py`)
 
 ### Code side
 
@@ -473,6 +540,81 @@ Todas as classes definidas em `styles.json` aparecem no array `classes`, mesmo q
 Isso garante que o gráfico do frontend exiba o mesmo número de barras que a legenda.
 
 Regenerar sempre que `styles.json` for atualizado: `python scripts/stats.py`.
+
+---
+
+## Dashboard de comparação (`src/assets/dashboard_stats.json`)
+
+Gerado por `scripts/dashboard_stats.py`. Cruza (overlay geométrico) cada uma das
+5 camadas de índice composto com `municipios_pb_semiarido` — necessário porque
+essas camadas são grids derivados de raster, sem campo de município próprio, então
+não há chave de atributo comum para um join direto.
+
+```json
+{
+  "indices_meta": {
+    "iqs": { "sourceLayer": "iqs", "field_used": "iqs" },
+    "iqc": { "sourceLayer": "iqc", "field_used": "iqcescores" }
+  },
+  "municipios": {
+    "2500106": {
+      "cod_ibge_m": "2500106",
+      "nm_municip": "Água Branca",
+      "slug": "agua-branca",
+      "indices": {
+        "iqs": { "value": 1.421, "class_label": "1,33 - 1,48 - Moderada", "class_color": "#ffffc0" }
+      }
+    }
+  }
+}
+```
+
+- `indices_meta[key].field_used` — o campo real lido em cada camada (ex. `iqc` usa
+  `iqcescores`, `ivd_sab` usa `ivd`). O frontend **nunca** hardcoda esses nomes —
+  sempre resolve o label em português via `OVERLAY_LAYERS[key].descFields[field_used]`
+  (`layers.js` continua a única fonte de nomes amigáveis).
+- `value` — média do índice dentro do município, ponderada pela área de cada
+  fragmento da interseção geométrica.
+- `class_label`/`class_color` — classe dominante (maior área agregada) dentro do
+  município, usando as mesmas classes de `styles.json`.
+- `value`/`class_label`/`class_color`: `null` quando não há interseção geométrica
+  suficiente entre o município e aquela camada de índice (raro — a maioria dos
+  municípios tem pelo menos parte de seu território coberta).
+- Regenerar sempre que `styles.json` for atualizado para uma das 5 camadas de
+  índice composto: `python scripts/dashboard_stats.py`.
+
+### Gráfico de pizza (`DashboardPieChart.vue`) — sem cruzamento
+
+"Distribuição por classe" no dashboard **não** usa `dashboard_stats.json` — usa
+`src/assets/stats.json` diretamente (a mesma fonte de `LayerChartModal.vue`),
+porque é a distribuição de área por classe da camada de índice sozinha, sem
+cruzar com municípios. Se um índice ganhar um valor em `stats.json`, o gráfico de
+pizza do dashboard já reflete automaticamente — nenhum dado adicional a gerar.
+
+### GeoJSON de municípios (`public/data/municipios_pb_semiarido.geojson`)
+
+O mini-mapa do dashboard (`DashboardMiniMap.vue`) renderiza o contorno dos
+municípios a partir deste GeoJSON estático via `L.geoJSON()` — **não** dos vector
+tiles MVT (diferente de todas as outras camadas do projeto). Isso é intencional:
+tiles MVT não dão acesso a uma feição individual endereçável no cliente (um tile
+é só um canvas pintado), então não dá para destacar/dar `fitBounds` num único
+município a partir de tiles. Um `L.GeoJSON` mantém uma `L.Layer` por feição,
+indexável por `cod_ibge_m`, o que permite a reatividade tabela → mapa (seleciona
+uma linha, o mini-mapa destaca a borda e dá zoom naquele município).
+
+Gerado com:
+
+```bash
+ogr2ogr -f GeoJSON public/data/municipios_pb_semiarido.geojson \
+  data/dados_insa.gpkg municipios_pb_semiarido \
+  -t_srs EPSG:4326 -simplify 0.0015
+```
+
+`-simplify 0.0015` reduz o arquivo de ~1,9 MB para ~450 KB (precisão de sobra
+para a escala de exibição do mini-mapa). Diferente de `data/geojson/` (gitignored,
+regenerado a cada build do pipeline), este arquivo vive em `public/data/` e **é
+versionado** — regenerar manualmente só se os limites municipais no GeoPackage
+mudarem.
 
 ---
 
@@ -544,6 +686,23 @@ in the GeoPackage). Structure:
 - Do not add a `bounds` option to the overlay `CustomMVTLayer` in `MapContainer.vue`
   — it silently drops tiles outside that box for any layer with a wider extent
   than the Semiárido PB region (see Key design constraint #6)
+- Do not hardcode field names (`iqs`/`iqcescores`/`ivd`/etc.) in `DashboardView.vue`
+  — always read `field_used` from `dashboard_stats.json`
+- Do not create a Pinia store for the dashboard unless the state needs to be
+  shared outside `DashboardView.vue` — index selection, sort, and filter are
+  local `ref`s today, and that's intentional
+- Do not merge `src/utils/createDashboardMvtLayer.js` with the tile-rendering
+  logic in `MapContainer.vue` — it's an intentional simplified duplicate (no
+  search filter, no match counting, no `mapStore` dependency), not an oversight.
+  `DashboardMiniMap.vue` is deliberately independent of the main map/store.
+- Do not switch the município layer in `DashboardMiniMap.vue` back to MVT tiles
+  — it's GeoJSON (`public/data/municipios_pb_semiarido.geojson`) on purpose, so
+  individual municípios are addressable by `cod_ibge_m` for the table → map
+  selection highlight. Tiles can't do per-feature lookup client-side.
+- Do not regenerate `public/data/municipios_pb_semiarido.geojson` through the
+  tile pipeline (Steps 1–3) — it's independent, versioned in git (unlike
+  `data/geojson/`), and only needs regenerating if municipal boundaries change
+  in the GeoPackage (see "GeoJSON de municípios" above for the command)
 
 ---
 

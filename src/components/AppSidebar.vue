@@ -2,18 +2,18 @@
 import { ref, computed } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useSidebar } from '@/composables/useSidebar'
-import { useTheme } from '@/composables/useTheme'
 import LayerCard from './LayerCard.vue'
 import SidebarTreeGroup from './SidebarTreeGroup.vue'
 import GeoSearch from './GeoSearch.vue'
 
 const store = useMapStore()
 const { isCollapsed, openBase, openCategories, toggleSidebar, toggleBase } = useSidebar()
-const { isDark, toggleTheme } = useTheme()
 
 function clearAllAndCollapse() {
   store.clearAllOverlays()
-  Object.keys(openCategories).forEach(k => { openCategories[k] = false })
+  Object.keys(openCategories).forEach((k) => {
+    openCategories[k] = false
+  })
 }
 
 // ── Filtro de camadas ──────────────────────────────────────────────────────────
@@ -29,7 +29,7 @@ function filterNode(node, q) {
   if (node.layer) {
     return normalize(node.layer.label).includes(q) ? node : null
   }
-  const children = (node.children ?? []).map(child => filterNode(child, q)).filter(Boolean)
+  const children = (node.children ?? []).map((child) => filterNode(child, q)).filter(Boolean)
   return children.length > 0 ? { ...node, children } : null
 }
 
@@ -44,7 +44,7 @@ function countLeaves(nodes) {
 const filteredTree = computed(() => {
   if (!searchTerm.value.trim()) return store.availableTree
   const q = normalize(searchTerm.value.trim())
-  return store.availableTree.map(node => filterNode(node, q)).filter(Boolean)
+  return store.availableTree.map((node) => filterNode(node, q)).filter(Boolean)
 })
 
 const filteredLayerCount = computed(() => countLeaves(filteredTree.value))
@@ -60,47 +60,14 @@ function handleBaseClick() {
 </script>
 
 <template>
-  <aside 
-    id="sidebar" 
+  <aside
+    id="sidebar"
     :class="{ 'is-collapsed': isCollapsed }"
     role="complementary"
     aria-label="Painel de Controle do Mapa"
   >
-    <!-- Cabeçalho -->
-    <header class="sidebar-header">
-      <div class="brand-wrapper" v-show="!isCollapsed">
-        <div class="brand-logo" aria-hidden="true">
-          <i class="bi bi-geo-alt-fill" />
-        </div>
-        <div class="brand-name">
-          INSA <span class="brand-accent">WebGIS</span>
-        </div>
-      </div>
-      <div class="header-actions">
-        <button
-          v-show="!isCollapsed"
-          class="toggle-btn"
-          :title="isDark ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
-          :aria-label="isDark ? 'Ativar tema claro' : 'Ativar tema escuro'"
-          @click="toggleTheme"
-        >
-          <i class="bi" :class="isDark ? 'bi-sun' : 'bi-moon-stars'" />
-        </button>
-        <button
-          class="toggle-btn toggle-btn--collapse"
-          :title="isCollapsed ? 'Expandir Sidebar' : 'Recolher Sidebar'"
-          :aria-label="isCollapsed ? 'Expandir painel lateral' : 'Recolher painel lateral'"
-          :aria-expanded="!isCollapsed"
-          @click="toggleSidebar"
-        >
-          <i class="bi" :class="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'" />
-        </button>
-      </div>
-    </header>
-
     <!-- Conteúdo Principal -->
     <div class="sidebar-content custom-scrollbar">
-      
       <!-- Camadas Base -->
       <section class="category-block" :class="{ 'is-open': openBase }">
         <button
@@ -111,7 +78,7 @@ function handleBaseClick() {
         >
           <i class="bi bi-globe cat-icon" aria-hidden="true" />
           <span class="cat-label" v-show="!isCollapsed">Camadas Base</span>
-          
+
           <div class="cat-meta" v-show="!isCollapsed">
             <span class="cat-badge me-1">1</span>
             <span class="cat-count">{{ store.availableBaseLayers.length }}</span>
@@ -119,11 +86,7 @@ function handleBaseClick() {
           </div>
         </button>
 
-        <div 
-          id="base-layers-content" 
-          class="category-body" 
-          v-show="openBase && !isCollapsed"
-        >
+        <div id="base-layers-content" class="category-body" v-show="openBase && !isCollapsed">
           <div class="category-body-inner">
             <LayerCard
               v-for="layer in store.availableBaseLayers"
@@ -142,12 +105,12 @@ function handleBaseClick() {
       <div class="section-divider" v-show="!isCollapsed">
         <span class="divider-text">Análise Temática</span>
         <div class="divider-actions">
-          <span
-            v-if="store.activeOverlayCount > 0"
-            class="cat-badge me-1"
-          >{{ store.activeOverlayCount }}</span>
+          <span v-if="store.activeOverlayCount > 0" class="cat-badge me-1">{{
+            store.activeOverlayCount
+          }}</span>
           <span class="cat-count">
-            <template v-if="searchTerm">{{ filteredLayerCount }} de </template>{{ store.availableOverlays.length }}
+            <template v-if="searchTerm">{{ filteredLayerCount }} de </template
+            >{{ store.availableOverlays.length }}
           </span>
           <Transition name="clear-btn">
             <button
@@ -203,7 +166,7 @@ function handleBaseClick() {
 /* ── Sidebar ─────────────────────────────────────────────────────────────────── */
 #sidebar {
   width: var(--sidebar-w);
-  height: 100vh;
+  height: 100%;
   z-index: 1050;
   display: flex;
   flex-direction: column;
@@ -235,77 +198,6 @@ function handleBaseClick() {
   }
 }
 
-/* ── Header ──────────────────────────────────────────────────────────────────── */
-.sidebar-header {
-  height: 52px;
-  padding: 0 14px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.brand-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  overflow: hidden;
-}
-
-.brand-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #ffffff;
-  font-size: 13px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.brand-name {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  color: var(--text-main);
-  white-space: nowrap;
-}
-
-.brand-accent { color: var(--accent); }
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.toggle-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  border: none;
-  background: var(--btn-bg);
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  transition: background 0.15s, color 0.15s;
-}
-
-.toggle-btn:hover {
-  background: var(--btn-bg-hover);
-  color: var(--text-main);
-}
-
-.toggle-btn:active {
-  transform: scale(0.95);
-}
-
 /* ── Conteúdo ────────────────────────────────────────────────────────────────── */
 .sidebar-content {
   flex: 1;
@@ -313,9 +205,16 @@ function handleBaseClick() {
   padding: 8px 0;
 }
 
-.sidebar-content::-webkit-scrollbar       { width: 4px; }
-.sidebar-content::-webkit-scrollbar-track  { background: transparent; }
-.sidebar-content::-webkit-scrollbar-thumb  { background: var(--border-color); border-radius: 10px; }
+.sidebar-content::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
 
 .section-divider {
   padding: 20px 16px 6px;
@@ -358,10 +257,14 @@ function handleBaseClick() {
   color: var(--text-main);
   font-size: 13px;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
-.layer-search-input::placeholder { color: var(--text-dim); }
+.layer-search-input::placeholder {
+  color: var(--text-dim);
+}
 
 .layer-search-input:focus {
   border-color: var(--accent);
@@ -386,7 +289,9 @@ function handleBaseClick() {
   transition: color 0.15s;
 }
 
-.layer-search-clear:hover { color: var(--text-main); }
+.layer-search-clear:hover {
+  color: var(--text-main);
+}
 
 /* ── Limpar camadas ──────────────────────────────────────────────────────────── */
 .divider-actions {
@@ -407,7 +312,10 @@ function handleBaseClick() {
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
   white-space: nowrap;
 }
 
@@ -427,7 +335,9 @@ function handleBaseClick() {
 
 .clear-btn-enter-active,
 .clear-btn-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .clear-btn-enter-from,
