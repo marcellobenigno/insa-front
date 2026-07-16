@@ -15,6 +15,10 @@ const emit = defineEmits(['clear-selection'])
 
 const { isDark } = useTheme()
 const mapEl = ref(null)
+// Começa oculta em telas mobile (mesmo breakpoint de useSidebar.js) — no
+// mini-mapa compacto a legenda cobre proporcionalmente mais área útil do
+// que no desktop, então é melhor deixar a escolha de exibi-la a cargo do usuário.
+const isLegendVisible = ref(!(typeof window !== 'undefined' && window.innerWidth <= 768))
 
 let map = null
 let baseTileLayer = null
@@ -259,9 +263,23 @@ onUnmounted(() => {
   <div class="dashboard-mini-map">
     <div class="mini-map-canvas-wrapper">
       <div ref="mapEl" class="mini-map-canvas" />
-      <div v-if="legendClasses.length" class="mini-map-legend">
-        <div class="mini-map-legend-title">Legenda</div>
-        <div class="mini-map-legend-list">
+      <div
+        v-if="legendClasses.length"
+        class="mini-map-legend"
+        :class="{ 'mini-map-legend--collapsed': !isLegendVisible }"
+      >
+        <div class="mini-map-legend-header">
+          <span v-show="isLegendVisible" class="mini-map-legend-title">Legenda</span>
+          <button
+            class="mini-map-legend-toggle"
+            :title="isLegendVisible ? 'Ocultar legenda' : 'Exibir legenda'"
+            :aria-label="isLegendVisible ? 'Ocultar legenda' : 'Exibir legenda'"
+            @click="isLegendVisible = !isLegendVisible"
+          >
+            <i class="bi" :class="isLegendVisible ? 'bi-eye-slash' : 'bi-eye'" aria-hidden="true" />
+          </button>
+        </div>
+        <div v-show="isLegendVisible" class="mini-map-legend-list">
           <div v-for="item in legendClasses" :key="item.label" class="legend-item">
             <span class="legend-swatch" :style="{ background: item.color }" />
             <span class="legend-item-label">{{ item.label }}</span>
@@ -306,6 +324,24 @@ onUnmounted(() => {
   border: 1px solid var(--border-color);
   background: var(--bg-card);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: padding 0.15s ease;
+}
+
+.mini-map-legend--collapsed {
+  padding: 6px 8px;
+}
+
+.mini-map-legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.mini-map-legend--collapsed .mini-map-legend-header {
+  justify-content: center;
+  margin-bottom: 0;
 }
 
 .mini-map-legend-title {
@@ -314,7 +350,36 @@ onUnmounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--text-dim);
-  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+.mini-map-legend-toggle {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  padding: 0;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    transform 0.1s;
+}
+
+.mini-map-legend-toggle:hover {
+  color: var(--text-main);
+  background: var(--hover-overlay);
+}
+
+.mini-map-legend-toggle:active {
+  transform: scale(0.9);
 }
 
 .mini-map-legend-list {

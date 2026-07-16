@@ -77,29 +77,6 @@ watch(selectedIndex, () => {
     </header>
 
     <section class="dashboard-section">
-      <h2 class="section-eyebrow">Análise do índice selecionado</h2>
-      <div class="dashboard-grid grid-charts">
-        <section class="dashboard-panel">
-          <h3 class="panel-title">
-            <i class="bi bi-pie-chart-fill" aria-hidden="true" />Distribuição por classe
-          </h3>
-          <div class="panel-body">
-            <DashboardPieChart :source-layer="selectedIndex" />
-          </div>
-        </section>
-
-        <section class="dashboard-panel">
-          <h3 class="panel-title">
-            <i class="bi bi-bar-chart-line-fill" aria-hidden="true" />Ranking dos municípios
-          </h3>
-          <div class="panel-body">
-            <DashboardChart :municipios="municipiosList" />
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <section class="dashboard-section">
       <h2 class="section-eyebrow">Explorar municípios</h2>
       <div class="dashboard-grid grid-explore">
         <section class="dashboard-panel">
@@ -125,6 +102,29 @@ watch(selectedIndex, () => {
               :selected="selectedMunicipio"
               @select="selectedMunicipio = $event"
             />
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="dashboard-section">
+      <h2 class="section-eyebrow">Análise do índice selecionado</h2>
+      <div class="dashboard-grid grid-charts">
+        <section class="dashboard-panel">
+          <h3 class="panel-title">
+            <i class="bi bi-pie-chart-fill" aria-hidden="true" />Distribuição por classe
+          </h3>
+          <div class="panel-body">
+            <DashboardPieChart :source-layer="selectedIndex" />
+          </div>
+        </section>
+
+        <section class="dashboard-panel">
+          <h3 class="panel-title">
+            <i class="bi bi-bar-chart-line-fill" aria-hidden="true" />Ranking dos municípios
+          </h3>
+          <div class="panel-body">
+            <DashboardChart :municipios="municipiosList" />
           </div>
         </section>
       </div>

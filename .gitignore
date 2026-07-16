@@ -48,3 +48,4 @@ public/tiles.zip
 .venv/
 *.docx
 ~$*
+__pycache__/

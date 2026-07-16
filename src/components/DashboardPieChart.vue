@@ -82,10 +82,14 @@ onUnmounted(() => chartInstance?.destroy())
     </div>
     <div class="pie-legend">
       <div v-for="c in classes" :key="c.label" class="legend-row">
-        <span class="legend-bar" :style="{ width: pct(c.area_km2) + '%', background: c.color }" />
-        <span class="legend-dot" :style="{ background: c.color }" />
-        <span class="legend-label">{{ formatLabel(c.label) }}</span>
-        <span class="legend-pct">{{ pct(c.area_km2) }}%</span>
+        <div class="legend-row-top">
+          <span class="legend-dot" :style="{ background: c.color }" />
+          <span class="legend-label">{{ formatLabel(c.label) }}</span>
+          <span class="legend-pct">{{ pct(c.area_km2) }}%</span>
+        </div>
+        <div class="legend-track">
+          <div class="legend-track-fill" :style="{ width: pct(c.area_km2) + '%', background: c.color }" />
+        </div>
       </div>
     </div>
   </div>
@@ -113,25 +117,20 @@ onUnmounted(() => chartInstance?.destroy())
 }
 
 .legend-row {
-  position: relative;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 5px;
   padding: 4px 6px;
   border-radius: 6px;
-  overflow: hidden;
 }
 
-.legend-bar {
-  position: absolute;
-  inset: 0;
-  opacity: 0.1;
-  z-index: 0;
+.legend-row-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .legend-dot {
-  position: relative;
-  z-index: 1;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -139,8 +138,6 @@ onUnmounted(() => chartInstance?.destroy())
 }
 
 .legend-label {
-  position: relative;
-  z-index: 1;
   flex: 1;
   font-size: 12px;
   color: var(--text-main);
@@ -151,11 +148,21 @@ onUnmounted(() => chartInstance?.destroy())
 }
 
 .legend-pct {
-  position: relative;
-  z-index: 1;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
   flex-shrink: 0;
+}
+
+.legend-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--btn-bg);
+  overflow: hidden;
+}
+
+.legend-track-fill {
+  height: 100%;
+  border-radius: 2px;
 }
 </style>

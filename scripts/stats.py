@@ -30,23 +30,14 @@ def compute_stats(layer_name, style):
     gdf_d = gdf.dropna(subset=["_class"]).dissolve(by="_class", as_index=False)
     gdf_d["_area_km2"] = gdf_d.geometry.area / 1e6
 
-    color_by_label = {c["label"]: c["color"] for c in classes_meta}
-    classes = []
-    for _, row in gdf_d.iterrows():
-        label = row["_class"]
-        classes.append({
-            "label": label,
-            "area_km2": round(float(row["_area_km2"]), 1),
-            "color": color_by_label[label],
-        })
+    area_by_label = {row["_class"]: round(float(row["_area_km2"]), 1) for _, row in gdf_d.iterrows()}
 
-    # Garante que toda classe do estilo apareça no gráfico, mesmo sem polígonos (área 0)
-    found = {c["label"] for c in classes}
-    for c in classes_meta:
-        if c["label"] not in found:
-            classes.append({"label": c["label"], "area_km2": 0.0, "color": c["color"]})
-
-    classes.sort(key=lambda x: x["area_km2"], reverse=True)
+    # Preserva a ordem autoral do styles.json (QGIS), não a área — garante também
+    # que toda classe do estilo apareça no gráfico, mesmo sem polígonos (área 0)
+    classes = [
+        {"label": c["label"], "area_km2": area_by_label.get(c["label"], 0.0), "color": c["color"]}
+        for c in classes_meta
+    ]
     total_km2 = round(sum(c["area_km2"] for c in classes), 1)
     return {"classes": classes, "total_km2": total_km2, "field_used": field}, None
 

@@ -5,19 +5,9 @@
   "eto_escores_de_qualidade": {
     "classes": [
       {
-        "label": "1,8 - Baixa",
-        "area_km2": 20192.9,
-        "color": "#fdcb6f"
-      },
-      {
-        "label": "1,5 - Moderada",
-        "area_km2": 14678.8,
-        "color": "#ffffbf"
-      },
-      {
-        "label": "2 - Muito Baixa",
-        "area_km2": 11211.0,
-        "color": "#e4785a"
+        "label": "1- Muito Alta",
+        "area_km2": 132.0,
+        "color": "#2b83ba"
       },
       {
         "label": "1,2 - Alta",
@@ -25,9 +15,19 @@
         "color": "#aaddd9"
       },
       {
-        "label": "1- Muito Alta",
-        "area_km2": 132.0,
-        "color": "#2b83ba"
+        "label": "1,5 - Moderada",
+        "area_km2": 14678.8,
+        "color": "#ffffbf"
+      },
+      {
+        "label": "1,8 - Baixa",
+        "area_km2": 20192.9,
+        "color": "#fdcb6f"
+      },
+      {
+        "label": "2 - Muito Baixa",
+        "area_km2": 11211.0,
+        "color": "#e4785a"
       }
     ],
     "total_km2": 53602.3,
@@ -36,9 +36,9 @@
   "ia_escores_de_qualidade": {
     "classes": [
       {
-        "label": "2-Baixa",
-        "area_km2": 48117.3,
-        "color": "#e4785a"
+        "label": "1-Alta",
+        "area_km2": 1160.9,
+        "color": "#2b83ba"
       },
       {
         "label": "1,5 - Moderada",
@@ -46,9 +46,9 @@
         "color": "#fdcb6f"
       },
       {
-        "label": "1-Alta",
-        "area_km2": 1160.9,
-        "color": "#2b83ba"
+        "label": "2-Baixa",
+        "area_km2": 48117.3,
+        "color": "#e4785a"
       }
     ],
     "total_km2": 53666.4,
@@ -56,6 +56,16 @@
   },
   "iqc": {
     "classes": [
+      {
+        "label": "1 - 1,22 - Alta",
+        "area_km2": 1381.3,
+        "color": "#2b83ba"
+      },
+      {
+        "label": "1,22 - 1,48 - Moderada",
+        "area_km2": 5951.0,
+        "color": "#c7e8ad"
+      },
       {
         "label": "1,48 - 1,69 - Baixa",
         "area_km2": 37594.6,
@@ -65,16 +75,6 @@
         "label": "1,69 - 1,82 - Muito Baixa",
         "area_km2": 8610.4,
         "color": "#d7191c"
-      },
-      {
-        "label": "1,22 - 1,48 - Moderada",
-        "area_km2": 5951.0,
-        "color": "#c7e8ad"
-      },
-      {
-        "label": "1 - 1,22 - Alta",
-        "area_km2": 1381.3,
-        "color": "#2b83ba"
       }
     ],
     "total_km2": 53537.3,
@@ -82,6 +82,11 @@
   },
   "precipitacao_escores_de_qualidade": {
     "classes": [
+      {
+        "label": "1 - Muito Alta",
+        "area_km2": 1234.1,
+        "color": "#2b83ba"
+      },
       {
         "label": "1,2 - Alta",
         "area_km2": 31255.9,
@@ -91,11 +96,6 @@
         "label": "1,5 - Moderada",
         "area_km2": 20947.0,
         "color": "#fdcb6f"
-      },
-      {
-        "label": "1 - Muito Alta",
-        "area_km2": 1234.1,
-        "color": "#2b83ba"
       },
       {
         "label": "2 - Baixa",
@@ -130,9 +130,9 @@
   "idhm_escores_de_qualidade": {
     "classes": [
       {
-        "label": "2 - Baixa",
-        "area_km2": 33451.0,
-        "color": "#fc8d59"
+        "label": "1 - Alta",
+        "area_km2": 940.3,
+        "color": "#91cf60"
       },
       {
         "label": "1,5 - Moderada",
@@ -140,9 +140,9 @@
         "color": "#ffffbf"
       },
       {
-        "label": "1 - Alta",
-        "area_km2": 940.3,
-        "color": "#91cf60"
+        "label": "2 - Baixa",
+        "area_km2": 33451.0,
+        "color": "#fc8d59"
       }
     ],
     "total_km2": 52972.5,
@@ -224,6 +224,11 @@
   "declividade_escores_de_qualidade": {
     "classes": [
       {
+        "label": "1 - Muito Alta",
+        "area_km2": 14656.9,
+        "color": "#f6f6d3"
+      },
+      {
         "label": "1,3 - Alta",
         "area_km2": 21100.3,
         "color": "#c6a86c"
@@ -232,11 +237,6 @@
         "label": "1,5 - Moderada",
         "area_km2": 17042.3,
         "color": "#7a8624"
-      },
-      {
-        "label": "1 - Muito Alta",
-        "area_km2": 14656.9,
-        "color": "#f6f6d3"
       },
       {
         "label": "1,8 - Baixa",
@@ -255,6 +255,11 @@
   "geologia_escores_de_qualidade": {
     "classes": [
       {
+        "label": "1 - Muito Alta",
+        "area_km2": 8710.8,
+        "color": "#e2c590"
+      },
+      {
         "label": "1,3 - Alta",
         "area_km2": 24480.5,
         "color": "#b3844a"
@@ -270,11 +275,6 @@
         "color": "#ab4d00"
       },
       {
-        "label": "1 - Muito Alta",
-        "area_km2": 8710.8,
-        "color": "#e2c590"
-      },
-      {
         "label": "2 - Muito Baixa",
         "area_km2": 1734.6,
         "color": "#76440b"
@@ -285,6 +285,11 @@
   },
   "iqs": {
     "classes": [
+      {
+        "label": "1 - 1,33 - Alta",
+        "area_km2": 5327.5,
+        "color": "#8fba5b"
+      },
       {
         "label": "1,33 - 1,48 - Moderada",
         "area_km2": 21036.7,
@@ -299,11 +304,6 @@
         "label": "1,61 - 1,9 - Muito Baixa",
         "area_km2": 7090.0,
         "color": "#d7191c"
-      },
-      {
-        "label": "1 - 1,33 - Alta",
-        "area_km2": 5327.5,
-        "color": "#8fba5b"
       }
     ],
     "total_km2": 53248.6,
@@ -311,6 +311,11 @@
   },
   "textura_escores_de_qualidade": {
     "classes": [
+      {
+        "label": "1 - Alta",
+        "area_km2": 11085.5,
+        "color": "#d5bb87"
+      },
       {
         "label": "1,6 - Moderada",
         "area_km2": 30015.4,
@@ -320,11 +325,6 @@
         "label": "2 - Baixa",
         "area_km2": 12866.9,
         "color": "#97621c"
-      },
-      {
-        "label": "1 - Alta",
-        "area_km2": 11085.5,
-        "color": "#d5bb87"
       }
     ],
     "total_km2": 53967.8,
@@ -332,16 +332,6 @@
   },
   "tipos_de_solos_escores_de_qualidade": {
     "classes": [
-      {
-        "label": "2 - Baixa",
-        "area_km2": 27162.9,
-        "color": "#b3562b"
-      },
-      {
-        "label": "1,7 - Moderada-Baixa",
-        "area_km2": 24917.4,
-        "color": "#d79867"
-      },
       {
         "label": "1-Alta",
         "area_km2": 1744.7,
@@ -351,6 +341,16 @@
         "label": "1,3 - Moderada",
         "area_km2": 142.8,
         "color": "#d78022"
+      },
+      {
+        "label": "1,7 - Moderada-Baixa",
+        "area_km2": 24917.4,
+        "color": "#d79867"
+      },
+      {
+        "label": "2 - Baixa",
+        "area_km2": 27162.9,
+        "color": "#b3562b"
       }
     ],
     "total_km2": 53967.8,
@@ -359,19 +359,9 @@
   "carbono_organico_escores_de_qualidade": {
     "classes": [
       {
-        "label": "1,8 - Baixa",
-        "area_km2": 35565.5,
-        "color": "#f0a336"
-      },
-      {
-        "label": "1,5 - Moderada",
-        "area_km2": 14682.6,
-        "color": "#fff7bc"
-      },
-      {
-        "label": "2 - Muito Baixa",
-        "area_km2": 2216.2,
-        "color": "#b14200"
+        "label": "1 - Muito Alta",
+        "area_km2": 16.4,
+        "color": "#006800"
       },
       {
         "label": "1,2 - Alta",
@@ -379,9 +369,19 @@
         "color": "#41ba45"
       },
       {
-        "label": "1 - Muito Alta",
-        "area_km2": 16.4,
-        "color": "#006800"
+        "label": "1,5 - Moderada",
+        "area_km2": 14682.6,
+        "color": "#fff7bc"
+      },
+      {
+        "label": "1,8 - Baixa",
+        "area_km2": 35565.5,
+        "color": "#f0a336"
+      },
+      {
+        "label": "2 - Muito Baixa",
+        "area_km2": 2216.2,
+        "color": "#b14200"
       }
     ],
     "total_km2": 53767.2,
@@ -389,6 +389,11 @@
   },
   "iqv": {
     "classes": [
+      {
+        "label": "1 - 1,35 - Alta",
+        "area_km2": 9591.5,
+        "color": "#4ca102"
+      },
       {
         "label": "1,35 - 1,49 - Moderada",
         "area_km2": 25551.9,
@@ -398,11 +403,6 @@
         "label": "1,49 - 1,63 - Baixa",
         "area_km2": 13746.4,
         "color": "#fdae61"
-      },
-      {
-        "label": "1 - 1,35 - Alta",
-        "area_km2": 9591.5,
-        "color": "#4ca102"
       },
       {
         "label": "1,63 - 2 - Muito Baixa",
@@ -426,14 +426,14 @@
         "color": "#1bbe30"
       },
       {
-        "label": "1,5 - Moderada Alta",
-        "area_km2": 5395.6,
-        "color": "#fe931e"
-      },
-      {
         "label": "1,3 - Moderada",
         "area_km2": 4380.9,
         "color": "#fffd03"
+      },
+      {
+        "label": "1,5 - Moderada Alta",
+        "area_km2": 5395.6,
+        "color": "#fe931e"
       },
       {
         "label": "1,8 - Baixa",
@@ -452,19 +452,9 @@
   "suscetibilidade_erosao_escore_de_qualidade": {
     "classes": [
       {
-        "label": "1,5 - Moderada",
-        "area_km2": 21183.5,
-        "color": "#fff8ab"
-      },
-      {
-        "label": "2 - Muito Baixa",
-        "area_km2": 16749.7,
-        "color": "#d05803"
-      },
-      {
-        "label": "1,8 - Baixa",
-        "area_km2": 9430.4,
-        "color": "#e69e20"
+        "label": "1 - Muito Alta",
+        "area_km2": 433.4,
+        "color": "#006a00"
       },
       {
         "label": "1,2 - Alta",
@@ -472,9 +462,19 @@
         "color": "#5ed200"
       },
       {
-        "label": "1 - Muito Alta",
-        "area_km2": 433.4,
-        "color": "#006a00"
+        "label": "1,5 - Moderada",
+        "area_km2": 21183.5,
+        "color": "#fff8ab"
+      },
+      {
+        "label": "1,8 - Baixa",
+        "area_km2": 9430.4,
+        "color": "#e69e20"
+      },
+      {
+        "label": "2 - Muito Baixa",
+        "area_km2": 16749.7,
+        "color": "#d05803"
       }
     ],
     "total_km2": 53681.7,
@@ -483,9 +483,9 @@
   "ivd_sab": {
     "classes": [
       {
-        "label": "1,438 - 1,502 - Alta",
-        "area_km2": 22690.7,
-        "color": "#fdae61"
+        "label": "1 - 1,361 - Baixa",
+        "area_km2": 2386.1,
+        "color": "#a6d96a"
       },
       {
         "label": "1,361 - 1,438 - Moderada",
@@ -493,14 +493,14 @@
         "color": "#e8ffc0"
       },
       {
+        "label": "1,438 - 1,502 - Alta",
+        "area_km2": 22690.7,
+        "color": "#fdae61"
+      },
+      {
         "label": "1,502 - 1,712 - Muito Alta",
         "area_km2": 12749.7,
         "color": "#d7191c"
-      },
-      {
-        "label": "1 - 1,361 - Baixa",
-        "area_km2": 2386.1,
-        "color": "#a6d96a"
       }
     ],
     "total_km2": 52590.4,
