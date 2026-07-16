@@ -118,31 +118,37 @@ rendering can't do, since a canvas tile has no addressable per-feature DOM/layer
 
 ## Routing & navegação
 
-The app has two routes, defined in `src/router/index.js`:
+The app has three routes, defined in `src/router/index.js`:
 
 | Path | Component | Purpose |
 |---|---|---|
-| `/` | `src/views/HomeView.vue` | Map (sidebar + `MapContainer`) — the original single-screen app |
+| `/` | `src/views/InicioView.vue` | Landing page (placeholder — "Em construção") |
+| `/mapa` | `src/views/HomeView.vue` | Map (sidebar + `MapContainer`) — the original single-screen app |
 | `/dashboard` | `src/views/DashboardView.vue` | Município comparison dashboard |
 
-Both are lazy-loaded (`component: () => import(...)`) for automatic code-splitting.
+All three are lazy-loaded (`component: () => import(...)`) for automatic code-splitting.
 `createWebHashHistory` is required, not `createWebHistory` — the production build
 is published to GitHub Pages (`.github/workflows/deploy.yml`), which has no
 server-side rewrite for SPA routing; a direct reload on `/dashboard` would 404
 under history mode.
 
-`src/App.vue` renders `AppNavbar.vue` (fixed header, `<RouterLink>` to both
+`src/App.vue` renders `AppNavbar.vue` (fixed header, `<RouterLink>` to all three
 routes) above `<RouterView />`, instead of rendering `HomeView` directly. The
-theme toggle lives in `AppNavbar.vue` now (moved out of `AppSidebar.vue`) so
-it's available on both screens — `useTheme()` is a module-level singleton, so
-moving the button doesn't duplicate state.
+theme toggle lives in `AppNavbar.vue` (moved out of `AppSidebar.vue`) so it's
+available on every screen — `useTheme()` is a module-level singleton, so moving
+the button doesn't duplicate state.
 
-`AppSidebar.vue` has **no header of its own anymore** — its old `<header class="sidebar-header">`
+`AppSidebar.vue` has **no brand header of its own** — its old `<header class="sidebar-header">`
 (brand + collapse toggle) was removed because the brand duplicated `AppNavbar.vue`.
-The sidebar-collapse toggle moved to `AppNavbar.vue` too, rendered conditionally
-(`v-if="route.path === '/'"`, via `useRoute()`) since collapsing only makes sense
-on the map screen — it reuses `useSidebar()` (also a module-level singleton, same
-reasoning as the theme toggle).
+The sidebar-collapse toggle, however, lives back inside `AppSidebar.vue` — a
+dedicated `.sidebar-collapse-row` pinned above `.sidebar-content` (outside the
+scrollable area, so it never scrolls out of view), directly above the "Camadas
+Base" section. It reuses `useSidebar()` (a module-level singleton) and is the
+first focusable/visible element in the collapsed icon-only rail — same
+collapse-aware icon-only styling as `.category-header`. It is **not**
+conditionally rendered per-route (it lived in `AppNavbar.vue` gated on
+`route.path` before; now that it's inside `AppSidebar.vue` itself, it's simply
+absent whenever `AppSidebar.vue` isn't mounted, i.e. outside `/mapa`).
 
 **Layout consequence:** introducing a fixed-height navbar above everything means
 `AppSidebar.vue`'s `#sidebar` can no longer be `height: 100vh` (it would overflow
