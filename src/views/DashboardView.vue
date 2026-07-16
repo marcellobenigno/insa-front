@@ -8,10 +8,18 @@ import DashboardChart from '@/components/DashboardChart.vue'
 import DashboardPieChart from '@/components/DashboardPieChart.vue'
 import DashboardTable from '@/components/DashboardTable.vue'
 
-const indexOptions = Object.entries(dashboardData.indices_meta).map(([key, meta]) => ({
-  key,
-  label: OVERLAY_LAYERS[key]?.descFields?.[meta.field_used] ?? key.toUpperCase(),
-}))
+// IVD (vulnerabilidade à desertificação) é o índice síntese de maior destaque
+// no INSA — vem primeiro no seletor e já carrega selecionado ao abrir o dashboard.
+const INDEX_DISPLAY_ORDER = ['ivd_sab', 'iqs', 'iqv', 'iqc', 'iqm']
+
+const indexOptions = INDEX_DISPLAY_ORDER.filter((key) => dashboardData.indices_meta[key]).map(
+  (key) => ({
+    key,
+    label:
+      OVERLAY_LAYERS[key]?.descFields?.[dashboardData.indices_meta[key].field_used] ??
+      key.toUpperCase(),
+  }),
+)
 
 const selectedIndex = ref(indexOptions[0].key)
 const selectedMunicipio = ref(null) // cod_ibge_m
@@ -102,6 +110,7 @@ watch(selectedIndex, () => {
             <DashboardMiniMap
               :source-layer="selectedIndex"
               :selected-municipio="selectedMunicipio"
+              @clear-selection="selectedMunicipio = null"
             />
           </div>
         </section>

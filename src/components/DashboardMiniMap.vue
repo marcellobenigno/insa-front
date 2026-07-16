@@ -11,6 +11,7 @@ const props = defineProps({
   sourceLayer: { type: String, required: true },
   selectedMunicipio: { type: String, default: null }, // cod_ibge_m
 })
+const emit = defineEmits(['clear-selection'])
 
 const { isDark } = useTheme()
 const mapEl = ref(null)
@@ -19,7 +20,13 @@ let map = null
 let baseTileLayer = null
 let indexLayer = null
 let highlightedLayer = null
+let hoveredLayer = null
 let layersControl = null
+let hoverNameEl = null
+// true só durante o fitBounds que o próprio applyHighlight dispara ao
+// selecionar um município — sem isso, esse fitBounds geraria um 'movestart'
+// que cancelaria a seleção que acabou de ser aplicada.
+let suppressAutoDeselect = false
 const municipiosByCod = new Map() // cod_ibge_m -> L.Layer
 
 // Mesma área do mapa principal (MapContainer.vue) — duplicado aqui de
@@ -68,6 +75,45 @@ function municipioHighlightStyle() {
   return { color: HIGHLIGHT_COLOR, weight: 3.5, opacity: 1, fillOpacity: 0 }
 }
 
+function municipioHoverStyle() {
+  return { color: HIGHLIGHT_COLOR, weight: 2.5, opacity: 1, fillOpacity: 0.08 }
+}
+
+function setHoverName(name) {
+  if (!hoverNameEl) return
+  hoverNameEl.textContent = name ? `Município: ${name}` : ''
+  hoverNameEl.classList.toggle('is-visible', !!name)
+}
+
+function handleMunicipioMouseOver(e) {
+  const layer = e.target
+  // Defesa contra 'mouseout' perdido em movimentos rápidos do mouse entre
+  // polígonos vizinhos: se sobrou um hover anterior sem ter sido limpo,
+  // reverte antes de aplicar o novo (evita múltiplos polígonos destacados
+  // ao mesmo tempo). Não chamamos bringToFront() aqui de propósito — isso
+  // reordena o SVG no DOM a cada hover e era a causa provável do 'mouseout'
+  // não disparar de forma confiável em passadas rápidas.
+  if (hoveredLayer && hoveredLayer !== layer && hoveredLayer !== highlightedLayer) {
+    hoveredLayer.setStyle(municipioBaseStyle())
+  }
+  hoveredLayer = layer
+  if (layer !== highlightedLayer) {
+    layer.setStyle(municipioHoverStyle())
+  }
+  setHoverName(layer.feature?.properties?.nm_municip)
+}
+
+function handleMunicipioMouseOut(e) {
+  const layer = e.target
+  if (layer !== highlightedLayer) {
+    layer.setStyle(municipioBaseStyle())
+  }
+  if (hoveredLayer === layer) {
+    hoveredLayer = null
+    setHoverName(null)
+  }
+}
+
 async function loadMunicipiosGeoJson() {
   const url = `${import.meta.env.BASE_URL}data/municipios_pb_semiarido.geojson`
   const res = await fetch(url)
@@ -78,6 +124,8 @@ async function loadMunicipiosGeoJson() {
     style: municipioBaseStyle,
     onEachFeature: (feature, layer) => {
       municipiosByCod.set(feature.properties.cod_ibge_m, layer)
+      layer.on('mouseover', handleMunicipioMouseOver)
+      layer.on('mouseout', handleMunicipioMouseOut)
     },
   }).addTo(map)
   layersControl?.addOverlay(municipiosLayer, 'Municípios')
@@ -105,7 +153,19 @@ function applyHighlight(cod) {
   // municípios diferentes podem interromper o voo (fly) do fitBounds anterior
   // no meio, deixando o mapa "preso" num zoom/centro intermediário errado
   // (foi isso que causava o problema relatado com Patos).
+  suppressAutoDeselect = true
   map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 11, animate: false })
+  suppressAutoDeselect = false
+}
+
+// Qualquer movimento do mapa iniciado pelo usuário (arrastar, zoom pelos
+// botões, roda do mouse) — exceto o fitBounds que a própria seleção dispara,
+// suprimido acima — limpa a seleção. Sem isso, o destaque amarelo e o zoom
+// travado num município ficavam "grudados" mesmo depois do usuário navegar
+// para outro lugar do mapa.
+function handleUserMoveStart() {
+  if (suppressAutoDeselect) return
+  emit('clear-selection')
 }
 
 function addZoomHomeControl() {
@@ -145,6 +205,22 @@ function addZoomHomeControl() {
   new MiniZoomHomeControl().addTo(map)
 }
 
+// Caixa fixa que mostra o nome do município sob o cursor — Leaflet empilha
+// controles adicionados na mesma posição em ordem, então isso fica logo
+// abaixo do controle de camadas (ambos em 'topright'). Precisa ser adicionada
+// depois de layersControl para ficar embaixo dele na pilha.
+function addHoverNameControl() {
+  const HoverNameControl = L.Control.extend({
+    options: { position: 'topright' },
+    onAdd() {
+      const container = L.DomUtil.create('div', 'leaflet-control municipio-hover-box')
+      hoverNameEl = container
+      return container
+    },
+  })
+  new HoverNameControl().addTo(map)
+}
+
 watch(() => props.sourceLayer, renderIndexLayer)
 watch(isDark, renderBaseLayer)
 watch(() => props.selectedMunicipio, applyHighlight)
@@ -162,7 +238,9 @@ onMounted(() => {
   layersControl = L.control.layers(null, {}, { position: 'topright' }).addTo(map)
   renderIndexLayer()
   addZoomHomeControl()
+  addHoverNameControl()
   loadMunicipiosGeoJson()
+  map.on('movestart', handleUserMoveStart)
 })
 
 onUnmounted(() => {
@@ -171,16 +249,24 @@ onUnmounted(() => {
     map = null
   }
   municipiosByCod.clear()
+  highlightedLayer = null
+  hoveredLayer = null
+  hoverNameEl = null
 })
 </script>
 
 <template>
   <div class="dashboard-mini-map">
-    <div ref="mapEl" class="mini-map-canvas" />
-    <div v-if="legendClasses.length" class="mini-map-legend">
-      <div v-for="item in legendClasses" :key="item.label" class="legend-item">
-        <span class="legend-swatch" :style="{ background: item.color }" />
-        <span class="legend-item-label">{{ item.label }}</span>
+    <div class="mini-map-canvas-wrapper">
+      <div ref="mapEl" class="mini-map-canvas" />
+      <div v-if="legendClasses.length" class="mini-map-legend">
+        <div class="mini-map-legend-title">Legenda</div>
+        <div class="mini-map-legend-list">
+          <div v-for="item in legendClasses" :key="item.label" class="legend-item">
+            <span class="legend-swatch" :style="{ background: item.color }" />
+            <span class="legend-item-label">{{ item.label }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -190,11 +276,11 @@ onUnmounted(() => {
 .dashboard-mini-map {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   height: 100%;
 }
 
-.mini-map-canvas {
+.mini-map-canvas-wrapper {
+  position: relative;
   flex: 1;
   min-height: 280px;
   border-radius: 12px;
@@ -203,11 +289,54 @@ onUnmounted(() => {
   background: var(--btn-bg);
 }
 
+.mini-map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Legenda flutuante sobre o mapa ───────────────────────────────────────────── */
 .mini-map-legend {
+  position: absolute;
+  z-index: 1000;
+  left: 10px;
+  bottom: 10px;
+  max-width: 200px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.mini-map-legend-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.mini-map-legend-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  padding: 4px 2px;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.mini-map-legend-list::-webkit-scrollbar {
+  width: 4px;
+}
+.mini-map-legend-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mini-map-legend-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
 }
 
 .legend-item {
@@ -221,14 +350,16 @@ onUnmounted(() => {
   width: 20px;
   height: 12px;
   border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
 }
 
 .legend-item-label {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 400;
-  letter-spacing: -0.12px;
-  line-height: 1.4;
+  letter-spacing: -0.1px;
+  line-height: 1.35;
   color: var(--text-main);
+  word-break: break-word;
 }
 
 /* ── Controle de zoom customizado (mesmo visual de MapContainer.vue) ────────── */
@@ -271,6 +402,36 @@ onUnmounted(() => {
 :deep(.home-btn) {
   font-size: 0.85rem;
   color: var(--text-dim);
+}
+
+/* ── Caixa de nome ao passar o mouse no município ────────────────────────────── */
+:deep(.municipio-hover-box) {
+  max-width: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+  margin: 0 !important;
+  border: none;
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+:deep(.municipio-hover-box.is-visible) {
+  max-width: 300px;
+  max-height: 32px;
+  opacity: 1;
+  padding: 7px 12px;
+  margin-top: 10px !important;
+  margin-right: 10px !important;
+  border: 1px solid var(--border-color);
 }
 
 /* ── Controle nativo de camadas (L.control.layers) — tema-aware ─────────────── */
