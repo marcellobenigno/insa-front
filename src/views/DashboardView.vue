@@ -10,7 +10,7 @@ import DashboardTable from '@/components/DashboardTable.vue'
 
 // IVD (vulnerabilidade à desertificação) é o índice síntese de maior destaque
 // no INSA — vem primeiro no seletor e já carrega selecionado ao abrir o dashboard.
-const INDEX_DISPLAY_ORDER = ['ivd_sab', 'iqs', 'iqv', 'iqc', 'iqm']
+const INDEX_DISPLAY_ORDER = ['ivd_sab', 'ivs', 'ivv', 'ivc', 'ivm']
 
 const indexOptions = INDEX_DISPLAY_ORDER.filter((key) => dashboardData.indices_meta[key]).map(
   (key) => ({
@@ -61,7 +61,7 @@ watch(selectedIndex, () => {
       <div>
         <h1>Comparativo entre Municípios</h1>
         <p class="dashboard-subtitle">
-          Cruzamento dos índices de qualidade com os
+          Cruzamento dos índices de vulnerabilidade com os
           {{ Object.keys(dashboardData.municipios).length }}
           municípios do Semiárido da PB
         </p>

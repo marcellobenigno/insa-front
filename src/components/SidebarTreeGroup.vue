@@ -98,8 +98,8 @@ const counts = computed(() => countLayers(props.node))
 
 <style scoped>
 /* Indentação e leve redução de destaque para grupos aninhados (Índices de
-   Qualidade > IQS > Escores de Qualidade), mantendo o visual base definido
-   em src/assets/main.css (compartilhado com "Camadas Base" em AppSidebar.vue) */
+   Vulnerabilidade > IVS > Escores de Vulnerabilidade), mantendo o visual base
+   definido em src/assets/main.css (compartilhado com "Camadas Base" em AppSidebar.vue) */
 .category-block.is-nested {
   margin: 8px 0 8px 12px;
   padding-left: 10px;

@@ -1,391 +1,16 @@
 {
-  "municipios_pb_semiarido": {
-    "type": "stroke",
-    "field": null,
-    "classes": [
-      { "label": "Limite municipal", "color": "#e8e8e8" }
-    ]
-  },
-  "limite_semiarido_pb": {
-    "type": "stroke",
-    "field": null,
-    "classes": [
-      { "label": "Limite do Semiárido PB", "color": "#f5ff00" }
-    ]
-  },
-  "estados_ne": {
-    "type": "stroke",
-    "field": null,
-    "classes": [
-      { "label": "Limite estadual", "color": "#000000" }
-    ]
-  },
-  "eto_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "etoescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1- Muito Alta",
-        "color": "#2b83ba"
-      },
-      {
-        "value": 1.2,
-        "label": "1,2 - Alta",
-        "color": "#aaddd9"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#ffffbf"
-      },
-      {
-        "value": 1.8,
-        "label": "1,8 - Baixa",
-        "color": "#fdcb6f"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Muito Baixa",
-        "color": "#e4785a"
-      }
-    ]
-  },
-  "ia_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "ia_escores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1-Alta",
-        "color": "#2b83ba"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#fdcb6f"
-      },
-      {
-        "value": 2.0,
-        "label": "2-Baixa",
-        "color": "#e4785a"
-      }
-    ]
-  },
-  "iqc": {
-    "type": "graduated",
-    "field": "iqcescores",
-    "classes": [
-      {
-        "max": 1.216,
-        "label": "1 - 1,22 - Alta",
-        "color": "#2b83ba"
-      },
-      {
-        "max": 1.48,
-        "label": "1,22 - 1,48 - Moderada",
-        "color": "#c7e8ad"
-      },
-      {
-        "max": 1.687,
-        "label": "1,48 - 1,69 - Baixa",
-        "color": "#fec980"
-      },
-      {
-        "max": 1.817,
-        "label": "1,69 - 1,82 - Muito Baixa",
-        "color": "#d7191c"
-      }
-    ]
-  },
-  "precipitacao_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "pcpescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Muito Alta",
-        "color": "#2b83ba"
-      },
-      {
-        "value": 1.2,
-        "label": "1,2 - Alta",
-        "color": "#aaddd9"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#fdcb6f"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#e4785a"
-      }
-    ]
-  },
-  "focos_queimadas_escores_dequalidade": {
-    "type": "categorized",
-    "field": "fqescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Alta",
-        "color": "#99d594"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#ffffbf"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#f75c0f"
-      }
-    ]
-  },
-  "idhm_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "idhmescore",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Alta",
-        "color": "#91cf60"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#ffffbf"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#fc8d59"
-      }
-    ]
-  },
-  "iqm": {
-    "type": "graduated",
-    "field": "iqm",
-    "classes": [
-      {
-        "max": 1.225,
-        "label": "1 - 1,23 - Alta",
-        "color": "#1a9641"
-      },
-      {
-        "max": 1.355,
-        "label": "1,23 - 1,35 - Moderada",
-        "color": "#c4e687"
-      },
-      {
-        "max": 1.538,
-        "label": "1,35 - 1,54 - Baixa",
-        "color": "#fec981"
-      },
-      {
-        "max": 1.861,
-        "label": "1,54 - 1,86 - Muito Baixa",
-        "color": "#d7191c"
-      }
-    ]
-  },
-  "pressao_animal_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "paescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Alta",
-        "color": "#91cf60"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#ffffbf"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#fc8d59"
-      }
-    ]
-  },
-  "densidade_demografica_rural_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "drescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Muito alta",
-        "color": "#ffffb2"
-      },
-      {
-        "value": 1.4,
-        "label": "1,4 - Alta",
-        "color": "#fecc5c"
-      },
-      {
-        "value": 1.7,
-        "label": "1,7 - Moderada",
-        "color": "#f03b20"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#bd0026"
-      }
-    ]
-  },
-  "declividade_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "decescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Muito Alta",
-        "color": "#f6f6d3"
-      },
-      {
-        "value": 1.3,
-        "label": "1,3 - Alta",
-        "color": "#c6a86c"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#7a8624"
-      },
-      {
-        "value": 1.8,
-        "label": "1,8 - Baixa",
-        "color": "#de4000"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Muito Baixa",
-        "color": "#610004"
-      }
-    ]
-  },
-  "geologia_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "geoescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Muito Alta",
-        "color": "#e2c590"
-      },
-      {
-        "value": 1.3,
-        "label": "1,3 - Alta",
-        "color": "#b3844a"
-      },
-      {
-        "value": 1.5,
-        "label": "1,5 - Moderada",
-        "color": "#e37716"
-      },
-      {
-        "value": 1.8,
-        "label": "1,8 - Baixa",
-        "color": "#ab4d00"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Muito Baixa",
-        "color": "#76440b"
-      }
-    ]
-  },
-  "iqs": {
-    "type": "graduated",
-    "field": "iqs",
-    "classes": [
-      {
-        "max": 1.33,
-        "label": "1 - 1,33 - Alta",
-        "color": "#8fba5b"
-      },
-      {
-        "max": 1.48,
-        "label": "1,33 - 1,48 - Moderada",
-        "color": "#ffffc0"
-      },
-      {
-        "max": 1.61,
-        "label": "1,48 - 1,61 - Baixa",
-        "color": "#fdae61"
-      },
-      {
-        "max": 1.9,
-        "label": "1,61 - 1,9 - Muito Baixa",
-        "color": "#d7191c"
-      }
-    ]
-  },
-  "textura_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "texescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1 - Alta",
-        "color": "#d5bb87"
-      },
-      {
-        "value": 1.6,
-        "label": "1,6 - Moderada",
-        "color": "#bd9857"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#97621c"
-      }
-    ]
-  },
-  "tipos_de_solos_escores_de_qualidade": {
-    "type": "categorized",
-    "field": "solescores",
-    "classes": [
-      {
-        "value": 1.0,
-        "label": "1-Alta",
-        "color": "#ffffc2"
-      },
-      {
-        "value": 1.3,
-        "label": "1,3 - Moderada",
-        "color": "#d78022"
-      },
-      {
-        "value": 1.7,
-        "label": "1,7 - Moderada-Baixa",
-        "color": "#d79867"
-      },
-      {
-        "value": 2.0,
-        "label": "2 - Baixa",
-        "color": "#b3562b"
-      }
-    ]
-  },
-  "carbono_organico_escores_de_qualidade": {
+  "carbono_organico_escores_de_vulnerabilidade": {
     "type": "categorized",
     "field": "co_scores",
     "classes": [
       {
         "value": 1.0,
-        "label": "1 - Muito Alta",
+        "label": "1 - Muito Baixa",
         "color": "#006800"
       },
       {
         "value": 1.2,
-        "label": "1,2 - Alta",
+        "label": "1,2 -Baixa",
         "color": "#41ba45"
       },
       {
@@ -395,54 +20,168 @@
       },
       {
         "value": 1.8,
-        "label": "1,8 - Baixa",
+        "label": "1,8 - Alta",
         "color": "#f0a336"
       },
       {
         "value": 2.0,
-        "label": "2 - Muito Baixa",
+        "label": "2 - Muito Alta",
         "color": "#b14200"
       }
     ]
   },
-  "iqv": {
-    "type": "graduated",
-    "field": "iqv",
+  "declividade_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "decescores",
     "classes": [
       {
-        "max": 1.353,
-        "label": "1 - 1,35 - Alta",
-        "color": "#4ca102"
+        "value": 1.0,
+        "label": "1 - Muito Baixa",
+        "color": "#f6f6d3"
       },
       {
-        "max": 1.489,
-        "label": "1,35 - 1,49 - Moderada",
-        "color": "#ffffc0"
+        "value": 1.3,
+        "label": "1,3 - Baixa",
+        "color": "#c6a86c"
       },
       {
-        "max": 1.629,
-        "label": "1,49 - 1,63 - Baixa",
-        "color": "#fdae61"
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#7a8624"
       },
       {
-        "max": 2.0,
-        "label": "1,63 - 2 - Muito Baixa",
-        "color": "#d7191c"
+        "value": 1.8,
+        "label": "1,8 - Alta",
+        "color": "#de4000"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Muito Alta",
+        "color": "#610004"
       }
     ]
   },
-  "ndvi_escore_de_qualidade": {
+  "densidade_demografica_rural_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "drescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Muito Baixa",
+        "color": "#ffffb2"
+      },
+      {
+        "value": 1.4,
+        "label": "1,4 - Baixa",
+        "color": "#fecc5c"
+      },
+      {
+        "value": 1.7,
+        "label": "1,7 - Moderada",
+        "color": "#f03b20"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#bd0026"
+      }
+    ]
+  },
+  "eto_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "etoescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Muito Baixa",
+        "color": "#2b83ba"
+      },
+      {
+        "value": 1.2,
+        "label": "1,2 - Baixa",
+        "color": "#aaddd9"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#ffffbf"
+      },
+      {
+        "value": 1.8,
+        "label": "1,8 - Alta",
+        "color": "#fdcb6f"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Muito Alta",
+        "color": "#e4785a"
+      }
+    ]
+  },
+  "focos_queimadas_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "fqescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Baixa",
+        "color": "#99d594"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#ffffbf"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#f75c0f"
+      }
+    ]
+  },
+  "geologia_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "geoescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Muito Baixa",
+        "color": "#e2c590"
+      },
+      {
+        "value": 1.3,
+        "label": "1,3 - Baixa",
+        "color": "#b3844a"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#e37716"
+      },
+      {
+        "value": 1.8,
+        "label": "1,8 - Alta",
+        "color": "#ab4d00"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Muito Alta",
+        "color": "#76440b"
+      }
+    ]
+  },
+  "ndvi_escore_de_vulnerabilidade": {
     "type": "categorized",
     "field": "ndviscores",
     "classes": [
       {
         "value": 1.0,
-        "label": "1 - Muito Alta",
+        "label": "1 - Muito Baixa",
         "color": "#007e11"
       },
       {
         "value": 1.1,
-        "label": "1,1 - Alta",
+        "label": "1,1 - Baixa",
         "color": "#1bbe30"
       },
       {
@@ -457,28 +196,75 @@
       },
       {
         "value": 1.8,
-        "label": "1,8 - Baixa",
+        "label": "1,8 - Alta",
         "color": "#ff1e00"
       },
       {
         "value": 2.0,
-        "label": "2 - Muito Baixa",
+        "label": "2 - Muito Alta",
         "color": "#772100"
       }
     ]
   },
-  "suscetibilidade_erosao_escore_de_qualidade": {
+  "precipitacao_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "pcpescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Muito Baixa",
+        "color": "#2b83ba"
+      },
+      {
+        "value": 1.2,
+        "label": "1,2 - Baixa",
+        "color": "#aaddd9"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#fdcb6f"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#e4785a"
+      }
+    ]
+  },
+  "pressao_animal_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "paescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Baixa",
+        "color": "#91cf60"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#ffffbf"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#fc8d59"
+      }
+    ]
+  },
+  "suscetibilidade_erosao_escore_de_vulnerabilidade": {
     "type": "categorized",
     "field": "sucescores",
     "classes": [
       {
         "value": 1.0,
-        "label": "1 - Muito Alta",
+        "label": "1 - Muito Baixa",
         "color": "#006a00"
       },
       {
         "value": 1.2,
-        "label": "1,2 - Alta",
+        "label": "1,2 - Baixa",
         "color": "#5ed200"
       },
       {
@@ -488,13 +274,128 @@
       },
       {
         "value": 1.8,
-        "label": "1,8 - Baixa",
+        "label": "1,8 - Alta",
         "color": "#e69e20"
       },
       {
         "value": 2.0,
-        "label": "2 - Muito Baixa",
+        "label": "2 - Muito Alta",
         "color": "#d05803"
+      }
+    ]
+  },
+  "textura_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "texescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Baixa",
+        "color": "#d5bb87"
+      },
+      {
+        "value": 1.6,
+        "label": "1,6 - Moderada",
+        "color": "#bd9857"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#97621c"
+      }
+    ]
+  },
+  "tipos_de_solos_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "solescores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Baixa",
+        "color": "#ffffc2"
+      },
+      {
+        "value": 1.3,
+        "label": "1,3 - Moderada-Baixa",
+        "color": "#d78022"
+      },
+      {
+        "value": 1.7,
+        "label": "1,7 - Moderada",
+        "color": "#d79867"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#b3562b"
+      }
+    ]
+  },
+  "ia_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "ia_escores",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Baixa",
+        "color": "#2b83ba"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#fdcb6f"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#e4785a"
+      }
+    ]
+  },
+  "idhm_escores_de_vulnerabilidade": {
+    "type": "categorized",
+    "field": "idhmescore",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "1 - Baixa",
+        "color": "#91cf60"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 - Moderada",
+        "color": "#ffffbf"
+      },
+      {
+        "value": 2.0,
+        "label": "2 - Alta",
+        "color": "#fc8d59"
+      }
+    ]
+  },
+  "ivc": {
+    "type": "graduated",
+    "field": "ivc",
+    "classes": [
+      {
+        "max": 1.216,
+        "label": "1 - 1,22 - Muito Baixa",
+        "color": "#2b83ba"
+      },
+      {
+        "max": 1.48,
+        "label": "1,22 - 1,48 - Baixa",
+        "color": "#c7e8ad"
+      },
+      {
+        "max": 1.687,
+        "label": "1,48 - 1,69 - Moderada",
+        "color": "#fec980"
+      },
+      {
+        "max": 1.817,
+        "label": "1,69 - 1,82 - Alta",
+        "color": "#d7191c"
       }
     ]
   },
@@ -522,6 +423,112 @@
         "label": "1,502 - 1,712 - Muito Alta",
         "color": "#d7191c"
       }
+    ]
+  },
+  "ivv": {
+    "type": "graduated",
+    "field": "ivv",
+    "classes": [
+      {
+        "max": 1.353,
+        "label": "1 - 1,35 - Muito Baixa",
+        "color": "#4ca102"
+      },
+      {
+        "max": 1.489,
+        "label": "1,35 - 1,49 - Baixa",
+        "color": "#ffffc0"
+      },
+      {
+        "max": 1.629,
+        "label": "1,49 - 1,63 - Moderada",
+        "color": "#fdae61"
+      },
+      {
+        "max": 2.0,
+        "label": "1,63 - 2 - Alta",
+        "color": "#d7191c"
+      }
+    ]
+  },
+  "ivm": {
+    "type": "graduated",
+    "field": "ivm",
+    "classes": [
+      {
+        "max": 1.225,
+        "label": "1 - 1,23 - Muito Baixa",
+        "color": "#1a9641"
+      },
+      {
+        "max": 1.355,
+        "label": "1,23 - 1,35 - Baixa",
+        "color": "#c4e687"
+      },
+      {
+        "max": 1.538,
+        "label": "1,35 - 1,54 - Moderada",
+        "color": "#fec981"
+      },
+      {
+        "max": 1.861,
+        "label": "1,54 - 1,86 - Alta",
+        "color": "#d7191c"
+      }
+    ]
+  },
+  "ivs": {
+    "type": "graduated",
+    "field": "ivs",
+    "classes": [
+      {
+        "max": 1.33,
+        "label": "1 - 1,33 - Muito Baixa",
+        "color": "#8fba5b"
+      },
+      {
+        "max": 1.48,
+        "label": "1,33 - 1,48 - Baixa",
+        "color": "#ffffc0"
+      },
+      {
+        "max": 1.61,
+        "label": "1,48 - 1,61 - Moderada",
+        "color": "#fdae61"
+      },
+      {
+        "max": 1.9,
+        "label": "1,61 - 1,9 - Alta",
+        "color": "#d7191c"
+      }
+    ]
+  },
+  "municipios_pb_semiarido": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite municipal", "color": "#ffffff" }
+    ]
+  },
+  "limite_semiarido_pb": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite do Semiárido PB", "color": "#ff2424" }
+    ]
+  },
+  "estados_ne": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite estadual", "color": "#000000" }
+    ]
+  },
+  "limite_do_semiarido_br": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite do Semiárido BR", "color": "#0033cc" }
     ]
   }
 }

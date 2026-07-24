@@ -31,7 +31,7 @@ const steps = ref([
   {
     target: '#sidebar',
     title: 'Painel de Camadas',
-    text: 'É por aqui que você acessa todo o acervo de camadas temáticas do WebGIS — desde os limites municipais até os índices de qualidade do semiárido paraibano. Cada camada pode ser ativada, combinada com outras e personalizada individualmente.',
+    text: 'É por aqui que você acessa todo o acervo de camadas temáticas do WebGIS — desde os limites municipais até os índices de vulnerabilidade do semiárido paraibano. Cada camada pode ser ativada, combinada com outras e personalizada individualmente.',
     placement: 'right',
     beforeShow: () => {
       ensureSidebarOpen()
@@ -55,23 +55,23 @@ const steps = ref([
     },
   },
   {
-    target: ['#cat-block-semiarido_pb', '#cat-block-ivs', '#cat-block-indices_qualidade'],
+    target: ['#cat-block-semiarido_pb', '#cat-block-ivd_group', '#cat-block-indices_vulnerabilidade'],
     title: 'Camadas do Semiárido PB',
-    text: 'Aqui estão os dados territoriais do Semiárido Paraibano: limites do semiárido, municípios e os índices integrados de qualidade — IQS, IQV, IQC e IQM. Ative mais de uma camada ao mesmo tempo para cruzar planos de informações.',
+    text: 'Aqui estão os dados territoriais do Semiárido Paraibano: limites do semiárido, municípios e os índices integrados de vulnerabilidade — IVS, IVV, IVC e IVM. Ative mais de uma camada ao mesmo tempo para cruzar planos de informações.',
     beforeShow: () => {
       ensureSidebarOpen()
       if (!openCategories.semiarido_pb) toggleCategory('semiarido_pb')
-      if (!openCategories.ivs) toggleCategory('ivs')
-      if (!openCategories.indices_qualidade) toggleCategory('indices_qualidade')
+      if (!openCategories.ivd_group) toggleCategory('ivd_group')
+      if (!openCategories.indices_vulnerabilidade) toggleCategory('indices_vulnerabilidade')
     },
   },
   {
-    target: '#cat-content-ivs .layer-actions',
+    target: '#cat-content-ivd_group .layer-actions',
     title: 'Ferramentas de Cada Camada',
     text: 'Com uma camada ativa, você tem à disposição: legenda de classes, busca por município ou atributo específico, controle de opacidade para sobrepor camadas com clareza, e um gráfico com a distribuição de área por classe.',
     beforeShow: () => {
       ensureSidebarOpen()
-      if (!openCategories.ivs) toggleCategory('ivs')
+      if (!openCategories.ivd_group) toggleCategory('ivd_group')
     },
   },
   {

@@ -15,7 +15,7 @@ OUTPUT_JSON = BASE_DIR / "src" / "assets" / "dashboard_stats.json"
 MUNICIPIOS_LAYER = "municipios_pb_semiarido"
 
 # Camadas de índice compostas elegíveis para o cruzamento com municípios.
-INDEX_LAYERS = ["iqs", "iqv", "iqc", "iqm", "ivd_sab"]
+INDEX_LAYERS = ["ivs", "ivv", "ivc", "ivm", "ivd_sab"]
 
 COVERAGE_WARN_THRESHOLD = 0.95
 

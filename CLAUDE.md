@@ -189,11 +189,11 @@ export const OVERLAY_TREE = [
 A node is one of two things — never both:
 - **Group node** (`layer: null`, has `children`) — renders as an accordion header
   (`SidebarTreeGroup.vue`), any depth. Used for pure taxonomy levels like
-  "Índices de Qualidade" or "Escores de Qualidade" that aren't themselves a map layer.
+  "Índices de Vulnerabilidade" or "Escores de Vulnerabilidade" that aren't themselves a map layer.
 - **Leaf node** (`layer: {...}`, no `children`) — renders as a `LayerCard`.
 
-If something is **both** a toggleable layer and a parent of other layers (e.g. IQS
-is a composite index *and* has "Escores de Qualidade" beneath it), model it as a
+If something is **both** a toggleable layer and a parent of other layers (e.g. IVS
+is a composite index *and* has "Escores de Vulnerabilidade" beneath it), model it as a
 group whose **first child** is the leaf for that composite layer — do not put
 `layer` and `children` on the same node. This keeps `LayerCard.vue` free of any
 "is this also a group" branching.
@@ -232,8 +232,8 @@ layer: {
 ```
 
 > **`descFields` convention:** every entry must be a human-readable Portuguese label —
-> never use the technical field name as its own value (e.g., `{ IQS: 'IQS' }` is wrong;
-> `{ IQS: 'Índice de Qualidade do Solo' }` is correct).
+> never use the technical field name as its own value (e.g., `{ IVS: 'IVS' }` is wrong;
+> `{ IVS: 'Índice de Vulnerabilidade do Solo' }` is correct).
 > These labels surface in two places: the popup left column and the search panel header
 > (`"Buscar por <label>"`), so they must be meaningful to end users.
 
@@ -245,20 +245,26 @@ layer: {
 | Range | Use |
 |---|---|
 | 1 | Base tile layers |
-| 10–28 | Composite quality indices (IVS, IQS, IQV, IQC, IQM) and their "Escores de Qualidade" components, ordered by category |
+| 10–28 | Composite vulnerability indices (IVD, IVS, IVV, IVC, IVM) and their "Escores de Vulnerabilidade" components, ordered by category |
 | 30+ | Administrative boundaries (always on top) |
 
 ---
 
 ## Existing layers (current state)
 
-All layers cover the **Paraíba semi-arid region (Semiárido da PB)**. They come from
-the delivered branch of the information tree — IVS → Índices de Qualidade →
-IQS/IQV/IQC/IQM → Escores de Qualidade. The "Indicadores de Qualidade" branch (raw
-Pedologia/Geomorfologia/Litologia/Vegetação/Climáticos/Manejo data) has not been
-delivered yet and has no layers in the app.
+All layers cover the **Paraíba semi-arid region (Semiárido da PB)**, except
+`limite_do_semiarido_br`, which outlines the wider Brazilian semi-arid region. They
+come from the delivered branch of the information tree — IVD → Índices de
+Vulnerabilidade → IVS/IVV/IVC/IVM → Escores de Vulnerabilidade. The "Indicadores de
+Vulnerabilidade" branch (raw Pedologia/Geomorfologia/Litologia/Vegetação/Climáticos/Manejo
+data) has not been delivered yet and has no layers in the app.
 
-Every score field (`iqs`, `iqv`, `iqcescores`, `iqm`, `ivd`, and all `*escores*`
+> These categories were previously named "Índices/Escores de Qualidade" (IQS/IQV/IQC/IQM).
+> The GeoPackage delivery renamed both the taxonomy and every `sourceLayer`/field to
+> "Vulnerabilidade" (IVS/IVV/IVC/IVM) — the underlying classification (values, ranges,
+> colors) is unchanged, only the naming.
+
+Every score field (`ivs`, `ivv`, `ivc`, `ivm`, `ivd`, and all `*escores*`
 fields below) is a **continuous numeric index**, not discrete classes — matched via
 the numeric-range mode in `mapRenderer.js`/`stats.py`.
 
@@ -267,32 +273,33 @@ the numeric-range mode in `mapRenderer.js`/`stats.py`.
 | `limite_semiarido_pb` | Limites | Semiárido PB region outline (stroke-only, no popup, no chart) |
 | `municipios_pb_semiarido` | Limites | Municipal boundaries (stroke-only) |
 | `estados_ne` | Limites | Northeast state boundaries (stroke-only, no popup, no chart) |
-| `ivd_sab` | IVS | Índice de Vulnerabilidade à Desertificação (composite) |
-| `iqs` | IQS | Índice de Qualidade do Solo (composite) |
-| `declividade_escores_de_qualidade` | IQS | Slope — quality score |
-| `geologia_escores_de_qualidade` | IQS | Geology — quality score |
-| `textura_escores_de_qualidade` | IQS | Soil texture — description + quality score |
-| `tipos_de_solos_escores_de_qualidade` | IQS | Soil types — description + quality score |
-| `iqv` | IQV | Índice de Qualidade da Vegetação (composite) |
-| `ndvi_escore_de_qualidade` | IQV | NDVI — quality score |
-| `carbono_organico_escores_de_qualidade` | IQV | Soil organic carbon — quality score |
-| `suscetibilidade_erosao_escore_de_qualidade` | IQV | Water erosion susceptibility — quality score |
-| `iqc` | IQC | Índice de Qualidade Climática (composite) |
-| `ia_escores_de_qualidade` | IQC | Aridity index — quality score |
-| `precipitacao_escores_de_qualidade` | IQC | Rainfall — quality score |
-| `eto_escores_de_qualidade` | IQC | Evapotranspiration — quality score |
-| `iqm` | IQM | Índice de Qualidade de Manejo (composite) |
-| `pressao_animal_escores_de_qualidade` | IQM | Animal pressure — quality score |
-| `focos_queimadas_escores_dequalidade` | IQM | Fire outbreaks — quality score |
-| `densidade_demografica_rural_escores_de_qualidade` | IQM | Rural demographic density — quality score |
-| `idhm_escores_de_qualidade` | IQM | Municipal HDI — quality score |
+| `limite_do_semiarido_br` | Limites | Brazilian semi-arid region outline (stroke-only, no popup, no chart) |
+| `ivd_sab` | IVD | Índice de Vulnerabilidade à Desertificação (composite) |
+| `ivs` | IVS | Índice de Vulnerabilidade do Solo (composite) |
+| `declividade_escores_de_vulnerabilidade` | IVS | Slope — vulnerability score |
+| `geologia_escores_de_vulnerabilidade` | IVS | Geology — vulnerability score |
+| `textura_escores_de_vulnerabilidade` | IVS | Soil texture — description + vulnerability score |
+| `tipos_de_solos_escores_de_vulnerabilidade` | IVS | Soil types — description + vulnerability score |
+| `ivv` | IVV | Índice de Vulnerabilidade da Vegetação (composite) |
+| `ndvi_escore_de_vulnerabilidade` | IVV | NDVI — vulnerability score |
+| `carbono_organico_escores_de_vulnerabilidade` | IVV | Soil organic carbon — vulnerability score |
+| `suscetibilidade_erosao_escore_de_vulnerabilidade` | IVV | Water erosion susceptibility — vulnerability score |
+| `ivc` | IVC | Índice de Vulnerabilidade Climática (composite) |
+| `ia_escores_de_vulnerabilidade` | IVC | Aridity index — vulnerability score |
+| `precipitacao_escores_de_vulnerabilidade` | IVC | Rainfall — vulnerability score |
+| `eto_escores_de_vulnerabilidade` | IVC | Evapotranspiration — vulnerability score |
+| `ivm` | IVM | Índice de Vulnerabilidade de Manejo (composite) |
+| `pressao_animal_escores_de_vulnerabilidade` | IVM | Animal pressure — vulnerability score |
+| `focos_queimadas_escores_de_vulnerabilidade` | IVM | Fire outbreaks — vulnerability score |
+| `densidade_demografica_rural_escores_de_vulnerabilidade` | IVM | Rural demographic density — vulnerability score |
+| `idhm_escores_de_vulnerabilidade` | IVM | Municipal HDI — vulnerability score |
 
-**`municipios_pb_semiarido`, `limite_semiarido_pb` and `estados_ne` are stroke-only**
-— their entries in `src/assets/styles.json` must use `"type": "stroke"` (see the
-Styles section below for the full schema). `limite_semiarido_pb` and `estados_ne`
-also set `noPopup: true` in `layers.js` — they're pure boundary outlines with no
-attributes worth surfacing in a popup, and being stroke-only they're automatically
-skipped by `stats.py` so no chart button appears either.
+**`municipios_pb_semiarido`, `limite_semiarido_pb`, `estados_ne` and `limite_do_semiarido_br`
+are stroke-only** — their entries in `src/assets/styles.json` must use `"type": "stroke"`
+(see the Styles section below for the full schema). All four also set `noPopup: true`
+in `layers.js` (except `municipios_pb_semiarido`, which has a real popup) — they're pure
+boundary outlines with no attributes worth surfacing in a popup, and being stroke-only
+they're automatically skipped by `stats.py` so no chart button appears either.
 
 ---
 
@@ -330,33 +337,34 @@ tippecanoe \
   --force \
   data/geojson/municipios_pb_semiarido.geojson \
   data/geojson/limite_semiarido_pb.geojson \
+  data/geojson/limite_do_semiarido_br.geojson \
   data/geojson/estados_ne.geojson \
   data/geojson/ivd_sab.geojson \
-  data/geojson/iqs.geojson \
-  data/geojson/iqv.geojson \
-  data/geojson/iqc.geojson \
-  data/geojson/iqm.geojson \
-  data/geojson/declividade_escores_de_qualidade.geojson \
-  data/geojson/geologia_escores_de_qualidade.geojson \
-  data/geojson/textura_escores_de_qualidade.geojson \
-  data/geojson/tipos_de_solos_escores_de_qualidade.geojson \
-  data/geojson/ndvi_escore_de_qualidade.geojson \
-  data/geojson/carbono_organico_escores_de_qualidade.geojson \
-  data/geojson/suscetibilidade_erosao_escore_de_qualidade.geojson \
-  data/geojson/ia_escores_de_qualidade.geojson \
-  data/geojson/precipitacao_escores_de_qualidade.geojson \
-  data/geojson/eto_escores_de_qualidade.geojson \
-  data/geojson/pressao_animal_escores_de_qualidade.geojson \
-  data/geojson/focos_queimadas_escores_dequalidade.geojson \
-  data/geojson/densidade_demografica_rural_escores_de_qualidade.geojson \
-  data/geojson/idhm_escores_de_qualidade.geojson \
+  data/geojson/ivs.geojson \
+  data/geojson/ivv.geojson \
+  data/geojson/ivc.geojson \
+  data/geojson/ivm.geojson \
+  data/geojson/declividade_escores_de_vulnerabilidade.geojson \
+  data/geojson/geologia_escores_de_vulnerabilidade.geojson \
+  data/geojson/textura_escores_de_vulnerabilidade.geojson \
+  data/geojson/tipos_de_solos_escores_de_vulnerabilidade.geojson \
+  data/geojson/ndvi_escore_de_vulnerabilidade.geojson \
+  data/geojson/carbono_organico_escores_de_vulnerabilidade.geojson \
+  data/geojson/suscetibilidade_erosao_escore_de_vulnerabilidade.geojson \
+  data/geojson/ia_escores_de_vulnerabilidade.geojson \
+  data/geojson/precipitacao_escores_de_vulnerabilidade.geojson \
+  data/geojson/eto_escores_de_vulnerabilidade.geojson \
+  data/geojson/pressao_animal_escores_de_vulnerabilidade.geojson \
+  data/geojson/focos_queimadas_escores_de_vulnerabilidade.geojson \
+  data/geojson/densidade_demografica_rural_escores_de_vulnerabilidade.geojson \
+  data/geojson/idhm_escores_de_vulnerabilidade.geojson \
   data/geojson/layer_styles.geojson
 ```
 
 > `layer_styles.geojson` is the QGIS style table — include it in the command but
 > do not register it as an application layer.
 
-> The `.mbtiles` file is ~90 MB — it is gitignored. Do not commit it.
+> The `.mbtiles` file is ~138 MB — it is gitignored. Do not commit it.
 
 ### Step 3 — Delete old tiles and re-extract
 
@@ -379,8 +387,8 @@ Rows whose `f_table_name` isn't a real table in the GeoPackage are skipped
 automatically (the GeoPackage can contain stray/duplicate style rows).
 
 `singleSymbol`-styled layers (e.g. `municipios_pb_semiarido`, `limite_semiarido_pb`,
-`estados_ne` — all rendered stroke-only) are **not** captured automatically —
-add them manually.
+`estados_ne`, `limite_do_semiarido_br` — all rendered stroke-only) are **not**
+captured automatically — add them manually.
 
 > ⚠️ **`styles.py` overwrites `src/assets/styles.json` entirely.** Any manual entry
 > will be lost after every pipeline run. Always restore manual entries immediately
@@ -408,6 +416,13 @@ add them manually.
 >   "classes": [
 >     { "label": "Limite estadual", "color": "#000000" }
 >   ]
+> },
+> "limite_do_semiarido_br": {
+>   "type": "stroke",
+>   "field": null,
+>   "classes": [
+>     { "label": "Limite do Semiárido BR", "color": "#0033cc" }
+>   ]
 > }
 > ```
 
@@ -427,7 +442,7 @@ python scripts/dashboard_stats.py    # writes src/assets/dashboard_stats.json
 ```
 
 Cruza (overlay geométrico) `municipios_pb_semiarido` com cada uma das 5 camadas
-de índice composto (`iqs`, `iqv`, `iqc`, `iqm`, `ivd_sab`), produzindo valor médio
+de índice composto (`ivs`, `ivv`, `ivc`, `ivm`, `ivd_sab`), produzindo valor médio
 ponderado por área + classe dominante por município. Depende de `styles.json`
 (Step 4) — re-executar sempre que o estilo de qualquer uma dessas 5 camadas mudar.
 Veja "Dashboard de comparação" abaixo para o schema completo.
@@ -485,7 +500,7 @@ app code** — otherwise the live site points at tiles that don't exist yet.
 - [ ] Restore any manual entries in `src/assets/styles.json` (styles.py overwrites the file — see warning above)
 - [ ] If stroke-only, add entry manually to `src/assets/styles.json`
 - [ ] Re-run Step 5 (`python scripts/stats.py`) to update `src/assets/stats.json`
-- [ ] If the changed layer is one of the 5 composite indices (`iqs`/`iqv`/`iqc`/`iqm`/`ivd_sab`),
+- [ ] If the changed layer is one of the 5 composite indices (`ivs`/`ivv`/`ivc`/`ivm`/`ivd_sab`),
       also re-run Step 6 (`python scripts/dashboard_stats.py`)
 
 ### Code side
@@ -530,7 +545,7 @@ Usado pelo frontend para exibir estatísticas na legenda.
       { "label": "Alta", "area_km2": 9020.0, "color": "#30b000" }
     ],
     "total_km2": 53875.3,
-    "field_used": "iqcescores"
+    "field_used": "ivc"
   },
   "municipios_pb_semiarido": null
 }
@@ -559,8 +574,8 @@ não há chave de atributo comum para um join direto.
 ```json
 {
   "indices_meta": {
-    "iqs": { "sourceLayer": "iqs", "field_used": "iqs" },
-    "iqc": { "sourceLayer": "iqc", "field_used": "iqcescores" }
+    "ivs": { "sourceLayer": "ivs", "field_used": "ivs" },
+    "ivc": { "sourceLayer": "ivc", "field_used": "ivc" }
   },
   "municipios": {
     "2500106": {
@@ -568,15 +583,15 @@ não há chave de atributo comum para um join direto.
       "nm_municip": "Água Branca",
       "slug": "agua-branca",
       "indices": {
-        "iqs": { "value": 1.421, "class_label": "1,33 - 1,48 - Moderada", "class_color": "#ffffc0" }
+        "ivs": { "value": 1.501, "class_label": "1,48 - 1,61 - Moderada", "class_color": "#fdae61" }
       }
     }
   }
 }
 ```
 
-- `indices_meta[key].field_used` — o campo real lido em cada camada (ex. `iqc` usa
-  `iqcescores`, `ivd_sab` usa `ivd`). O frontend **nunca** hardcoda esses nomes —
+- `indices_meta[key].field_used` — o campo real lido em cada camada (ex. `ivc` usa
+  `ivc`, `ivd_sab` usa `ivd`). O frontend **nunca** hardcoda esses nomes —
   sempre resolve o label em português via `OVERLAY_LAYERS[key].descFields[field_used]`
   (`layers.js` continua a única fonte de nomes amigáveis).
 - `value` — média do índice dentro do município, ponderada pela área de cada
@@ -641,7 +656,7 @@ in the GeoPackage). Structure:
   },
   "other_layer": {
     "type": "graduated",
-    "field": "iqcescores",
+    "field": "ivc",
     "classes": [
       { "max": 1.216, "label": "1 - 1,22 - Alta", "color": "#2b83ba" },
       { "max": 1.48, "label": "1,22 - 1,48 -Moderada", "color": "#c7e8ad" }
@@ -692,7 +707,7 @@ in the GeoPackage). Structure:
 - Do not add a `bounds` option to the overlay `CustomMVTLayer` in `MapContainer.vue`
   — it silently drops tiles outside that box for any layer with a wider extent
   than the Semiárido PB region (see Key design constraint #6)
-- Do not hardcode field names (`iqs`/`iqcescores`/`ivd`/etc.) in `DashboardView.vue`
+- Do not hardcode field names (`ivs`/`ivc`/`ivd`/etc.) in `DashboardView.vue`
   — always read `field_used` from `dashboard_stats.json`
 - Do not create a Pinia store for the dashboard unless the state needs to be
   shared outside `DashboardView.vue` — index selection, sort, and filter are
