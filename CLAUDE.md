@@ -7,10 +7,10 @@ Read it fully at the start of every session before making any changes.
 
 ## Project overview
 
-WebGIS application for INSA (Instituto Nacional do Semiárido) displaying thematic
-vector layers over the Paraíba semi-arid region (Semiárido da PB). Built with
-Vue 3 + Vite. Serves vector tiles locally from `public/tiles/` — there is no
-external map server dependency at runtime.
+**DesertPB** is a WebGIS application developed by INSA (Instituto Nacional do
+Semiárido) displaying thematic vector layers over the Paraíba semi-arid region
+(Semiárido da PB). Built with Vue 3 + Vite. Serves vector tiles locally from
+`public/tiles/` — there is no external map server dependency at runtime.
 
 ---
 
@@ -39,11 +39,47 @@ No test suite is configured.
 | Vector tiles | Custom `L.GridLayer` (`MapContainer.vue`) — fetches `.pbf` per tile, decodes with `vector-tile` + `pbf`, paints to a `<canvas>` via `mapRenderer.js`. NOT `leaflet.vectorgrid` — that package isn't a dependency. |
 | Layout / UI | Bootstrap 5 |
 | Icons | Bootstrap Icons 1.x — loaded via CDN in `index.html` (no npm package) |
-| Theming | `src/composables/useTheme.js` — dark/light toggle; `data-theme` attribute on `<html>`; persisted in `localStorage` key `insa-theme`; paleta claro baseada em gov.br (`#1351B4`) |
+| Theming | `src/composables/useTheme.js` — dark/light toggle; `data-theme` attribute on `<html>`; persisted in `localStorage` key `insa-theme`; `--accent` é o verde da marca DesertPB (`#22814a` claro / `#30a661` escuro) |
 | Leaflet controls | Fullscreen, Locate, Medição e Escala implementados **nativamente** dentro do `ZoomHomeControl` em `MapContainer.vue` — sem plugins de terceiros. |
 | Charts | Chart.js 4.x — importado modularmente em `LayerChartModal.vue`/`DashboardChart.vue`/`DashboardPieChart.vue` (não registrar globalmente) |
 | Routing | vue-router 4.x — `createWebHashHistory` (GitHub Pages não tem rewrite de servidor para SPA) |
 | Linting | Oxlint + ESLint + Prettier |
+
+---
+
+## Marca (logo)
+
+A silhueta usada na marca DesertPB (favicon, navbar, `InicioView.vue`) vem do
+contorno real de `limite_semiarido_pb` (o mesmo dado que renderiza no mapa) —
+não é um desenho livre, para nunca reintroduzir a distorção que o arquivo de
+logo original tinha.
+
+- `src/assets/logo-mark-fine.svg` — mosaico de ~140 facetas triangulares, para
+  usos grandes (hero da `InicioView.vue`, >100px).
+- `src/assets/logo-mark-coarse.svg` — mesma silhueta com ~32 facetas, para
+  usos pequenos (navbar `AppNavbar.vue`, ~28px) onde o mosaico fino vira ruído.
+- `public/favicon.svg` — a versão coarse centralizada num viewBox quadrado
+  (400×400) para o ícone da aba do navegador; `index.html` referencia esse SVG
+  como ícone principal (`rel="icon"`) e mantém o `favicon.ico` antigo como
+  `rel="alternate icon"` (fallback para navegadores sem suporte a favicon SVG).
+
+Cada faceta é preenchida com uma das 4 cores reais da escala do Índice de
+Vulnerabilidade à Desertificação (IVD, ver `styles.json` → `ivd_sab`) —
+`#a6d96a` (Baixa), `#e8ffc0` (Moderada), `#fdae61` (Alta), `#d7191c` (Muito
+Alta) — sorteada aleatoriamente por faceta. As duas versões (fine/coarse) para
+uma mesma faceta space são geradas junto do polígono simplificado a partir do
+GeoPackage; **não editar os `.svg` manualmente** — regenerar via
+`geopandas`/`shapely` a partir de `limite_semiarido_pb` sempre que o contorno
+mudar (mesmo processo do Step 1 do pipeline, sem depender de nenhum script
+dedicado ainda).
+
+`--accent` (`src/assets/main.css`) foi trocado do azul original (`#0066cc` /
+`#2997ff`) para um verde derivado da mesma família de cor da marca (`#22814a`
+claro / `#30a661` escuro) — **não** é nenhuma das 4 cores exatas do IVD acima,
+de propósito: reusar uma cor de classe de vulnerabilidade como cor genérica de
+botão/UI criaria confusão semântica (ex. um botão "Explorar" na cor de "Muito
+Alta" pareceria um alerta). `--accent-secondary` continua espelhando
+`--accent` (não tem uso próprio no código hoje).
 
 ---
 
@@ -118,21 +154,22 @@ rendering can't do, since a canvas tile has no addressable per-feature DOM/layer
 
 ## Routing & navegação
 
-The app has three routes, defined in `src/router/index.js`:
+The app has four routes, defined in `src/router/index.js`:
 
 | Path | Component | Purpose |
 |---|---|---|
-| `/` | `src/views/InicioView.vue` | Landing page (placeholder — "Em construção") |
+| `/` | `src/views/InicioView.vue` | Landing page — DesertPB hero, IVD color-scale signature, feature highlights |
 | `/mapa` | `src/views/HomeView.vue` | Map (sidebar + `MapContainer`) — the original single-screen app |
 | `/dashboard` | `src/views/DashboardView.vue` | Município comparison dashboard |
+| `/sobre` | `src/views/SobreView.vue` | About page — project/institutional text + development team, always last in the nav |
 
-All three are lazy-loaded (`component: () => import(...)`) for automatic code-splitting.
+All four are lazy-loaded (`component: () => import(...)`) for automatic code-splitting.
 `createWebHashHistory` is required, not `createWebHistory` — the production build
 is published to GitHub Pages (`.github/workflows/deploy.yml`), which has no
 server-side rewrite for SPA routing; a direct reload on `/dashboard` would 404
 under history mode.
 
-`src/App.vue` renders `AppNavbar.vue` (fixed header, `<RouterLink>` to all three
+`src/App.vue` renders `AppNavbar.vue` (fixed header, `<RouterLink>` to all four
 routes) above `<RouterView />`, instead of rendering `HomeView` directly. The
 theme toggle lives in `AppNavbar.vue` (moved out of `AppSidebar.vue`) so it's
 available on every screen — `useTheme()` is a module-level singleton, so moving

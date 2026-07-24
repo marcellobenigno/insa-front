@@ -563,13 +563,13 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   padding: 4px 8px;
   border-radius: 8px;
   background: var(--bg-accent-dim);
-  border: 1px solid rgba(0, 102, 204, 0.2);
+  border: 1px solid rgba(34, 129, 74, 0.2);
   font-size: 12px;
   color: var(--accent);
 }
 
 [data-theme="dark"] .filter-badge {
-  border-color: rgba(41, 151, 255, 0.25);
+  border-color: rgba(48, 166, 97, 0.25);
 }
 
 .filter-badge strong {

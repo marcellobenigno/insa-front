@@ -100,7 +100,7 @@ const { isCollapsed, toggleSidebar } = useSidebar()
   }
 
   .sidebar-fab:hover {
-    background: #0066cc;
+    background: var(--accent);
     color: #ffffff;
   }
 

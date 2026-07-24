@@ -1,5 +1,6 @@
 <script setup>
 import { useTheme } from '@/composables/useTheme'
+import logoMark from '@/assets/logo-mark-coarse.svg'
 
 const { isDark, toggleTheme } = useTheme()
 </script>
@@ -7,8 +8,8 @@ const { isDark, toggleTheme } = useTheme()
 <template>
   <header class="app-navbar">
     <RouterLink to="/" class="navbar-brand">
-      <span class="brand-logo" aria-hidden="true"><i class="bi bi-geo-alt-fill" /></span>
-      <span class="brand-name">INSA <span class="brand-accent">WebGIS</span></span>
+      <img :src="logoMark" class="brand-logo" alt="" aria-hidden="true" />
+      <span class="brand-name"><span class="brand-accent">Desert</span>PB</span>
     </RouterLink>
 
     <nav class="navbar-links" aria-label="Navegação principal">
@@ -20,6 +21,9 @@ const { isDark, toggleTheme } = useTheme()
       </RouterLink>
       <RouterLink to="/dashboard" class="nav-link" active-class="is-active">
         <i class="bi bi-bar-chart-line" aria-hidden="true" /> Dashboard
+      </RouterLink>
+      <RouterLink to="/sobre" class="nav-link" active-class="is-active">
+        <i class="bi bi-info-circle" aria-hidden="true" /> Sobre
       </RouterLink>
     </nav>
 
@@ -57,16 +61,10 @@ const { isDark, toggleTheme } = useTheme()
 }
 
 .brand-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #ffffff;
-  font-size: 13px;
+  height: 26px;
+  width: auto;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 .brand-name {
