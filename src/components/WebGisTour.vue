@@ -17,8 +17,13 @@ function ensureSidebarOpen() {
 const steps = ref([
   {
     target: null,
-    title: 'Conheça o WebGIS do Semiárido PB',
-    text: 'Esta ferramenta tem como objetivo apoiar o monitoramento da desertificação e da degradação das terras no Semiárido Paraibano. Aqui você visualiza o mapeamento produzido pelo INSA das áreas desertificadas e em processo de desertificação no estado da Paraíba. Use as setas abaixo para explorar os recursos disponíveis.',
+    title: 'Conheça o DesertPB',
+    text: 'O DesertPB é o WebGIS do INSA para monitorar a vulnerabilidade à desertificação no Semiárido Paraibano, cruzando índices de solo, vegetação, clima e manejo da terra. Esta é a tela do Mapa — use as setas abaixo para explorar os recursos disponíveis aqui.',
+  },
+  {
+    target: '.navbar-links',
+    title: 'Navegação do Sistema',
+    text: 'Além do Mapa, o DesertPB tem mais três telas: Início traz a visão geral do projeto, Dashboard compara os municípios pelos índices de vulnerabilidade, e Sobre reúne o histórico do projeto e a equipe de desenvolvimento.',
   },
   {
     target: '.sidebar-collapse-btn',
