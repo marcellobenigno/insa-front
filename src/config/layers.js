@@ -135,7 +135,7 @@ export const OVERLAY_TREE = [
           url: VECTOR_TILES_URL,
           sourceLayer: 'limite_do_semiarido_br',
           zIndex: 34,
-          active: false,
+          active: true,
           noPopup: true,
         },
       },

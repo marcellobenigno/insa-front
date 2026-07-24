@@ -435,7 +435,10 @@ function syncVectorOverlays(desired) {
               ctx.lineWidth   = 1
               ctx.globalAlpha = 0.15 * currentOpacity
             } else {
-              const baseWidth = sourceLayer === 'limite_semiarido_pb' ? 3 : 1.5
+              const baseWidth =
+                sourceLayer === 'limite_semiarido_pb' || sourceLayer === 'limite_do_semiarido_br'
+                  ? 3
+                  : 1.5
               ctx.strokeStyle = color
               ctx.lineWidth   = activeFilter && isMatch ? baseWidth + 1 : baseWidth
               ctx.globalAlpha = 0.9 * currentOpacity

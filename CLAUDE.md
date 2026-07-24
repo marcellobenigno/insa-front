@@ -421,7 +421,7 @@ captured automatically — add them manually.
 >   "type": "stroke",
 >   "field": null,
 >   "classes": [
->     { "label": "Limite do Semiárido BR", "color": "#0033cc" }
+>     { "label": "Limite do Semiárido BR", "color": "#ffd700" }
 >   ]
 > }
 > ```
