@@ -1,5 +1,6 @@
 <script setup>
 import logoMark from '@/assets/logo-mark-fine.svg'
+import HeroCarousel from '@/components/HeroCarousel.vue'
 
 const features = [
   {
@@ -23,7 +24,7 @@ const features = [
 <template>
   <div class="inicio-view">
     <section class="hero">
-      <div class="hero-grid-bg" aria-hidden="true" />
+      <HeroCarousel />
 
       <div class="hero-inner">
         <img :src="logoMark" class="hero-mark" alt="" aria-hidden="true" />
@@ -38,29 +39,32 @@ const features = [
         <p class="hero-lead">
           Sistema de Informações Geográficas para a vulnerabilidade à desertificação
         </p>
+      </div>
+    </section>
 
-        <p class="hero-body">
-          O DesertPB reúne, em um só lugar, o mapeamento da vulnerabilidade à desertificação no
-          semiárido paraibano. Ao cruzar indicadores de solo, vegetação, clima e manejo do
-          território, a plataforma aponta onde a degradação avança com mais intensidade — e
-          serve de base técnica para as políticas públicas estaduais de combate à
-          desertificação e de recuperação de áreas degradadas.
-        </p>
+    <section class="hero-intro">
+      <p class="hero-body">
+        O DesertPB reúne, em um só lugar, o mapeamento da vulnerabilidade à desertificação no
+        semiárido paraibano. Ao cruzar indicadores de solo, vegetação, clima e manejo do
+        território, a plataforma aponta onde a degradação avança com mais intensidade — e
+        serve de base técnica para as políticas públicas estaduais de combate à
+        desertificação e de recuperação de áreas degradadas.
+      </p>
 
-        <div class="hero-ctas">
-          <RouterLink to="/mapa" class="btn-cta btn-cta-primary">
-            <i class="bi bi-map" aria-hidden="true" />
-            Explorar o mapa
-          </RouterLink>
-          <RouterLink to="/dashboard" class="btn-cta btn-cta-ghost">
-            <i class="bi bi-bar-chart-line" aria-hidden="true" />
-            Ver dashboard
-          </RouterLink>
-        </div>
+      <div class="hero-ctas">
+        <RouterLink to="/mapa" class="btn-cta btn-cta-primary">
+          <i class="bi bi-map" aria-hidden="true" />
+          Explorar o mapa
+        </RouterLink>
+        <RouterLink to="/dashboard" class="btn-cta btn-cta-ghost">
+          <i class="bi bi-bar-chart-line" aria-hidden="true" />
+          Ver dashboard
+        </RouterLink>
       </div>
     </section>
 
     <section class="ivd-scale" aria-label="Escala do Índice de Vulnerabilidade à Desertificação">
+      <div class="ivd-scale-accent" aria-hidden="true" />
       <p class="ivd-scale-caption">Índice de Vulnerabilidade à Desertificação (IVD)</p>
       <div class="ivd-scale-bar" role="img" aria-label="Escala de cores: verde (baixa) a vermelho (muito alta)" />
       <div class="ivd-scale-labels">
@@ -93,22 +97,25 @@ const features = [
   position: relative;
   display: flex;
   justify-content: center;
-  padding: 72px 24px 56px;
+  padding: 72px 24px 88px;
   overflow: hidden;
 }
 
-.hero-grid-bg {
+.hero::after {
+  content: '';
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, var(--border-color) 1px, transparent 1px);
-  background-size: 26px 26px;
-  opacity: 0.5;
-  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 30%, #000 40%, transparent 100%);
-  mask-image: radial-gradient(ellipse 60% 55% at 50% 30%, #000 40%, transparent 100%);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--bg-app) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-inner {
   position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 720px;
   display: flex;
@@ -134,7 +141,8 @@ const features = [
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   animation: fade-up 0.6s var(--transition-curve) 0.03s both;
 }
 
@@ -151,25 +159,33 @@ const features = [
   font-size: clamp(42px, 7vw, 64px);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--text-main);
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
   animation: fade-up 0.6s var(--transition-curve) 0.05s both;
 }
 
 .hero-lead {
-  margin: 0 0 18px;
+  margin: 0;
   font-size: clamp(16px, 2.4vw, 19px);
   font-weight: 500;
-  color: var(--text-main);
-  opacity: 0.82;
+  color: #ffffff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
   animation: fade-up 0.6s var(--transition-curve) 0.1s both;
 }
 
+/* ── Hero intro (fora da área do carrossel) ──────────────────────────────── */
+.hero-intro {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 40px 24px 0;
+  text-align: center;
+}
+
 .hero-body {
-  margin: 0 0 32px;
+  margin: 0 0 28px;
   font-size: 15px;
   line-height: 1.7;
   color: var(--text-muted);
-  max-width: 620px;
   animation: fade-up 0.6s var(--transition-curve) 0.15s both;
 }
 
@@ -178,7 +194,6 @@ const features = [
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 24px;
   animation: fade-up 0.6s var(--transition-curve) 0.2s both;
 }
 
@@ -238,7 +253,16 @@ const features = [
 .ivd-scale {
   max-width: 620px;
   margin: 0 auto;
-  padding: 0 24px 56px;
+  padding: 96px 24px 56px;
+  text-align: center;
+}
+
+.ivd-scale-accent {
+  width: 36px;
+  height: 3px;
+  margin: 0 auto 18px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #a6d96a 0%, #e8ffc0 34%, #fdae61 67%, #d7191c 100%);
 }
 
 .ivd-scale-caption {
@@ -313,7 +337,11 @@ const features = [
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
   .hero {
-    padding: 56px 20px 40px;
+    padding: 56px 20px 64px;
+  }
+
+  .ivd-scale {
+    padding-top: 72px;
   }
 
   .features {

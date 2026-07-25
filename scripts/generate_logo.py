@@ -1,6 +1,7 @@
 """
-Gera a marca DesertPB (src/assets/logo-mark-fine.svg, logo-mark-coarse.svg e
-public/favicon.svg) a partir do contorno real de limite_semiarido_pb.
+Gera a marca DesertPB (src/assets/logo-mark-fine.svg, logo-mark-coarse.svg,
+public/favicon.svg e public/favicon.ico) a partir do contorno real de
+limite_semiarido_pb.
 
 Cada "pixel" da marca é um pequeno retângulo, colorido de acordo com o valor
 médio real do IVD (camada ivd_sab) naquele ponto do território, classificado
@@ -13,12 +14,15 @@ Não editar os .svg gerados manualmente — regenerar este script sempre que
 limite_semiarido_pb ou ivd_sab mudarem no GeoPackage.
 """
 
+import io
 import json
 import math
 from pathlib import Path
 
+import cairosvg
 import geopandas as gpd
 import numpy as np
+from PIL import Image
 from shapely.geometry import box
 from shapely.ops import unary_union
 from shapely.strtree import STRtree
@@ -30,6 +34,8 @@ STYLES_PATH = ROOT / "src" / "assets" / "styles.json"
 FINE_OUT = ROOT / "src" / "assets" / "logo-mark-fine.svg"
 COARSE_OUT = ROOT / "src" / "assets" / "logo-mark-coarse.svg"
 FAVICON_OUT = ROOT / "public" / "favicon.svg"
+FAVICON_ICO_OUT = ROOT / "public" / "favicon.ico"
+FAVICON_ICO_SIZES = [16, 32, 48, 64, 128, 256]
 
 FINE_COLS = 40
 COARSE_COLS = 15
@@ -152,6 +158,18 @@ def render_svg(pixels, bounds, border_geom, out_path, viewbox_w=400, translate_y
     return viewbox_h
 
 
+def render_favicon_ico(svg_path, out_path, sizes=FAVICON_ICO_SIZES):
+    """Gera o favicon.ico (fallback para navegadores sem suporte a SVG) a
+    partir do favicon.svg já renderizado, para os dois nunca ficarem
+    dessincronizados."""
+    frames = []
+    for size in sizes:
+        png_bytes = cairosvg.svg2png(url=str(svg_path), output_width=size, output_height=size)
+        frames.append(Image.open(io.BytesIO(png_bytes)).convert("RGBA"))
+    frames[-1].save(out_path, format="ICO", sizes=[(s, s) for s in sizes], append_images=frames[:-1])
+    print(f"wrote {out_path.relative_to(ROOT)} ({len(sizes)} sizes)")
+
+
 def main():
     poly, ivd = load_data()
     classes = load_classes()
@@ -165,6 +183,7 @@ def main():
 
     translate_y = (400 - vh) / 2
     render_svg(coarse_pixels, coarse_bounds, poly, FAVICON_OUT, translate_y=translate_y)
+    render_favicon_ico(FAVICON_OUT, FAVICON_ICO_OUT)
 
 
 if __name__ == "__main__":

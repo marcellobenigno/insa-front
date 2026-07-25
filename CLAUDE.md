@@ -71,13 +71,21 @@ de vulnerabilidade do estado, não uma textura decorativa.
   usos pequenos (navbar `AppNavbar.vue`, ~28px) onde a grade fina vira ruído.
 - `public/favicon.svg` — a versão coarse centralizada num viewBox quadrado
   (400×400) para o ícone da aba do navegador; `index.html` referencia esse SVG
-  como ícone principal (`rel="icon"`) e mantém o `favicon.ico` antigo como
-  `rel="alternate icon"` (fallback para navegadores sem suporte a favicon SVG).
+  como ícone principal (`rel="icon"`).
+- `public/favicon.ico` — renderizado a partir do `favicon.svg` (via `cairosvg`
+  + `Pillow`, 6 resoluções: 16/32/48/64/128/256px), referenciado em
+  `index.html` como `rel="alternate icon"` (fallback para navegadores sem
+  suporte a favicon SVG). **Sempre gerado a partir do SVG atual** — nunca
+  deixar o `.ico` ficar de uma versão antiga da marca; o silhueta bilobada do
+  semiárido fica com aparência "borrada" em 16–32px independente do estilo
+  (mosaico triangular ou grade de pixels), isso é uma limitação da forma em
+  ícones pequenos, não um bug do gerador.
 
-**Não editar os `.svg` manualmente** — regenerar com
+**Não editar os `.svg`/`.ico` manualmente** — regenerar com
 `python scripts/generate_logo.py` (lê `limite_semiarido_pb` e `ivd_sab` do
-GeoPackage + as faixas de `styles.json`) sempre que o contorno do semiárido ou
-os dados/faixas do IVD mudarem.
+GeoPackage + as faixas de `styles.json`; precisa de `cairosvg` e `Pillow`
+instalados) sempre que o contorno do semiárido ou os dados/faixas do IVD
+mudarem.
 
 `--accent` (`src/assets/main.css`) foi trocado do azul original (`#0066cc` /
 `#2997ff`) para um verde derivado da mesma família de cor da marca (`#22814a`
@@ -86,6 +94,36 @@ de propósito: reusar uma cor de classe de vulnerabilidade como cor genérica de
 botão/UI criaria confusão semântica (ex. um botão "Explorar" na cor de "Muito
 Alta" pareceria um alerta). `--accent-secondary` continua espelhando
 `--accent` (não tem uso próprio no código hoje).
+
+---
+
+## Jumbotron da tela inicial (`src/components/HeroCarousel.vue`)
+
+Carrossel de fotos reais do semiárido paraibano (caatinga, vista aérea de
+drone, afloramentos de granito) usado como **fundo** de `.hero` em
+`InicioView.vue` — `position: absolute; inset: 0; z-index: 0`, atrás de
+`.hero-inner` (logo, eyebrow, título, texto e CTAs, `z-index: 1`), não como
+uma seção separada abaixo do hero. Por isso o texto do hero usa cores claras
+fixas (branco/quase-branco + `text-shadow`) em vez de `var(--text-main)` —
+sobre uma foto, a cor de texto do tema claro ficaria ilegível; o scrim escuro
+do carrossel (`.carousel-scrim`) garante contraste nos dois temas. Autoplay
+com crossfade + leve zoom (Ken Burns), pausa em hover/foco e quando a aba fica
+em segundo plano (`visibilitychange`), respeita `prefers-reduced-motion`
+(desativa autoplay e zoom). Sem legenda de local por decisão de produto — só o
+crédito do fotógrafo, obrigatório pela licença.
+
+- Imagens em `public/images/semiarido/*.jpg` — todas do Wikimedia Commons, com
+  licença CC BY / CC BY-SA que **exige atribuição**. Cada slide carrega seu
+  crédito (fotógrafo + licença) em `slides` no `<script setup>` do componente
+  e o exibe sobreposto na foto (canto inferior esquerdo) — **não remover o
+  crédito** ao editar o componente, é obrigação da licença, não decoração.
+- Para trocar/adicionar uma foto: baixar do Commons (checar a licença é
+  reutilizável), redimensionar para no máximo ~2000px de largura mantendo
+  proporção (`Pillow`, JPEG qualidade ~80, progressive), salvar em
+  `public/images/semiarido/` e adicionar a entrada em `slides` (`src` via
+  `` `${import.meta.env.BASE_URL}images/semiarido/<arquivo>.jpg` `` — nunca um
+  caminho absoluto `/images/...` fixo, o app é publicado sob `/insa-front/`
+  no GitHub Pages).
 
 ---
 
