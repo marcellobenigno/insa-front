@@ -1,5 +1,5 @@
 <script setup>
-import logoLockup from '@/assets/logo-lockup-coarse.svg'
+import logoLockup from '@/assets/logo-lockup-fine.svg'
 
 const team = [
   {

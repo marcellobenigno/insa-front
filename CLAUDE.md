@@ -84,19 +84,25 @@ de vulnerabilidade do estado, não uma textura decorativa.
   semiárido fica com aparência "borrada" em 16–32px independente do estilo
   (mosaico triangular ou grade de pixels), isso é uma limitação da forma em
   ícones pequenos, não um bug do gerador.
-- `src/assets/logo-lockup-fine.svg` / `logo-lockup-coarse.svg` — o ícone
-  (fine ou coarse, mesma grade dos arquivos acima) com o wordmark "DESERTPB"
-  embutido no próprio SVG (não é texto HTML ao lado do ícone), empilhado bem
-  colado na base da silhueta (6 unidades de espaço). Usado onde o nome da
-  marca precisa aparecer junto ao ícone como uma peça só:
-  - **fine** → hero da `InicioView.vue` (`hero-mark`, 300px). Não existe mais
-    um `<h1>DesertPB</h1>` de texto separado abaixo — o `<img>` em si é quem
+- `src/assets/logo-lockup-fine.svg` — o ícone fine (mesma grade de
+  `logo-mark-fine.svg`) com o wordmark "DESERTPB" embutido no próprio SVG
+  (não é texto HTML ao lado do ícone), empilhado bem colado na base da
+  silhueta (6 unidades de espaço). É **a versão "completa" da marca hoje** —
+  usada nos dois lugares onde o nome precisa aparecer junto ao ícone como uma
+  peça só:
+  - hero da `InicioView.vue` (`hero-mark`, 300px). Não existe mais um
+    `<h1>DesertPB</h1>` de texto separado abaixo — o `<img>` em si é quem
     fica dentro do `<h1>` (`.hero-mark-heading`, com `alt="DesertPB"`), pra
     manter só um heading real na página sem duplicar o nome visualmente.
-  - **coarse** → cabeçalho da `SobreView.vue` (`sobre-mark`, ~190px).
+  - cabeçalho da `SobreView.vue` (`sobre-mark`, ~190px).
   - **Não usado no navbar** (`AppNavbar.vue`) — lá é só o ícone
     (`logo-mark-coarse.svg`, sem nome nenhum ao lado); o link já tem
     `aria-label="DesertPB — Início"` pra não perder o nome acessível.
+- `src/assets/logo-lockup-coarse.svg` — mesma ideia, mas sobre a grade
+  coarse. Gerada, mas **não referenciada em nenhuma view hoje** (a
+  `SobreView.vue` também passou a usar a fine, que tem mais detalhe e fica
+  bem mesmo em ~190px); mantida no gerador como opção pra um contexto futuro
+  bem pequeno que precise do lockup completo (ex. um card estreito).
   - As letras são uma fonte de pixel própria (grade 5×7 por glifo, só
     maiúsculas, ver `WORDMARK_GLYPHS` em `generate_logo.py`) — uma fonte lisa
     (`system-ui`) foi tentada primeiro e destoava do mosaico de blocos do
