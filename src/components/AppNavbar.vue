@@ -13,17 +13,18 @@ const { isDark, toggleTheme } = useTheme()
     </RouterLink>
 
     <nav class="navbar-links" aria-label="Navegação principal">
-      <RouterLink to="/" class="nav-link" exact-active-class="is-active">
-        <i class="bi bi-house" aria-hidden="true" /> Início
+      <RouterLink to="/" class="nav-link" title="Início" exact-active-class="is-active">
+        <i class="bi bi-house" aria-hidden="true" /> <span class="nav-link-label">Início</span>
       </RouterLink>
-      <RouterLink to="/mapa" class="nav-link" active-class="is-active">
-        <i class="bi bi-map" aria-hidden="true" /> Mapa
+      <RouterLink to="/mapa" class="nav-link" title="Mapa" active-class="is-active">
+        <i class="bi bi-map" aria-hidden="true" /> <span class="nav-link-label">Mapa</span>
       </RouterLink>
-      <RouterLink to="/dashboard" class="nav-link" active-class="is-active">
-        <i class="bi bi-bar-chart-line" aria-hidden="true" /> Dashboard
+      <RouterLink to="/dashboard" class="nav-link" title="Dashboard" active-class="is-active">
+        <i class="bi bi-bar-chart-line" aria-hidden="true" />
+        <span class="nav-link-label">Dashboard</span>
       </RouterLink>
-      <RouterLink to="/sobre" class="nav-link" active-class="is-active">
-        <i class="bi bi-info-circle" aria-hidden="true" /> Sobre
+      <RouterLink to="/sobre" class="nav-link" title="Sobre" active-class="is-active">
+        <i class="bi bi-info-circle" aria-hidden="true" /> <span class="nav-link-label">Sobre</span>
       </RouterLink>
     </nav>
 
@@ -136,5 +137,29 @@ const { isDark, toggleTheme } = useTheme()
 
 .toggle-btn:active {
   transform: scale(0.95);
+}
+
+@media (max-width: 480px) {
+  .app-navbar {
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  .brand-name {
+    display: none;
+  }
+
+  .navbar-links {
+    gap: 0;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    padding: 6px 8px;
+  }
+
+  .nav-link-label {
+    display: none;
+  }
 }
 </style>

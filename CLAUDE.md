@@ -54,24 +54,30 @@ contorno real de `limite_semiarido_pb` (o mesmo dado que renderiza no mapa) —
 não é um desenho livre, para nunca reintroduzir a distorção que o arquivo de
 logo original tinha.
 
-- `src/assets/logo-mark-fine.svg` — mosaico de ~140 facetas triangulares, para
-  usos grandes (hero da `InicioView.vue`, >100px).
-- `src/assets/logo-mark-coarse.svg` — mesma silhueta com ~32 facetas, para
-  usos pequenos (navbar `AppNavbar.vue`, ~28px) onde o mosaico fino vira ruído.
+A marca é uma grade de "pixels" (pequenos retângulos, com um espaçamento fino
+entre eles) recortada pelo contorno real do semiárido, com um contorno sutil
+(`stroke` preto, baixa opacidade) acompanhando a silhueta por cima. Cada pixel
+é colorido com uma das 4 cores reais da escala do Índice de Vulnerabilidade à
+Desertificação (IVD, ver `styles.json` → `ivd_sab`) — `#a6d96a` (Baixa),
+`#e8ffc0` (Moderada), `#fdae61` (Alta), `#d7191c` (Muito Alta) — escolhida
+pelo valor **médio real do IVD** (`ivd_sab`) amostrado naquele ponto do
+território, não aleatoriamente: a marca é uma miniatura fiel do heatmap real
+de vulnerabilidade do estado, não uma textura decorativa.
+
+- `src/assets/logo-mark-fine.svg` — grade de 40 colunas (~550 pixels visíveis
+  após o recorte pelo polígono), para usos grandes (hero da `InicioView.vue`,
+  >100px).
+- `src/assets/logo-mark-coarse.svg` — grade de 15 colunas (~85 pixels), para
+  usos pequenos (navbar `AppNavbar.vue`, ~28px) onde a grade fina vira ruído.
 - `public/favicon.svg` — a versão coarse centralizada num viewBox quadrado
   (400×400) para o ícone da aba do navegador; `index.html` referencia esse SVG
   como ícone principal (`rel="icon"`) e mantém o `favicon.ico` antigo como
   `rel="alternate icon"` (fallback para navegadores sem suporte a favicon SVG).
 
-Cada faceta é preenchida com uma das 4 cores reais da escala do Índice de
-Vulnerabilidade à Desertificação (IVD, ver `styles.json` → `ivd_sab`) —
-`#a6d96a` (Baixa), `#e8ffc0` (Moderada), `#fdae61` (Alta), `#d7191c` (Muito
-Alta) — sorteada aleatoriamente por faceta. As duas versões (fine/coarse) para
-uma mesma faceta space são geradas junto do polígono simplificado a partir do
-GeoPackage; **não editar os `.svg` manualmente** — regenerar via
-`geopandas`/`shapely` a partir de `limite_semiarido_pb` sempre que o contorno
-mudar (mesmo processo do Step 1 do pipeline, sem depender de nenhum script
-dedicado ainda).
+**Não editar os `.svg` manualmente** — regenerar com
+`python scripts/generate_logo.py` (lê `limite_semiarido_pb` e `ivd_sab` do
+GeoPackage + as faixas de `styles.json`) sempre que o contorno do semiárido ou
+os dados/faixas do IVD mudarem.
 
 `--accent` (`src/assets/main.css`) foi trocado do azul original (`#0066cc` /
 `#2997ff`) para um verde derivado da mesma família de cor da marca (`#22814a`

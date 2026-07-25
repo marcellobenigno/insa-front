@@ -1,4 +1,6 @@
 <script setup>
+import logoMark from '@/assets/logo-mark-coarse.svg'
+
 const team = [
   {
     name: 'Ricardo da Cunha Correia Lima',
@@ -40,7 +42,7 @@ function initials(name) {
 <template>
   <div class="sobre-view">
     <section class="sobre-hero">
-      <p class="sobre-eyebrow">DesertPB</p>
+      <img :src="logoMark" class="sobre-mark" alt="" aria-hidden="true" />
       <h1>Sobre</h1>
     </section>
 
@@ -104,14 +106,11 @@ function initials(name) {
   text-align: center;
 }
 
-.sobre-eyebrow {
-  margin: 0 0 10px;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
+.sobre-mark {
+  width: 96px;
+  height: auto;
+  margin-bottom: 18px;
+  animation: sobre-fade-up 0.6s var(--transition-curve) both;
 }
 
 .sobre-hero h1 {
@@ -120,6 +119,25 @@ function initials(name) {
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-main);
+  animation: sobre-fade-up 0.6s var(--transition-curve) 0.05s both;
+}
+
+@keyframes sobre-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sobre-mark,
+  .sobre-hero h1 {
+    animation: none;
+  }
 }
 
 /* ── Institutional text ──────────────────────────────────────────────────── */

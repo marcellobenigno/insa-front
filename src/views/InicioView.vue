@@ -57,12 +57,6 @@ const features = [
             Ver dashboard
           </RouterLink>
         </div>
-
-        <p class="hero-stats">
-          <span><strong>198</strong> municípios monitorados</span>
-          <span class="stats-sep" aria-hidden="true" />
-          <span><strong>~52.590</strong> km² de semiárido mapeados</span>
-        </p>
       </div>
     </section>
 
@@ -124,10 +118,9 @@ const features = [
 }
 
 .hero-mark {
-  width: 128px;
+  width: 230px;
   height: auto;
   margin-bottom: 24px;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.12));
   animation: fade-up 0.6s var(--transition-curve) both;
 }
 
@@ -207,46 +200,16 @@ const features = [
   transform: translateY(-1px);
 }
 
-.btn-cta-primary {
-  background: var(--accent);
-  color: var(--text-on-accent);
-  box-shadow: 0 4px 14px var(--bg-accent-dim);
-}
-
-.btn-cta-primary:hover {
-  background: var(--accent-hover);
-}
-
+.btn-cta-primary,
 .btn-cta-ghost {
-  background: var(--card-bg);
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
+  background: #6b7280;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
+.btn-cta-primary:hover,
 .btn-cta-ghost:hover {
-  background: var(--card-bg-hover);
-}
-
-.hero-stats {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font-size: 13px;
-  color: var(--text-dim);
-  animation: fade-up 0.6s var(--transition-curve) 0.25s both;
-}
-
-.hero-stats strong {
-  color: var(--text-main);
-  font-weight: 700;
-}
-
-.stats-sep {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--border-color);
+  background: #575e68;
 }
 
 @keyframes fade-up {
@@ -266,8 +229,7 @@ const features = [
   .hero-title,
   .hero-lead,
   .hero-body,
-  .hero-ctas,
-  .hero-stats {
+  .hero-ctas {
     animation: none;
   }
 }
@@ -363,15 +325,6 @@ const features = [
   .hero-eyebrow {
     font-size: 11px;
     text-align: center;
-  }
-
-  .hero-stats {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .stats-sep {
-    display: none;
   }
 }
 </style>
