@@ -7,9 +7,8 @@ const { isDark, toggleTheme } = useTheme()
 
 <template>
   <header class="app-navbar">
-    <RouterLink to="/" class="navbar-brand">
+    <RouterLink to="/" class="navbar-brand" aria-label="DesertPB — Início">
       <img :src="logoMark" class="brand-logo" alt="" aria-hidden="true" />
-      <span class="brand-name"><span class="brand-accent">Desert</span>PB</span>
     </RouterLink>
 
     <nav class="navbar-links" aria-label="Navegação principal">
@@ -66,18 +65,6 @@ const { isDark, toggleTheme } = useTheme()
   width: auto;
   flex-shrink: 0;
   display: block;
-}
-
-.brand-name {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  color: var(--text-main);
-  white-space: nowrap;
-}
-
-.brand-accent {
-  color: var(--accent);
 }
 
 .navbar-links {
@@ -143,10 +130,6 @@ const { isDark, toggleTheme } = useTheme()
   .app-navbar {
     gap: 8px;
     padding: 0 10px;
-  }
-
-  .brand-name {
-    display: none;
   }
 
   .navbar-links {

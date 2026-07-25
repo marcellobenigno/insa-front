@@ -1,5 +1,5 @@
 <script setup>
-import logoMark from '@/assets/logo-mark-fine.svg'
+import logoLockup from '@/assets/logo-lockup-fine.svg'
 import HeroCarousel from '@/components/HeroCarousel.vue'
 
 const features = [
@@ -27,14 +27,16 @@ const features = [
       <HeroCarousel />
 
       <div class="hero-inner">
-        <img :src="logoMark" class="hero-mark" alt="" aria-hidden="true" />
+        <div class="hero-mark-wrap">
+          <h1 class="hero-mark-heading">
+            <img :src="logoLockup" class="hero-mark" alt="DesertPB" />
+          </h1>
+        </div>
 
         <p class="hero-eyebrow">
           Semiárido da Paraíba <span class="eyebrow-dot" aria-hidden="true" /> Monitoramento da
           Desertificação
         </p>
-
-        <h1 class="hero-title">DesertPB</h1>
 
         <p class="hero-lead">
           Sistema de Informações Geográficas para a vulnerabilidade à desertificação
@@ -124,11 +126,23 @@ const features = [
   text-align: center;
 }
 
-.hero-mark {
-  width: 230px;
-  height: auto;
-  margin-bottom: 24px;
+.hero-mark-wrap {
+  position: relative;
+  margin-bottom: 28px;
   animation: fade-up 0.6s var(--transition-curve) both;
+}
+
+.hero-mark-heading {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  line-height: 0;
+}
+
+.hero-mark {
+  width: 300px;
+  height: auto;
+  display: block;
 }
 
 .hero-eyebrow {
@@ -152,16 +166,6 @@ const features = [
   border-radius: 50%;
   background: var(--accent);
   flex-shrink: 0;
-}
-
-.hero-title {
-  margin: 0 0 14px;
-  font-size: clamp(42px, 7vw, 64px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #ffffff;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
-  animation: fade-up 0.6s var(--transition-curve) 0.05s both;
 }
 
 .hero-lead {
@@ -239,9 +243,8 @@ const features = [
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-mark,
+  .hero-mark-wrap,
   .hero-eyebrow,
-  .hero-title,
   .hero-lead,
   .hero-body,
   .hero-ctas {

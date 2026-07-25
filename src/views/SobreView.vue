@@ -1,5 +1,5 @@
 <script setup>
-import logoMark from '@/assets/logo-mark-coarse.svg'
+import logoLockup from '@/assets/logo-lockup-coarse.svg'
 
 const team = [
   {
@@ -42,7 +42,7 @@ function initials(name) {
 <template>
   <div class="sobre-view">
     <section class="sobre-hero">
-      <img :src="logoMark" class="sobre-mark" alt="" aria-hidden="true" />
+      <img :src="logoLockup" class="sobre-mark" alt="DesertPB" />
       <h1>Sobre</h1>
     </section>
 
@@ -107,7 +107,7 @@ function initials(name) {
 }
 
 .sobre-mark {
-  width: 96px;
+  width: 190px;
   height: auto;
   margin-bottom: 18px;
   animation: sobre-fade-up 0.6s var(--transition-curve) both;
