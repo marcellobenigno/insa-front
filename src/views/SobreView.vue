@@ -37,6 +37,9 @@ function initials(name) {
   const parts = name.split(' ').filter(Boolean)
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
+
+const coordinator = team.find((member) => member.tag)
+const members = team.filter((member) => !member.tag)
 </script>
 
 <template>
@@ -77,13 +80,23 @@ function initials(name) {
     <section class="team-section">
       <h2>Equipe de desenvolvimento</h2>
 
+      <div class="team-lead-wrap">
+        <article class="team-card team-lead">
+          <span class="team-avatar" aria-hidden="true">{{ initials(coordinator.name) }}</span>
+          <div class="team-info">
+            <h3>{{ coordinator.name }}</h3>
+            <p>{{ coordinator.role }}</p>
+            <span class="team-tag">{{ coordinator.tag }}</span>
+          </div>
+        </article>
+      </div>
+
       <div class="team-grid">
-        <article v-for="member in team" :key="member.name" class="team-card">
+        <article v-for="member in members" :key="member.name" class="team-card">
           <span class="team-avatar" aria-hidden="true">{{ initials(member.name) }}</span>
           <div class="team-info">
             <h3>{{ member.name }}</h3>
             <p>{{ member.role }}</p>
-            <span v-if="member.tag" class="team-tag">{{ member.tag }}</span>
           </div>
         </article>
       </div>
@@ -201,6 +214,12 @@ function initials(name) {
   text-align: center;
 }
 
+.team-lead-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -222,6 +241,28 @@ function initials(name) {
 .team-card:hover {
   transform: translateY(-2px);
   background: var(--card-bg-hover);
+}
+
+/* Coordenador — card único e centralizado acima da grade, mesmo
+   background/borda dos demais, só maior e com layout vertical. */
+.team-lead {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+  padding: 24px 28px;
+  text-align: center;
+}
+
+.team-lead .team-avatar {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.team-lead .team-tag {
+  margin-top: 10px;
 }
 
 .team-avatar {
