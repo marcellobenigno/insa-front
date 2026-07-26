@@ -174,7 +174,15 @@ atrás do texto (pílula com `backdrop-filter: blur()`, pílula com fundo
 sólido, moldura arredondada com gradiente + borda), todas descartadas por não
 ficarem boas visualmente, o contraste do texto em si vem de dentro do próprio
 SVG (contorno branco grosso + sombra projetada em cada letra, ver seção
-"Marca" acima) — **sem** nenhuma forma com borda/edge atrás dele.
+"Marca" acima) — **sem** nenhuma forma com borda/edge atrás dele. Depois
+disso, `.hero-mark-glow` foi adicionado atrás do **ícone+wordmark inteiro**
+(não só o texto): um `radial-gradient` bem grande (`inset: -20% -14%`) e sem
+nenhuma borda, só escurecendo levemente a foto ao redor da logo com uma
+transição suave até transparente — não é a mesma coisa que as
+pílulas/molduras rejeitadas (que tinham uma borda/edge visível); é
+propositalmente discreto. Se for ajustar esse elemento, manter essa
+diferença: nada de `border`, `box-shadow` com edge definida, ou
+`backdrop-filter`.
 
 - Imagens em `public/images/semiarido/*.jpg` — a maioria do Wikimedia Commons
   (CC BY / CC BY-SA, **exige atribuição**), mais 4 do Pixabay (licença

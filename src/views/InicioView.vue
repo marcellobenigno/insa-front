@@ -6,18 +6,18 @@ const features = [
   {
     icon: 'bi-layers',
     title: 'Camadas temáticas',
-    text: 'Mais de 20 camadas georreferenciadas cruzam solo, vegetação, clima e manejo do território.',
+    text: 'Mais de 20 camadas georreferenciadas cruzam dados de solo, vegetação, clima e manejo do território.'
   },
   {
     icon: 'bi-graph-up-arrow',
-    title: 'Índices de vulnerabilidade',
-    text: 'IVS, IVV, IVC e IVM sintetizados no Índice de Vulnerabilidade à Desertificação (IVD).',
+    title: 'Índices de Vulnerabilidade',
+    text: 'Índices de vulnerabilidade do solo, vegetação, clima e manejo — sintetizados no Índice de Vulnerabilidade à Desertificação (IVD).'
   },
   {
     icon: 'bi-building',
     title: 'Apoio a políticas públicas',
-    text: 'Dados técnicos para orientar o combate à desertificação e a recuperação de áreas degradadas.',
-  },
+    text: 'Dados técnicos para orientar o combate à desertificação e a recuperação de áreas degradadas.'
+  }
 ]
 </script>
 
@@ -28,25 +28,18 @@ const features = [
 
       <div class="hero-inner">
         <div class="hero-mark-wrap">
+          <div class="hero-mark-glow" aria-hidden="true" />
           <h1 class="hero-mark-heading">
             <img :src="logoLockup" class="hero-mark" alt="DesertPB" />
           </h1>
         </div>
 
-        <p class="hero-eyebrow">
-          Semiárido da Paraíba <span class="eyebrow-dot" aria-hidden="true" /> Monitoramento da
-          Desertificação
-        </p>
-
-        <p class="hero-lead">
-          Sistema de Informações Geográficas para a vulnerabilidade à desertificação
-        </p>
       </div>
     </section>
 
     <section class="hero-intro">
       <p class="hero-body">
-        O DesertPB reúne, em um só lugar, o mapeamento da vulnerabilidade à desertificação no
+        O <strong>DesertPB</strong> reúne, em um só lugar, o mapeamento da vulnerabilidade à desertificação no
         semiárido paraibano. Ao cruzar indicadores de solo, vegetação, clima e manejo do
         território, a plataforma aponta onde a degradação avança com mais intensidade — e
         serve de base técnica para as políticas públicas estaduais de combate à
@@ -68,7 +61,8 @@ const features = [
     <section class="ivd-scale" aria-label="Escala do Índice de Vulnerabilidade à Desertificação">
       <div class="ivd-scale-accent" aria-hidden="true" />
       <p class="ivd-scale-caption">Índice de Vulnerabilidade à Desertificação (IVD)</p>
-      <div class="ivd-scale-bar" role="img" aria-label="Escala de cores: verde (baixa) a vermelho (muito alta)" />
+      <div class="ivd-scale-bar" role="img"
+           aria-label="Escala de cores: verde (baixa) a vermelho (muito alta)" />
       <div class="ivd-scale-labels">
         <span>Baixa</span>
         <span>Moderada</span>
@@ -130,6 +124,22 @@ const features = [
   position: relative;
   margin-bottom: 28px;
   animation: fade-up 0.6s var(--transition-curve) both;
+}
+
+/* Fundo discreto atrás do ícone+wordmark — sem forma/borda visível, só um
+   degradê radial suave que escurece um pouco a foto ao redor da logo pra
+   destacá-la, sem parecer um adesivo colado por cima (já tentado antes). */
+.hero-mark-glow {
+  position: absolute;
+  inset: -20% -14%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.22) 42%,
+    rgba(0, 0, 0, 0) 72%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-mark-heading {
@@ -211,8 +221,8 @@ const features = [
   font-weight: 600;
   text-decoration: none;
   transition: transform var(--transition-speed) var(--transition-curve),
-    background var(--transition-speed) var(--transition-curve),
-    box-shadow var(--transition-speed) var(--transition-curve);
+  background var(--transition-speed) var(--transition-curve),
+  box-shadow var(--transition-speed) var(--transition-curve);
 }
 
 .btn-cta:hover {
@@ -256,7 +266,7 @@ const features = [
 .ivd-scale {
   max-width: 620px;
   margin: 0 auto;
-  padding: 96px 24px 56px;
+  padding: 48px 24px 50px;
   text-align: center;
 }
 
@@ -310,7 +320,7 @@ const features = [
   border-radius: 14px;
   padding: 22px 20px;
   transition: transform var(--transition-speed) var(--transition-curve),
-    background var(--transition-speed) var(--transition-curve);
+  background var(--transition-speed) var(--transition-curve);
 }
 
 .feature-card:hover {
@@ -356,6 +366,10 @@ const features = [
   .hero-eyebrow {
     font-size: 11px;
     text-align: center;
+  }
+
+  .hero-ctas {
+    gap: 8px;
   }
 }
 </style>
