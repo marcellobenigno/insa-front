@@ -32,6 +32,26 @@ const slides = [
     alt: 'Árvore sem folhas típica da caatinga, silhuetada contra um céu azul com nuvens, cercada por vegetação seca.',
     credit: 'IoannesCarolus / Wikimedia Commons, CC BY-SA 4.0',
   },
+  {
+    src: `${import.meta.env.BASE_URL}images/semiarido/caatinga-xique-xique.jpg`,
+    alt: 'Vegetação típica da caatinga paraibana, com cactos xique-xique entre arbustos secos, sob céu azul com nuvens.',
+    credit: 'Pixabay',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/semiarido/cacto-flor-vermelha.jpg`,
+    alt: 'Cacto com flores vermelhas vibrantes em meio à vegetação da caatinga.',
+    credit: 'ISPN — Instituto Sociedade, População e Natureza',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/semiarido/lajedo-por-do-sol.jpg`,
+    alt: 'Pôr do sol visto por uma formação de granito no Lajedo de Pai Mateus, em Cabaceiras.',
+    credit: 'Outdooractive / Wikimedia Commons',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/semiarido/cactos-serra-ao-fundo.jpg`,
+    alt: 'Cactos altos da caatinga em primeiro plano, com serras ao fundo sob céu azul.',
+    credit: 'Pixabay',
+  },
 ]
 
 const current = ref(0)
@@ -39,7 +59,7 @@ const prefersReducedMotion =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 let timer = null
-const INTERVAL_MS = 6500
+const INTERVAL_MS = 4200
 
 function goTo(index) {
   current.value = (index + slides.length) % slides.length
@@ -147,6 +167,11 @@ onBeforeUnmount(() => {
 .carousel-track {
   position: absolute;
   inset: 0;
+  /* Cria um contexto de empilhamento próprio: o z-index:1 do slide ativo
+     (abaixo, usado pra ele ficar por cima durante o crossfade) precisa
+     ficar contido aqui dentro — sem isso ele "vaza" e cobre as setas, os
+     dots e o crédito, que são irmãos de .carousel-track fora dele. */
+  z-index: 0;
 }
 
 .carousel-slide {
@@ -154,11 +179,12 @@ onBeforeUnmount(() => {
   inset: 0;
   margin: 0;
   opacity: 0;
-  transition: opacity 1.1s ease;
+  transition: opacity 1.3s var(--transition-curve);
 }
 
 .carousel-slide.is-active {
   opacity: 1;
+  z-index: 1;
 }
 
 .carousel-img {
@@ -166,12 +192,31 @@ onBeforeUnmount(() => {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 8s linear;
-  transform: scale(1);
+  filter: blur(6px);
+  transition: transform 5.5s linear, filter 1.3s var(--transition-curve);
+}
+
+/* Ken Burns alternado: fotos em posição ímpar dão um leve zoom-in, as
+   pares um leve zoom-out + pan sutil na direção oposta — evita o efeito
+   repetitivo de "zoom pra dentro" igual em toda foto do carrossel. */
+.carousel-slide:nth-of-type(odd) .carousel-img {
+  transform: scale(1) translate3d(0, 0, 0);
+}
+
+.carousel-slide:nth-of-type(odd).is-active .carousel-img {
+  transform: scale(1.09) translate3d(-1%, 0, 0);
+}
+
+.carousel-slide:nth-of-type(even) .carousel-img {
+  transform: scale(1.09) translate3d(1%, 0, 0);
+}
+
+.carousel-slide:nth-of-type(even).is-active .carousel-img {
+  transform: scale(1) translate3d(0, 0, 0);
 }
 
 .carousel-slide.is-active .carousel-img {
-  transform: scale(1.08);
+  filter: blur(0);
 }
 
 .carousel-scrim {
@@ -270,9 +315,14 @@ onBeforeUnmount(() => {
   }
 
   .carousel-img,
-  .carousel-slide.is-active .carousel-img {
+  .carousel-slide.is-active .carousel-img,
+  .carousel-slide:nth-of-type(odd) .carousel-img,
+  .carousel-slide:nth-of-type(odd).is-active .carousel-img,
+  .carousel-slide:nth-of-type(even) .carousel-img,
+  .carousel-slide:nth-of-type(even).is-active .carousel-img {
     transition: none;
     transform: none;
+    filter: none;
   }
 }
 </style>

@@ -135,33 +135,55 @@ Alta" pareceria um alerta). `--accent-secondary` continua espelhando
 
 ## Jumbotron da tela inicial (`src/components/HeroCarousel.vue`)
 
-Carrossel de fotos reais do semiárido paraibano (caatinga, vista aérea de
-drone, afloramentos de granito) usado como **fundo** de `.hero` em
-`InicioView.vue` — `position: absolute; inset: 0; z-index: 0`, atrás de
-`.hero-inner` (logo, eyebrow e texto, `z-index: 1`), não como uma seção
-separada abaixo do hero. Por isso o texto do hero usa cores claras fixas
-(branco/quase-branco + `text-shadow`) em vez de `var(--text-main)` — sobre uma
-foto, a cor de texto do tema claro ficaria ilegível; o scrim escuro do
-carrossel (`.carousel-scrim`) garante contraste nos dois temas. Autoplay com
-crossfade + leve zoom (Ken Burns), pausa em hover/foco e quando a aba fica em
-segundo plano (`visibilitychange`), respeita `prefers-reduced-motion`
-(desativa autoplay e zoom). Sem legenda de local por decisão de produto — só o
-crédito do fotógrafo, obrigatório pela licença.
+Carrossel de 10 fotos reais do semiárido paraibano (caatinga, vista aérea de
+drone, afloramentos de granito, cactos em flor, pôr do sol no Lajedo de Pai
+Mateus) usado como **fundo** de `.hero` em `InicioView.vue` —
+`position: absolute; inset: 0; z-index: 0`, atrás de `.hero-inner` (logo,
+eyebrow e texto, `z-index: 1`), não como uma seção separada abaixo do hero.
+Por isso o texto do hero usa cores claras fixas (branco/quase-branco +
+`text-shadow`) em vez de `var(--text-main)` — sobre uma foto, a cor de texto
+do tema claro ficaria ilegível; o scrim escuro do carrossel
+(`.carousel-scrim`) garante contraste nos dois temas.
+
+O slide ativo (`.carousel-slide.is-active`) usa `z-index: 1` pra ficar por
+cima durante o crossfade — por isso `.carousel-track` precisa do seu próprio
+`z-index: 0` (cria um contexto de empilhamento que contém esse `1`). Sem
+isso, o slide ativo "vaza" para fora de `.carousel-track` e cobre as setas,
+os dots e o crédito (que são irmãos de `.carousel-track`, não filhos) — já
+aconteceu uma vez. Se adicionar mais `z-index` dentro de `.carousel-track`
+no futuro, manter esse contexto de empilhamento no lugar.
+
+Autoplay a cada `INTERVAL_MS` (4200ms). Crossfade de 1.3s em
+`var(--transition-curve)` (a mesma curva de easing do resto do app, não uma
+curva improvisada só pro carrossel) + Ken Burns **alternado**: fotos em
+posição ímpar (`:nth-of-type(odd)`) dão um leve zoom-in, as pares um leve
+zoom-out com pan sutil na direção oposta — evita o efeito repetitivo de "zoom
+pra dentro" igual em toda foto. A foto que está entrando também ganha um
+leve efeito de foco (`filter: blur(6px)` → `blur(0)`, mesma duração do
+crossfade), como um "puxão de foco" de câmera. Pausa em hover/foco e quando a
+aba fica em segundo plano (`visibilitychange`), respeita
+`prefers-reduced-motion` (desativa autoplay, zoom, pan e blur — ver o bloco
+`@media (prefers-reduced-motion: reduce)`, que precisa repetir os mesmos
+seletores `:nth-of-type` com a mesma especificidade pra realmente cancelar o
+transform, não só zerar a versão "genérica"). Sem legenda de local por
+decisão de produto — só o crédito do fotógrafo, obrigatório pela licença.
 
 O wordmark pixelizado embutido no `logo-lockup-fine.svg` também precisa de
-contraste contra a foto — depois de três tentativas com uma forma atrás do
-texto (pílula com `backdrop-filter: blur()`, pílula com fundo sólido, moldura
-arredondada com gradiente), todas descartadas por não ficarem boas
-visualmente, a solução final **não tem nenhum elemento atrás do texto**: o
-contraste vem de dentro do próprio SVG (contorno branco grosso + sombra
-projetada em cada letra, ver seção "Marca" acima). Não reintroduzir uma
-placa/moldura em `.hero-mark-wrap` — já foi tentado múltiplas vezes.
+contraste contra a foto — depois de três tentativas com uma forma *visível*
+atrás do texto (pílula com `backdrop-filter: blur()`, pílula com fundo
+sólido, moldura arredondada com gradiente + borda), todas descartadas por não
+ficarem boas visualmente, o contraste do texto em si vem de dentro do próprio
+SVG (contorno branco grosso + sombra projetada em cada letra, ver seção
+"Marca" acima) — **sem** nenhuma forma com borda/edge atrás dele.
 
-- Imagens em `public/images/semiarido/*.jpg` — todas do Wikimedia Commons, com
-  licença CC BY / CC BY-SA que **exige atribuição**. Cada slide carrega seu
-  crédito (fotógrafo + licença) em `slides` no `<script setup>` do componente
-  e o exibe sobreposto na foto (canto inferior esquerdo) — **não remover o
-  crédito** ao editar o componente, é obrigação da licença, não decoração.
+- Imagens em `public/images/semiarido/*.jpg` — a maioria do Wikimedia Commons
+  (CC BY / CC BY-SA, **exige atribuição**), mais 4 do Pixabay (licença
+  Pixabay, atribuição opcional mas mantida por transparência) e uma do ISPN
+  (Instituto Sociedade, População e Natureza). Cada slide carrega seu crédito
+  em `slides` no `<script setup>` do componente e o exibe sobreposto na foto
+  (canto inferior esquerdo) — **não remover o crédito** ao editar o
+  componente, é obrigação da licença nas fotos do Commons, e boa prática nas
+  demais.
 - Para trocar/adicionar uma foto: baixar do Commons (checar a licença é
   reutilizável), redimensionar para no máximo ~2000px de largura mantendo
   proporção (`Pillow`, JPEG qualidade ~80, progressive), salvar em
