@@ -282,6 +282,13 @@ The app has four routes, defined in `src/router/index.js`:
 | `/dashboard` | `src/views/DashboardView.vue` | Município comparison dashboard |
 | `/sobre` | `src/views/SobreView.vue` | About page — project/institutional text + development team, always last in the nav |
 
+Em `SobreView.vue`, o array `team` usa a presença do campo `tag` pra marcar o
+coordenador do projeto — `coordinator = team.find((m) => m.tag)` /
+`members = team.filter((m) => !m.tag)` — e não a posição no array. Ele
+ganha um card próprio centralizado (`.team-lead`) acima da grade 2 colunas
+dos demais. Só um membro deve ter `tag` preenchido; adicionar `tag` a mais
+de um quebra esse split (`find` só pega o primeiro).
+
 All four are lazy-loaded (`component: () => import(...)`) for automatic code-splitting.
 `createWebHashHistory` is required, not `createWebHistory` — the production build
 is published to GitHub Pages (`.github/workflows/deploy.yml`), which has no
