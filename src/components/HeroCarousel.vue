@@ -305,7 +305,7 @@ onBeforeUnmount(() => {
 
 @media (max-width: 720px) {
   .carousel-arrow {
-    display: none;
+    opacity: 1;
   }
 }
 
