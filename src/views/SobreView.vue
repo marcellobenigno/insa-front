@@ -62,18 +62,24 @@ const members = team.filter((member) => !member.tag)
       </p>
 
       <div class="sobre-tags">
-        <span class="sobre-tag">
-          <i class="bi bi-file-earmark-text" aria-hidden="true" />
-          Emenda Parlamentar Individual nº 27140008/2024
-        </span>
-        <span class="sobre-tag">
+        <a
+          href="https://www.gov.br/insa/pt-br"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sobre-tag"
+        >
           <i class="bi bi-building" aria-hidden="true" />
           Instituto Nacional do Semiárido (INSA)
-        </span>
-        <span class="sobre-tag">
+        </a>
+        <a
+          href="https://www.gov.br/mcti/pt-br"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sobre-tag"
+        >
           <i class="bi bi-bank" aria-hidden="true" />
           Ministério da Ciência, Tecnologia e Inovação
-        </span>
+        </a>
       </div>
     </section>
 
@@ -190,6 +196,16 @@ const members = team.filter((member) => !member.tag)
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
+  text-decoration: none;
+  transition: transform var(--transition-speed) var(--transition-curve),
+    background var(--transition-speed) var(--transition-curve),
+    color var(--transition-speed) var(--transition-curve);
+}
+
+.sobre-tag:hover {
+  transform: translateY(-1px);
+  background: var(--card-bg-hover);
+  color: var(--text-main);
 }
 
 .sobre-tag .bi {
