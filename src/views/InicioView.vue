@@ -319,13 +319,6 @@ const features = [
   border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 22px 20px;
-  transition: transform var(--transition-speed) var(--transition-curve),
-  background var(--transition-speed) var(--transition-curve);
-}
-
-.feature-card:hover {
-  transform: translateY(-2px);
-  background: var(--card-bg-hover);
 }
 
 .feature-card > .bi {

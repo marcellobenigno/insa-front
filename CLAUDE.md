@@ -85,11 +85,11 @@ de vulnerabilidade do estado, não uma textura decorativa.
   (mosaico triangular ou grade de pixels), isso é uma limitação da forma em
   ícones pequenos, não um bug do gerador.
 - `src/assets/logo-lockup-fine.svg` — o ícone fine (mesma grade de
-  `logo-mark-fine.svg`) com o wordmark "DESERTPB" embutido no próprio SVG
-  (não é texto HTML ao lado do ícone), empilhado bem colado na base da
-  silhueta (6 unidades de espaço). É **a versão "completa" da marca hoje** —
-  usada nos dois lugares onde o nome precisa aparecer junto ao ícone como uma
-  peça só:
+  `logo-mark-fine.svg`) com o wordmark "DesertPB" embutido no próprio SVG
+  (não é texto HTML ao lado do ícone), empilhado logo abaixo da silhueta
+  (`WORDMARK_VGAP` de espaço). É **a versão "completa" da marca hoje** — usada
+  nos dois lugares onde o nome precisa aparecer junto ao ícone como uma peça
+  só:
   - hero da `InicioView.vue` (`hero-mark`, 300px). Não existe mais um
     `<h1>DesertPB</h1>` de texto separado abaixo — o `<img>` em si é quem
     fica dentro do `<h1>` (`.hero-mark-heading`, com `alt="DesertPB"`), pra
@@ -103,24 +103,59 @@ de vulnerabilidade do estado, não uma textura decorativa.
   `SobreView.vue` também passou a usar a fine, que tem mais detalhe e fica
   bem mesmo em ~190px); mantida no gerador como opção pra um contexto futuro
   bem pequeno que precise do lockup completo (ex. um card estreito).
-  - As letras são uma fonte de pixel própria (grade 5×7 por glifo, só
-    maiúsculas, ver `WORDMARK_GLYPHS` em `generate_logo.py`) — uma fonte lisa
-    (`system-ui`) foi tentada primeiro e destoava do mosaico de blocos do
-    ícone; a fonte de pixel usa a mesma linguagem visual.
-  - Todas as letras são pretas (`#000000`, cor pedida explicitamente — uma
-    versão anterior tinha "PB" em vermelho, descartada) com contorno branco
-    grosso (`stroke-width: 1`, não um traço sutil) e uma sombra projetada em
-    SVG (`<filter id="wordmark-shadow"><feDropShadow ...>`, aplicada só ao
-    grupo do texto). Contorno + sombra é o que garante contraste contra
-    qualquer fundo — nenhuma moldura/placa atrás do texto (foi tentado, ver
-    "Jumbotron" abaixo, e descartado). O SVG é estático (`<img>`, sem acesso
-    a `data-theme`), então essa combinação precisa funcionar sozinha nos dois
-    temas sem poder trocar de cor.
+  - O wordmark "DesertPB" é **texto SVG de verdade** (`<text>`, ver
+    `render_lockup_svg` em `generate_logo.py`), na mesma pilha de fontes do
+    corpo do site (`WORDMARK_FONT_FAMILY` = a mesma lista de `body {
+    font-family }` em `src/assets/base.css`) — não uma fonte de pixel própria
+    imitando o mosaico do ícone (existiu uma versão assim antes; descartada a
+    pedido do usuário, que queria correspondência visual com o resto do site
+    em vez de uma estética "retrô" isolada). Usar a mesma lista de fallbacks
+    (não só a fonte "ideal") importa: em quem visita fora do macOS/Safari,
+    onde `-apple-system`/`BlinkMacSystemFont` não existem, a marca cai no
+    mesmo fallback que o restante do texto do site cai para aquele
+    visitante — ao contrário de converter o texto em contornos vetoriais
+    fixos (o que congelaria pra sempre a fonte da máquina que rodou o
+    gerador, e poderia destoar da fonte real exibida pelo navegador de quem
+    acessa o site). `font-weight: 700`, o mesmo peso dos títulos mais
+    proeminentes do site (ex. `.feature-card h2`).
+  - `WORDMARK_CANVAS_W`/`WORDMARK_CANVAS_H` reservam uma área generosa pro
+    texto — texto SVG não dá pra medir com exatidão em tempo de geração (a
+    largura real varia por fonte/plataforma), e um `<img>` sempre recorta no
+    `viewBox` (não respeita `overflow: visible` da própria tag `<svg>`), então
+    a margem existe pra nunca cortar "DesertPB" em negrito em nenhuma fonte
+    do fallback, calibrada visualmente comparando várias fontes candidatas.
+  - "Desert" é preto (`#000000`, cor pedida explicitamente) e "PB" é vermelho
+    (`#ff2424`, a pedido do usuário) — o mesmo vermelho do contorno de
+    `limite_semiarido_pb` em `styles.json` ("Limite do Semiárido PB"): as
+    letras "PB" (Paraíba) na mesma cor que desenha a fronteira da Paraíba no
+    mapa, não um vermelho arbitrário. Implementado com um `<tspan fill=...>`
+    só em "PB" dentro do mesmo `<text>`.
+  - **Centralização é manual, não via `text-anchor="middle"`** —
+    `measure_text_width` (`generate_logo.py`) mede o avanço horizontal do
+    texto com `cairo.Context.text_extents` (fonte de referência só pra
+    medida, `WORDMARK_MEASURE_FONT = "Arial"`) e o `<text>` usa
+    `text-anchor="start"` com `x` calculado a partir dessa medida. Isso porque
+    `text-anchor="middle"` com um `<tspan>` de cor diferente no meio (sem
+    `x`/`y` próprios) depende do renderizador calcular certo o "text chunk"
+    combinado — o `cairosvg` usado pra pré-visualizar durante o
+    desenvolvimento **não** calcula isso direito (empurra o tspan pra fora da
+    tela); `text-anchor="start"` não tem essa ambiguidade em nenhum
+    renderizador, então a marca não fica refém desse comportamento.
+  - Contorno branco grosso (`stroke-width: 3`, `paint-order="stroke"` — o
+    traço é pintado *atrás* do preenchimento; sem isso, o traço centralizado
+    no contorno da letra "come" metade da própria tinta e afina hastes finas)
+    e uma sombra projetada em SVG (`<filter id="wordmark-shadow"><feDropShadow
+    ...>`, aplicada só ao grupo do texto). Contorno + sombra é o que garante
+    contraste contra qualquer fundo — nenhuma moldura/placa atrás do texto
+    (foi tentado, ver "Jumbotron" abaixo, e descartado). O SVG é estático
+    (`<img>`, sem acesso a `data-theme`), então essa combinação precisa
+    funcionar sozinha nos dois temas sem poder trocar de cor.
 
 **Não editar os `.svg`/`.ico` manualmente** — regenerar com
 `python scripts/generate_logo.py` (lê `limite_semiarido_pb` e `ivd_sab` do
-GeoPackage + as faixas de `styles.json`; precisa de `cairosvg` e `Pillow`
-instalados) sempre que o contorno do semiárido ou os dados/faixas do IVD
+GeoPackage + as faixas de `styles.json`; precisa de `cairosvg`, `cairocffi` e
+`Pillow` instalados — `cairocffi` normalmente já vem junto como dependência do
+`cairosvg`) sempre que o contorno do semiárido ou os dados/faixas do IVD
 mudarem.
 
 `--accent` (`src/assets/main.css`) foi trocado do azul original (`#0066cc` /

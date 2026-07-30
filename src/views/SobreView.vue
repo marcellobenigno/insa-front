@@ -6,30 +6,37 @@ const team = [
     name: 'Ricardo da Cunha Correia Lima',
     role: 'Engenheiro Eletricista, Doutor em Recursos Naturais',
     tag: 'Coordenador do projeto',
+    lattes: 'http://lattes.cnpq.br/1991607303660971',
   },
   {
     name: 'Daiana Caroline Refati',
     role: 'Geógrafa, Mestre em Desenvolvimento Rural Sustentável',
+    lattes: 'http://lattes.cnpq.br/0151271333652553',
   },
   {
     name: 'Jéssica Sousa Dantas',
     role: 'Engenheira Agrícola e Ambiental, Doutoranda em Meteorologia',
+    lattes: 'http://lattes.cnpq.br/5017616908612303',
   },
   {
     name: 'Marcello Benigno Borges de Barros Filho',
     role: 'Engenheiro Civil, Mestre em Ciências Geodésicas e Tecnologias da Geoinformação',
+    lattes: 'http://lattes.cnpq.br/9018602479662912',
   },
   {
     name: 'Mariana da Silva de Siqueira',
     role: 'Engenheira de Biossistemas, Doutora em Meteorologia',
+    lattes: 'http://lattes.cnpq.br/0754929803491263',
   },
   {
     name: 'Santana Lívia de Lima',
     role: 'Engenheira de Biossistemas, Doutora em Meteorologia',
+    lattes: 'http://lattes.cnpq.br/9724080345845333',
   },
   {
     name: 'Welinágila Grangeiro de Sousa',
     role: 'Engenheira de Biossistemas, Doutora em Meteorologia',
+    lattes: 'http://lattes.cnpq.br/7521514754114151',
   },
 ]
 
@@ -54,11 +61,11 @@ const members = team.filter((member) => !member.tag)
         O <strong>DesertPB</strong> é um WEBGIS fruto do projeto de pesquisa intitulado
         “Monitoramento com a utilização de ferramentas digitais, na mitigação do processo de
         desertificação com uso de palma forrageira no estado da Paraíba”, objeto da Emenda
-        Parlamentar Individual nº 27140008/2024. Desenvolvido pelo Instituto Nacional do
-        Semiárido, unidade de pesquisa do Ministério da Ciência, Tecnologia e Inovação, o sistema
-        permite verificar o estado de vulnerabilidade à desertificação na região semiárida
-        paraibana, através de índices de vulnerabilidade do solo, vegetação, clima e manejo da
-        terra, calculados por uma série de indicadores ambientais e socioeconômicos.
+        Parlamentar Individual nº 27140008/2024. Desenvolvido pelo Instituto Nacional do Semiárido,
+        unidade de pesquisa do Ministério da Ciência, Tecnologia e Inovação, o sistema permite
+        verificar o estado de vulnerabilidade à desertificação na região semiárida paraibana,
+        através de índices de vulnerabilidade do solo, vegetação, clima e manejo da terra,
+        calculados por uma série de indicadores ambientais e socioeconômicos.
       </p>
 
       <div class="sobre-tags">
@@ -90,7 +97,16 @@ const members = team.filter((member) => !member.tag)
         <article class="team-card team-lead">
           <span class="team-avatar" aria-hidden="true">{{ initials(coordinator.name) }}</span>
           <div class="team-info">
-            <h3>{{ coordinator.name }}</h3>
+            <h3>
+              <a
+                :href="coordinator.lattes"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="team-name-link"
+              >
+                {{ coordinator.name }}
+              </a>
+            </h3>
             <p>{{ coordinator.role }}</p>
             <span class="team-tag">{{ coordinator.tag }}</span>
           </div>
@@ -101,7 +117,16 @@ const members = team.filter((member) => !member.tag)
         <article v-for="member in members" :key="member.name" class="team-card">
           <span class="team-avatar" aria-hidden="true">{{ initials(member.name) }}</span>
           <div class="team-info">
-            <h3>{{ member.name }}</h3>
+            <h3>
+              <a
+                :href="member.lattes"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="team-name-link"
+              >
+                {{ member.name }}
+              </a>
+            </h3>
             <p>{{ member.role }}</p>
           </div>
         </article>
@@ -197,7 +222,8 @@ const members = team.filter((member) => !member.tag)
   font-weight: 500;
   color: var(--text-muted);
   text-decoration: none;
-  transition: transform var(--transition-speed) var(--transition-curve),
+  transition:
+    transform var(--transition-speed) var(--transition-curve),
     background var(--transition-speed) var(--transition-curve),
     color var(--transition-speed) var(--transition-curve);
 }
@@ -250,13 +276,6 @@ const members = team.filter((member) => !member.tag)
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 14px;
-  transition: transform var(--transition-speed) var(--transition-curve),
-    background var(--transition-speed) var(--transition-curve);
-}
-
-.team-card:hover {
-  transform: translateY(-2px);
-  background: var(--card-bg-hover);
 }
 
 /* Coordenador — card único e centralizado acima da grade, mesmo
@@ -322,6 +341,19 @@ const members = team.filter((member) => !member.tag)
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+}
+
+/* Nome do participante linka pro Currículo Lattes — único efeito de hover
+   nos cards da equipe (o card em si e o avatar não reagem a hover). */
+.team-name-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-speed) var(--transition-curve);
+}
+
+.team-name-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 /* ── Responsive ───────────────────────────────────────────────────────────── */
