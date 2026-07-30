@@ -198,6 +198,17 @@ watch(selectedIndex, () => {
   border-color: var(--accent);
 }
 
+/* O Chrome não aplica o `background` do <select> ao popup nativo das
+   <option> — sem isso, elas caem no branco padrão do navegador, e no tema
+   escuro o texto (herdado de --text-main, quase branco) fica quase invisível
+   sobre esse fundo. Precisa ser uma cor sólida (não `--btn-bg`, que é
+   translúcida e pensada pra compor sobre o fundo do app, não sobre o branco
+   nativo do popup). */
+.index-select option {
+  background: var(--card-bg);
+  color: var(--text-main);
+}
+
 .index-select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--bg-accent-dim);

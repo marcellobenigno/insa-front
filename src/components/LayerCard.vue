@@ -556,6 +556,15 @@ const hasLegend = computed(() => legendItems.value.length > 0 || !!props.legend)
   box-shadow: 0 0 0 3px var(--bg-accent-dim) !important;
 }
 
+/* O Chrome não aplica o `background-color` do <select> ao popup nativo das
+   <option> — sem isso, elas caem no branco padrão do navegador, e no tema
+   escuro o texto (herdado de --text-main, quase branco) fica quase invisível
+   sobre esse fundo (mesmo bug do <select> do dashboard, ver DashboardView.vue). */
+.search-field option {
+  background: var(--bg-sidebar);
+  color: var(--text-main);
+}
+
 .filter-badge {
   display: flex;
   align-items: center;
