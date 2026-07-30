@@ -23,7 +23,7 @@ const steps = ref([
   {
     target: '.navbar-links',
     title: 'Navegação do Sistema',
-    text: 'Além do Mapa, o DesertPB tem mais três telas: Início traz a visão geral do projeto, Dashboard compara os municípios pelos índices de vulnerabilidade, e Sobre reúne o histórico do projeto e a equipe de desenvolvimento.',
+    text: 'Além do Mapa, o DesertPB tem mais três telas: Início traz a visão geral do projeto, Painel Interativo compara os municípios pelos índices de vulnerabilidade, e Sobre reúne o histórico do projeto e a equipe de desenvolvimento.',
   },
   {
     target: '.sidebar-collapse-btn',

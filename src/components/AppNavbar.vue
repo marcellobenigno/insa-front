@@ -18,9 +18,14 @@ const { isDark, toggleTheme } = useTheme()
       <RouterLink to="/mapa" class="nav-link" title="Mapa" active-class="is-active">
         <i class="bi bi-map" aria-hidden="true" /> <span class="nav-link-label">Mapa</span>
       </RouterLink>
-      <RouterLink to="/dashboard" class="nav-link" title="Dashboard" active-class="is-active">
+      <RouterLink
+        to="/dashboard"
+        class="nav-link"
+        title="Painel Interativo"
+        active-class="is-active"
+      >
         <i class="bi bi-bar-chart-line" aria-hidden="true" />
-        <span class="nav-link-label">Dashboard</span>
+        <span class="nav-link-label">Painel Interativo</span>
       </RouterLink>
       <RouterLink to="/sobre" class="nav-link" title="Sobre" active-class="is-active">
         <i class="bi bi-info-circle" aria-hidden="true" /> <span class="nav-link-label">Sobre</span>
