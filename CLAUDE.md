@@ -130,17 +130,27 @@ de vulnerabilidade do estado, não uma textura decorativa.
     letras "PB" (Paraíba) na mesma cor que desenha a fronteira da Paraíba no
     mapa, não um vermelho arbitrário. Implementado com um `<tspan fill=...>`
     só em "PB" dentro do mesmo `<text>`.
-  - **Centralização é manual, não via `text-anchor="middle"`** —
-    `measure_text_width` (`generate_logo.py`) mede o avanço horizontal do
-    texto com `cairo.Context.text_extents` (fonte de referência só pra
-    medida, `WORDMARK_MEASURE_FONT = "Arial"`) e o `<text>` usa
-    `text-anchor="start"` com `x` calculado a partir dessa medida. Isso porque
-    `text-anchor="middle"` com um `<tspan>` de cor diferente no meio (sem
-    `x`/`y` próprios) depende do renderizador calcular certo o "text chunk"
-    combinado — o `cairosvg` usado pra pré-visualizar durante o
-    desenvolvimento **não** calcula isso direito (empurra o tspan pra fora da
-    tela); `text-anchor="start"` não tem essa ambiguidade em nenhum
-    renderizador, então a marca não fica refém desse comportamento.
+  - **Centralização (horizontal e vertical) é manual, não via
+    `text-anchor="middle"`/`dominant-baseline`** — `measure_text_width` e
+    `text_baseline_y` (`generate_logo.py`) medem o avanço horizontal e o
+    `ascent`/`descent` do texto com `cairo.Context.text_extents`/
+    `font_extents` (fonte de referência só pra medida,
+    `WORDMARK_MEASURE_FONT = "Arial"`), e o `<text>` usa `text-anchor="start"`
+    com `x`/`y` calculados a partir dessas medidas. Dois bugs cross-renderer
+    motivaram isso, não só um: (1) `text-anchor="middle"` com um `<tspan>` de
+    cor diferente no meio (sem `x`/`y` próprios) depende do renderizador
+    calcular certo o "text chunk" combinado — o `cairosvg` usado pra
+    pré-visualizar durante o desenvolvimento **não** calcula isso direito
+    (empurra o tspan pra fora da tela); (2) `dominant-baseline="middle"/
+    "central"` num `<text>` com `<tspan>` filho é recalculado *por sub-run* no
+    Safari/iOS (WebKit) usando as métricas de cada tspan separadamente, em vez
+    do texto inteiro como uma peça só — na prática deslocava só o "PB" (dentro
+    do tspan) pra cima em relação a "Desert" no mobile, mesmo os dois usando a
+    mesma fonte/tamanho (bug relatado por usuários, sem reprodução no
+    desktop). `text-anchor="start"` e a baseline padrão ("alphabetic", sem
+    nenhum `dominant-baseline`) não têm essa ambiguidade em nenhum
+    renderizador — nenhum dos dois deixa a marca refém desse tipo de
+    comportamento por-navegador.
   - Contorno branco grosso (`stroke-width: 3`, `paint-order="stroke"` — o
     traço é pintado *atrás* do preenchimento; sem isso, o traço centralizado
     no contorno da letra "come" metade da própria tinta e afina hastes finas)

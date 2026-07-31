@@ -228,6 +228,28 @@ def measure_text_width(text, font_size, font=WORDMARK_MEASURE_FONT):
     return ctx.text_extents(text)[4]  # x_advance
 
 
+def text_baseline_y(center_y, font_size, font=WORDMARK_MEASURE_FONT):
+    """Coordenada Y da linha de base (baseline) pra centralizar verticalmente
+    um texto de `font_size` em torno de `center_y`, via `ascent`/`descent`
+    medidos com `cairo.Context.font_extents` — usado no lugar de
+    `dominant-baseline="middle"/"central"` no <text>.
+
+    Motivo: no Safari/iOS (WebKit), `dominant-baseline` num <text> com
+    <tspan> filho é recalculado por sub-run usando as métricas de fonte de
+    cada tspan separadamente, em vez do texto inteiro como uma peça só — na
+    prática, isso deslocava só o "PB" (dentro do tspan) pra cima em relação a
+    "Desert" no mobile, mesmo os dois usando a mesma fonte/tamanho. A baseline
+    padrão ("alphabetic", sem `dominant-baseline` nenhum) não tem esse bug:
+    todo <tspan> sem `dy`/`baseline-shift` próprio cai automaticamente na
+    mesma linha de base do <text> pai, em qualquer navegador."""
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 1, 1)
+    ctx = cairo.Context(surface)
+    ctx.select_font_face(font, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    ctx.set_font_size(font_size)
+    ascent, descent = ctx.font_extents()[:2]
+    return center_y + (ascent - descent) / 2
+
+
 def render_lockup_svg(pixels, bounds, border_geom, out_path, icon_w=400):
     """Ícone + wordmark "DesertPB" empilhados verticalmente, como uma única
     marca — para uso onde o nome deve aparecer junto ao ícone sem depender de
@@ -245,10 +267,11 @@ def render_lockup_svg(pixels, bounds, border_geom, out_path, icon_w=400):
 
     text_w = measure_text_width(WORDMARK_TEXT_MAIN + WORDMARK_TEXT_ACCENT, WORDMARK_FONT_SIZE)
     text_x0 = (viewbox_w - text_w) / 2
+    text_y = text_baseline_y(text_y0 + WORDMARK_CANVAS_H / 2, WORDMARK_FONT_SIZE)
 
     text = (
-        f'  <text x="{text_x0:.2f}" y="{text_y0 + WORDMARK_CANVAS_H / 2:.2f}" '
-        f'text-anchor="start" dominant-baseline="central" '
+        f'  <text x="{text_x0:.2f}" y="{text_y:.2f}" '
+        f'text-anchor="start" '
         f'font-family="{WORDMARK_FONT_FAMILY}" font-weight="{WORDMARK_FONT_WEIGHT}" '
         f'font-size="{WORDMARK_FONT_SIZE}" '
         f'fill="{WORDMARK_COLOR}" stroke="{WORDMARK_STROKE}" stroke-width="{WORDMARK_STROKE_WIDTH}" '
