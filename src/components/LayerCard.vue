@@ -1,9 +1,13 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, defineAsyncComponent } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import stylesData from '@/assets/styles.json'
 import statsData  from '@/assets/stats.json'
-import LayerChartModal from './LayerChartModal.vue'
+// Carregada só quando o usuário clica em "ver gráfico" (v-if="showChart"
+// já adiava a instância, mas o import estático ainda entrava no bundle
+// inicial do /mapa — LayerChartModal.vue importa Chart.js + stats.json de
+// novo, ambos then desnecessários pra quem nunca abre um gráfico).
+const LayerChartModal = defineAsyncComponent(() => import('./LayerChartModal.vue'))
 
 const props = defineProps({
   layerKey:     { type: String,  required: true },

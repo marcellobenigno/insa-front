@@ -1,4 +1,39 @@
 {
+  "municipios_pb_semiarido": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite municipal", "color": "#ffffff" }
+    ]
+  },
+  "limite_semiarido_pb": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite do Semiárido PB", "color": "#ff2424" }
+    ]
+  },
+  "estados_ne": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite estadual", "color": "#000000" }
+    ]
+  },
+  "limite_do_semiarido_br": {
+    "type": "stroke",
+    "field": null,
+    "classes": [
+      { "label": "Limite do Semiárido BR", "color": "#ffd700" }
+    ]
+  },
+  "focos_queimadas": {
+    "type": "single",
+    "field": null,
+    "classes": [
+      { "label": "Foco de queimada", "color": "#ff0017" }
+    ]
+  },
   "carbono_organico_escores_de_vulnerabilidade": {
     "type": "categorized",
     "field": "co_scores",
@@ -503,32 +538,697 @@
       }
     ]
   },
-  "municipios_pb_semiarido": {
-    "type": "stroke",
-    "field": null,
+  "tipos_solo": {
+    "type": "categorized",
+    "field": "dsc_compon",
     "classes": [
-      { "label": "Limite municipal", "color": "#ffffff" }
+      {
+        "value": "Argilossolo vermelho Eutrofico",
+        "label": "Argilossolo vermelho Eutrofico",
+        "color": "#fff5eb"
+      },
+      {
+        "value": "Argilossolo vermelho-amarelo Eutrofico",
+        "label": "Argilossolo vermelho-amarelo Eutrofico",
+        "color": "#fff5eb"
+      },
+      {
+        "value": "Argissolo acinzentado Distrofico",
+        "label": "Argissolo acinzentado Distrofico",
+        "color": "#fee6ce"
+      },
+      {
+        "value": "Cambissolo haplico Argila de atividade baixa Eutrofico",
+        "label": "Cambissolo haplico Argila de atividade baixa Eutrofico",
+        "color": "#fee6ce"
+      },
+      {
+        "value": "Latossolo amarelo Distrofico",
+        "label": "Latossolo amarelo Distrofico",
+        "color": "#fdd0a2"
+      },
+      {
+        "value": "Luvissolo crOmico Palico",
+        "label": "Luvissolo crOmico Palico",
+        "color": "#fdae6b"
+      },
+      {
+        "value": "Luvissolo cromico Artico",
+        "label": "Luvissolo cromico Artico",
+        "color": "#fdd0a2"
+      },
+      {
+        "value": "Luvissolo cromico Palico",
+        "label": "Luvissolo cromico Palico",
+        "color": "#fdae6b"
+      },
+      {
+        "value": "Massa Dagua Continental",
+        "label": "Massa Dagua Continental",
+        "color": "#1542eb"
+      },
+      {
+        "value": "Neossolo litolico Eutrofico",
+        "label": "Neossolo litolico Eutrofico",
+        "color": "#fd8d3c"
+      },
+      {
+        "value": "Neossolo quartzaranico Artico",
+        "label": "Neossolo quartzaranico Artico",
+        "color": "#f16913"
+      },
+      {
+        "value": "Neossolo regola­tico Eutrafico",
+        "label": "Neossolo regola­tico Eutrafico",
+        "color": "#f16913"
+      },
+      {
+        "value": "Neossolo regola­tico Eutrofico",
+        "label": "Neossolo regola­tico Eutrofico",
+        "color": "#d94801"
+      },
+      {
+        "value": "Planossolo haplico Eutrofico",
+        "label": "Planossolo haplico Eutrofico",
+        "color": "#d94801"
+      },
+      {
+        "value": "Planossolo natrico Artico",
+        "label": "Planossolo natrico Artico",
+        "color": "#a63603"
+      },
+      {
+        "value": "Vertissolo cromado Artico",
+        "label": "Vertissolo cromado Artico",
+        "color": "#a63603"
+      },
+      {
+        "value": "Vertissolo ebanico Artico",
+        "label": "Vertissolo ebanico Artico",
+        "color": "#4f1802"
+      }
     ]
   },
-  "limite_semiarido_pb": {
-    "type": "stroke",
-    "field": null,
+  "solos_textura": {
+    "type": "categorized",
+    "field": "dsc_textur",
     "classes": [
-      { "label": "Limite do Semiárido PB", "color": "#ff2424" }
+      {
+        "value": "arenosa",
+        "label": "Arenosa",
+        "color": "#edde94"
+      },
+      {
+        "value": "argilosa  ou muito argilosa",
+        "label": "Argilosa  ou muito argilosa",
+        "color": "#dbaa5a"
+      },
+      {
+        "value": "media",
+        "label": "Média",
+        "color": "#875528"
+      }
     ]
   },
-  "estados_ne": {
-    "type": "stroke",
-    "field": null,
+  "precipitacao_semiarido_pb": {
+    "type": "graduated",
+    "field": "clim_prec",
     "classes": [
-      { "label": "Limite estadual", "color": "#000000" }
+      {
+        "max": 547.3779999999999,
+        "label": "395 - 547",
+        "color": "#e3f2ff"
+      },
+      {
+        "max": 699.7959999999999,
+        "label": "547 - 700",
+        "color": "#c8dcf0"
+      },
+      {
+        "max": 852.2139999999999,
+        "label": "700 - 852",
+        "color": "#73b2d8"
+      },
+      {
+        "max": 1004.632,
+        "label": "852 - 1005",
+        "color": "#2979b9"
+      },
+      {
+        "max": 1157.05,
+        "label": "1005 - 1157",
+        "color": "#08306b"
+      }
     ]
   },
-  "limite_do_semiarido_br": {
-    "type": "stroke",
-    "field": null,
+  "indice_aridez_semiarido_pb": {
+    "type": "graduated",
+    "field": "ia_climat",
     "classes": [
-      { "label": "Limite do Semiárido BR", "color": "#ffd700" }
+      {
+        "max": 0.5,
+        "label": "0,2 - 0,5 - Semiárido",
+        "color": "#ffffa0"
+      },
+      {
+        "max": 0.65,
+        "label": "0,5 - 0,65 - Sub-úmido e seco",
+        "color": "#a2d3b0"
+      },
+      {
+        "max": 0.778,
+        "label": ">0,65 - Sub-úmido e úmido",
+        "color": "#2b83ba"
+      }
+    ]
+  },
+  "eto_semiarido_pb": {
+    "type": "graduated",
+    "field": "eto_climat",
+    "classes": [
+      {
+        "max": 1629.922,
+        "label": "1499 - 1630",
+        "color": "#1b81bd"
+      },
+      {
+        "max": 1760.714,
+        "label": "1630 - 1761",
+        "color": "#9ee890"
+      },
+      {
+        "max": 1891.5059999999999,
+        "label": "1761 - 1892",
+        "color": "#ffffa3"
+      },
+      {
+        "max": 2022.2979999999998,
+        "label": "1892 - 2022",
+        "color": "#fc9756"
+      },
+      {
+        "max": 2153.09,
+        "label": "2022 - 2153",
+        "color": "#f41b44"
+      }
+    ]
+  },
+  "sucetibilidade_erosao": {
+    "type": "graduated",
+    "field": "sucerosao",
+    "classes": [
+      {
+        "max": 1.0,
+        "label": "1 - Muito Baixa",
+        "color": "#006400"
+      },
+      {
+        "max": 2.0,
+        "label": "2 - Baixa",
+        "color": "#6bae00"
+      },
+      {
+        "max": 3.0,
+        "label": "3 - Moderada",
+        "color": "#ffffcf"
+      },
+      {
+        "max": 4.0,
+        "label": "4 - Alta",
+        "color": "#eb9625"
+      },
+      {
+        "max": 5.0,
+        "label": "5 - Muito Alta",
+        "color": "#b85710"
+      }
+    ]
+  },
+  "carbono_organico": {
+    "type": "graduated",
+    "field": "co",
+    "classes": [
+      {
+        "max": 20.2,
+        "label": "11 - 20.2",
+        "color": "#a24611"
+      },
+      {
+        "max": 29.4,
+        "label": "20.2 - 29.4",
+        "color": "#e58b52"
+      },
+      {
+        "max": 38.599999999999994,
+        "label": "29.4 - 38.6",
+        "color": "#fff098"
+      },
+      {
+        "max": 47.8,
+        "label": "38.6 - 47.8",
+        "color": "#7fb912"
+      },
+      {
+        "max": 57.0,
+        "label": "47.8 - 57",
+        "color": "#006100"
+      }
+    ]
+  },
+  "idhm_2010_sab_pb": {
+    "type": "graduated",
+    "field": "idhm_2010",
+    "classes": [
+      {
+        "max": 0.6,
+        "label": "0,5 - 0,6 - Baixo",
+        "color": "#ff7f00"
+      },
+      {
+        "max": 0.7,
+        "label": "0,6 - 0,7 - Médio",
+        "color": "#ffffbf"
+      },
+      {
+        "max": 0.8,
+        "label": "0,7 - 0,8 - Alto",
+        "color": "#d1ffc0"
+      }
+    ]
+  },
+  "dd_rural_2022_sab_pb": {
+    "type": "graduated",
+    "field": "denrur2022",
+    "classes": [
+      {
+        "max": 5.0,
+        "label": "0 - 5",
+        "color": "#ffffbf"
+      },
+      {
+        "max": 15.0,
+        "label": "5 - 15",
+        "color": "#ffdf8f"
+      },
+      {
+        "max": 45.0,
+        "label": "15 - 45",
+        "color": "#ffbf60"
+      },
+      {
+        "max": 90.0,
+        "label": "45 - 90",
+        "color": "#ff9f30"
+      },
+      {
+        "max": 123.3934270999998,
+        "label": "90 - 123",
+        "color": "#ff7f00"
+      }
+    ]
+  },
+  "ndvi": {
+    "type": "categorized",
+    "field": "peso",
+    "classes": [
+      {
+        "value": 1.0,
+        "label": "≥ 0.617 (Muito Baixa)",
+        "color": "#ffffcc"
+      },
+      {
+        "value": 1.1,
+        "label": "1,1 (Baixa)",
+        "color": "#d9f0a3"
+      },
+      {
+        "value": 1.3,
+        "label": "1,3 (Moderada)",
+        "color": "#addd8e"
+      },
+      {
+        "value": 1.5,
+        "label": "1,5 (Moderada-Alta)",
+        "color": "#78c679"
+      },
+      {
+        "value": 1.8,
+        "label": "1,8 (Alta)",
+        "color": "#31a354"
+      },
+      {
+        "value": 2.0,
+        "label": "2 (Muito Alta)",
+        "color": "#006837"
+      }
+    ]
+  },
+  "declividade": {
+    "type": "graduated",
+    "field": "dn",
+    "classes": [
+      {
+        "max": 3.0,
+        "label": "Plano 0 a 3%",
+        "color": "#30b000"
+      },
+      {
+        "max": 8.0,
+        "label": "Suave Ondulado 3 a 8%",
+        "color": "#a5ff00"
+      },
+      {
+        "max": 20.0,
+        "label": "Ondulado 8 a 20%",
+        "color": "#ffff63"
+      },
+      {
+        "max": 45.0,
+        "label": "Forte Ondulado 20 a 45%",
+        "color": "#fea700"
+      },
+      {
+        "max": 75.0,
+        "label": "Montanhoso 45 a 75%",
+        "color": "#ff4c00"
+      },
+      {
+        "max": 144.0,
+        "label": "Escarpado > 75%",
+        "color": "#b40000"
+      }
+    ]
+  },
+  "pressao_animal": {
+    "type": "graduated",
+    "field": "ua_ha_2017",
+    "classes": [
+      {
+        "max": 0.25,
+        "label": "0 - 0,25",
+        "color": "#ffffbf"
+      },
+      {
+        "max": 0.75,
+        "label": "0,25 - 0,75",
+        "color": "#ffdf8f"
+      },
+      {
+        "max": 1.25,
+        "label": "0,75 - 1,25",
+        "color": "#ffbf60"
+      },
+      {
+        "max": 1.75,
+        "label": "1,25 - 1,75",
+        "color": "#ff9f30"
+      },
+      {
+        "max": 2.53365385,
+        "label": "1,75 - 2,53",
+        "color": "#ff7f00"
+      }
+    ]
+  },
+  "geologia": {
+    "type": "categorized",
+    "field": "glo_ds_lit",
+    "classes": [
+      {
+        "value": "Anfibolito, Gnaisse, Itabirito, Metacalcario, Quartzito, Quartzito Ferruginoso, Xisto",
+        "label": "Anfibolito, Gnaisse, Itabirito, Metacalcario, Quartzito, Quartzito Ferruginoso, Xisto",
+        "color": "#ffffff"
+      },
+      {
+        "value": "Anfibolito, Gnaisse, MetaCalcario, Xisto",
+        "label": "Anfibolito, Gnaisse, MetaCalcario, Xisto",
+        "color": "#f4f0ec"
+      },
+      {
+        "value": "Anfibolito, Gnaisse, Rocha Calcissilicatica",
+        "label": "Anfibolito, Gnaisse, Rocha Calcissilicatica",
+        "color": "#e8e1d9"
+      },
+      {
+        "value": "Anfibolito, Metacalcario, Metagranito, Metagranodiorito",
+        "label": "Anfibolito, Metacalcario, Metagranito, Metagranodiorito",
+        "color": "#ddd2c6"
+      },
+      {
+        "value": "Anfibolito, Metagranodiorito, Metatonalito",
+        "label": "Anfibolito, Metagranodiorito, Metatonalito",
+        "color": "#d2c3b3"
+      },
+      {
+        "value": "Anfibolito, Metagranodiorito, Metatonalito, Migmatito",
+        "label": "Anfibolito, Metagranodiorito, Metatonalito, Migmatito",
+        "color": "#c6b3a1"
+      },
+      {
+        "value": "Anfibolito, Paragnaisse, Quartzito, Xisto",
+        "label": "Anfibolito, Paragnaisse, Quartzito, Xisto",
+        "color": "#bba48e"
+      },
+      {
+        "value": "Areia, Argila",
+        "label": "Areia, Argila",
+        "color": "#b0957b"
+      },
+      {
+        "value": "Areia, Argila, Cascalho",
+        "label": "Areia, Argila, Cascalho",
+        "color": "#a48668"
+      },
+      {
+        "value": "Arenito",
+        "label": "Arenito",
+        "color": "#997755"
+      },
+      {
+        "value": "Arenito, Arenito Arcoseano",
+        "label": "Arenito, Arenito Arcoseano",
+        "color": "#8e6842"
+      },
+      {
+        "value": "Arenito, Arenito conglomeratico, Argilito Arenoso",
+        "label": "Arenito, Arenito conglomeratico, Argilito Arenoso",
+        "color": "#82592f"
+      },
+      {
+        "value": "Arenito, Argilito",
+        "label": "Arenito, Argilito",
+        "color": "#774a1c"
+      },
+      {
+        "value": "Arenito, Conglomerado",
+        "label": "Arenito, Conglomerado",
+        "color": "#6c3b09"
+      },
+      {
+        "value": "Argilito, Folhelho, Siltito",
+        "label": "Argilito, Folhelho, Siltito",
+        "color": "#663301"
+      },
+      {
+        "value": "Calcarenito, Calcario, Fosforito",
+        "label": "Calcarenito, Calcario, Fosforito",
+        "color": "#663303"
+      },
+      {
+        "value": "Diorito, Gabro, Gabronorito, Hornblendito, Piroxenito",
+        "label": "Diorito, Gabro, Gabronorito, Hornblendito, Piroxenito",
+        "color": "#663304"
+      },
+      {
+        "value": "Diorito, Gabro, Quartzo Diorito, Tonalito",
+        "label": "Diorito, Gabro, Quartzo Diorito, Tonalito",
+        "color": "#663306"
+      },
+      {
+        "value": "Filito, Metarritmito, Metatufo, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida, Xisto",
+        "label": "Filito, Metarritmito, Metatufo, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida, Xisto",
+        "color": "#663308"
+      },
+      {
+        "value": "Fonolito, Riolito",
+        "label": "Fonolito, Riolito",
+        "color": "#66330a"
+      },
+      {
+        "value": "Formacao Ferrifera Bandada, Metagabro, Metapiroxenito, Marmore, Ortognaisse, Rocha Calcissilicatica",
+        "label": "Formacao Ferrifera Bandada, Metagabro, Metapiroxenito, Marmore, Ortognaisse, Rocha Calcissilicatica",
+        "color": "#66330c"
+      },
+      {
+        "value": "Gnaisse, MetaCalcario, Quartzito",
+        "label": "Gnaisse, MetaCalcario, Quartzito",
+        "color": "#764212"
+      },
+      {
+        "value": "Gnaisse, MetaCalcario, Quartzito, Rocha Calcissilicatica, Xisto",
+        "label": "Gnaisse, MetaCalcario, Quartzito, Rocha Calcissilicatica, Xisto",
+        "color": "#8b571b"
+      },
+      {
+        "value": "Gnaisse, MetaCalcario, Quartzito, Xisto",
+        "label": "Gnaisse, MetaCalcario, Quartzito, Xisto",
+        "color": "#a06b23"
+      },
+      {
+        "value": "Granito",
+        "label": "Granito",
+        "color": "#b5802c"
+      },
+      {
+        "value": "Granito, Granodiorito",
+        "label": "Granito, Granodiorito",
+        "color": "#ca9434"
+      },
+      {
+        "value": "Granito, Granodiorito, Monzodiorito, Monzonito, Tonalito",
+        "label": "Granito, Granodiorito, Monzodiorito, Monzonito, Tonalito",
+        "color": "#dfa93d"
+      },
+      {
+        "value": "Granito, Granodiorito, Monzogranito",
+        "label": "Granito, Granodiorito, Monzogranito",
+        "color": "#f4bd45"
+      },
+      {
+        "value": "Granito, Migmatito",
+        "label": "Granito, Migmatito",
+        "color": "#f5c24f"
+      },
+      {
+        "value": "Granito, Quartzo Monzonito, Quartzo Sienito, Sienito",
+        "label": "Granito, Quartzo Monzonito, Quartzo Sienito, Sienito",
+        "color": "#f6c759"
+      },
+      {
+        "value": "Marmore, Paragnaisse, Quartzito, Rocha Calcissilicatica, Xisto",
+        "label": "Marmore, Paragnaisse, Quartzito, Rocha Calcissilicatica, Xisto",
+        "color": "#f6cc63"
+      },
+      {
+        "value": "MetaCalcario, Quartzito, Xisto",
+        "label": "MetaCalcario, Quartzito, Xisto",
+        "color": "#f8d577"
+      },
+      {
+        "value": "Metabasalto, Metachert, Metadacito, Metagrauvaca, Metarriodacito, Paragnaisse",
+        "label": "Metabasalto, Metachert, Metadacito, Metagrauvaca, Metarriodacito, Paragnaisse",
+        "color": "#f7d16d"
+      },
+      {
+        "value": "Metaconglomerado, Metagrauvaca, Metarenito",
+        "label": "Metaconglomerado, Metagrauvaca, Metarenito",
+        "color": "#f9da81"
+      },
+      {
+        "value": "Metaconglomerado, Metagrauvaca, Metarenito Litico, Metarritmito, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida",
+        "label": "Metaconglomerado, Metagrauvaca, Metarenito Litico, Metarritmito, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida",
+        "color": "#fadf8b"
+      },
+      {
+        "value": "Metaconglomerado, Quartzito",
+        "label": "Metaconglomerado, Quartzito",
+        "color": "#fbe495"
+      },
+      {
+        "value": "Metaconglomerado, Rocha Metavulcanica, Xisto",
+        "label": "Metaconglomerado, Rocha Metavulcanica, Xisto",
+        "color": "#fbe99f"
+      },
+      {
+        "value": "Metadacito, Metapelito, Paragnaisse, Quartzito, Rocha Metavulcanica",
+        "label": "Metadacito, Metapelito, Paragnaisse, Quartzito, Rocha Metavulcanica",
+        "color": "#fceea9"
+      },
+      {
+        "value": "Metadiorito, Metagabro, Metagranodiorito, Metatonalito",
+        "label": "Metadiorito, Metagabro, Metagranodiorito, Metatonalito",
+        "color": "#fdf3b3"
+      },
+      {
+        "value": "Metadiorito, Metagabro, Metanortosito",
+        "label": "Metadiorito, Metagabro, Metanortosito",
+        "color": "#fef8bd"
+      },
+      {
+        "value": "Metagranito",
+        "label": "Metagranito",
+        "color": "#fffdc7"
+      },
+      {
+        "value": "Metagranito, Metagranodiorito",
+        "label": "Metagranito, Metagranodiorito",
+        "color": "#f6fbbf"
+      },
+      {
+        "value": "Metagranito, Metagranodiorito, Metamonzodiorito",
+        "label": "Metagranito, Metagranodiorito, Metamonzodiorito",
+        "color": "#e3f2a6"
+      },
+      {
+        "value": "Metagranito, Metagranodiorito, Metatonalito, Metatrondhjemito, Migmatito",
+        "label": "Metagranito, Metagranodiorito, Metatonalito, Metatrondhjemito, Migmatito",
+        "color": "#d0e98c"
+      },
+      {
+        "value": "Metagranito, Metagranodiorito, Metatonalito, Migmatito",
+        "label": "Metagranito, Metagranodiorito, Metatonalito, Migmatito",
+        "color": "#bee072"
+      },
+      {
+        "value": "Metagranito, Metagranodiorito, Metatrondhjemito",
+        "label": "Metagranito, Metagranodiorito, Metatrondhjemito",
+        "color": "#abd759"
+      },
+      {
+        "value": "Metagranito, Metamonzogranito, Metassienito, Metassienogranito, Migmatito",
+        "label": "Metagranito, Metamonzogranito, Metassienito, Metassienogranito, Migmatito",
+        "color": "#98ce3f"
+      },
+      {
+        "value": "Metagranito, Metamonzonito, Metassienito, Metatonalito, Metatrondhjemito, Ortognaisse",
+        "label": "Metagranito, Metamonzonito, Metassienito, Metatonalito, Metatrondhjemito, Ortognaisse",
+        "color": "#86c525"
+      },
+      {
+        "value": "Monzodiorito, Quartzo Monzonito, Sienito, Sienogranito",
+        "label": "Monzodiorito, Quartzo Monzonito, Sienito, Sienogranito",
+        "color": "#78b91c"
+      },
+      {
+        "value": "Monzogranito, Monzonito, Quartzo Diorito, Quartzo Monzonito",
+        "label": "Monzogranito, Monzonito, Quartzo Diorito, Quartzo Monzonito",
+        "color": "#6dab17"
+      },
+      {
+        "value": "Monzogranito, Monzonito, Quartzo Monzonito, Sienogranito",
+        "label": "Monzogranito, Monzonito, Quartzo Monzonito, Sienogranito",
+        "color": "#619d12"
+      },
+      {
+        "value": "Monzogranito, Sienogranito",
+        "label": "Monzogranito, Sienogranito",
+        "color": "#568f0e"
+      },
+      {
+        "value": "Ortognaisse",
+        "label": "Ortognaisse",
+        "color": "#4a8209"
+      },
+      {
+        "value": "Ortognaisse, Paragnaisse",
+        "label": "Ortognaisse, Paragnaisse",
+        "color": "#3f7405"
+      },
+      {
+        "value": "Sedimento Aluvionar, Sedimento Detrito-Lateritico",
+        "label": "Sedimento Aluvionar, Sedimento Detrito-Lateritico",
+        "color": "#336600"
+      }
     ]
   }
 }

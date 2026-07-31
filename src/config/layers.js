@@ -62,6 +62,13 @@ export const BASE_LAYERS = {
 // ─── URL BASE DOS VECTOR TILES ────────────────────────────────────────────────
 const VECTOR_TILES_URL = import.meta.env.VITE_TILES_URL
 
+// URL do GeoJSON estático de focos_queimadas — mesma pasta dos tiles no
+// servidor (`{tiles_base}/focos_queimadas.geojson`, ao lado de `{z}/{x}/{y}.pbf`),
+// derivada da mesma env var pra não precisar de uma nova. Ver "Focos de
+// Queimada" no CLAUDE.md pra racional completo de por que essa camada foge
+// do padrão MVT.
+const FOCOS_QUEIMADAS_URL = `${VECTOR_TILES_URL.replace(/\/\{z\}\/\{x\}\/\{y\}\.pbf$/, '')}/focos_queimadas.geojson`
+
 
 // ─── CAMADAS DE SOBREPOSIÇÃO EM ÁRVORE HIERÁRQUICA ───────────────────────────
 //
@@ -95,7 +102,7 @@ export const OVERLAY_TREE = [
           meta: 'Contorno da região do Semiárido Paraibano',
           url: VECTOR_TILES_URL,
           sourceLayer: 'limite_semiarido_pb',
-          zIndex: 36,
+          zIndex: 56,
           active: true,
           noPopup: true,
         },
@@ -107,7 +114,7 @@ export const OVERLAY_TREE = [
           meta: 'Limites Municipais do Semiárido Paraibano',
           url: VECTOR_TILES_URL,
           sourceLayer: 'municipios_pb_semiarido',
-          zIndex: 32,
+          zIndex: 52,
           active: true,
           searchFields: ['nm_municip'],
           popUpFields:  ['nm_municip', 'cod_ibge_m'],
@@ -122,7 +129,7 @@ export const OVERLAY_TREE = [
           meta: 'Fronteiras dos estados do Nordeste',
           url: VECTOR_TILES_URL,
           sourceLayer: 'estados_ne',
-          zIndex: 35,
+          zIndex: 55,
           active: true,
           noPopup: true,
         },
@@ -134,7 +141,7 @@ export const OVERLAY_TREE = [
           meta: 'Contorno da região do Semiárido Brasileiro',
           url: VECTOR_TILES_URL,
           sourceLayer: 'limite_do_semiarido_br',
-          zIndex: 34,
+          zIndex: 54,
           active: true,
           noPopup: true,
         },
@@ -513,6 +520,271 @@ export const OVERLAY_TREE = [
                 },
               },
             ],
+          },
+        ],
+      },
+    ],
+  },
+
+  // 4. Indicadores de Vulnerabilidade → dados brutos por trás dos Escores ────
+  //
+  // Mesma fonte de dados dos "Escores de Vulnerabilidade" acima (ex.
+  // `declividade` aqui vs `declividade_escores_de_vulnerabilidade` na IVS),
+  // mas o valor/categoria bruta em vez do escore já convertido — por isso
+  // cada camada aqui usa o MESMO `label` da sua contraparte em Escores (ex.
+  // "Declividade" nos dois), a categoria pai (Indicadores vs. Escores) é
+  // quem desambigua, não o label. Ver "Existing layers" no CLAUDE.md.
+  {
+    key: 'indicadores_vulnerabilidade',
+    label: 'Indicadores de Vulnerabilidade',
+    icon: 'bi-clipboard-data',
+    layer: null,
+    children: [
+
+      // 4.1 Indicadores Climáticos ─────────────────────────────────────────
+      {
+        key: 'indicadores_climaticos',
+        label: 'Indicadores Climáticos',
+        icon: 'bi-cloud-rain',
+        layer: null,
+        children: [
+          {
+            key: 'indice_aridez_semiarido_pb',
+            layer: {
+              label: 'Índice de Aridez',
+              meta: 'Índice de aridez — valor bruto',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'indice_aridez_semiarido_pb',
+              zIndex: 30,
+              active: false,
+              searchFields: ['ia_climat'],
+              popUpFields:  ['ia_climat'],
+              fieldTypes:   { ia_climat: 'number' },
+              descFields:   { ia_climat: 'Índice de Aridez' },
+            },
+          },
+          {
+            key: 'precipitacao_semiarido_pb',
+            layer: {
+              label: 'Precipitação',
+              meta: 'Precipitação pluviométrica — valor bruto (mm)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'precipitacao_semiarido_pb',
+              zIndex: 31,
+              active: false,
+              searchFields: ['clim_prec'],
+              popUpFields:  ['clim_prec'],
+              fieldTypes:   { clim_prec: 'number' },
+              descFields:   { clim_prec: 'Precipitação (mm)' },
+            },
+          },
+          {
+            key: 'eto_semiarido_pb',
+            layer: {
+              label: 'Evapotranspiração (ETo)',
+              meta: 'Evapotranspiração de referência — valor bruto (mm)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'eto_semiarido_pb',
+              zIndex: 32,
+              active: false,
+              searchFields: ['eto_climat'],
+              popUpFields:  ['eto_climat'],
+              fieldTypes:   { eto_climat: 'number' },
+              descFields:   { eto_climat: 'Evapotranspiração (mm)' },
+            },
+          },
+        ],
+      },
+
+      // 4.2 Indicadores de Solo ────────────────────────────────────────────
+      {
+        key: 'indicadores_solo',
+        label: 'Indicadores de Solo',
+        icon: 'bi-geo',
+        layer: null,
+        children: [
+          {
+            key: 'solos_textura',
+            layer: {
+              label: 'Textura do Solo',
+              meta: 'Classificação textural do solo',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'solos_textura',
+              zIndex: 33,
+              active: false,
+              searchFields: ['dsc_textur'],
+              popUpFields:  ['dsc_textur'],
+              fieldTypes:   { dsc_textur: 'string' },
+              descFields:   { dsc_textur: 'Textura do Solo' },
+            },
+          },
+          {
+            key: 'tipos_solo',
+            layer: {
+              label: 'Tipos de Solos',
+              meta: 'Componente pedológico predominante',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'tipos_solo',
+              zIndex: 34,
+              active: false,
+              searchFields: ['dsc_compon'],
+              popUpFields:  ['dsc_compon'],
+              fieldTypes:   { dsc_compon: 'string' },
+              descFields:   { dsc_compon: 'Tipo de Solo' },
+            },
+          },
+          {
+            key: 'declividade',
+            layer: {
+              label: 'Declividade',
+              meta: 'Declividade do terreno — valor bruto (%)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'declividade',
+              zIndex: 35,
+              active: false,
+              searchFields: ['dn'],
+              popUpFields:  ['dn'],
+              fieldTypes:   { dn: 'number' },
+              descFields:   { dn: 'Declividade (%)' },
+            },
+          },
+          {
+            key: 'geologia',
+            layer: {
+              label: 'Geologia',
+              meta: 'Tipos litológicos',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'geologia',
+              zIndex: 36,
+              active: false,
+              searchFields: ['glo_ds_lit'],
+              popUpFields:  ['glo_ds_lit'],
+              fieldTypes:   { glo_ds_lit: 'string' },
+              descFields:   { glo_ds_lit: 'Tipo Litológico' },
+            },
+          },
+        ],
+      },
+
+      // 4.3 Indicadores de Vegetação ───────────────────────────────────────
+      {
+        key: 'indicadores_vegetacao',
+        label: 'Indicadores de Vegetação',
+        icon: 'bi-tree',
+        layer: null,
+        children: [
+          {
+            key: 'ndvi',
+            layer: {
+              label: 'NDVI',
+              meta: 'Índice de vegetação por densidade de cobertura (maio/2022)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'ndvi',
+              zIndex: 37,
+              active: false,
+              searchFields: ['tipo_veget', 'ndvi_faixa'],
+              popUpFields:  ['tipo_veget', 'ndvi_faixa', 'classe_lbl', 'peso'],
+              fieldTypes:   { tipo_veget: 'string', ndvi_faixa: 'string', classe_lbl: 'string', peso: 'number' },
+              descFields:   { tipo_veget: 'Tipo de Vegetação', ndvi_faixa: 'Faixa de NDVI', classe_lbl: 'Classe de Vulnerabilidade', peso: 'Peso' },
+            },
+          },
+          {
+            key: 'carbono_organico',
+            layer: {
+              label: 'Carbono Orgânico',
+              meta: 'Teor de carbono orgânico do solo — valor bruto (g/kg)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'carbono_organico',
+              zIndex: 38,
+              active: false,
+              searchFields: ['co'],
+              popUpFields:  ['co'],
+              fieldTypes:   { co: 'number' },
+              descFields:   { co: 'Carbono Orgânico (g/kg)' },
+            },
+          },
+          {
+            key: 'sucetibilidade_erosao',
+            layer: {
+              label: 'Suscetibilidade à Erosão Hídrica',
+              meta: 'Suscetibilidade dos solos à erosão hídrica — valor bruto',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'sucetibilidade_erosao',
+              zIndex: 39,
+              active: false,
+              searchFields: ['sucerosao'],
+              popUpFields:  ['sucerosao'],
+              fieldTypes:   { sucerosao: 'number' },
+              descFields:   { sucerosao: 'Suscetibilidade à Erosão' },
+            },
+          },
+        ],
+      },
+
+      // 4.4 Indicadores de Manejo ──────────────────────────────────────────
+      {
+        key: 'indicadores_manejo',
+        label: 'Indicadores de Manejo',
+        icon: 'bi-people',
+        layer: null,
+        children: [
+          {
+            key: 'focos_queimadas',
+            layer: {
+              label: 'Focos de Queimada',
+              meta: 'Pontos de queimada registrados no Semiárido PB',
+              url: FOCOS_QUEIMADAS_URL,
+              sourceLayer: 'focos_queimadas',
+              renderAs: 'geojson',
+              zIndex: 40,
+              active: false,
+              noPopup: true,
+            },
+          },
+          {
+            key: 'dd_rural_2022_sab_pb',
+            layer: {
+              label: 'Densidade Demográfica Rural',
+              meta: 'Densidade demográfica rural (2022) — valor bruto (hab/km²)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'dd_rural_2022_sab_pb',
+              zIndex: 41,
+              active: false,
+              searchFields: ['denrur2022'],
+              popUpFields:  ['denrur2022'],
+              fieldTypes:   { denrur2022: 'number' },
+              descFields:   { denrur2022: 'Densidade Demográfica Rural (hab/km²)' },
+            },
+          },
+          {
+            key: 'pressao_animal',
+            layer: {
+              label: 'Pressão Animal',
+              meta: 'Pressão animal sobre o território (2017) — valor bruto (UA/ha)',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'pressao_animal',
+              zIndex: 42,
+              active: false,
+              searchFields: ['ua_ha_2017'],
+              popUpFields:  ['ua_ha_2017'],
+              fieldTypes:   { ua_ha_2017: 'number' },
+              descFields:   { ua_ha_2017: 'Pressão Animal (UA/ha)' },
+            },
+          },
+          {
+            key: 'idhm_2010_sab_pb',
+            layer: {
+              label: 'IDHM',
+              meta: 'Índice de Desenvolvimento Humano Municipal (2010) — valor bruto',
+              url: VECTOR_TILES_URL,
+              sourceLayer: 'idhm_2010_sab_pb',
+              zIndex: 43,
+              active: false,
+              searchFields: ['idhm_2010'],
+              popUpFields:  ['idhm_2010'],
+              fieldTypes:   { idhm_2010: 'number' },
+              descFields:   { idhm_2010: 'IDHM (2010)' },
+            },
           },
         ],
       },

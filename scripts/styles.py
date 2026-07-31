@@ -105,13 +105,17 @@ def extract_layer_style(qml_text):
             try:
                 value = float(value)
             except (TypeError, ValueError):
-                continue
+                # Classificação por texto (ex. solos_textura, tipos_solo,
+                # geologia) — mantém a string como veio do QML em vez de
+                # descartar a categoria. mapRenderer.js/geo_utils.py fazem
+                # correspondência exata case-insensitive nesse caso.
+                pass
             classes.append({
                 "value": value,
                 "label": clean_label(cat.get("label")),
                 "color": colors.get(cat.get("symbol"), "#9ca3af"),
             })
-        classes.sort(key=lambda c: c["value"])
+        classes.sort(key=lambda c: c["value"] if isinstance(c["value"], float) else str(c["value"]))
         return {"type": "categorized", "field": renderer_el.get("attr"), "classes": classes}
 
     if renderer_type == "singleSymbol":
@@ -130,21 +134,57 @@ def clean_label(label):
     return (label or "").strip()
 
 
+def real_field_name(table_name, qml_field):
+    """Resolve o `attr` do QML pro nome de coluna real da tabela.
+
+    SQLite (e portanto o GeoPackage) faz lookup de coluna case-insensitive,
+    mas o export pra GeoJSON/MVT preserva a caixa real da coluna — um QML
+    que referencia `DSC_TEXTUR` quando a coluna de verdade é `dsc_textur`
+    nunca dá erro no QGIS (silenciosamente tolerante), mas `style.field`
+    nunca bateria com `feature.properties` no frontend, pintando a camada
+    inteira de cinza (ver solos_textura/geologia no CLAUDE.md)."""
+    if qml_field is None:
+        return qml_field
+    cursor.execute(f'PRAGMA table_info("{table_name}")')
+    for col in cursor.fetchall():
+        if col[1].lower() == qml_field.lower():
+            return col[1]
+    return qml_field
+
+
+# Linhas de layer_styles cujo f_table_name é de uma entrega anterior do
+# GeoPackage (a tabela foi renomeada, mas a linha de estilo ficou órfã com o
+# nome antigo) — mapeadas pro nome de tabela real atual. Só preenchem uma
+# camada que não tenha sua própria linha de estilo (uma tabela real nunca é
+# sobrescrita por uma linha órfã).
+RENAMED_TABLES = {
+    "geologia_tipos_litologicos": "geologia",
+}
+
 styles_map = {}
 
-for table_name, qml in rows:
-    if not qml or table_name not in real_tables:
-        continue
 
+def process_row(table_name, qml, target_table):
     style = extract_layer_style(qml)
     if style is None or not style["classes"] or style["type"] == "single":
         # singleSymbol layers (e.g. municipios_pb_semiarido) are handled as
         # manual stroke-only entries — see CLAUDE.md.
-        continue
-
-    styles_map[table_name] = style
+        return
+    style["field"] = real_field_name(target_table, style["field"])
+    styles_map[target_table] = style
     labels = [c["label"] for c in style["classes"]]
-    print(f"🎨 {table_name} ({style['type']}, campo={style['field']}) -> {labels}")
+    suffix = f" (renomeada de {table_name})" if table_name != target_table else ""
+    print(f"🎨 {target_table}{suffix} ({style['type']}, campo={style['field']}) -> {labels}")
+
+
+for table_name, qml in rows:
+    if qml and table_name in real_tables:
+        process_row(table_name, qml, table_name)
+
+for table_name, qml in rows:
+    target_table = RENAMED_TABLES.get(table_name)
+    if qml and target_table and target_table in real_tables and target_table not in styles_map:
+        process_row(table_name, qml, target_table)
 
 conn.close()
 

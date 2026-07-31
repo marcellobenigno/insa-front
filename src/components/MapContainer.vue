@@ -18,6 +18,11 @@ import Pbf from 'pbf'
 // Utilitários isolados
 import { getThematicColor, drawGeometryToContext, parseColor, matchesFilter } from '@/utils/mapRenderer'
 import { createPopupContent } from '@/utils/mapPopup'
+// Valores de atributo de toda camada (sem geometria), pré-computados do
+// GeoPackage — usado só pela contagem de resultados da busca (countFilterMatches),
+// que não pode depender de quais tiles já foram renderizados na tela (ver
+// scripts/search_index.py para o racional completo).
+import searchIndex from '@/assets/search_index.json'
 
 const mapStore = useMapStore()
 const { isCollapsed, toggleSidebar } = useSidebar()
@@ -28,6 +33,9 @@ let currentTileLayer = null
 let searchMarker = null
 let fullscreenChangeHandler = null
 const activeOverlays = new Map()
+// Camadas GeoJSON estáticas (ex. focos_queimadas) montadas uma vez e
+// reaproveitadas entre toggles — ver seção 2 (syncVectorOverlays).
+const geoJsonLayerCache = new Map()
 
 // Estado de medição nativa
 let measureMode = false
@@ -376,11 +384,55 @@ watch(
 )
 
 function syncVectorOverlays(desired) {
-  for (const { key, url, sourceLayer, zIndex } of mapStore.availableOverlays) {
+  for (const { key, url, sourceLayer, zIndex, renderAs } of mapStore.availableOverlays) {
     const shouldBeVisible = desired[key]
     const isOnMap         = activeOverlays.has(key)
 
     if (shouldBeVisible && !isOnMap) {
+      // focos_queimadas: GeoJSON estático (511 pontos, sem atributos) em vez
+      // de tiles MVT — leve o bastante pra buscar de uma vez, e cai por
+      // padrão no markerPane do Leaflet (z-index 600), sempre acima do
+      // tilePane (z-index 200) onde vivem todas as CustomMVTLayer abaixo,
+      // não importa o `zIndex` configurado em cada uma. Ver "Focos de
+      // Queimada" no CLAUDE.md.
+      if (renderAs === 'geojson') {
+        // Reusa a camada Leaflet já montada de um toggle anterior — sem
+        // isso, cada ON refaria fetch + parse + 511 L.circleMarker novos,
+        // mesmo o GeoJSON sendo estático (nunca muda entre toggles).
+        const cached = geoJsonLayerCache.get(key)
+        if (cached) {
+          cached.addTo(map)
+          activeOverlays.set(key, cached)
+          continue
+        }
+        fetch(url)
+          .then((res) => res.json())
+          .then((geojson) => {
+            // O usuário pode ter desligado a camada enquanto o fetch estava
+            // em voo — sem essa checagem, ela reapareceria sozinha mesmo já
+            // desmarcada (activeOverlays só é preenchido aqui, então o loop
+            // de remoção não tinha como saber que precisava tirá-la).
+            if (!mapStore.visibleOverlays[key]) return
+            const color = getThematicColor(sourceLayer, {})
+            const applyOpacity = (op) => ({ radius: 4, color: '#ffffff', weight: 1, fillColor: color, fillOpacity: op, opacity: op })
+            const geoLayer = L.geoJSON(geojson, {
+              pointToLayer: (feature, latlng) =>
+                L.circleMarker(latlng, applyOpacity(mapStore.layerOpacity[key] ?? 1)),
+            }).addTo(map)
+            // O watcher de opacidade (seção 5) chama .redraw() em toda
+            // camada ativa — método que só existe em L.GridLayer, não em
+            // L.GeoJSON, daí esse shim.
+            geoLayer.redraw = () => {
+              const op = mapStore.layerOpacity[key] ?? 1
+              geoLayer.eachLayer((marker) => marker.setStyle(applyOpacity(op)))
+            }
+            geoJsonLayerCache.set(key, geoLayer)
+            activeOverlays.set(key, geoLayer)
+          })
+          .catch((err) => console.error(`[GeoJSON Fetch Error] ${url}:`, err))
+        continue
+      }
+
       const CustomMVTLayer = L.GridLayer.extend({
         createTile: function (coords, done) {
           const tile = document.createElement('canvas')
@@ -415,7 +467,6 @@ function syncVectorOverlays(desired) {
       }
       const currentOpacity = mapStore.layerOpacity[key] ?? 1
       const activeFilter   = mapStore.layerSearchFilters?.[key] ?? null
-      let anyMatch = false
       for (let i = 0; i < layer.length; i++) {
         try {
           const feature = layer.feature(i)
@@ -424,7 +475,6 @@ function syncVectorOverlays(desired) {
           const rawColor = getThematicColor(sourceLayer, props)
           const { strokeOnly, color } = parseColor(rawColor)
           const isMatch = !activeFilter || matchesFilter(props, activeFilter)
-          if (activeFilter && isMatch) anyMatch = true
 
           drawGeometryToContext(ctx, geom, feature.type, size)
 
@@ -451,24 +501,18 @@ function syncVectorOverlays(desired) {
               ctx.globalAlpha = 0.12 * currentOpacity
               ctx.fill()
             } else {
+              // Feições que batem com o filtro (ou sem filtro ativo) mantêm
+              // exatamente a mesma cor temática de sempre — sem contorno de
+              // destaque nem qualquer alteração visual sobre o resultado do
+              // filtro; só as que NÃO batem (ramo acima) ficam acinzentadas.
               ctx.fillStyle   = color
               ctx.globalAlpha = 0.8 * currentOpacity
               ctx.fill()
-              // Borda de destaque amarela nas feições que batem com o filtro
-              if (activeFilter && isMatch) {
-                ctx.strokeStyle = '#fbbf24'
-                ctx.lineWidth   = 2
-                ctx.globalAlpha = currentOpacity
-                ctx.stroke()
-              }
             }
           }
         } catch {
           // Ignora feições com tipo de geometria não suportado (ex: type 4)
         }
-      }
-      if (activeFilter && anyMatch && mapStore.layerSearchMatchCounts?.[key] === 0) {
-        mapStore.setSearchMatchCount(key, 1)
       }
       done(null, tile)
     } catch(e) {
@@ -605,25 +649,11 @@ function countFilterMatches(key) {
   const filter = mapStore.layerSearchFilters[key]
   if (!filter) { mapStore.setSearchMatchCount(key, null); return }
 
-  const { sourceLayer } = overlay
-  let found = false
-
-  for (const [cacheKey, buffer] of tileDataCache.entries()) {
-    if (!cacheKey.endsWith(`-${sourceLayer}`)) continue
-    try {
-      const pbf = new Pbf(new Uint8Array(buffer))
-      const vt = new VectorTile(pbf)
-      const layer = vt.layers[sourceLayer]
-      if (!layer) continue
-      for (let i = 0; i < layer.length; i++) {
-        if (matchesFilter(layer.feature(i).properties, filter)) {
-          found = true
-          break
-        }
-      }
-    } catch { /* ignora tiles corrompidos */ }
-    if (found) break
-  }
+  // searchIndex tem os valores de atributo de TODA feição da camada, não só
+  // os tiles já renderizados na tela — sem isso, uma feição fora da área/
+  // zoom visível no momento da busca nunca era encontrada (ver import acima).
+  const rows = searchIndex[overlay.sourceLayer] ?? []
+  const found = rows.some((row) => matchesFilter(row, filter))
 
   mapStore.setSearchMatchCount(key, found ? 1 : 0)
 }

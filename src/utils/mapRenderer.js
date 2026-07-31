@@ -16,6 +16,15 @@ export function getThematicColor(sourceLayer, featureProps) {
   if (style.type === 'stroke') return `stroke:${style.classes[0].color}`
   if (style.type === 'single') return style.classes[0].color
 
+  // Camadas categorizadas por texto (ex. solos_textura, tipos_solo,
+  // geologia) têm classes[0].value como string — correspondência exata
+  // case-insensitive, não a distância numérica usada pelas demais.
+  if (style.type === 'categorized' && typeof style.classes[0].value === 'string') {
+    const raw = String(featureProps?.[style.field] ?? '').trim().toLowerCase()
+    const match = style.classes.find((c) => String(c.value).trim().toLowerCase() === raw)
+    return match ? match.color : '#9ca3af'
+  }
+
   const numVal = Number(featureProps?.[style.field])
   if (Number.isNaN(numVal)) return '#9ca3af'
 

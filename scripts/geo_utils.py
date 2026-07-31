@@ -7,6 +7,15 @@ TOL        = 1e-6
 def classify_categorized(value, classes):
     if pd.isna(value):
         return None
+    # Camadas categorizadas por texto (ex. solos_textura, tipos_solo,
+    # geologia) têm classes[0]["value"] como string — comparação exata
+    # case-insensitive, não a distância numérica usada pelas demais.
+    if isinstance(classes[0]["value"], str):
+        v = str(value).strip().lower()
+        for c in classes:
+            if str(c["value"]).strip().lower() == v:
+                return c["label"]
+        return None
     v = float(value)
     best = min(classes, key=lambda c: abs(c["value"] - v))
     return best["label"] if abs(best["value"] - v) < TOL else None

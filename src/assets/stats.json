@@ -1,4 +1,9 @@
 {
+  "municipios_pb_semiarido": null,
+  "limite_semiarido_pb": null,
+  "estados_ne": null,
+  "limite_do_semiarido_br": null,
+  "focos_queimadas": null,
   "carbono_organico_escores_de_vulnerabilidade": {
     "classes": [
       {
@@ -503,8 +508,697 @@
     "total_km2": 53248.6,
     "field_used": "ivs"
   },
-  "municipios_pb_semiarido": null,
-  "limite_semiarido_pb": null,
-  "estados_ne": null,
-  "limite_do_semiarido_br": null
+  "tipos_solo": {
+    "classes": [
+      {
+        "label": "Argilossolo vermelho Eutrofico",
+        "area_km2": 83.1,
+        "color": "#fff5eb"
+      },
+      {
+        "label": "Argilossolo vermelho-amarelo Eutrofico",
+        "area_km2": 6246.3,
+        "color": "#fff5eb"
+      },
+      {
+        "label": "Argissolo acinzentado Distrofico",
+        "area_km2": 86.7,
+        "color": "#fee6ce"
+      },
+      {
+        "label": "Cambissolo haplico Argila de atividade baixa Eutrofico",
+        "area_km2": 142.8,
+        "color": "#fee6ce"
+      },
+      {
+        "label": "Latossolo amarelo Distrofico",
+        "area_km2": 159.8,
+        "color": "#fdd0a2"
+      },
+      {
+        "label": "Luvissolo crOmico Palico",
+        "area_km2": 2611.8,
+        "color": "#fdae6b"
+      },
+      {
+        "label": "Luvissolo cromico Artico",
+        "area_km2": 20223.3,
+        "color": "#fdd0a2"
+      },
+      {
+        "label": "Luvissolo cromico Palico",
+        "area_km2": 0.0,
+        "color": "#fdae6b"
+      },
+      {
+        "label": "Massa Dagua Continental",
+        "area_km2": 319.0,
+        "color": "#1542eb"
+      },
+      {
+        "label": "Neossolo litolico Eutrofico",
+        "area_km2": 17024.5,
+        "color": "#fd8d3c"
+      },
+      {
+        "label": "Neossolo quartzaranico Artico",
+        "area_km2": 0.0,
+        "color": "#f16913"
+      },
+      {
+        "label": "Neossolo regola­tico Eutrafico",
+        "area_km2": 817.6,
+        "color": "#f16913"
+      },
+      {
+        "label": "Neossolo regola­tico Eutrofico",
+        "area_km2": 659.2,
+        "color": "#d94801"
+      },
+      {
+        "label": "Planossolo haplico Eutrofico",
+        "area_km2": 995.7,
+        "color": "#d94801"
+      },
+      {
+        "label": "Planossolo natrico Artico",
+        "area_km2": 3332.1,
+        "color": "#a63603"
+      },
+      {
+        "label": "Vertissolo cromado Artico",
+        "area_km2": 853.8,
+        "color": "#a63603"
+      },
+      {
+        "label": "Vertissolo ebanico Artico",
+        "area_km2": 412.1,
+        "color": "#4f1802"
+      }
+    ],
+    "total_km2": 53967.8,
+    "field_used": "dsc_compon"
+  },
+  "solos_textura": {
+    "classes": [
+      {
+        "label": "Arenosa",
+        "area_km2": 11799.5,
+        "color": "#edde94"
+      },
+      {
+        "label": "Argilosa  ou muito argilosa",
+        "area_km2": 30402.2,
+        "color": "#dbaa5a"
+      },
+      {
+        "label": "Média",
+        "area_km2": 11447.2,
+        "color": "#875528"
+      }
+    ],
+    "total_km2": 53648.9,
+    "field_used": "dsc_textur"
+  },
+  "precipitacao_semiarido_pb": {
+    "classes": [
+      {
+        "label": "395 - 547",
+        "area_km2": 13839.8,
+        "color": "#e3f2ff"
+      },
+      {
+        "label": "547 - 700",
+        "area_km2": 9923.8,
+        "color": "#c8dcf0"
+      },
+      {
+        "label": "700 - 852",
+        "area_km2": 19920.4,
+        "color": "#73b2d8"
+      },
+      {
+        "label": "852 - 1005",
+        "area_km2": 7157.8,
+        "color": "#2979b9"
+      },
+      {
+        "label": "1005 - 1157",
+        "area_km2": 1096.2,
+        "color": "#08306b"
+      }
+    ],
+    "total_km2": 51938.0,
+    "field_used": "clim_prec"
+  },
+  "indice_aridez_semiarido_pb": {
+    "classes": [
+      {
+        "label": "0,2 - 0,5 - Semiárido",
+        "area_km2": 46341.5,
+        "color": "#ffffa0"
+      },
+      {
+        "label": "0,5 - 0,65 - Sub-úmido e seco",
+        "area_km2": 4351.6,
+        "color": "#a2d3b0"
+      },
+      {
+        "label": ">0,65 - Sub-úmido e úmido",
+        "area_km2": 1169.6,
+        "color": "#2b83ba"
+      }
+    ],
+    "total_km2": 51862.7,
+    "field_used": "ia_climat"
+  },
+  "eto_semiarido_pb": {
+    "classes": [
+      {
+        "label": "1499 - 1630",
+        "area_km2": 11423.0,
+        "color": "#1b81bd"
+      },
+      {
+        "label": "1630 - 1761",
+        "area_km2": 8460.6,
+        "color": "#9ee890"
+      },
+      {
+        "label": "1761 - 1892",
+        "area_km2": 12066.6,
+        "color": "#ffffa3"
+      },
+      {
+        "label": "1892 - 2022",
+        "area_km2": 11815.2,
+        "color": "#fc9756"
+      },
+      {
+        "label": "2022 - 2153",
+        "area_km2": 8097.7,
+        "color": "#f41b44"
+      }
+    ],
+    "total_km2": 51863.1,
+    "field_used": "eto_climat"
+  },
+  "sucetibilidade_erosao": {
+    "classes": [
+      {
+        "label": "1 - Muito Baixa",
+        "area_km2": 727.0,
+        "color": "#006400"
+      },
+      {
+        "label": "2 - Baixa",
+        "area_km2": 5967.8,
+        "color": "#6bae00"
+      },
+      {
+        "label": "3 - Moderada",
+        "area_km2": 21628.7,
+        "color": "#ffffcf"
+      },
+      {
+        "label": "4 - Alta",
+        "area_km2": 9485.0,
+        "color": "#eb9625"
+      },
+      {
+        "label": "5 - Muito Alta",
+        "area_km2": 16158.7,
+        "color": "#b85710"
+      }
+    ],
+    "total_km2": 53967.2,
+    "field_used": "sucerosao"
+  },
+  "carbono_organico": {
+    "classes": [
+      {
+        "label": "11 - 20.2",
+        "area_km2": 10710.1,
+        "color": "#a24611"
+      },
+      {
+        "label": "20.2 - 29.4",
+        "area_km2": 38437.8,
+        "color": "#e58b52"
+      },
+      {
+        "label": "29.4 - 38.6",
+        "area_km2": 4136.9,
+        "color": "#fff098"
+      },
+      {
+        "label": "38.6 - 47.8",
+        "area_km2": 443.6,
+        "color": "#7fb912"
+      },
+      {
+        "label": "47.8 - 57",
+        "area_km2": 38.6,
+        "color": "#006100"
+      }
+    ],
+    "total_km2": 53767.0,
+    "field_used": "co"
+  },
+  "idhm_2010_sab_pb": {
+    "classes": [
+      {
+        "label": "0,5 - 0,6 - Baixo",
+        "area_km2": 34412.1,
+        "color": "#ff7f00"
+      },
+      {
+        "label": "0,6 - 0,7 - Médio",
+        "area_km2": 18606.6,
+        "color": "#ffffbf"
+      },
+      {
+        "label": "0,7 - 0,8 - Alto",
+        "area_km2": 949.1,
+        "color": "#d1ffc0"
+      }
+    ],
+    "total_km2": 53967.8,
+    "field_used": "idhm_2010"
+  },
+  "dd_rural_2022_sab_pb": {
+    "classes": [
+      {
+        "label": "0 - 5",
+        "area_km2": 11455.7,
+        "color": "#ffffbf"
+      },
+      {
+        "label": "5 - 15",
+        "area_km2": 26626.9,
+        "color": "#ffdf8f"
+      },
+      {
+        "label": "15 - 45",
+        "area_km2": 14644.9,
+        "color": "#ffbf60"
+      },
+      {
+        "label": "45 - 90",
+        "area_km2": 974.5,
+        "color": "#ff9f30"
+      },
+      {
+        "label": "90 - 123",
+        "area_km2": 265.9,
+        "color": "#ff7f00"
+      }
+    ],
+    "total_km2": 53967.9,
+    "field_used": "denrur2022"
+  },
+  "ndvi": {
+    "classes": [
+      {
+        "label": "≥ 0.617 (Muito Baixa)",
+        "area_km2": 29678.4,
+        "color": "#ffffcc"
+      },
+      {
+        "label": "1,1 (Baixa)",
+        "area_km2": 13346.1,
+        "color": "#d9f0a3"
+      },
+      {
+        "label": "1,3 (Moderada)",
+        "area_km2": 4284.6,
+        "color": "#addd8e"
+      },
+      {
+        "label": "1,5 (Moderada-Alta)",
+        "area_km2": 5324.3,
+        "color": "#78c679"
+      },
+      {
+        "label": "1,8 (Alta)",
+        "area_km2": 635.1,
+        "color": "#31a354"
+      },
+      {
+        "label": "2 (Muito Alta)",
+        "area_km2": 0.0,
+        "color": "#006837"
+      }
+    ],
+    "total_km2": 53268.5,
+    "field_used": "peso"
+  },
+  "declividade": {
+    "classes": [
+      {
+        "label": "Plano 0 a 3%",
+        "area_km2": 9020.0,
+        "color": "#30b000"
+      },
+      {
+        "label": "Suave Ondulado 3 a 8%",
+        "area_km2": 24214.1,
+        "color": "#a5ff00"
+      },
+      {
+        "label": "Ondulado 8 a 20%",
+        "area_km2": 14014.2,
+        "color": "#ffff63"
+      },
+      {
+        "label": "Forte Ondulado 20 a 45%",
+        "area_km2": 5780.8,
+        "color": "#fea700"
+      },
+      {
+        "label": "Montanhoso 45 a 75%",
+        "area_km2": 804.6,
+        "color": "#ff4c00"
+      },
+      {
+        "label": "Escarpado > 75%",
+        "area_km2": 41.5,
+        "color": "#b40000"
+      }
+    ],
+    "total_km2": 53875.2,
+    "field_used": "dn"
+  },
+  "pressao_animal": {
+    "classes": [
+      {
+        "label": "0 - 0,25",
+        "area_km2": 21361.2,
+        "color": "#ffffbf"
+      },
+      {
+        "label": "0,25 - 0,75",
+        "area_km2": 29804.6,
+        "color": "#ffdf8f"
+      },
+      {
+        "label": "0,75 - 1,25",
+        "area_km2": 2465.6,
+        "color": "#ffbf60"
+      },
+      {
+        "label": "1,25 - 1,75",
+        "area_km2": 271.2,
+        "color": "#ff9f30"
+      },
+      {
+        "label": "1,75 - 2,53",
+        "area_km2": 65.2,
+        "color": "#ff7f00"
+      }
+    ],
+    "total_km2": 53967.8,
+    "field_used": "ua_ha_2017"
+  },
+  "geologia": {
+    "classes": [
+      {
+        "label": "Anfibolito, Gnaisse, Itabirito, Metacalcario, Quartzito, Quartzito Ferruginoso, Xisto",
+        "area_km2": 373.4,
+        "color": "#ffffff"
+      },
+      {
+        "label": "Anfibolito, Gnaisse, MetaCalcario, Xisto",
+        "area_km2": 617.7,
+        "color": "#f4f0ec"
+      },
+      {
+        "label": "Anfibolito, Gnaisse, Rocha Calcissilicatica",
+        "area_km2": 987.6,
+        "color": "#e8e1d9"
+      },
+      {
+        "label": "Anfibolito, Metacalcario, Metagranito, Metagranodiorito",
+        "area_km2": 2620.1,
+        "color": "#ddd2c6"
+      },
+      {
+        "label": "Anfibolito, Metagranodiorito, Metatonalito",
+        "area_km2": 807.3,
+        "color": "#d2c3b3"
+      },
+      {
+        "label": "Anfibolito, Metagranodiorito, Metatonalito, Migmatito",
+        "area_km2": 1873.1,
+        "color": "#c6b3a1"
+      },
+      {
+        "label": "Anfibolito, Paragnaisse, Quartzito, Xisto",
+        "area_km2": 0.0,
+        "color": "#bba48e"
+      },
+      {
+        "label": "Areia, Argila",
+        "area_km2": 18.6,
+        "color": "#b0957b"
+      },
+      {
+        "label": "Areia, Argila, Cascalho",
+        "area_km2": 144.8,
+        "color": "#a48668"
+      },
+      {
+        "label": "Arenito",
+        "area_km2": 329.4,
+        "color": "#997755"
+      },
+      {
+        "label": "Arenito, Arenito Arcoseano",
+        "area_km2": 467.5,
+        "color": "#8e6842"
+      },
+      {
+        "label": "Arenito, Arenito conglomeratico, Argilito Arenoso",
+        "area_km2": 221.4,
+        "color": "#82592f"
+      },
+      {
+        "label": "Arenito, Argilito",
+        "area_km2": 109.8,
+        "color": "#774a1c"
+      },
+      {
+        "label": "Arenito, Conglomerado",
+        "area_km2": 12.7,
+        "color": "#6c3b09"
+      },
+      {
+        "label": "Argilito, Folhelho, Siltito",
+        "area_km2": 359.8,
+        "color": "#663301"
+      },
+      {
+        "label": "Calcarenito, Calcario, Fosforito",
+        "area_km2": 0.0,
+        "color": "#663303"
+      },
+      {
+        "label": "Diorito, Gabro, Gabronorito, Hornblendito, Piroxenito",
+        "area_km2": 52.2,
+        "color": "#663304"
+      },
+      {
+        "label": "Diorito, Gabro, Quartzo Diorito, Tonalito",
+        "area_km2": 255.4,
+        "color": "#663306"
+      },
+      {
+        "label": "Filito, Metarritmito, Metatufo, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida, Xisto",
+        "area_km2": 1345.0,
+        "color": "#663308"
+      },
+      {
+        "label": "Fonolito, Riolito",
+        "area_km2": 0.0,
+        "color": "#66330a"
+      },
+      {
+        "label": "Formacao Ferrifera Bandada, Metagabro, Metapiroxenito, Marmore, Ortognaisse, Rocha Calcissilicatica",
+        "area_km2": 1187.5,
+        "color": "#66330c"
+      },
+      {
+        "label": "Gnaisse, MetaCalcario, Quartzito",
+        "area_km2": 3746.9,
+        "color": "#764212"
+      },
+      {
+        "label": "Gnaisse, MetaCalcario, Quartzito, Rocha Calcissilicatica, Xisto",
+        "area_km2": 26.8,
+        "color": "#8b571b"
+      },
+      {
+        "label": "Gnaisse, MetaCalcario, Quartzito, Xisto",
+        "area_km2": 571.1,
+        "color": "#a06b23"
+      },
+      {
+        "label": "Granito",
+        "area_km2": 1246.3,
+        "color": "#b5802c"
+      },
+      {
+        "label": "Granito, Granodiorito",
+        "area_km2": 8412.4,
+        "color": "#ca9434"
+      },
+      {
+        "label": "Granito, Granodiorito, Monzodiorito, Monzonito, Tonalito",
+        "area_km2": 172.9,
+        "color": "#dfa93d"
+      },
+      {
+        "label": "Granito, Granodiorito, Monzogranito",
+        "area_km2": 428.3,
+        "color": "#f4bd45"
+      },
+      {
+        "label": "Granito, Migmatito",
+        "area_km2": 69.1,
+        "color": "#f5c24f"
+      },
+      {
+        "label": "Granito, Quartzo Monzonito, Quartzo Sienito, Sienito",
+        "area_km2": 396.4,
+        "color": "#f6c759"
+      },
+      {
+        "label": "Marmore, Paragnaisse, Quartzito, Rocha Calcissilicatica, Xisto",
+        "area_km2": 1593.7,
+        "color": "#f6cc63"
+      },
+      {
+        "label": "MetaCalcario, Quartzito, Xisto",
+        "area_km2": 1635.3,
+        "color": "#f8d577"
+      },
+      {
+        "label": "Metabasalto, Metachert, Metadacito, Metagrauvaca, Metarriodacito, Paragnaisse",
+        "area_km2": 2995.8,
+        "color": "#f7d16d"
+      },
+      {
+        "label": "Metaconglomerado, Metagrauvaca, Metarenito",
+        "area_km2": 230.7,
+        "color": "#f9da81"
+      },
+      {
+        "label": "Metaconglomerado, Metagrauvaca, Metarenito Litico, Metarritmito, Rocha Metavulcanica Basica, Rocha Metavulcanica Acida",
+        "area_km2": 2821.8,
+        "color": "#fadf8b"
+      },
+      {
+        "label": "Metaconglomerado, Quartzito",
+        "area_km2": 230.5,
+        "color": "#fbe495"
+      },
+      {
+        "label": "Metaconglomerado, Rocha Metavulcanica, Xisto",
+        "area_km2": 34.4,
+        "color": "#fbe99f"
+      },
+      {
+        "label": "Metadacito, Metapelito, Paragnaisse, Quartzito, Rocha Metavulcanica",
+        "area_km2": 975.8,
+        "color": "#fceea9"
+      },
+      {
+        "label": "Metadiorito, Metagabro, Metagranodiorito, Metatonalito",
+        "area_km2": 231.6,
+        "color": "#fdf3b3"
+      },
+      {
+        "label": "Metadiorito, Metagabro, Metanortosito",
+        "area_km2": 14.5,
+        "color": "#fef8bd"
+      },
+      {
+        "label": "Metagranito",
+        "area_km2": 1224.1,
+        "color": "#fffdc7"
+      },
+      {
+        "label": "Metagranito, Metagranodiorito",
+        "area_km2": 1040.8,
+        "color": "#f6fbbf"
+      },
+      {
+        "label": "Metagranito, Metagranodiorito, Metamonzodiorito",
+        "area_km2": 19.1,
+        "color": "#e3f2a6"
+      },
+      {
+        "label": "Metagranito, Metagranodiorito, Metatonalito, Metatrondhjemito, Migmatito",
+        "area_km2": 3817.0,
+        "color": "#d0e98c"
+      },
+      {
+        "label": "Metagranito, Metagranodiorito, Metatonalito, Migmatito",
+        "area_km2": 248.6,
+        "color": "#bee072"
+      },
+      {
+        "label": "Metagranito, Metagranodiorito, Metatrondhjemito",
+        "area_km2": 2024.8,
+        "color": "#abd759"
+      },
+      {
+        "label": "Metagranito, Metamonzogranito, Metassienito, Metassienogranito, Migmatito",
+        "area_km2": 2701.5,
+        "color": "#98ce3f"
+      },
+      {
+        "label": "Metagranito, Metamonzonito, Metassienito, Metatonalito, Metatrondhjemito, Ortognaisse",
+        "area_km2": 461.1,
+        "color": "#86c525"
+      },
+      {
+        "label": "Monzodiorito, Quartzo Monzonito, Sienito, Sienogranito",
+        "area_km2": 1423.0,
+        "color": "#78b91c"
+      },
+      {
+        "label": "Monzogranito, Monzonito, Quartzo Diorito, Quartzo Monzonito",
+        "area_km2": 568.0,
+        "color": "#6dab17"
+      },
+      {
+        "label": "Monzogranito, Monzonito, Quartzo Monzonito, Sienogranito",
+        "area_km2": 571.0,
+        "color": "#619d12"
+      },
+      {
+        "label": "Monzogranito, Sienogranito",
+        "area_km2": 440.6,
+        "color": "#568f0e"
+      },
+      {
+        "label": "Ortognaisse",
+        "area_km2": 92.3,
+        "color": "#4a8209"
+      },
+      {
+        "label": "Ortognaisse, Paragnaisse",
+        "area_km2": 285.8,
+        "color": "#3f7405"
+      },
+      {
+        "label": "Sedimento Aluvionar, Sedimento Detrito-Lateritico",
+        "area_km2": 992.6,
+        "color": "#336600"
+      }
+    ],
+    "total_km2": 53527.9,
+    "field_used": "glo_ds_lit"
+  }
 }

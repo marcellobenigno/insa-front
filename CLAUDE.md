@@ -454,7 +454,18 @@ layer: {
 |---|---|
 | 1 | Base tile layers |
 | 10–28 | Composite vulnerability indices (IVD, IVS, IVV, IVC, IVM) and their "Escores de Vulnerabilidade" components, ordered by category |
-| 30+ | Administrative boundaries (always on top) |
+| 30–43 | "Indicadores de Vulnerabilidade" — raw data behind the Escores (Climáticos, Solo, Vegetação, Manejo), ordered by category |
+| 50+ | Administrative boundaries (always on top) |
+
+> Administrative boundaries were renumbered from 32–36 to 52–56 when the
+> "Indicadores de Vulnerabilidade" branch was added, to keep them "always on
+> top" while leaving room for the 14 new raw-indicator layers at 30–43.
+> `focos_queimadas` is the one exception to this whole table — it doesn't use
+> MVT tiles at all, so its `zIndex: 40` is only a sidebar-ordering
+> convenience; actual stacking comes from rendering in Leaflet's
+> `markerPane` (z-index 600), always above `tilePane` (z-index 200) where
+> every other layer here lives, regardless of its `zIndex` number. See
+> "Focos de Queimada" below.
 
 ---
 
@@ -462,10 +473,11 @@ layer: {
 
 All layers cover the **Paraíba semi-arid region (Semiárido da PB)**, except
 `limite_do_semiarido_br`, which outlines the wider Brazilian semi-arid region. They
-come from the delivered branch of the information tree — IVD → Índices de
-Vulnerabilidade → IVS/IVV/IVC/IVM → Escores de Vulnerabilidade. The "Indicadores de
-Vulnerabilidade" branch (raw Pedologia/Geomorfologia/Litologia/Vegetação/Climáticos/Manejo
-data) has not been delivered yet and has no layers in the app.
+come from the full information tree — IVD → Índices de Vulnerabilidade →
+IVS/IVV/IVC/IVM → Escores de Vulnerabilidade, plus the raw data behind those
+Escores in the "Indicadores de Vulnerabilidade" branch (Indicadores
+Climáticos/de Solo/de Vegetação/de Manejo) — delivered and wired into the app
+in 2026-07-31.
 
 > These categories were previously named "Índices/Escores de Qualidade" (IQS/IQV/IQC/IQM).
 > The GeoPackage delivery renamed both the taxonomy and every `sourceLayer`/field to
@@ -501,6 +513,82 @@ the numeric-range mode in `mapRenderer.js`/`stats.py`.
 | `focos_queimadas_escores_de_vulnerabilidade` | IVM | Fire outbreaks — vulnerability score |
 | `densidade_demografica_rural_escores_de_vulnerabilidade` | IVM | Rural demographic density — vulnerability score |
 | `idhm_escores_de_vulnerabilidade` | IVM | Municipal HDI — vulnerability score |
+| `indice_aridez_semiarido_pb` | Indicadores Climáticos | Aridity index — raw value |
+| `precipitacao_semiarido_pb` | Indicadores Climáticos | Rainfall — raw value (mm) |
+| `eto_semiarido_pb` | Indicadores Climáticos | Evapotranspiration — raw value (mm) |
+| `solos_textura` | Indicadores de Solo | Soil texture — categorical (string), not the numeric score |
+| `tipos_solo` | Indicadores de Solo | Soil type / pedological component — categorical (string) |
+| `declividade` | Indicadores de Solo | Slope — raw value (%), graduated into 6 classes (Plano → Escarpado) |
+| `geologia` | Indicadores de Solo | Lithological type — categorical (string), 55 classes |
+| `ndvi` | Indicadores de Vegetação | NDVI (May/2022) — categorized by `peso`, already pre-dissolved into 5 classes upstream (not a per-pixel layer) |
+| `carbono_organico` | Indicadores de Vegetação | Soil organic carbon — raw value (g/kg) |
+| `sucetibilidade_erosao` | Indicadores de Vegetação | Water erosion susceptibility — raw value |
+| `focos_queimadas` | Indicadores de Manejo | Fire outbreak points (511 pts) — `Point` geometry, no attributes, served as static GeoJSON (not MVT), always rendered above every other layer |
+| `dd_rural_2022_sab_pb` | Indicadores de Manejo | Rural demographic density (2022) — raw value (hab/km²) |
+| `pressao_animal` | Indicadores de Manejo | Animal pressure (2017) — raw value (UA/ha) |
+| `idhm_2010_sab_pb` | Indicadores de Manejo | Municipal HDI (2010) — raw value |
+
+Every "Indicadores de Vulnerabilidade" leaf sits alongside its "Escores de
+Vulnerabilidade" counterpart under a **different** category — e.g. both
+`geologia_escores_de_vulnerabilidade` (IVS) and `geologia` (Indicadores de
+Solo) render as `label: 'Geologia'` in the sidebar. This is intentional (it
+mirrors the source `Projeto_QGIS` tree) — the parent category disambiguates
+them, not the label. Same pattern for `focos_queimadas` ("Focos de Queimada"
+under IVM escores vs. under Indicadores de Manejo), `declividade`,
+`precipitacao_semiarido_pb`, etc.
+
+> **`sourceLayer` here is the real GeoPackage table name, which for four of
+> these layers differs from the name used in the original project
+> documentation/QGIS project tree** — the delivery renamed the table but left
+> a stale style row in `layer_styles` under the old name:
+> `declividade` (not `declividade_semiarido_pb`), `geologia` (not
+> `geologia_tipos_litologicos`), `ndvi` (not `ndvi_maio_2022`), `pressao_animal`
+> (not `pressao_animal_sab_pb`). `scripts/styles.py`'s `RENAMED_TABLES` dict
+> maps the stale style-row name to the real table (see Step 4) — if a future
+> GeoPackage delivery renames a table again, add it there rather than hunting
+> for why a layer silently has no style.
+
+**`focos_queimadas` is the app's first and only layer NOT served as MVT
+tiles.** It's a `Point` layer with **no attribute fields at all** and only
+511 features — light enough to fetch as a single static GeoJSON file instead
+of a `{z}/{x}/{y}.pbf` tile pyramid. See "Focos de Queimada" below for the
+full architecture (`layers.js`'s `renderAs: 'geojson'`, where the file lives,
+how it's deployed, and why it's always on top).
+
+`focos_queimadas` is `noPopup: true` in `layers.js` (nothing to show) and a
+`"single"`-type manual entry in `styles.json`, not a QML-extracted style
+(same reason as the boundary layers below — `singleSymbol` QGIS renderers are
+always skipped by the auto-extraction in `styles.py`).
+
+**`solos_textura`, `tipos_solo` and `geologia` classify by text, not
+number** (QGIS `categorizedSymbol` on a string field — soil texture name,
+pedological component, lithology). `scripts/styles.py` keeps the class
+`value` as the original string when it can't parse as a float (instead of
+dropping the category); `scripts/geo_utils.py` (`classify_categorized`) and
+`src/utils/mapRenderer.js` (`getThematicColor`) both branch on
+`typeof classes[0].value === 'string'` to do an exact case-insensitive
+string match instead of the numeric closest-value match used by every other
+`categorized` layer.
+
+**`solos_textura` had a QML field-name casing bug** — the QGIS style
+referenced `DSC_TEXTUR` but the real GeoPackage column is lowercase
+(`dsc_textur`), which SQLite tolerates (case-insensitive lookups) but the
+GeoJSON/MVT export does not (preserves real casing) — `style.field` would
+have silently never matched `feature.properties`, coloring the whole layer
+gray. `scripts/styles.py` (`real_field_name`) resolves the QML `attr` to its
+real casing via `PRAGMA table_info` before writing `styles.json`, for every
+layer (not just this one) — cheap and always correct, so it's not
+conditional on knowing in advance which layers have the bug.
+
+**`declividade`'s classification is graduated (field `dn`, % slope) with 6
+classes extracted straight from the QML** (Plano 0–3%, Suave Ondulado 3–8%,
+Ondulado 8–20%, Forte Ondulado 20–45%, Montanhoso 45–75%, Escarpado >75%) —
+a 7-class table with different boundaries and explicit weights (1.0–2.0) was
+also considered (typed from memory, not from the GeoPackage) but the QML is
+the authoritative source per the project's own convention ("always re-run
+Step 4 rather than hand-editing `styles.json`"), so no manual override was
+added. If the classification needs to change, edit it in QGIS and re-run
+Step 4 — don't hand-edit `declividade` in `styles.json`.
 
 **`municipios_pb_semiarido`, `limite_semiarido_pb`, `estados_ne` and `limite_do_semiarido_br`
 are stroke-only** — their entries in `src/assets/styles.json` must use `"type": "stroke"`
@@ -508,6 +596,66 @@ are stroke-only** — their entries in `src/assets/styles.json` must use `"type"
 in `layers.js` (except `municipios_pb_semiarido`, which has a real popup) — they're pure
 boundary outlines with no attributes worth surfacing in a popup, and being stroke-only
 they're automatically skipped by `stats.py` so no chart button appears either.
+
+---
+
+## Focos de Queimada — a exceção arquitetural (GeoJSON, não MVT)
+
+`focos_queimadas` é a única camada do app que **não** segue o pipeline de
+vector tiles — decisão deliberada, não um atalho temporário:
+
+- **Por quê**: é a única camada de pontos do projeto, sem nenhum atributo,
+  511 feições — um `.geojson` inteiro (~62 KB) é mais barato de buscar de
+  uma vez do que uma pirâmide `{z}/{x}/{y}.pbf` fatiada por zoom/tile.
+- **Onde o arquivo vive**: `public/tiles/insa_layers/focos_queimadas.geojson`
+  — dentro da MESMA pasta da pirâmide de tiles (não `public/data/`, onde
+  fica `municipios_pb_semiarido.geojson`), de propósito: `npm run
+  deploy:tiles` já compacta e envia essa pasta inteira pro servidor, então
+  o arquivo viaja automaticamente sem precisar tocar em
+  `scripts/deploy-tiles.sh`. Cai em produção em
+  `https://sistema.sigrural.com.br/tiles/insa_layers/focos_queimadas.geojson`.
+  Gitignored, igual ao resto de `public/tiles/` — **não** versionado (ao
+  contrário de `municipios_pb_semiarido.geojson`, que é pequeno e estável o
+  bastante pra viver no git).
+- **Como é gerado**: `ogr2ogr -f GeoJSON public/tiles/insa_layers/focos_queimadas.geojson
+  data/dados_insa.gpkg focos_queimadas -t_srs EPSG:4326` — roda **depois**
+  do Step 3 (que faz `rm -rf public/tiles/insa_layers`, apagando esse
+  arquivo junto com os tiles) e **fora** do comando do Tippecanoe no Step 2
+  (`focos_queimadas` não entra nesse comando).
+- **`layers.js`**: `renderAs: 'geojson'` no objeto da camada é o que
+  diferencia esse leaf de todos os outros (que usam MVT por padrão, sem
+  precisar de nenhum campo especial). `url` aponta pra
+  `FOCOS_QUEIMADAS_URL`, derivada de `VECTOR_TILES_URL`
+  (`.replace()` tira o sufixo `/{z}/{x}/{y}.pbf` e troca por
+  `/focos_queimadas.geojson`) — não uma env var nova.
+- **`MapContainer.vue`**: `syncVectorOverlays()` ramifica em
+  `renderAs === 'geojson'` — `fetch` + `L.geoJSON` com `pointToLayer`
+  retornando `L.circleMarker`, em vez de `CustomMVTLayer`. A camada some por
+  padrão em `L.circleMarker`.
+- **"Sempre acima das outras camadas" sai de graça, sem z-index especial**:
+  `L.circleMarker` cai por padrão no `markerPane` do Leaflet (z-index 600).
+  Toda `CustomMVTLayer` (`L.GridLayer`) das outras camadas vive no
+  `tilePane` (z-index 200) — abaixo do `markerPane` sempre, não importa o
+  `zIndex` numérico de nenhuma delas. Não foi criado nenhum pane customizado
+  nem lógica de z-index adicional.
+- **Opacidade**: o watcher genérico de opacidade em `MapContainer.vue` chama
+  `.redraw()` em toda camada ativa — método que só existe em `L.GridLayer`,
+  não em `L.GeoJSON`. A camada do focos_queimadas recebe um `.redraw` "shim"
+  (atribuído na hora da criação) que reaplica o estilo em cada
+  `circleMarker` via `.setStyle()`, pra continuar funcionando com esse
+  watcher sem precisar de um caso especial lá.
+- **Corrida fetch vs. toggle**: como a camada só entra em `activeOverlays`
+  depois que o `fetch` resolve (assíncrono, diferente do MVT que registra a
+  camada de forma síncrona antes de buscar tiles), o callback confere
+  `mapStore.visibleOverlays[key]` antes de adicionar ao mapa — sem isso, uma
+  camada desligada rápido o bastante (antes do fetch terminar) reapareceria
+  sozinha quando o fetch finalmente resolvesse.
+- **`geoJsonLayerCache`** (módulo-level `Map`, ao lado de `activeOverlays`):
+  a camada Leaflet já montada (fetch + parse + os 511 `L.circleMarker`) é
+  reaproveitada entre toggles — desligar e religar não refaz o fetch nem
+  recria os markers, só chama `.addTo(map)`/`map.removeLayer()` na mesma
+  instância. O GeoJSON é estático (não muda entre toggles), então não há
+  risco de mostrar dado desatualizado.
 
 ---
 
@@ -519,6 +667,25 @@ they're automatically skipped by `stats.py` so no chart button appears either.
 
 Todos os comandos rodam a partir da **raiz do projeto**. Os scripts Python ficam
 em `scripts/` e resolvem os paths automaticamente via `Path(__file__).parent.parent`.
+
+### Manutenção do GeoPackage (`scripts/gpkg_dissolve_and_fix.py`)
+
+Script em PyQGIS (`native:fixgeometries` + `native:dissolve`, precisa do
+ambiente Python do QGIS — ver docstring do script) que roda **antes** do
+pipeline abaixo, direto em `data/dados_insa.gpkg`, pra reduzir o tamanho do
+arquivo: corrige geometrias inválidas e funde (`dissolve`) feições que
+compartilham os mesmos valores em todos os seus campos — nunca muda nome,
+tipo ou ordem de campo nenhum, só reduz feições redundantes (ex.
+`ivs`: 16825→65 feições, mesmo conjunto de valores). Fica de fora do dissolve
+(`EXCLUDE_LAYERS` no script) `municipios_pb_semiarido`, `estados_ne`,
+`limite_semiarido_pb`, `limite_do_semiarido_br` (cada feição precisa
+continuar endereçável individualmente pela aplicação) e `focos_queimadas`
+(camada de pontos sem campo de atributo). Já rodado uma vez em 2026-07-31,
+89,3 MB → 65,9 MB; backup do estado anterior ficou em
+`data/dados_insa.antes-dissolve.gpkg` (gitignored, como o próprio `.gpkg`).
+Não muda nada relevante pro Step 4/5/6 abaixo (`styles.py`/`stats.py`/
+`dashboard_stats.py` classificam por valor/faixa, não por identidade de
+feição, então área e classes calculadas continuam as mesmas).
 
 ### Step 1 — Export each layer from GeoPackage to GeoJSON
 
@@ -542,43 +709,51 @@ tippecanoe \
   --no-tile-size-limit \
   --extend-zooms-if-still-dropping \
   --no-tile-compression \
+  --no-tiny-polygon-reduction \
   --force \
-  data/geojson/municipios_pb_semiarido.geojson \
-  data/geojson/limite_semiarido_pb.geojson \
-  data/geojson/limite_do_semiarido_br.geojson \
-  data/geojson/estados_ne.geojson \
-  data/geojson/ivd_sab.geojson \
-  data/geojson/ivs.geojson \
-  data/geojson/ivv.geojson \
-  data/geojson/ivc.geojson \
-  data/geojson/ivm.geojson \
-  data/geojson/declividade_escores_de_vulnerabilidade.geojson \
-  data/geojson/geologia_escores_de_vulnerabilidade.geojson \
-  data/geojson/textura_escores_de_vulnerabilidade.geojson \
-  data/geojson/tipos_de_solos_escores_de_vulnerabilidade.geojson \
-  data/geojson/ndvi_escore_de_vulnerabilidade.geojson \
-  data/geojson/carbono_organico_escores_de_vulnerabilidade.geojson \
-  data/geojson/suscetibilidade_erosao_escore_de_vulnerabilidade.geojson \
-  data/geojson/ia_escores_de_vulnerabilidade.geojson \
-  data/geojson/precipitacao_escores_de_vulnerabilidade.geojson \
-  data/geojson/eto_escores_de_vulnerabilidade.geojson \
-  data/geojson/pressao_animal_escores_de_vulnerabilidade.geojson \
-  data/geojson/focos_queimadas_escores_de_vulnerabilidade.geojson \
-  data/geojson/densidade_demografica_rural_escores_de_vulnerabilidade.geojson \
-  data/geojson/idhm_escores_de_vulnerabilidade.geojson \
-  data/geojson/layer_styles.geojson
+  data/geojson/*.geojson
 ```
 
-> `layer_styles.geojson` is the QGIS style table — include it in the command but
-> do not register it as an application layer.
+> ⚠️ **`--no-tiny-polygon-reduction` é obrigatório.** Sem essa flag, o
+> Tippecanoe funde/derruba por padrão polígonos pequenos demais pra ocupar
+> um pixel nos zooms baixos (comum em município com pouca área, ou num
+> polígono de classe rara/pequena) — a feição simplesmente não existe mais
+> naquele tile, com qualquer atributo que carregava junto. Isso não é só um
+> problema visual: a busca (`matchesFilter` em `mapRenderer.js`) só enxerga
+> o que está no tile que o navegador buscou, então uma feição derrubada
+> nunca aparece como resultado, mesmo existindo no GeoPackage — foi
+> exatamente o bug reportado em `pressao_animal` (`ua_ha_2017 >= 2`
+> retornava "Nenhum resultado encontrado" mesmo com 1 feição em 2,53; sem
+> essa flag o tile z2 tinha 198 das 207 feições, faltando bem o valor
+> máximo). Confirmado reproduzindo local: com a flag, 207/207 presentes.
 
-> The `.mbtiles` file is ~138 MB — it is gitignored. Do not commit it.
+> Um glob (`data/geojson/*.geojson`) em vez de listar cada camada — mais
+> simples de manter com 36 camadas, e `data/geojson/` só existe pra isso
+> mesmo (regenerado do zero a cada rodada do pipeline, Step 1 sempre exporta
+> exatamente as camadas certas). **Exceção:** `focos_queimadas.geojson`
+> nunca é exportado pra `data/geojson/` — não passa pelo Tippecanoe, vai
+> direto pra `public/tiles/insa_layers/` (ver "Focos de Queimada" acima).
+> `layer_styles.geojson` é a tabela de estilos do QGIS — precisa estar em
+> `data/geojson/` (entra no comando via glob) mas nunca é registrada como
+> camada da aplicação.
+
+> The `.mbtiles` file is ~200 MB (down from ~920 MB before
+> `scripts/gpkg_dissolve_and_fix.py` — see "Manutenção do GeoPackage" above)
+> — it is gitignored. Do not commit it. `public/tiles/insa_layers/` is
+> correspondingly ~1.7 GB / ~420k `.pbf` files on disk (plus the one
+> `focos_queimadas.geojson`).
 
 ### Step 3 — Delete old tiles and re-extract
 
 ```bash
 rm -rf public/tiles/insa_layers      # MANDATORY — never skip this
 python scripts/export.py             # writes public/tiles/insa_layers/{z}/{x}/{y}.pbf
+
+# focos_queimadas não passa pelo Tippecanoe/export.py (ver "Focos de
+# Queimada" acima) — o rm -rf acima apaga o .geojson dele junto com os
+# tiles, então regenerar por último, depois do export.py:
+ogr2ogr -f GeoJSON public/tiles/insa_layers/focos_queimadas.geojson \
+  data/dados_insa.gpkg focos_queimadas -t_srs EPSG:4326
 ```
 
 ### Step 4 — Extract styles
@@ -597,6 +772,25 @@ automatically (the GeoPackage can contain stray/duplicate style rows).
 `singleSymbol`-styled layers (e.g. `municipios_pb_semiarido`, `limite_semiarido_pb`,
 `estados_ne`, `limite_do_semiarido_br` — all rendered stroke-only) are **not**
 captured automatically — add them manually.
+
+`styles.py` also resolves two known GeoPackage-delivery quirks automatically
+(no manual step needed for either):
+
+- **Case-insensitive field-name resolution** (`real_field_name`, via
+  `PRAGMA table_info`) — a QML that references a column with different
+  casing than the real GeoPackage column (SQLite tolerates it, the
+  GeoJSON/MVT export doesn't) gets silently remapped to the real casing.
+- **Stale-named style rows** (`RENAMED_TABLES` dict) — a few `layer_styles`
+  rows still reference a table name from a previous GeoPackage delivery
+  that no longer exists (e.g. `geologia_tipos_litologicos`, when the real
+  table today is `geologia`). Add an entry there if a future delivery
+  renames a table again and its style stops showing up.
+
+String-categorized layers (`solos_textura`, `tipos_solo`, `geologia` — QGIS
+`categorizedSymbol` on a text field) are captured automatically too — the
+category `value` is kept as the original string instead of being dropped
+when it can't parse as a float (see "Existing layers" above for how the
+frontend/`stats.py` match on it).
 
 > ⚠️ **`styles.py` overwrites `src/assets/styles.json` entirely.** Any manual entry
 > will be lost after every pipeline run. Always restore manual entries immediately
@@ -631,8 +825,20 @@ captured automatically — add them manually.
 >   "classes": [
 >     { "label": "Limite do Semiárido BR", "color": "#ffd700" }
 >   ]
+> },
+> "focos_queimadas": {
+>   "type": "single",
+>   "field": null,
+>   "classes": [
+>     { "label": "Foco de queimada", "color": "#ff0017" }
+>   ]
 > }
 > ```
+>
+> `focos_queimadas` (`Point`, no attribute fields) is `singleSymbol` in QGIS —
+> `styles.py` extracts its color correctly but always skips writing
+> `singleSymbol` layers automatically (same as the stroke-only boundaries
+> above), so it needs this manual entry too.
 
 ### Step 5 — Generate area statistics
 
@@ -654,6 +860,17 @@ de índice composto (`ivs`, `ivv`, `ivc`, `ivm`, `ivd_sab`), produzindo valor m�
 ponderado por área + classe dominante por município. Depende de `styles.json`
 (Step 4) — re-executar sempre que o estilo de qualquer uma dessas 5 camadas mudar.
 Veja "Dashboard de comparação" abaixo para o schema completo.
+
+### Step 7 — Generate the search index
+
+```bash
+python scripts/search_index.py    # writes src/assets/search_index.json
+```
+
+Veja "Índice de busca" abaixo para o racional completo — resumindo, precisa
+ser rodado sempre que o GeoPackage mudar (mesma regra do resto do pipeline),
+já que é lido direto de `data/dados_insa.gpkg`, não derivado de nenhum
+`.json` gerado por outro step.
 
 ### Required tools (macOS)
 
@@ -701,7 +918,8 @@ app code** — otherwise the live site points at tiles that don't exist yet.
 
 - [ ] Add layer to `dados_insa.gpkg` in QGIS and save the style
 - [ ] Export to GeoJSON: `ogr2ogr -f GeoJSON data/geojson/<layer>.geojson data/dados_insa.gpkg <layer> -t_srs EPSG:4326`
-- [ ] Add the new `.geojson` to the Tippecanoe command in Step 2 (and update this file)
+      (Step 2's Tippecanoe command reads `data/geojson/*.geojson` via glob — no need to list the new file by name,
+      **unless** the layer is a GeoJSON-exception like `focos_queimadas`, see "Focos de Queimada" above)
 - [ ] Re-run Step 2 (generate `.mbtiles`)
 - [ ] Re-run Step 3 (`rm -rf public/tiles/insa_layers` + `python scripts/export.py`)
 - [ ] Re-run Step 4 (`python scripts/styles.py`)
@@ -710,6 +928,8 @@ app code** — otherwise the live site points at tiles that don't exist yet.
 - [ ] Re-run Step 5 (`python scripts/stats.py`) to update `src/assets/stats.json`
 - [ ] If the changed layer is one of the 5 composite indices (`ivs`/`ivv`/`ivc`/`ivm`/`ivd_sab`),
       also re-run Step 6 (`python scripts/dashboard_stats.py`)
+- [ ] Re-run Step 7 (`python scripts/search_index.py`) to update `src/assets/search_index.json` —
+      needed for the new layer's search to find matches outside the current viewport
 
 ### Code side
 
@@ -728,16 +948,29 @@ layer to `layers.js` with the right `sourceLayer` is enough.
 
 `getThematicColor(sourceLayer, featureProps)` branches on `style.type`:
 1. **`categorized`** — exact match: picks the class whose `value` is closest
-   to `featureProps[style.field]` (QGIS "Categorized" symbology).
+   to `featureProps[style.field]` (QGIS "Categorized" symbology) — unless
+   `classes[0].value` is a `string` (see below), in which case it does an
+   exact case-insensitive string match instead.
 2. **`graduated`** — range match: first class whose `max` (upper bound) is
    `>= featureProps[style.field]` (QGIS "Graduated" symbology).
 3. **`stroke` / `single`** — fixed color, no attribute lookup (e.g. municipal
-   boundaries).
+   boundaries, `focos_queimadas`).
 
 Getting `categorized` vs `graduated` wrong produces a legend that *looks*
 plausible (colors still render) but shows synthesized numeric ranges instead
 of the real QGIS class labels — always re-run Step 4 after any style change
 in QGIS rather than hand-editing `styles.json`.
+
+**String-categorized layers** (`solos_textura`, `tipos_solo`, `geologia`) are
+`categorized` but classify on text, not a number — `scripts/stats.py` →
+`classify_categorized` (in `geo_utils.py`) mirrors the same string-vs-number
+branch so area stats stay consistent with what's rendered on the map.
+
+`drawGeometryToContext(ctx, geom, featureType, tileSize)` draws polygons
+(`featureType === 3`, closes the path) and lines (`featureType === 2`) via
+`moveTo`/`lineTo`. `focos_queimadas` doesn't go through this function at
+all — it's rendered as `L.circleMarker` via Leaflet's own GeoJSON layer, not
+painted on an MVT tile canvas (see "Focos de Queimada" above).
 
 ---
 
@@ -897,6 +1130,72 @@ in the GeoPackage). Structure:
   - `'number'` → supports operators `>`, `<`, `>=`, `<=`, `=`
 - Fields absent from `fieldTypes` default to string matching
 
+Duas coisas diferentes acontecem quando um filtro está ativo numa camada, e
+usam fontes de dados diferentes:
+
+1. **Destaque visual no mapa** (`MapContainer.vue`, dentro de `createTile`) —
+   continua lendo os tiles MVT normalmente, tile por tile, conforme eles são
+   buscados pra renderizar. Isso é inerente e correto: só dá pra pintar o que
+   está na tela. Feições que não batem com o filtro ficam acinzentadas
+   (`#6b7280`, baixa opacidade); as que batem mantêm a cor temática normal,
+   sem nenhum destaque adicional.
+2. **Contagem de resultados / badge "Nenhum resultado encontrado"**
+   (`countFilterMatches`) — **não** usa os tiles renderizados, usa
+   `src/assets/search_index.json` (ver "Índice de busca" abaixo). Isso é
+   proposital, não só uma otimização: contar via tiles renderizados faria a
+   busca depender do que por acaso já foi carregado na viewport atual — uma
+   feição real que bate com o filtro, mas está fora da área/zoom visível no
+   momento da busca, nunca seria vista, e o usuário veria "Nenhum resultado"
+   pra uma busca que na verdade tem resultado em outro lugar do mapa.
+
+---
+
+## Índice de busca (`src/assets/search_index.json`)
+
+Gerado por `scripts/search_index.py` — os valores de atributo (sem geometria)
+de **toda** feição de **toda** camada espacial do GeoPackage, direto via
+SQLite (não passa por GeoPandas nem pelos tiles MVT). Schema:
+
+```json
+{
+  "ivd_sab": [ { "ivd": 1.42 }, { "ivd": 1.58 }, ... ],
+  "municipios_pb_semiarido": [ { "nm_municip": "Sousa", "cod_ibge_m": "2515500", "slug": "sousa" }, ... ],
+  "focos_queimadas": []
+}
+```
+
+- Chave = `sourceLayer` (mesma convenção do resto do pipeline). Uma camada
+  sem nenhum campo de atributo (`focos_queimadas`) aparece com array vazio,
+  não fica ausente da chave — `searchIndex[sourceLayer] ?? []` no frontend
+  não precisa se preocupar com a diferença.
+- `countFilterMatches` em `MapContainer.vue` roda `matchesFilter` (mesma
+  função de `mapRenderer.js` usada pro destaque visual) contra cada linha —
+  garante que a lógica de comparação (operadores numéricos, substring
+  case-insensitive) seja idêntica entre "o que pinta de cinza" e "o que conta
+  como resultado", só a fonte dos dados é diferente.
+- **Por que não um fetch dedicado de tile em zoom baixo, mais simples**: foi
+  tentado — buscar só o tile z2 que cobre o Semiárido PB inteiro (a região
+  inteira cabe numa tile só nesse zoom). Funciona pras camadas pequenas, mas
+  camadas densas (`ivd_sab`, ~9,7 mil polígonos) perdem uma fração real de
+  feições nesse zoom — não é um bug do Tippecanoe pra corrigir com flag
+  nenhuma, é física de vetor tile: representar milhares de polígonos
+  pequenos dentro da resolução de coordenadas de uma tile (4096 unidades)
+  cobrindo um estado inteiro necessariamente colapsa algumas geometrias.
+  `search_index.json` não tem esse problema porque não carrega geometria
+  nenhuma — só os valores de atributo, então não existe zoom/resolução que
+  degrade.
+- **Compacto, sem `indent`** (diferente de `styles.json`/`stats.json`) —
+  gerado e consumido só por código, nunca editado à mão, e `ivd_sab` sozinho
+  tem quase 10 mil linhas.
+- **Tamanho**: ~220 KB hoje (37 camadas, ~12 mil feições ao todo — a maior
+  parte é `ivd_sab`, que tem só 1 campo numérico por feição). Importado
+  estaticamente em `MapContainer.vue`, então entra no bundle do `/mapa`
+  (rota já é o núcleo da aplicação, carregar isso ali é a troca certa —
+  correção da busca vale mais que raspar ~68 KB gzip de um bundle que o
+  usuário já vai carregar pra usar o mapa de qualquer forma).
+- Regenerar sempre que o GeoPackage mudar (Step 7 do pipeline) — não deriva
+  de nenhum outro `.json` gerado, lê direto de `data/dados_insa.gpkg`.
+
 ---
 
 ## What NOT to do
@@ -932,6 +1231,31 @@ in the GeoPackage). Structure:
   tile pipeline (Steps 1–3) — it's independent, versioned in git (unlike
   `data/geojson/`), and only needs regenerating if municipal boundaries change
   in the GeoPackage (see "GeoJSON de municípios" above for the command)
+- Do not add `focos_queimadas.geojson` to the Tippecanoe command in Step 2 or
+  export it to `data/geojson/` — it's the one layer that deliberately skips
+  the MVT pipeline entirely (see "Focos de Queimada" above); it's generated
+  straight into `public/tiles/insa_layers/` with its own `ogr2ogr` call,
+  after Step 3 (whose `rm -rf` would otherwise delete it)
+- Do not give a new layer `renderAs: 'geojson'` in `layers.js` just because
+  it's small — that flag also skips the tile pyramid, MVT search/filter,
+  and popup-by-click infrastructure entirely; it only makes sense for a
+  layer with no attributes and few enough features to fetch in one request
+- Do not make `countFilterMatches` in `MapContainer.vue` scan `tileDataCache`
+  (rendered tiles) again — that was the original bug: match counting only
+  saw whatever tiles happened to already be on screen, missing real matches
+  outside the current viewport/zoom. It reads `search_index.json` now (see
+  "Índice de busca" above) precisely to not depend on what's rendered.
+- Do not remove `--no-tiny-polygon-reduction` from the Tippecanoe command in
+  Step 2 — without it, small polygons get merged/dropped at low zoom by
+  default, silently removing features (and whatever attribute value they
+  carried) from those tiles. Caused a real bug: searching `pressao_animal`
+  for its own maximum value returned no results, because that one feature's
+  tile at low zoom didn't have it anymore.
+- Do not forget Step 7 (`python scripts/search_index.py`) when regenerating
+  the pipeline after a GeoPackage change — unlike `stats.json`, it isn't
+  derived from `styles.json`, so nothing else in the pipeline will remind
+  you it's stale
+  (today, only `focos_queimadas` qualifies)
 
 ---
 
