@@ -705,12 +705,22 @@ com `python scripts/classify_ndvi.py`. Pipeline, todo via GDAL:
    `ndvi_min`, `ndvi_max`, `ndvi_faixa`, `classe_lbl`, `peso` — mesma escala
    de peso 1.0–2.0 das outras camadas de vulnerabilidade). Por fim monta o
    campo `classe` (string) como `"{classe_num} - {tipo_veget} ({ndvi_faixa})"`
-   — precisa bater **byte-a-byte** com os `value`/`label` das `<category>`
-   do QML `categorizedSymbol` (`attr="classe"`) já salvo em `layer_styles`
-   para `ndvi_maio` no GeoPackage, senão a extração automática do Step 4
-   não encontra nenhuma correspondência (ver nota sobre `ndvi_maio` acima,
-   em "Existing layers"). `classe_num` (o código de pixel 1–6) fica como
-   campo à parte, só pra join/ordenação internos — não é usado pra estilo.
+   — precisa bater **byte-a-byte** com o `value` das `<category>` do QML
+   `categorizedSymbol` (`attr="classe"`) já salvo em `layer_styles` para
+   `ndvi_maio` no GeoPackage (é isso que `styles.py`/`mapRenderer.js` usam
+   pra casar feição ↔ classe), senão a extração automática do Step 4 não
+   encontra nenhuma correspondência (ver nota sobre `ndvi_maio` acima, em
+   "Existing layers"). `classe_num` (o código de pixel 1–6) fica como campo
+   à parte, só pra join/ordenação internos — não é usado pra estilo.
+
+   O `label` de cada `<category>`, ao contrário do `value`, **não** precisa
+   bater com o campo — é só o texto exibido (legenda/popup) e foi editado
+   direto no `layer_styles` do GeoPackage (2026-08-12) pra tirar o prefixo
+   numérico (`"1 - Arbórea muito densa (≥ 0.617)"` → `"Arbórea muito densa
+   (≥ 0.617)"`) sem afetar a correspondência de dados. Se `classify_ndvi.py`
+   for rodado de novo, o `value` de cada categoria continua vindo do script
+   (com o número), mas o `label` só existe no QML — não regenerar/reescrever
+   esse QML a partir do script sem preservar essa edição manual de rótulo.
 
 Saídas, na mesma pasta do raster: `NDVI_MAIO_2022_classe.tif` (raster
 classificado + sieved) e `NDVI_MAIO_2022_otimizado.shp` (vetor final, uma

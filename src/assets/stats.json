@@ -882,32 +882,32 @@
   "ndvi_maio": {
     "classes": [
       {
-        "label": "1 - Arbórea muito densa (≥ 0.617)",
+        "label": "Arbórea muito densa (≥ 0.617)",
         "area_km2": 30128.7,
         "color": "#2b860a"
       },
       {
-        "label": "2 - Arbórea densa / Subarbórea (0.484 – 0.617)",
+        "label": "Arbórea densa / Subarbórea (0.484 – 0.617)",
         "area_km2": 13528.5,
         "color": "#30ae00"
       },
       {
-        "label": "3 - Subarbustiva muito densa / Subarbórea (0.425 – 0.484)",
+        "label": "Subarbustiva muito densa / Subarbórea (0.425 – 0.484)",
         "area_km2": 3901.3,
         "color": "#c7e8ad"
       },
       {
-        "label": "4 - Arbustiva aberta / Subarbórea (0.296 – 0.425)",
+        "label": "Arbustiva aberta / Subarbórea (0.296 – 0.425)",
         "area_km2": 5442.4,
         "color": "#ffffbf"
       },
       {
-        "label": "5 - Subarbustiva muito rala / Arbustiva (0.254 – 0.296)",
+        "label": "Subarbustiva muito rala / Arbustiva (0.254 – 0.296)",
         "area_km2": 510.3,
         "color": "#fec980"
       },
       {
-        "label": "6 - Solo exposto / Gramíneas herbáceas (0 – 0.254)",
+        "label": "Solo exposto / Gramíneas herbáceas (0 – 0.254)",
         "area_km2": 454.5,
         "color": "#ff0017"
       }

@@ -885,32 +885,32 @@
     "classes": [
       {
         "value": "1 - Arbórea muito densa (≥ 0.617)",
-        "label": "1 - Arbórea muito densa (≥ 0.617)",
+        "label": "Arbórea muito densa (≥ 0.617)",
         "color": "#2b860a"
       },
       {
         "value": "2 - Arbórea densa / Subarbórea (0.484 – 0.617)",
-        "label": "2 - Arbórea densa / Subarbórea (0.484 – 0.617)",
+        "label": "Arbórea densa / Subarbórea (0.484 – 0.617)",
         "color": "#30ae00"
       },
       {
         "value": "3 - Subarbustiva muito densa / Subarbórea (0.425 – 0.484)",
-        "label": "3 - Subarbustiva muito densa / Subarbórea (0.425 – 0.484)",
+        "label": "Subarbustiva muito densa / Subarbórea (0.425 – 0.484)",
         "color": "#c7e8ad"
       },
       {
         "value": "4 - Arbustiva aberta / Subarbórea (0.296 – 0.425)",
-        "label": "4 - Arbustiva aberta / Subarbórea (0.296 – 0.425)",
+        "label": "Arbustiva aberta / Subarbórea (0.296 – 0.425)",
         "color": "#ffffbf"
       },
       {
         "value": "5 - Subarbustiva muito rala / Arbustiva (0.254 – 0.296)",
-        "label": "5 - Subarbustiva muito rala / Arbustiva (0.254 – 0.296)",
+        "label": "Subarbustiva muito rala / Arbustiva (0.254 – 0.296)",
         "color": "#fec980"
       },
       {
         "value": "6 - Solo exposto / Gramíneas herbáceas (0 – 0.254)",
-        "label": "6 - Solo exposto / Gramíneas herbáceas (0 – 0.254)",
+        "label": "Solo exposto / Gramíneas herbáceas (0 – 0.254)",
         "color": "#ff0017"
       }
     ]
