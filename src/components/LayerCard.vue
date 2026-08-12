@@ -102,7 +102,7 @@ function clearSearch() {
 // ── Legenda dinâmica via styles.json ──────────────────────────────────────────
 
 const legendItems = computed(() => {
-  const style = stylesData[props.layerKey]
+  const style = stylesData[props.sourceLayer]
   if (!style?.classes?.length) return []
 
   return style.classes.map(c => ({

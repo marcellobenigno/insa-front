@@ -520,7 +520,7 @@ the numeric-range mode in `mapRenderer.js`/`stats.py`.
 | `tipos_solo` | Indicadores de Solo | Soil type / pedological component — categorical (string) |
 | `declividade` | Indicadores de Solo | Slope — raw value (%), graduated into 6 classes (Plano → Escarpado) |
 | `geologia` | Indicadores de Solo | Lithological type — categorical (string), 55 classes |
-| `ndvi` | Indicadores de Vegetação | NDVI (May/2022) — categorized by `peso`, already pre-dissolved into 5 classes upstream (not a per-pixel layer) |
+| `ndvi_maio` | Indicadores de Vegetação | NDVI (May/2022) — categorized by `classe` (string, matches the QGIS QML exactly), 6 vegetation-density classes, dissolved from raster upstream (not a per-pixel layer) |
 | `carbono_organico` | Indicadores de Vegetação | Soil organic carbon — raw value (g/kg) |
 | `sucetibilidade_erosao` | Indicadores de Vegetação | Water erosion susceptibility — raw value |
 | `focos_queimadas` | Indicadores de Manejo | Fire outbreak points (511 pts) — `Point` geometry, no attributes, served as static GeoJSON (not MVT), always rendered above every other layer |
@@ -537,16 +537,25 @@ them, not the label. Same pattern for `focos_queimadas` ("Focos de Queimada"
 under IVM escores vs. under Indicadores de Manejo), `declividade`,
 `precipitacao_semiarido_pb`, etc.
 
-> **`sourceLayer` here is the real GeoPackage table name, which for four of
+> **`sourceLayer` here is the real GeoPackage table name, which for three of
 > these layers differs from the name used in the original project
 > documentation/QGIS project tree** — the delivery renamed the table but left
 > a stale style row in `layer_styles` under the old name:
 > `declividade` (not `declividade_semiarido_pb`), `geologia` (not
-> `geologia_tipos_litologicos`), `ndvi` (not `ndvi_maio_2022`), `pressao_animal`
+> `geologia_tipos_litologicos`), `pressao_animal`
 > (not `pressao_animal_sab_pb`). `scripts/styles.py`'s `RENAMED_TABLES` dict
 > maps the stale style-row name to the real table (see Step 4) — if a future
 > GeoPackage delivery renames a table again, add it there rather than hunting
 > for why a layer silently has no style.
+>
+> `ndvi_maio` went through a **table rename** too (was `ndvi` until
+> 2026-08-12). Unlike the three above, the `layer_styles` row's `f_table_name`
+> already matches (`ndvi_maio`), so `RENAMED_TABLES` isn't involved — but the
+> QML's `categorizedSymbol` renders on a *string* field `classe` (values like
+> `"1 - Arbórea muito densa (≥ 0.617)"`), so `scripts/classify_ndvi.py`
+> (see "NDVI: classificação e vetorização" below) must produce that exact
+> string in the vector's `classe` field, byte-for-byte, or auto-extraction
+> silently matches nothing.
 
 **`focos_queimadas` is the app's first and only layer NOT served as MVT
 tiles.** It's a `Point` layer with **no attribute fields at all** and only
@@ -656,6 +665,67 @@ vector tiles — decisão deliberada, não um atalho temporário:
   recria os markers, só chama `.addTo(map)`/`map.removeLayer()` na mesma
   instância. O GeoJSON é estático (não muda entre toggles), então não há
   risco de mostrar dado desatualizado.
+
+---
+
+## NDVI: classificação e vetorização (`scripts/classify_ndvi.py`)
+
+O raster contínuo de NDVI (`data/Indicadores de Vulnerabilidade/Indicadores
+de Vegetação/NDVI/NDVI_MAIO_2022.tif`, Float64, 1598×1013px, ~249m/pixel) é
+classificado em 6 tipos de vegetação/cobertura e convertido para vetor por
+esse script, **não** manualmente no QGIS — reprodutível a qualquer momento
+com `python scripts/classify_ndvi.py`. Pipeline, todo via GDAL:
+
+1. **Reclassificação** (numpy + `osgeo.gdal`, não `gdal_calc.py`) — cada
+   pixel vira um código de classe 1–6 conforme a tabela de limiares de NDVI
+   (ver docstring do script), escrito como raster Byte
+   (`NDVI_MAIO_2022_classe.tif`, nodata=0).
+   - **Fundo/fora-da-área vs. nodata real**: o raster de origem cobre um
+     retângulo bounding-box maior que o contorno irregular (bilobado) do
+     Semiárido PB — pixels fora do polígono real vêm preenchidos com `0.0`
+     exato (~48% do raster). NDVI computado nunca cai em `0.0` exato com
+     essa frequência (todo outro valor é uma decimal "ruidosa" distinta,
+     típica de reflectância real), então o script trata `raw <= 0` como
+     nodata, não como classe 6 — do contrário "Solo exposto" ficaria
+     contaminada com a área inteira fora do Semiárido. Verificado
+     comparando com uma máscara real (`limite_semiarido_pb` via
+     `gdalwarp -cutline`): a contagem de pixels válidos não muda.
+2. **`gdal_sieve.py -st 2 -8`** — remove só clusters de 1 pixel isolado.
+   **Importante**: esse limiar é deliberadamente o mínimo possível, não um
+   valor "redondo" maior. As classes raras (3, 5, 6) ocorrem como muitos
+   clusters de 1 pixel espalhados pelo território (não concentradas numa
+   mancha só) — medido empiricamente, subir de 2 para 8px já derruba a área
+   da classe 3 em ~47% e da classe 5 em ~75%, porque cada cluster isolado é
+   pequeno demais e é fundido inteiro na classe 1/2/4 vizinha. Qualquer
+   limiar maior tem viés sistemático contra as classes menos comuns.
+3. **`gdal_polygonize.py -8`** — rasteriza → vetor (nodata pulado
+   automaticamente via a máscara da própria banda).
+4. **Dissolve por `classe_num`** (`geopandas.dissolve` + `fix_geometries` de
+   `geo_utils.py`) + junção dos metadados de cada classe (`tipo_veget`,
+   `ndvi_min`, `ndvi_max`, `ndvi_faixa`, `classe_lbl`, `peso` — mesma escala
+   de peso 1.0–2.0 das outras camadas de vulnerabilidade). Por fim monta o
+   campo `classe` (string) como `"{classe_num} - {tipo_veget} ({ndvi_faixa})"`
+   — precisa bater **byte-a-byte** com os `value`/`label` das `<category>`
+   do QML `categorizedSymbol` (`attr="classe"`) já salvo em `layer_styles`
+   para `ndvi_maio` no GeoPackage, senão a extração automática do Step 4
+   não encontra nenhuma correspondência (ver nota sobre `ndvi_maio` acima,
+   em "Existing layers"). `classe_num` (o código de pixel 1–6) fica como
+   campo à parte, só pra join/ordenação internos — não é usado pra estilo.
+
+Saídas, na mesma pasta do raster: `NDVI_MAIO_2022_classe.tif` (raster
+classificado + sieved) e `NDVI_MAIO_2022_otimizado.shp` (vetor final, uma
+feição multipolígono por classe, 6 feições, campos `classe`, `classe_num`,
+`tipo_veget`, `ndvi_min`, `ndvi_max`, `ndvi_faixa`, `classe_lbl`, `peso`).
+
+**Esse shapefile não entra sozinho no app** — precisa ser importado no
+GeoPackage (`ogr2ogr -f GPKG data/dados_insa.gpkg NDVI_MAIO_2022_otimizado.shp
+-nln ndvi_maio -overwrite -t_srs EPSG:4326 -nlt MULTIPOLYGON`) como a tabela
+`ndvi_maio`, e então o pipeline completo (Steps 1–5 e 7 abaixo) precisa
+rodar de novo — é uma mudança no GeoPackage como qualquer outra. Diferente
+da maioria das outras camadas de vulnerabilidade do app, `ndvi_maio` **não**
+tem entrada manual em `styles.json` — o QML `categorizedSymbol` salvo em
+`layer_styles` já é extraído automaticamente pelo Step 4, desde que o
+`classe` do vetor continue batendo com ele.
 
 ---
 
@@ -839,6 +909,16 @@ frontend/`stats.py` match on it).
 > `styles.py` extracts its color correctly but always skips writing
 > `singleSymbol` layers automatically (same as the stroke-only boundaries
 > above), so it needs this manual entry too.
+>
+> `ndvi_maio` does **not** need a manual entry — its `layer_styles` row is a
+> real `categorizedSymbol` on the string field `classe`, and
+> `scripts/classify_ndvi.py` (see "NDVI: classificação e vetorização" below)
+> generates that field to match those QML category values exactly, so
+> auto-extraction just works. It only breaks if a future re-run of
+> `classify_ndvi.py`'s `classe` composition (`"{classe_num} - {tipo_veget}
+> ({ndvi_faixa})"`) drifts from the QML's `<category value=...>` strings, or
+> if the QGIS project's `ndvi_maio` style is ever changed and re-saved with
+> a different renderer/field.
 
 ### Step 5 — Generate area statistics
 
