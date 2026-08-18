@@ -513,17 +513,17 @@ the numeric-range mode in `mapRenderer.js`/`stats.py`.
 | `focos_queimadas_escores_de_vulnerabilidade` | IVM | Fire outbreaks — vulnerability score |
 | `densidade_demografica_rural_escores_de_vulnerabilidade` | IVM | Rural demographic density — vulnerability score |
 | `idhm_escores_de_vulnerabilidade` | IVM | Municipal HDI — vulnerability score |
-| `indice_aridez_semiarido_pb` | Indicadores Climáticos | Aridity index — raw value |
-| `precipitacao_semiarido_pb` | Indicadores Climáticos | Rainfall — raw value (mm) |
-| `eto_semiarido_pb` | Indicadores Climáticos | Evapotranspiration — raw value (mm) |
+| `indice_aridez_semiarido_pb` | Indicadores Climáticos | Aridity index — raw value (1996–2025 climatological mean) |
+| `precipitacao_semiarido_pb` | Indicadores Climáticos | Rainfall — raw value (mm, 1996–2025 climatological mean) |
+| `eto_semiarido_pb` | Indicadores Climáticos | Evapotranspiration — raw value (mm, 1996–2025 climatological mean) |
 | `solos_textura` | Indicadores de Solo | Soil texture — categorical (string), not the numeric score |
 | `tipos_solo` | Indicadores de Solo | Soil type / pedological component — categorical (string) |
 | `declividade` | Indicadores de Solo | Slope — raw value (%), graduated into 6 classes (Plano → Escarpado) |
 | `geologia` | Indicadores de Solo | Lithological type — categorical (string), 55 classes |
 | `ndvi_maio` | Indicadores de Vegetação | NDVI (May/2022) — categorized by `classe` (string, matches the QGIS QML exactly), 6 vegetation-density classes, dissolved from raster upstream (not a per-pixel layer) |
-| `carbono_organico` | Indicadores de Vegetação | Soil organic carbon — raw value (g/kg) |
+| `carbono_organico` | Indicadores de Vegetação | Soil organic carbon — raw value (Mg/ha) |
 | `sucetibilidade_erosao` | Indicadores de Vegetação | Water erosion susceptibility — raw value |
-| `focos_queimadas` | Indicadores de Manejo | Fire outbreak points (511 pts) — `Point` geometry, no attributes, served as static GeoJSON (not MVT), always rendered above every other layer |
+| `focos_queimadas` | Indicadores de Manejo | Fire outbreak points (511 pts, 2022) — `Point` geometry, no attributes, served as static GeoJSON (not MVT), always rendered above every other layer |
 | `dd_rural_2022_sab_pb` | Indicadores de Manejo | Rural demographic density (2022) — raw value (hab/km²) |
 | `pressao_animal` | Indicadores de Manejo | Animal pressure (2017) — raw value (UA/ha) |
 | `idhm_2010_sab_pb` | Indicadores de Manejo | Municipal HDI (2010) — raw value |
