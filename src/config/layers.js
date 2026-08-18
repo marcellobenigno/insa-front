@@ -385,7 +385,7 @@ export const OVERLAY_TREE = [
                 key: 'ia_escores_de_vulnerabilidade',
                 layer: {
                   label: 'Índice de Aridez',
-                  meta: 'Escores de vulnerabilidade atribuídos ao índice de aridez',
+                  meta: 'Escores de vulnerabilidade atribuídos ao índice de aridez — média climatológica de 1996 a 2025',
                   url: VECTOR_TILES_URL,
                   sourceLayer: 'ia_escores_de_vulnerabilidade',
                   zIndex: 21,
@@ -400,7 +400,7 @@ export const OVERLAY_TREE = [
                 key: 'precipitacao_escores_de_vulnerabilidade',
                 layer: {
                   label: 'Precipitação',
-                  meta: 'Escores de vulnerabilidade atribuídos à precipitação pluviométrica',
+                  meta: 'Escores de vulnerabilidade atribuídos à precipitação pluviométrica — média climatológica de 1996 a 2025',
                   url: VECTOR_TILES_URL,
                   sourceLayer: 'precipitacao_escores_de_vulnerabilidade',
                   zIndex: 22,
@@ -415,7 +415,7 @@ export const OVERLAY_TREE = [
                 key: 'eto_escores_de_vulnerabilidade',
                 layer: {
                   label: 'Evapotranspiração (ETo)',
-                  meta: 'Escores de vulnerabilidade atribuídos à evapotranspiração de referência',
+                  meta: 'Escores de vulnerabilidade atribuídos à evapotranspiração de referência — média climatológica de 1996 a 2025',
                   url: VECTOR_TILES_URL,
                   sourceLayer: 'eto_escores_de_vulnerabilidade',
                   zIndex: 23,
@@ -478,7 +478,7 @@ export const OVERLAY_TREE = [
                 key: 'focos_queimadas_escores_de_vulnerabilidade',
                 layer: {
                   label: 'Focos de Queimada',
-                  meta: 'Escores de vulnerabilidade atribuídos à ocorrência de focos de queimada',
+                  meta: 'Escores de vulnerabilidade atribuídos à ocorrência de focos de queimada (2022)',
                   url: VECTOR_TILES_URL,
                   sourceLayer: 'focos_queimadas_escores_de_vulnerabilidade',
                   zIndex: 26,
@@ -552,7 +552,7 @@ export const OVERLAY_TREE = [
             key: 'indice_aridez_semiarido_pb',
             layer: {
               label: 'Índice de Aridez',
-              meta: 'Índice de aridez — valor bruto',
+              meta: 'Índice de aridez — valor bruto, média climatológica de 1996 a 2025',
               url: VECTOR_TILES_URL,
               sourceLayer: 'indice_aridez_semiarido_pb',
               zIndex: 30,
@@ -567,7 +567,7 @@ export const OVERLAY_TREE = [
             key: 'precipitacao_semiarido_pb',
             layer: {
               label: 'Precipitação',
-              meta: 'Precipitação pluviométrica — valor bruto (mm)',
+              meta: 'Precipitação pluviométrica — valor bruto (mm), média climatológica de 1996 a 2025',
               url: VECTOR_TILES_URL,
               sourceLayer: 'precipitacao_semiarido_pb',
               zIndex: 31,
@@ -582,7 +582,7 @@ export const OVERLAY_TREE = [
             key: 'eto_semiarido_pb',
             layer: {
               label: 'Evapotranspiração (ETo)',
-              meta: 'Evapotranspiração de referência — valor bruto (mm)',
+              meta: 'Evapotranspiração de referência — valor bruto (mm), média climatológica de 1996 a 2025',
               url: VECTOR_TILES_URL,
               sourceLayer: 'eto_semiarido_pb',
               zIndex: 32,
@@ -677,22 +677,22 @@ export const OVERLAY_TREE = [
             key: 'ndvi',
             layer: {
               label: 'NDVI',
-              meta: 'Índice de Vegetação por Diferença Normalizada',
+              meta: 'Índice de Vegetação por Diferença Normalizada — imagem de maio de 2022',
               url: VECTOR_TILES_URL,
               sourceLayer: 'ndvi_maio',
               zIndex: 37,
               active: false,
               searchFields: ['classe', 'tipo_veget', 'ndvi_faixa'],
-              popUpFields:  ['tipo_veget', 'ndvi_faixa', 'classe_lbl', 'peso'],
+              popUpFields:  ['tipo_veget', 'ndvi_faixa', 'peso'],
               fieldTypes:   { classe: 'string', tipo_veget: 'string', ndvi_faixa: 'string', classe_lbl: 'string', peso: 'number' },
-              descFields:   { classe: 'Classificação', tipo_veget: 'Tipo de Vegetação', ndvi_faixa: 'Faixa de NDVI', classe_lbl: 'Classe de Vulnerabilidade', peso: 'Peso' },
+              descFields:   { classe: 'Classificação', tipo_veget: 'Tipo de Vegetação', ndvi_faixa: 'Faixa de NDVI', peso: 'Peso' },
             },
           },
           {
             key: 'carbono_organico',
             layer: {
               label: 'Carbono Orgânico',
-              meta: 'Teor de carbono orgânico do solo — valor bruto (g/kg)',
+              meta: 'Teor de carbono orgânico do solo — valor bruto (Mg/ha)',
               url: VECTOR_TILES_URL,
               sourceLayer: 'carbono_organico',
               zIndex: 38,
@@ -700,7 +700,7 @@ export const OVERLAY_TREE = [
               searchFields: ['co'],
               popUpFields:  ['co'],
               fieldTypes:   { co: 'number' },
-              descFields:   { co: 'Carbono Orgânico (g/kg)' },
+              descFields:   { co: 'Carbono Orgânico (Mg/ha)' },
             },
           },
           {
@@ -732,7 +732,7 @@ export const OVERLAY_TREE = [
             key: 'focos_queimadas',
             layer: {
               label: 'Focos de Queimada',
-              meta: 'Pontos de queimada registrados no Semiárido PB',
+              meta: 'Pontos de queimada registrados no Semiárido PB (2022)',
               url: FOCOS_QUEIMADAS_URL,
               sourceLayer: 'focos_queimadas',
               renderAs: 'geojson',
