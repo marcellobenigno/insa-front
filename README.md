@@ -1,6 +1,15 @@
-# INSA Front
+# DesertPB — INSA Front
 
-Aplicação web de mapeamento GIS desenvolvida com Vue 3 + Vite. Exibe camadas vetoriais do INSA sobre um mapa base interativo (Google Satellite, Google Streets, OSM e outros), com suporte a vector tiles locais e legendas dinâmicas por camada.
+WebGIS desenvolvido pelo INSA (Instituto Nacional do Semiárido) para monitorar a
+vulnerabilidade à desertificação no Semiárido da Paraíba. Construído com Vue 3
++ Vite, renderiza vector tiles servidos localmente (sem dependência de servidor
+de mapas externo) e exibe camadas temáticas — índices compostos, escores de
+vulnerabilidade e indicadores brutos — sobre um mapa base interativo.
+
+A aplicação tem quatro telas: **Início** (apresentação do projeto), **Mapa**
+(a aplicação principal — sidebar de camadas + Leaflet), **Painel Interativo**
+(dashboard comparativo entre municípios) e **Sobre** (histórico do projeto e
+equipe).
 
 ## Ambiente de homologação
 
@@ -12,6 +21,7 @@ Use este link para visualizar e validar as camadas junto à equipe.
 ## Pré-requisitos
 
 - **Node.js** `^20.19.0` ou `>=22.12.0`
+- Para o pipeline de dados (GeoPackage → vector tiles): **GDAL**, **Tippecanoe** e **Python 3** — ver [Pipeline de dados](#pipeline-de-dados-geopackage--vector-tiles)
 
 ## Instalação e execução
 
@@ -27,65 +37,88 @@ npm run preview   # preview do build de produção
 | Comando | Descrição |
 |---|---|
 | `npm run dev` | Servidor de desenvolvimento (Vite) |
-| `npm run build` | Build de produção |
+| `npm run build` | Build de produção → `dist/` |
 | `npm run preview` | Preview do build de produção |
-| `npm run lint` | Executa oxlint + eslint com auto-fix |
-| `npm run format` | Formata os arquivos de `src/` com Prettier |
-| `npm run deploy:tiles` | Empacota e envia os tiles para o servidor de produção |
+| `npm run lint` | oxlint + eslint com auto-fix (sequencial) |
+| `npm run format` | Formata `src/` com Prettier |
+| `npm run deploy:tiles` | Empacota e envia `public/tiles/` para o servidor de tiles em produção |
+
+Não há suíte de testes configurada.
 
 ## Arquitetura
 
 ```
 src/
 ├── components/
-│   ├── MapContainer.vue   # instância do Leaflet; reage ao store
-│   ├── AppSidebar.vue     # painel lateral: accordion de camadas + filtro por nome
-│   ├── LayerCard.vue      # card por camada (visibilidade, opacidade, legenda, busca por atributo)
-│   ├── GeoSearch.vue      # busca geocodificada + coordenadas (DD, DMS, endereço)
-│   └── CoordDisplay.vue   # overlay de coordenadas do cursor em tempo real (DD e DMS)
+│   ├── MapContainer.vue          # instância do Leaflet; observa o store e nunca guarda estado de camada
+│   ├── AppNavbar.vue             # header fixo — navegação entre as 4 telas + toggle de tema
+│   ├── AppSidebar.vue            # painel lateral: árvore de camadas (accordion recursivo)
+│   ├── SidebarTreeGroup.vue      # renderiza recursivamente um nó de grupo da árvore de camadas
+│   ├── LayerCard.vue             # card por camada folha (visibilidade, opacidade, legenda, busca)
+│   ├── GeoSearch.vue             # busca geocodificada + coordenadas (DD, DMS, endereço)
+│   ├── CoordDisplay.vue          # overlay de coordenadas do cursor em tempo real (DD e DMS)
+│   ├── HeroCarousel.vue          # carrossel de fotos do semiárido, fundo do hero da Início
+│   ├── WebGisTour.vue            # tour guiado de onboarding (primeira visita)
+│   ├── LayerChartModal.vue       # gráfico de distribuição por classe (por camada)
+│   ├── DashboardMiniMap.vue      # mini-mapa Leaflet independente do dashboard
+│   ├── DashboardTable.vue        # tabela ordenável de municípios no dashboard
+│   ├── DashboardChart.vue        # gráfico de barras do dashboard
+│   └── DashboardPieChart.vue     # gráfico de pizza (distribuição por classe) do dashboard
 ├── composables/
-│   └── useSidebar.js      # estado do accordion e colapso da sidebar
+│   ├── useSidebar.js             # estado do accordion e colapso da sidebar (singleton)
+│   └── useTheme.js               # tema claro/escuro, persistido em localStorage (singleton)
 ├── stores/
-│   └── mapStore.js        # Pinia — estado das camadas, filtros de busca, localização
+│   └── mapStore.js               # Pinia — camada base ativa, visibilidade/opacidade dos overlays
 ├── config/
-│   └── layers.js          # definição das camadas base e overlays por categoria
+│   └── layers.js                 # ÚNICA fonte de verdade das camadas (OVERLAY_TREE)
 ├── utils/
-│   ├── mapRenderer.js     # renderiza feições no canvas via styles.json
-│   └── mapPopup.js        # monta o HTML do popup de clique no mapa
+│   ├── mapRenderer.js            # pinta feições no canvas a partir de styles.json
+│   ├── mapPopup.js               # monta o HTML do popup de clique no mapa
+│   └── createDashboardMvtLayer.js # camada MVT simplificada, exclusiva do mini-mapa do dashboard
 ├── router/
-│   └── index.js           # Vue Router (rota única: HomeView)
+│   └── index.js                  # Vue Router — 4 rotas, hash history
 ├── views/
-│   └── HomeView.vue       # layout principal
+│   ├── InicioView.vue            # landing page (/)
+│   ├── HomeView.vue              # mapa principal (/mapa)
+│   ├── DashboardView.vue         # painel comparativo entre municípios (/dashboard)
+│   └── SobreView.vue             # sobre o projeto e equipe (/sobre)
 └── assets/
-    └── styles.json        # estilos de legenda gerados por scripts/styles.py
+    ├── styles.json                # estilos de legenda, gerado por scripts/styles.py
+    ├── stats.json                 # área por classe, gerado por scripts/stats.py
+    ├── dashboard_stats.json       # cruzamento índices × municípios, gerado por scripts/dashboard_stats.py
+    └── search_index.json          # índice de busca por atributo, gerado por scripts/search_index.py
 ```
 
-**Fluxo de dados das camadas:**
+**Fluxo de dados das camadas (tela Mapa):**
 
-1. `mapStore.js` mantém o estado reativo: qual camada base está ativa e a visibilidade/opacidade de cada overlay.
-2. `AppSidebar.vue` / `LayerCard.vue` leem e mutam o store diretamente.
-3. `MapContainer.vue` observa o store com watchers e aplica as mudanças ao mapa via Leaflet — nunca guarda estado de camada próprio.
+1. `config/layers.js` define `OVERLAY_TREE` — a única fonte de verdade das camadas.
+2. `mapStore.js` (Pinia) mantém o estado reativo: camada base ativa e visibilidade/opacidade de cada overlay.
+3. `AppSidebar.vue` / `SidebarTreeGroup.vue` / `LayerCard.vue` leem e mutam o store, renderizando `OVERLAY_TREE` como uma árvore recursiva de qualquer profundidade.
+4. `MapContainer.vue` observa o store via watchers e aplica as mudanças ao mapa via Leaflet — nunca guarda estado de camada próprio.
 
-> **Restrição importante:** Leaflet não funciona em SSR. O mapa é inicializado em `onMounted` e destruído em `onUnmounted`. Não acesse `L` nem a instância do mapa fora desses hooks.
+O painel comparativo (`/dashboard`) é um fluxo **independente**: consome `dashboard_stats.json` e `stats.json` diretamente, sem passar por `OVERLAY_TREE`/`mapStore.js`, e mantém sua própria instância de mapa Leaflet em `DashboardMiniMap.vue`.
+
+> **Restrição importante:** Leaflet não funciona em SSR. Cada instância do mapa é inicializada em `onMounted` e destruída em `onUnmounted`. Nunca acesse `L` nem a instância do mapa fora desses hooks.
 
 ---
 
 ## Funcionalidades da interface
 
-### Sidebar
+### Sidebar (tela Mapa)
 
-- **Filtro de camadas por nome** — campo de texto acima das categorias filtra as camadas em tempo real (case-insensitive). Categorias sem resultado são ocultadas; as que têm resultado expandem automaticamente. O badge "Análise Temática" exibe `N de 17` ao filtrar.
-- **Accordion por categoria** — cada categoria pode ser expandida/recolhida individualmente.
-- **Badge de visibilidade** — indicador numérico por categoria mostra quantas camadas estão ativas no mapa.
+- **Árvore hierárquica de camadas** — `OVERLAY_TREE` é renderizado recursivamente (não um accordion de 2 níveis fixo): Limites, IVD, Índices de Vulnerabilidade (IVS/IVV/IVC/IVM → seus Escores) e Indicadores de Vulnerabilidade (dados brutos por trás dos escores), cada grupo/subgrupo expansível.
+- **Filtro de camadas por nome** — campo de texto acima das categorias filtra em tempo real (case-insensitive).
+- **Badge de visibilidade** — indicador numérico por categoria mostra quantas camadas estão ativas.
+- **Colapso da sidebar** — libera espaço pro mapa; estado e accordion vivem em `useSidebar()` (singleton em nível de módulo).
 
 ### Painel de busca por atributo (por camada)
 
-Acessado pelo ícone de lupa em cada `LayerCard`. Permite filtrar feições por valor de campo:
+Acessado pelo ícone de lupa em cada `LayerCard`:
 
 - **Campos string** — busca por substring, case-insensitive
-- **Campos numérico** — suporta operadores `=`, `>`, `>=`, `<`, `<=`
-- **Feedback visual** — feições que batem ficam destacadas com borda amarela; as demais ficam acinzentadas
-- **Badge de resultado** — exibe "Nenhum resultado encontrado" (vermelho) quando o filtro não encontra feições; o resultado é atualizado à medida que novos tiles carregam
+- **Campos numéricos** — suporta operadores `=`, `>`, `>=`, `<`, `<=`
+- **Destaque visual no mapa** — feições que batem mantêm a cor temática; as demais ficam acinzentadas (lido tile a tile, conforme carregam)
+- **Contagem de resultados** — lida de `src/assets/search_index.json` (todos os atributos do GeoPackage, sem geometria), não dos tiles renderizados — garante que a contagem não dependa do que está na viewport atual
 
 ### GeoSearch (rodapé da sidebar)
 
@@ -97,6 +130,18 @@ Acessado pelo ícone de lupa em cada `LayerCard`. Permite filtrar feições por 
 
 Overlay no canto inferior do mapa exibe as coordenadas do cursor em DD e DMS em tempo real.
 
+### Painel Interativo (`/dashboard`)
+
+Cruza os 5 índices compostos (IVS, IVV, IVC, IVM, IVD) com os municípios do Semiárido PB: tabela ordenável, gráfico de barras, gráfico de pizza (distribuição por classe) e mini-mapa coroplético — selecionar uma linha na tabela destaca e centraliza o município correspondente no mini-mapa.
+
+### Tema claro/escuro
+
+Alternado pelo botão em `AppNavbar.vue`, disponível em todas as telas. Persistido em `localStorage` (`insa-theme`). `--accent` é o verde da marca DesertPB.
+
+### Tour guiado
+
+`WebGisTour.vue` — tour de onboarding apontando para elementos reais da interface, exibido na primeira visita (`localStorage`, chave `insa-tour-completed`).
+
 ---
 
 ## Referência: `src/config/layers.js`
@@ -105,154 +150,85 @@ Este é o **único arquivo que você precisa editar** para controlar quais camad
 
 ### Estrutura geral
 
-O arquivo exporta dois objetos principais:
-
-| Export | Usado por |
+| Export | Descrição |
 |---|---|
-| `BASE_LAYERS` | 6 mapas de fundo (Google Satellite ★, Google Streets, Google Hybrid, Google Terrain, OSM, OSM Dark) — selecionados via radio button. ★ = ativo por padrão. |
-| `OVERLAY_CATEGORIES` | Camadas de sobreposição agrupadas por categoria — exibidas no accordion da sidebar |
+| `BASE_LAYERS` | Mapas de fundo (Google Satellite ★, Streets, Hybrid, Terrain, OSM, OSM Dark) — selecionados via radio button. ★ = ativo por padrão. |
+| `OVERLAY_TREE` | Lista de **nós recursivos** — cada nó é um grupo (`layer: null` + `children`) ou uma folha (`layer: {...}`, sem `children`). A ordem de cada array `children` é a ordem exibida na sidebar. |
+| `OVERLAY_LAYERS` | Gerado automaticamente por uma varredura recursiva de `OVERLAY_TREE` — **nunca edite diretamente**. |
 
-`OVERLAY_LAYERS` (export derivado) é gerado automaticamente a partir de `OVERLAY_CATEGORIES` para retrocompatibilidade interna — não edite diretamente.
+Se uma camada é ao mesmo tempo um índice composto e "pai" de outras camadas (ex. IVS tem escores abaixo dela), modele como um grupo cujo **primeiro filho** é a folha da camada composta — nunca coloque `layer` e `children` no mesmo nó.
 
----
-
-### Campos de cada camada overlay
+### Campos de uma camada folha
 
 ```js
-nome_da_camada: {
-  // ── Obrigatórios ──────────────────────────────────────────────────────────
-  label:       'Rótulo exibido no menu e no popup',
-  meta:        'Descrição curta exibida abaixo do rótulo na sidebar',
-  url:         VECTOR_TILES_URL,          // URL do servidor de tiles (não alterar)
-  sourceLayer: 'nome_exato_no_gpkg',      // deve bater com o layer_id dentro do .pbf
-  zIndex:      20,                        // maior = fica acima de outras camadas no mapa
-  active:      false,                     // true = camada visível ao carregar a página
+layer: {
+  // ── Obrigatórios ────────────────────────────────────────────────────────
+  label:        'Rótulo exibido no menu e no popup',
+  meta:         'Descrição curta exibida abaixo do rótulo na sidebar',
+  url:          VECTOR_TILES_URL,        // aponta para public/tiles/ — não alterar
+  sourceLayer:  'nome_exato_no_gpkg',    // deve bater byte-a-byte com o nome no GeoPackage
+  zIndex:       20,                      // maior = fica acima de outras camadas no mapa
+  active:       false,                   // true = camada visível ao carregar a página
 
-  // ── Pesquisa (barra de busca) ─────────────────────────────────────────────
-  searchFields: ['campo1', 'campo2'],     // campos pesquisáveis na barra de busca
-  fieldTypes:   { campo1: 'string',       // tipo de cada campo: 'string' ou 'number'
-                  campo2: 'number' },     // usado para aplicar operadores de comparação
+  // ── Barra de busca ──────────────────────────────────────────────────────
+  searchFields: ['campo1', 'campo2'],    // campos pesquisáveis
+  fieldTypes:   { campo1: 'string',      // 'string' (substring) ou 'number' (operadores)
+                  campo2: 'number' },
 
-  // ── Popup de clique ───────────────────────────────────────────────────────
-  popUpFields: ['campo1'],               // quais campos aparecem no popup, em qual ordem
-                                          // se omitido, exibe todos os campos da feição
-  descFields:  { campo1: 'Descrição',    // rótulo amigável para cada campo no popup
-                 campo2: 'Valor Peso' }, // se um campo não estiver aqui, usa o nome técnico
-},
+  // ── Popup de clique ─────────────────────────────────────────────────────
+  popUpFields:  ['campo1'],              // campos exibidos, na ordem declarada
+                                          // se omitido: mostra todos os campos exceto id/gid/fid
+  descFields:   { campo1: 'Rótulo amigável' }, // se ausente, usa o nome técnico do campo
+  noPopup:      true,                    // omitir ou false = popup normal;
+                                          // true = camada excluída das buscas por clique
+                                          // (ex. limites, sem atributo relevante)
+  renderAs:     'geojson',               // só necessário para camadas fora do padrão MVT
+                                          // (hoje, só focos_queimadas — ver seção abaixo)
+}
 ```
 
-#### Detalhes por campo
+`descFields` deve conter rótulos legíveis em português, nunca o nome técnico do campo como valor (ex. `{ ivd: 'IVD' }` está errado; `{ ivd: 'Índice de Vulnerabilidade à Desertificação' }` está certo) — esses rótulos aparecem no popup e no cabeçalho do painel de busca ("Buscar por `<rótulo>`").
 
-**`sourceLayer`**
-Deve ser idêntico ao nome da camada no GeoPackage. O Tippecanoe usa o nome do arquivo GeoJSON (sem extensão) como `layer_id` dentro do `.pbf` — qualquer divergência faz os tiles não renderizarem.
-
-**`zIndex`**
-Controla a ordem de empilhamento visual. Camadas com `zIndex` maior ficam na frente. Sugestão de faixas do projeto:
+**Convenção de `zIndex`:**
 
 | Faixa | Uso |
 |---|---|
-| 1 | Camadas base (tile layers) |
-| 10–19 | Índices e dados temáticos |
-| 20–29 | Solos e textura |
-| 30+ | Limites administrativos (sempre na frente) |
+| 1 | Camadas base |
+| 10–28 | Índices compostos (IVD, IVS, IVV, IVC, IVM) e seus Escores de Vulnerabilidade |
+| 30–43 | Indicadores de Vulnerabilidade (dados brutos por trás dos Escores) |
+| 50+ | Limites administrativos (sempre por cima) |
 
-**`searchFields`**
-Lista dos campos que a barra de busca inspeciona. Funciona com operadores: `>`, `<`, `>=`, `<=`, `=` para campos numéricos; substring case-insensitive para strings. Deve incluir pelo menos um campo que identifique a feição de forma legível.
-
-**`fieldTypes`**
-Dicionário `{ nomeDoCampo: 'string' | 'number' }`. Usado pela busca para decidir se aplica comparação numérica ou textual. Campos ausentes aqui são tratados como string.
-
-**`popUpFields`**
-Array com os nomes dos campos que devem aparecer no popup ao clicar no mapa — **na ordem declarada**. Campos que existem na feição mas não estão nesta lista são silenciosamente ignorados.
-
-Se `popUpFields` for omitido, o popup exibe todos os campos da feição (exceto `id`, `gid`, `fid`, `objectid`), que é o comportamento legado.
-
-**`descFields`**
-Dicionário que mapeia nome técnico do campo → rótulo legível exibido na coluna esquerda do popup. Exemplo:
-
-```js
-descFields: {
-  DSC_TEXTUR: 'Descrição',
-  SoilTextur: 'Textura do Solo',
-}
-```
-
-Se um campo estiver em `popUpFields` mas não em `descFields`, o nome técnico (`DSC_TEXTUR`) é usado como fallback — então é seguro preencher `descFields` gradualmente conforme os metadados forem levantados.
-
----
-
-### Adicionando uma nova categoria
-
-```js
-export const OVERLAY_CATEGORIES = {
-  // ... categorias existentes ...
-
-  nova_categoria: {
-    label: 'Nome no accordion',
-    color: '#34d399',          // cor do indicador visual na sidebar (CSS color)
-    icon:  'bi-tree',          // classe Bootstrap Icons
-    layers: {
-      // ... suas camadas aqui ...
-    },
-  },
-}
-```
+**Exceção arquitetural — `focos_queimadas`:** é a única camada que não usa vector tiles MVT. Sem atributos e com apenas 511 feições, é servida como um único GeoJSON estático (`renderAs: 'geojson'`) e renderizada em `L.circleMarker`, que cai por padrão no `markerPane` do Leaflet — por isso fica sempre acima de todas as outras camadas, sem precisar de `zIndex` especial.
 
 ---
 
 ## Pipeline de dados (GeoPackage → Vector Tiles)
 
-Esta seção documenta como os dados brutos em `data/dados_insa.gpkg` são convertidos em vector tiles servidos pela aplicação.
-
-> ⚠️ **ATENÇÃO — leia antes de qualquer alteração**
->
-> Sempre que uma camada for adicionada, removida ou alterada no GeoPackage, **todos os passos abaixo devem ser refeitos do zero**, incluindo a exclusão completa do diretório `public/tiles/insa_layers/` antes de reextrair.
->
-> **Não existe atualização parcial.** Cada arquivo `.pbf` em `public/tiles/` contém *todas* as camadas embutidas naquele tile — não é possível apenas "adicionar os tiles da nova camada" sem sobrescrever tudo. Se o diretório antigo não for apagado, tiles obsoletos permanecem e podem causar comportamento inesperado.
-
-### Por que regenerar tudo?
-
-Os tiles em `public/tiles/insa_layers/{z}/{x}/{y}.pbf` **não são arquivos por camada** — cada arquivo `.pbf` contém *todas* as camadas embutidas naquele tile. Isso é gerado pelo Tippecanoe, que empacota múltiplos GeoJSONs em um único `.mbtiles`. Por isso, **não é possível adicionar só os tiles de uma nova camada** sem regenerar o arquivo inteiro. O processo completo precisa ser repetido a cada mudança.
+> ⚠️ **Sempre que uma camada for adicionada, removida ou alterada no GeoPackage, todos os passos abaixo devem ser refeitos do zero.** Não existe atualização parcial — cada `.pbf` em `public/tiles/` contém todas as camadas daquele tile, empacotadas juntas pelo Tippecanoe.
 
 ### Ferramentas necessárias
 
-Instale antes de começar:
-
 ```bash
-# macOS
 brew install gdal tippecanoe python3
-
-# Verifica as versões
-ogr2ogr --version   # GDAL 3.x
-tippecanoe --version  # tippecanoe v2.x
-python3 --version   # Python 3.x
 ```
 
-### Diretório de trabalho
+Todos os comandos rodam a partir da **raiz do projeto**; os scripts Python ficam em `scripts/`.
 
-Todos os comandos a seguir devem ser executados da **raiz do projeto**.
-
-### Passo 1 — Exportar camadas do GeoPackage para GeoJSON
-
-Use `ogr2ogr` para exportar **cada camada de interesse** para um arquivo GeoJSON reprojetado em WGS-84 (EPSG:4326). Um arquivo por camada:
+### Passo 1 — Exportar do GeoPackage para GeoJSON
 
 ```bash
-ogr2ogr -f GeoJSON data/geojson/<nome_da_camada>.geojson \
-  data/dados_insa.gpkg <nome_da_camada> \
+# Listar camadas disponíveis
+ogrinfo -q data/dados_insa.gpkg
+
+# Exportar uma camada
+ogr2ogr -f GeoJSON data/geojson/<camada>.geojson \
+  data/dados_insa.gpkg <camada> \
   -t_srs EPSG:4326
 ```
 
-Para listar todas as camadas disponíveis no GeoPackage:
-
-```bash
-ogrinfo -q data/dados_insa.gpkg
-```
-
-> **Nota:** o arquivo `geojson/layer_styles.geojson` é gerado automaticamente ao exportar a tabela interna de estilos do QGIS. Ele deve ser incluído no comando do Tippecanoe (passo 2), mas não precisa ser cadastrado como camada na aplicação.
+> `focos_queimadas` é a exceção — não passa por este passo nem pelo Tippecanoe, ver "Exceção arquitetural" acima.
 
 ### Passo 2 — Gerar o `.mbtiles` com Tippecanoe
-
-Este passo empacota **todos** os GeoJSONs em um único arquivo de vector tiles. O comando abaixo é o definitivo do projeto — atualize-o sempre que adicionar ou remover uma camada:
 
 ```bash
 tippecanoe \
@@ -262,146 +238,104 @@ tippecanoe \
   --no-tile-size-limit \
   --extend-zooms-if-still-dropping \
   --no-tile-compression \
+  --no-tiny-polygon-reduction \
   --force \
-  data/geojson/declividade_sab_pb_original.geojson \
-  data/geojson/declividade_sab_pb_pesos.geojson \
-  data/geojson/eto_sab_pb_original.geojson \
-  data/geojson/eto_sab_pb_pesos.geojson \
-  data/geojson/geologia_sab_pb_original.geojson \
-  data/geojson/geologia_sab_pb_pesos.geojson \
-  data/geojson/ia_sab_pb_original.geojson \
-  data/geojson/ia_sab_pb_pesos.geojson \
-  data/geojson/iqc_sab_pb.geojson \
-  data/geojson/iqs_sab_pb.geojson \
-  data/geojson/layer_styles.geojson \
-  data/geojson/municipios_pb_semiarido.geojson \
-  data/geojson/precipitacao_sab_pb_original.geojson \
-  data/geojson/precipitacao_sab_pb_pesos.geojson \
-  data/geojson/solos_tipos_sab_pb_original.geojson \
-  data/geojson/solos_tipos_sab_pb_pesos.geojson \
-  data/geojson/textura_sab_pb_original.geojson \
-  data/geojson/textura_sab_pb_pesos.geojson
+  data/geojson/*.geojson
 ```
-
-Flags usadas:
 
 | Flag | Motivo |
 |---|---|
 | `-z14 -Z2` | Gera tiles do zoom 2 (visão geral) ao 14 (detalhe) |
-| `--no-feature-limit` | Não descarta feições por limite de quantidade por tile |
-| `--no-tile-size-limit` | Não descarta feições por limite de tamanho do tile |
+| `--no-feature-limit` / `--no-tile-size-limit` | Não descarta feições por limite de quantidade/tamanho por tile |
 | `--extend-zooms-if-still-dropping` | Aumenta zoom máximo se ainda estiver descartando dados |
-| `--no-tile-compression` | Salva os `.pbf` sem compressão (necessário para leitura direta pelo browser) |
+| `--no-tile-compression` | Salva `.pbf` sem compressão (necessário para leitura direta pelo browser) |
+| `--no-tiny-polygon-reduction` | **Obrigatório.** Sem essa flag, polígonos pequenos são fundidos/descartados nos zooms baixos por padrão — já causou um bug real de busca (uma feição existia no GeoPackage mas sumia do tile, retornando "Nenhum resultado encontrado" para um filtro que na verdade tinha match) |
 | `--force` | Sobrescreve o `.mbtiles` existente sem perguntar |
 
-> **Atenção:** o Tippecanoe pode demorar alguns minutos dependendo do volume de dados. O arquivo gerado (`insa_layers.mbtiles`) tem em torno de 90 MB — não comitar no git.
+O `.mbtiles` gerado (~200 MB) é gitignored — não commitar.
 
 ### Passo 3 — Apagar tiles antigos e reextrair
 
-> ⚠️ **O `rm -rf` é obrigatório** — nunca pule este passo. Os tiles antigos não são sobrescritos, apenas somados. Se uma camada for removida do `.mbtiles`, os tiles dela permaneceriam em disco e seriam servidos pelo browser mesmo depois da atualização.
+```bash
+rm -rf public/tiles/insa_layers      # OBRIGATÓRIO — nunca pular
+python scripts/export.py             # grava public/tiles/insa_layers/{z}/{x}/{y}.pbf
+
+# focos_queimadas precisa ser regerado por último (o rm -rf acima apaga junto):
+ogr2ogr -f GeoJSON public/tiles/insa_layers/focos_queimadas.geojson \
+  data/dados_insa.gpkg focos_queimadas -t_srs EPSG:4326
+```
+
+### Passo 4 — Extrair estilos
 
 ```bash
-# Apaga TODOS os tiles antigos
-rm -rf public/tiles/insa_layers
-
-# Reextrai do .mbtiles recém-gerado
-python scripts/export.py
+python scripts/styles.py    # gera src/assets/styles.json a partir do layer_styles (QML) do GeoPackage
 ```
 
-O script lê `data/mbtiles/insa_layers.mbtiles` e grava cada tile em `public/tiles/insa_layers/{z}/{x}/{y}.pbf`, aplicando a inversão de eixo Y necessária para compatibilidade com o padrão XYZ do Leaflet.
+> ⚠️ **Sobrescreve `styles.json` inteiro.** Camadas `singleSymbol`/stroke-only (limites, `focos_queimadas`) não são capturadas automaticamente — precisam de entrada manual. Ver a seção correspondente no `CLAUDE.md` para o JSON exato a restaurar após rodar este passo.
 
-### Passo 4 — Extrair estilos do GeoPackage
+### Passo 5 — Gerar estatísticas de área
 
 ```bash
-python scripts/styles.py
+python scripts/stats.py    # gera src/assets/stats.json
 ```
 
-Lê a tabela `layer_styles` do GeoPackage (criada pelo QGIS ao salvar estilos), extrai as cores de preenchimento por categoria e grava em `../src/assets/styles.json`. Esse arquivo é consumido pelo componente `LayerCard.vue` para montar a legenda e por `mapRenderer.js` para colorir as feições no canvas.
+### Passo 6 — Gerar estatísticas do dashboard
 
-#### Quando `styles.py` não captura uma camada
-
-O script só extrai cores de **preenchimento** (`fill`). Se uma camada no QGIS for estilizada apenas com **borda** (stroke), sem preenchimento, ela não aparecerá no `styles.json` gerado. Nesse caso, adicione a entrada manualmente:
-
-```json
-"nome_da_camada": {
-  "Rótulo legenda": "stroke:#rrggbb"
-}
+```bash
+python scripts/dashboard_stats.py    # gera src/assets/dashboard_stats.json
 ```
 
-O prefixo `stroke:` instrui o renderer a desenhar apenas o contorno do polígono, sem preenchimento. Exemplo real do projeto:
+Só precisa rodar de novo se o estilo de um dos 5 índices compostos (IVS/IVV/IVC/IVM/IVD) mudar.
 
-```json
-"municipios_pb_semiarido": {
-  "Limite municipal": "stroke:#ffffff"
-}
+### Passo 7 — Gerar o índice de busca
+
+```bash
+python scripts/search_index.py    # gera src/assets/search_index.json
 ```
+
+Lido direto do GeoPackage via SQLite — não deriva de nenhum outro `.json` gerado, então precisa rodar sempre que o GeoPackage mudar (nada mais no pipeline avisa que ficou desatualizado).
 
 ---
 
 ## Deploy dos tiles para produção
 
-Após regenerar os tiles localmente (passos 2–3 acima), publique no servidor com:
+Após regenerar os tiles localmente (Passos 2–3 acima):
 
 ```bash
 npm run deploy:tiles
 ```
 
-O script `scripts/deploy-tiles.sh` executa automaticamente:
+**Script:** `scripts/deploy-tiles.sh`
+**Servidor:** `ubuntu@2.25.137.181` (`sistema.sigrural.com.br`) — acesso via chave SSH, sem senha
+**Caminho remoto:** `/var/www/html/tiles/insa_layers/`
 
-1. Compacta `public/tiles/insa_layers/` em `insa_layers.tar.gz` (~20 MB)
-2. Envia o arquivo via SCP para `ubuntu@geoserver.multisig.com.br`
-3. No servidor: remove os tiles antigos, extrai o novo arquivo em `/var/lib/tomcat9/webapps/tiles/`
-4. Remove o `.tar.gz` local e remoto
+O script compacta `public/tiles/insa_layers/` (~42 MB), envia via SCP, substitui os tiles antigos no servidor e limpa os arquivos temporários.
 
-> O servidor aceita chave SSH sem senha. Certifique-se de que sua chave pública está em `~/.ssh/authorized_keys` no servidor antes de executar.
+## Deploy da aplicação (GitHub Pages)
+
+`.github/workflows/deploy.yml` builda e publica automaticamente a cada push na `main` (`npm run build` → `dist/` → GitHub Pages). O build de produção lê `.env.production` (`VITE_TILES_URL`), então **os tiles precisam estar publicados no servidor (`npm run deploy:tiles`) antes ou junto do push do código** — caso contrário o site em produção aponta para tiles que ainda não existem.
 
 ---
 
 ## Como adicionar uma nova camada
 
-Siga a checklist abaixo na ordem:
-
-### 1. Dados
+### Dados
 
 - [ ] Adicione a camada ao `dados_insa.gpkg` no QGIS e salve o estilo
-- [ ] Exporte para GeoJSON: `ogr2ogr -f GeoJSON data/geojson/<camada>.geojson data/dados_insa.gpkg <camada> -t_srs EPSG:4326`
-- [ ] Adicione o novo `.geojson` ao comando do Tippecanoe no Passo 2 acima (e atualize este README)
-- [ ] Regere o `.mbtiles` (Passo 2)
-- [ ] Regere os tiles (Passo 3: `rm -rf public/tiles/insa_layers` + `python scripts/export.py`)
-- [ ] Regere os estilos (Passo 4: `python scripts/styles.py`)
-- [ ] Regere as estatísticas (Passo 5: `python scripts/stats.py`)
-- [ ] Se a camada for stroke-only, adicione a entrada manualmente em `src/assets/styles.json`
+- [ ] Exporte para GeoJSON (Passo 1)
+- [ ] Regere o `.mbtiles` (Passo 2 — o glob `data/geojson/*.geojson` já pega o novo arquivo automaticamente)
+- [ ] Regere os tiles (Passo 3)
+- [ ] Regere os estilos (Passo 4) e restaure as entradas manuais em `styles.json`
+- [ ] Se stroke-only, adicione a entrada manualmente em `styles.json`
+- [ ] Regere as estatísticas (Passo 5)
+- [ ] Se for um dos 5 índices compostos, regere as estatísticas do dashboard (Passo 6)
+- [ ] Regere o índice de busca (Passo 7)
 
-### 2. Código
+### Código
 
-Abra `src/config/layers.js` e adicione um objeto na categoria adequada (ou crie uma nova). Veja a [Referência: `src/config/layers.js`](#referência-srcconfiglayersjs) para a descrição completa de cada campo.
+Adicione um nó em `OVERLAY_TREE`, dentro de `src/config/layers.js`, na categoria correta — ver [Referência: `src/config/layers.js`](#referência-srcconfiglayersjs) para a descrição completa de cada campo.
 
-```js
-nova_camada: {
-  label: 'Rótulo no menu',
-  meta: 'Descrição curta',
-  url: VECTOR_TILES_URL,
-  sourceLayer: 'nome_exato_no_gpkg',    // deve bater com o nome da camada no Tippecanoe
-  zIndex: 31,                            // maior = fica acima de outras camadas
-  active: false,                         // false = camada começa oculta
-  searchFields: ['campo1', 'campo2'],    // campos inspecionados pela barra de busca
-  fieldTypes:   { campo1: 'string',      // tipo de cada campo: 'string' ou 'number'
-                  campo2: 'number' },
-  popUpFields:  ['campo1', 'campo2'],    // campos exibidos no popup de clique (em ordem)
-  descFields:   { campo1: 'Descrição',   // rótulo amigável por campo no popup
-                  campo2: 'Valor' },
-},
-```
-
-> `sourceLayer` deve ser **idêntico** ao nome da camada no GeoPackage (e ao nome usado no GeoJSON exportado). O Tippecanoe usa o nome do arquivo sem a extensão como `layer_id` dentro do `.pbf`.
-
-### 3. Renderer (se necessário)
-
-Se a nova camada tiver campos não listados em `src/utils/mapRenderer.js` → `possibleValues`, adicione-os para que o renderer consiga associar o valor da feição à cor correta da legenda:
-
-```js
-featureProps?.nome_do_campo_novo,
-```
+> `sourceLayer` deve ser **idêntico** ao nome da camada no GeoPackage — qualquer divergência faz os tiles não renderizarem silenciosamente.
 
 ---
 
@@ -410,31 +344,28 @@ featureProps?.nome_do_campo_novo,
 ```
 data/
 ├── dados_insa.gpkg          # fonte primária — GeoPackage com todas as camadas e estilos
-├── geojson/                 # camadas exportadas em GeoJSON (intermediário)
-│   ├── <camada>.geojson
-│   └── ...
+├── geojson/                 # camadas exportadas em GeoJSON (intermediário, gitignored)
 ├── mbtiles/
-│   └── insa_layers.mbtiles  # vector tiles empacotados (~90 MB, não versionar)
-├── export.py                # extrai tiles do .mbtiles para public/tiles/
-└── styles.py                # extrai estilos do .gpkg para src/assets/styles.json
+│   └── insa_layers.mbtiles  # vector tiles empacotados (~200 MB, gitignored)
 ```
 
-> **`.mbtiles` e `geojson/` não devem ser versionados no git** por causa do tamanho. Certifique-se de que estão no `.gitignore`.
+`public/tiles/insa_layers/` (tiles finais + `focos_queimadas.geojson`) também é gitignored — regenerado a cada rodada do pipeline.
 
 ---
 
 ## Stack
 
-| Lib | Uso |
+| Camada | Lib |
 |---|---|
-| Vue 3 (Composition API + `<script setup>`) | Framework UI |
-| Pinia | Gerenciamento de estado |
-| Leaflet 1.x | Renderização do mapa |
-| leaflet.vectorgrid | Plugin Leaflet para renderizar vector tiles `.pbf` |
-| Bootstrap 5 | Layout e componentes visuais |
-| Bootstrap Icons | Ícones carregados via CDN em `index.html` |
-| FontAwesome 7 | Ícones adicionais (tree-shaken via `src/main.js`) |
-| Oxlint + ESLint + Prettier | Qualidade de código |
+| UI | Vue 3 — Composition API, `<script setup>`, JavaScript (não TypeScript) |
+| Estado | Pinia (`src/stores/mapStore.js`) |
+| Mapa | Leaflet 1.x |
+| Vector tiles | `L.GridLayer` customizado (`MapContainer.vue`) — decodifica `.pbf` com `vector-tile` + `pbf`, pinta em `<canvas>` |
+| Layout | Bootstrap 5 |
+| Ícones | Bootstrap Icons — via CDN em `index.html` (não é dependência npm) |
+| Gráficos | Chart.js 4.x — importado modularmente por componente, nunca registrado globalmente |
+| Roteamento | vue-router 4.x — `createWebHashHistory` (GitHub Pages não faz rewrite de servidor para SPA) |
+| Lint/format | Oxlint + ESLint + Prettier |
 
 ## IDE recomendada
 
