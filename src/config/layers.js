@@ -683,9 +683,9 @@ export const OVERLAY_TREE = [
               zIndex: 37,
               active: false,
               searchFields: ['classe', 'tipo_veget', 'ndvi_faixa'],
-              popUpFields:  ['tipo_veget', 'ndvi_faixa', 'peso'],
+              popUpFields:  ['tipo_veget', 'ndvi_faixa'],
               fieldTypes:   { classe: 'string', tipo_veget: 'string', ndvi_faixa: 'string', classe_lbl: 'string', peso: 'number' },
-              descFields:   { classe: 'Classificação', tipo_veget: 'Tipo de Vegetação', ndvi_faixa: 'Faixa de NDVI', peso: 'Peso' },
+              descFields:   { classe: 'Classificação', tipo_veget: 'Tipo de Vegetação', ndvi_faixa: 'Faixa de NDVI' },
             },
           },
           {
