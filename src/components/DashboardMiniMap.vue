@@ -22,6 +22,10 @@ const isLegendVisible = ref(!(typeof window !== 'undefined' && window.innerWidth
 
 let map = null
 let baseTileLayer = null
+// Camada extra de rótulos (cidades/rodovias) do Esri Dark Gray — só existe
+// quando o basemap ativo tem `labelsUrl` (ver src/config/layers.js); o OSM
+// claro é um único tile fundido, sem essa camada.
+let baseLabelsLayer = null
 let indexLayer = null
 let highlightedLayer = null
 let hoveredLayer = null
@@ -45,13 +49,20 @@ const HIGHLIGHT_COLOR = '#fbbf24' // mesma cor de destaque usada em MapContainer
 const legendClasses = computed(() => stylesJson[props.sourceLayer]?.classes ?? [])
 
 function currentBaseLayerConfig() {
-  return isDark.value ? BASE_LAYERS.osm_dark : BASE_LAYERS.osm
+  return isDark.value ? BASE_LAYERS.dark_gray : BASE_LAYERS.osm
 }
 
 function renderBaseLayer() {
   if (baseTileLayer) map.removeLayer(baseTileLayer)
-  const { url, attribution, maxZoom } = currentBaseLayerConfig()
+  if (baseLabelsLayer) {
+    map.removeLayer(baseLabelsLayer)
+    baseLabelsLayer = null
+  }
+  const { url, labelsUrl, attribution, maxZoom } = currentBaseLayerConfig()
   baseTileLayer = L.tileLayer(url, { attribution, maxZoom, zIndex: 1 }).addTo(map)
+  if (labelsUrl) {
+    baseLabelsLayer = L.tileLayer(labelsUrl, { attribution, maxZoom, zIndex: 2 }).addTo(map)
+  }
 }
 
 function renderIndexLayer() {

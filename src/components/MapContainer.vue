@@ -30,6 +30,10 @@ const mapEl = ref(null)
 
 let map = null
 let currentTileLayer = null
+// Camada extra de rótulos (cidades/rodovias) do Esri Dark Gray — só existe
+// quando activeBaseLayer tem `labelsUrl` (ver src/config/layers.js); os
+// outros basemaps (Google, OSM) são um único tile fundido, sem essa camada.
+let currentLabelsLayer = null
 let searchMarker = null
 let fullscreenChangeHandler = null
 const activeOverlays = new Map()
@@ -370,10 +374,17 @@ function addMeasurePoint(latlng) {
 watch(() => mapStore.activeBaseLayer, renderTileLayer)
 
 function renderTileLayer() {
-  const { url, label, meta, active, ...leafletOptions } = mapStore.activeBaseLayer
+  const { url, labelsUrl, label, meta, active, ...leafletOptions } = mapStore.activeBaseLayer
   const opacity = mapStore.layerOpacity[mapStore.activeBaseLayerKey] ?? 1
   if (currentTileLayer) map.removeLayer(currentTileLayer)
+  if (currentLabelsLayer) {
+    map.removeLayer(currentLabelsLayer)
+    currentLabelsLayer = null
+  }
   currentTileLayer = L.tileLayer(url, { ...leafletOptions, opacity, zIndex: 1 }).addTo(map)
+  if (labelsUrl) {
+    currentLabelsLayer = L.tileLayer(labelsUrl, { ...leafletOptions, opacity, zIndex: 2 }).addTo(map)
+  }
 }
 
 // ── 2. Sincronização Dinâmica das Camadas Vetoriais (MVT Híbrido: XYZ local / TMS prod) ──

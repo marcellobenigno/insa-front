@@ -48,13 +48,29 @@ export const BASE_LAYERS = {
     active: false,
   },
 
-  osm_dark: {
-    label: 'OpenStreetMap Dark (Carto)',
-    meta: 'Dark Vector Tile',
-    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  // Trocado de CARTO Dark Matter (basemaps.cartocdn.com) para o Esri World
+  // Dark Gray Canvas em 2026-08-26 — a CARTO passou a exigir cadastro/API key
+  // (cota anônima esgotada) para servir esse tile em produção. O Esri Canvas
+  // é um serviço REST legado (services.arcgisonline.com) mantido gratuito e
+  // sem chave/cadastro, sem cota conhecida — mesmo padrão usado por
+  // incontáveis apps Leaflet públicos. Vem em duas camadas empilhadas (a
+  // CARTO entregava as duas fundidas num único PNG): `url` é só o canvas
+  // cinza-escuro (sem nenhum rótulo) e `labelsUrl` é a camada de referência
+  // (nomes de cidade, rodovias, fronteiras) por cima — ver o watch/render da
+  // camada base em MapContainer.vue e DashboardMiniMap.vue, que precisam
+  // desenhar as duas em conjunto quando `labelsUrl` existir. Ordem de tile do
+  // ArcGIS REST é {z}/{y}/{x} (y antes de x), diferente do padrão XYZ do
+  // resto do BASE_LAYERS — é só a ordem dos tokens na própria URL, o
+  // L.tileLayer não precisa saber a diferença.
+  dark_gray: {
+    label: 'Esri Dark Gray',
+    meta: 'Basemap cinza escuro (sem custo, sem chave)',
+    url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    labelsUrl:
+      'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
     attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    maxZoom: 20,
+      '&copy; <a href="https://www.esri.com">Esri</a>, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, GIS User Community',
+    maxZoom: 16,
     active: false,
   },
 }
