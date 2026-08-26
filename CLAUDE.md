@@ -1168,6 +1168,58 @@ regenerado a cada build do pipeline), este arquivo vive em `public/data/` e **é
 versionado** — regenerar manualmente só se os limites municipais no GeoPackage
 mudarem.
 
+### Controles do mini-mapa (`DashboardMiniMap.vue`) — gotchas
+
+- **`L.control.layers(...)` precisa de `autoZIndex: false`.** Por padrão o
+  Leaflet reatribui o `zIndex` de todo overlay adicionado via `addOverlay()`
+  que tenha `.setZIndex` (o `indexLayer`, um `L.GridLayer`) usando um
+  contador interno próprio — sobrescrevendo silenciosamente o `zIndex: 10`
+  explícito de `renderIndexLayer()`. Sem `autoZIndex: false`, esse contador
+  podia coincidir com o `zIndex: 1` da camada base (fora do controle, nunca
+  tocada por ele), empatando os dois — e ao trocar o tema,
+  `renderBaseLayer()` remove e recria a camada base, reinserindo-a no fim do
+  painel de tiles; nesse empate de zIndex, a última inserida no DOM vencia
+  visualmente, cobrindo o índice colorido (bug relatado: "mapa desaparece ao
+  trocar o tema", corrigido em 2026-08-26).
+- **`map.setMinZoom(map.getZoom())` logo após o `fitBounds` inicial** — não
+  um número fixo. O usuário só pode aproximar a partir da visão inicial
+  completa do Semiárido PB, nunca afastar além dela (pedido de produto: o
+  botão "−" não deve afastar além do zoom inicial). Um valor fixo (era `6`)
+  podia ficar aquém da visão inicial real em containers menores, já que o
+  zoom que o `fitBounds` calcula varia com o tamanho do container.
+
+### Basemap escuro (`BASE_LAYERS.dark_gray`) — Esri, não CARTO
+
+O tema escuro do mapa (base usada quando `useTheme().isDark` é `true`, tanto
+no mapa principal quanto no mini-mapa do dashboard) era CARTO Dark Matter
+(`basemaps.cartocdn.com/dark_all`) até 2026-08-26 — trocado pra **Esri World
+Dark Gray Canvas** (`services.arcgisonline.com`) porque a CARTO passou a
+exigir cadastro/API key pra servir esse tile em produção (cota anônima
+esgotada). O serviço REST legado da Esri usado aqui é gratuito, sem
+chave/cadastro, sem cota conhecida — mesmo padrão usado por incontáveis apps
+Leaflet públicos.
+
+Diferente de todo outro `BASE_LAYERS` (um único tile PNG fundido), o Esri
+Canvas vem em **duas camadas**: `url` é só o canvas cinza-escuro (sem nenhum
+rótulo) e `labelsUrl` é a camada de referência (nomes de cidade, rodovias,
+fronteiras) por cima. `MapContainer.vue` (`renderTileLayer`) e
+`DashboardMiniMap.vue` (`renderBaseLayer`) checam `labelsUrl` e, se presente,
+adicionam um segundo `L.tileLayer` acima do primeiro (`zIndex` do base = 1,
+labels = 2) — nenhum outro `BASE_LAYERS` tem esse campo, então esses dois
+`render*` ficam com um `if (labelsUrl)` que nunca dispara pros demais temas.
+Se um futuro basemap precisar do mesmo padrão de 2 camadas, é só dar a ele
+também um `labelsUrl`.
+
+A chave do objeto é `dark_gray` (não `osm_dark`, nome antigo da era CARTO) —
+renomeado junto pra não ficar descrevendo um provedor que não é mais usado.
+Nenhum estado persiste essa string (a base ativa não é salva no
+`localStorage`, só o tema claro/escuro via `insa-theme` — ver `useTheme.js`),
+então renomear a chave não quebra nada de sessões antigas.
+
+A ordem dos tokens na URL do ArcGIS REST é `{z}/{y}/{x}` (y antes de x),
+diferente do XYZ padrão do resto do `BASE_LAYERS` — é só a ordem na própria
+string, `L.tileLayer` faz replace de token sem se importar com a ordem.
+
 ---
 
 ## Styles (`src/assets/styles.json`)
