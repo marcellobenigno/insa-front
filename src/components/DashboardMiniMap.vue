@@ -239,7 +239,17 @@ onMounted(() => {
   renderBaseLayer()
   // Controle nativo do Leaflet para ligar/desligar as camadas de sobreposição
   // (índice e contorno dos municípios) — sem base layers, só overlays.
-  layersControl = L.control.layers(null, {}, { position: 'topright' }).addTo(map)
+  // autoZIndex: false é essencial — por padrão o Control.Layers reatribui o
+  // zIndex de todo overlay adicionado via addOverlay() (indexLayer tem
+  // .setZIndex, um GridLayer), sobrescrevendo o zIndex:10 explícito de
+  // renderIndexLayer() com um contador interno próprio. Sem isso, o índice
+  // e a camada base (fora do controle, sempre zIndex:1) podem empatar em
+  // zIndex — e ao trocar o tema, renderBaseLayer() remove e recria a camada
+  // base, reinserindo-a no fim do painel de tiles; nesse empate, a última
+  // inserida no DOM vence visualmente, cobrindo o índice colorido.
+  layersControl = L.control.layers(null, {}, { position: 'topright', autoZIndex: false }).addTo(
+    map,
+  )
   renderIndexLayer()
   addZoomHomeControl()
   addHoverNameControl()
