@@ -64,7 +64,7 @@ export const BASE_LAYERS = {
   // L.tileLayer não precisa saber a diferença.
   dark_gray: {
     label: 'Esri Dark Gray',
-    meta: 'Basemap cinza escuro (sem custo, sem chave)',
+    meta: 'Basemap cinza escuro',
     url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
     labelsUrl:
       'https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
