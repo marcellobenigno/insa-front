@@ -234,7 +234,10 @@ onMounted(() => {
   // exigem atribuição visível, igual ao mapa principal.
   map = L.map(mapEl.value, { zoomControl: false }).fitBounds(paraibaBounds)
   map.setMaxBounds(paraibaBounds)
-  map.setMinZoom(6)
+  // Trava o zoom mínimo no nível que o fitBounds inicial calculou (varia com
+  // o tamanho do container) — o usuário só pode aproximar a partir da visão
+  // inicial completa do Semiárido PB, nunca afastar além dela.
+  map.setMinZoom(map.getZoom())
 
   renderBaseLayer()
   // Controle nativo do Leaflet para ligar/desligar as camadas de sobreposição
