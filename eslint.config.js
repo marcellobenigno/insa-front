@@ -24,6 +24,14 @@ export default defineConfig([
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
 
+  {
+    rules: {
+      // Permite omitir campos via rest (`const { a, ...resto } = obj`) sem
+      // acusar `a` como não usado — mesmo comportamento padrão do oxlint.
+      'no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    },
+  },
+
   ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
 
   skipFormatting,

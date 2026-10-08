@@ -610,7 +610,7 @@ async function handleMapClick(e) {
   if (layersToQuery.length === 0) return
 
   const popupPromises = layersToQuery.map(async (overlay) => {
-    const { key, url, sourceLayer, label, popUpFields, descFields } = overlay
+    const { url, sourceLayer, label, popUpFields, descFields } = overlay
     const cacheKey = `${zoom}-${layerPoint.x}-${targetY}-${sourceLayer}`
 
     const parseProperties = (buffer) => {
