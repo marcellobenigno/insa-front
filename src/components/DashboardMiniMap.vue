@@ -6,6 +6,7 @@ import { BASE_LAYERS, OVERLAY_LAYERS } from '@/config/layers'
 import { createDashboardMvtLayer } from '@/utils/createDashboardMvtLayer'
 import { useTheme } from '@/composables/useTheme'
 import stylesJson from '@/assets/styles.json'
+import dashboardData from '@/assets/dashboard_stats.json'
 
 const props = defineProps({
   sourceLayer: { type: String, required: true },
@@ -94,10 +95,41 @@ function municipioHoverStyle() {
   return { color: HIGHLIGHT_COLOR, weight: 2.5, opacity: 1, fillOpacity: 0.08 }
 }
 
-function setHoverName(name) {
+// Caixa de hover: nome + valor médio e classe dominante do índice ativo
+// (mesmos dados da tabela, de dashboard_stats.json). Montada com
+// textContent/createElement, sem innerHTML.
+function setHoverInfo(properties) {
   if (!hoverNameEl) return
-  hoverNameEl.textContent = name ? `Município: ${name}` : ''
+  hoverNameEl.replaceChildren()
+  const name = properties?.nm_municip
   hoverNameEl.classList.toggle('is-visible', !!name)
+  if (!name) return
+
+  const title = L.DomUtil.create('div', 'hover-title', hoverNameEl)
+  title.textContent = name
+
+  const indexData = dashboardData.municipios[properties.cod_ibge_m]?.indices?.[props.sourceLayer]
+  // Rótulo e valor entram direto no grid de 2 colunas da caixa (sem
+  // wrapper por linha), pra os valores alinharem à esquerda numa coluna só.
+  const addRow = (label) => {
+    L.DomUtil.create('span', 'hover-label', hoverNameEl).textContent = label
+    return L.DomUtil.create('span', 'hover-value', hoverNameEl)
+  }
+
+  const valueEl = addRow('Valor médio:')
+  valueEl.textContent =
+    indexData?.value != null
+      ? indexData.value.toLocaleString('pt-BR', { maximumFractionDigits: 3 })
+      : '—'
+
+  const classEl = addRow('Classe dominante:')
+  if (indexData?.class_label) {
+    const dot = L.DomUtil.create('span', 'hover-dot', classEl)
+    dot.style.background = indexData.class_color ?? '#9ca3af'
+    classEl.append(indexData.class_label)
+  } else {
+    classEl.textContent = '—'
+  }
 }
 
 function handleMunicipioMouseOver(e) {
@@ -115,7 +147,7 @@ function handleMunicipioMouseOver(e) {
   if (layer !== highlightedLayer) {
     layer.setStyle(municipioHoverStyle())
   }
-  setHoverName(layer.feature?.properties?.nm_municip)
+  setHoverInfo(layer.feature?.properties)
 }
 
 function handleMunicipioMouseOut(e) {
@@ -125,7 +157,7 @@ function handleMunicipioMouseOut(e) {
   }
   if (hoveredLayer === layer) {
     hoveredLayer = null
-    setHoverName(null)
+    setHoverInfo(null)
   }
 }
 
@@ -514,13 +546,50 @@ onUnmounted(() => {
 }
 
 :deep(.municipio-hover-box.is-visible) {
-  max-width: 300px;
-  max-height: 32px;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 6px;
+  align-items: center;
+  max-width: 320px;
+  max-height: 120px;
   opacity: 1;
   padding: 7px 12px;
   margin-top: 10px !important;
   margin-right: 10px !important;
   border: 1px solid var(--border-color);
+}
+
+:deep(.municipio-hover-box .hover-title) {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+:deep(.municipio-hover-box .hover-label),
+:deep(.municipio-hover-box .hover-value) {
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+:deep(.municipio-hover-box .hover-label) {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+:deep(.municipio-hover-box .hover-value) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+:deep(.municipio-hover-box .hover-dot) {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 /* ── Controle nativo de camadas (L.control.layers) — tema-aware ─────────────── */
