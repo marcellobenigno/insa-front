@@ -59,7 +59,6 @@ const features = [
     </section>
 
     <section class="ivd-scale" aria-label="Escala do Índice de Vulnerabilidade à Desertificação">
-      <div class="ivd-scale-accent" aria-hidden="true" />
       <p class="ivd-scale-caption">Índice de Vulnerabilidade à Desertificação (IVD)</p>
       <div class="ivd-scale-bar" role="img"
            aria-label="Escala de cores: verde (baixa) a vermelho (muito alta)" />
@@ -266,16 +265,8 @@ const features = [
 .ivd-scale {
   max-width: 620px;
   margin: 0 auto;
-  padding: 48px 24px 50px;
+  padding: 20px 24px 50px;
   text-align: center;
-}
-
-.ivd-scale-accent {
-  width: 36px;
-  height: 3px;
-  margin: 0 auto 18px;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, #a6d96a 0%, #e8ffc0 34%, #fdae61 67%, #d7191c 100%);
 }
 
 .ivd-scale-caption {
@@ -344,10 +335,6 @@ const features = [
 @media (max-width: 720px) {
   .hero {
     padding: 56px 20px 64px;
-  }
-
-  .ivd-scale {
-    padding-top: 72px;
   }
 
   .features {
