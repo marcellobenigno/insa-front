@@ -142,11 +142,15 @@ watch(selectedIndex, () => {
   height: 100%;
   overflow-y: auto;
   background: var(--bg-app);
+  /* Sticky footer — ver .inicio-view em InicioView.vue. */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Padding num wrapper interno (não no .dashboard-view) pra o AppFooter
    ocupar a largura toda, de borda a borda. */
 .dashboard-content {
+  flex: 1 0 auto;
   padding: 28px 32px 44px;
 }
 

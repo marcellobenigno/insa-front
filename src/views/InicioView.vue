@@ -7,77 +7,81 @@ const features = [
   {
     icon: 'bi-layers',
     title: 'Camadas temáticas',
-    text: 'Mais de 20 camadas georreferenciadas cruzam dados de solo, vegetação, clima e manejo do território.'
+    text: 'Mais de 20 camadas georreferenciadas cruzam dados de solo, vegetação, clima e manejo do território.',
   },
   {
     icon: 'bi-graph-up-arrow',
     title: 'Índices de Vulnerabilidade',
-    text: 'Índices de vulnerabilidade do solo, vegetação, clima e manejo — sintetizados no Índice de Vulnerabilidade à Desertificação (IVD).'
+    text: 'Índices de vulnerabilidade do solo, vegetação, clima e manejo — sintetizados no Índice de Vulnerabilidade à Desertificação (IVD).',
   },
   {
     icon: 'bi-building',
     title: 'Apoio a políticas públicas',
-    text: 'Dados técnicos para orientar o combate à desertificação e a recuperação de áreas degradadas.'
-  }
+    text: 'Dados técnicos para orientar o combate à desertificação e a recuperação de áreas degradadas.',
+  },
 ]
 </script>
 
 <template>
   <div class="inicio-view">
-    <section class="hero">
-      <HeroCarousel />
+    <main class="inicio-main">
+      <section class="hero">
+        <HeroCarousel />
 
-      <div class="hero-inner">
-        <div class="hero-mark-wrap">
-          <div class="hero-mark-glow" aria-hidden="true" />
-          <h1 class="hero-mark-heading">
-            <img :src="logoLockup" class="hero-mark" alt="DesertPB" />
-          </h1>
+        <div class="hero-inner">
+          <div class="hero-mark-wrap">
+            <div class="hero-mark-glow" aria-hidden="true" />
+            <h1 class="hero-mark-heading">
+              <img :src="logoLockup" class="hero-mark" alt="DesertPB" />
+            </h1>
+          </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      <section class="hero-intro">
+        <p class="hero-body">
+          O <strong>DesertPB</strong> reúne, em um só lugar, o mapeamento da vulnerabilidade à
+          desertificação no semiárido paraibano. Ao cruzar indicadores de solo, vegetação, clima e
+          manejo do território, a plataforma aponta onde a degradação avança com mais intensidade —
+          e serve de base técnica para as políticas públicas estaduais de combate à desertificação e
+          de recuperação de áreas degradadas.
+        </p>
 
-    <section class="hero-intro">
-      <p class="hero-body">
-        O <strong>DesertPB</strong> reúne, em um só lugar, o mapeamento da vulnerabilidade à desertificação no
-        semiárido paraibano. Ao cruzar indicadores de solo, vegetação, clima e manejo do
-        território, a plataforma aponta onde a degradação avança com mais intensidade — e
-        serve de base técnica para as políticas públicas estaduais de combate à
-        desertificação e de recuperação de áreas degradadas.
-      </p>
+        <div class="hero-ctas">
+          <RouterLink to="/mapa" class="btn-cta btn-cta-primary">
+            <i class="bi bi-map" aria-hidden="true" />
+            Explorar o mapa
+          </RouterLink>
+          <RouterLink to="/dashboard" class="btn-cta btn-cta-ghost">
+            <i class="bi bi-bar-chart-line" aria-hidden="true" />
+            Ver dashboard
+          </RouterLink>
+        </div>
+      </section>
 
-      <div class="hero-ctas">
-        <RouterLink to="/mapa" class="btn-cta btn-cta-primary">
-          <i class="bi bi-map" aria-hidden="true" />
-          Explorar o mapa
-        </RouterLink>
-        <RouterLink to="/dashboard" class="btn-cta btn-cta-ghost">
-          <i class="bi bi-bar-chart-line" aria-hidden="true" />
-          Ver dashboard
-        </RouterLink>
-      </div>
-    </section>
+      <section class="ivd-scale" aria-label="Escala do Índice de Vulnerabilidade à Desertificação">
+        <p class="ivd-scale-caption">Índice de Vulnerabilidade à Desertificação (IVD)</p>
+        <div
+          class="ivd-scale-bar"
+          role="img"
+          aria-label="Escala de cores: verde (baixa) a vermelho (muito alta)"
+        />
+        <div class="ivd-scale-labels">
+          <span>Baixa</span>
+          <span>Moderada</span>
+          <span>Alta</span>
+          <span>Muito Alta</span>
+        </div>
+      </section>
 
-    <section class="ivd-scale" aria-label="Escala do Índice de Vulnerabilidade à Desertificação">
-      <p class="ivd-scale-caption">Índice de Vulnerabilidade à Desertificação (IVD)</p>
-      <div class="ivd-scale-bar" role="img"
-           aria-label="Escala de cores: verde (baixa) a vermelho (muito alta)" />
-      <div class="ivd-scale-labels">
-        <span>Baixa</span>
-        <span>Moderada</span>
-        <span>Alta</span>
-        <span>Muito Alta</span>
-      </div>
-    </section>
-
-    <section class="features">
-      <article v-for="f in features" :key="f.title" class="feature-card">
-        <i :class="['bi', f.icon]" aria-hidden="true" />
-        <h2>{{ f.title }}</h2>
-        <p>{{ f.text }}</p>
-      </article>
-    </section>
+      <section class="features">
+        <article v-for="f in features" :key="f.title" class="feature-card">
+          <i :class="['bi', f.icon]" aria-hidden="true" />
+          <h2>{{ f.title }}</h2>
+          <p>{{ f.text }}</p>
+        </article>
+      </section>
+    </main>
 
     <AppFooter />
   </div>
@@ -88,6 +92,17 @@ const features = [
   height: 100%;
   overflow-y: auto;
   background: var(--bg-app);
+  /* Sticky footer: em telas altas o conteúdo não preenche a altura toda —
+     .inicio-main cresce pra ocupar o espaço livre e empurra o AppFooter
+     pro fundo da página, em vez de ele ficar "flutuando" logo abaixo das
+     seções. Wrapper em bloco (não flex direto nas seções) pra não fazer
+     as seções com max-width + margin auto encolherem até o conteúdo. */
+  display: flex;
+  flex-direction: column;
+}
+
+.inicio-main {
+  flex: 1 0 auto;
 }
 
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
@@ -222,9 +237,10 @@ const features = [
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: transform var(--transition-speed) var(--transition-curve),
-  background var(--transition-speed) var(--transition-curve),
-  box-shadow var(--transition-speed) var(--transition-curve);
+  transition:
+    transform var(--transition-speed) var(--transition-curve),
+    background var(--transition-speed) var(--transition-curve),
+    box-shadow var(--transition-speed) var(--transition-curve);
 }
 
 .btn-cta:hover {

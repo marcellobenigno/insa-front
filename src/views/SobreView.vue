@@ -57,120 +57,123 @@ const members = team.filter((member) => !member.tag)
 
 <template>
   <div class="sobre-view">
-    <section class="sobre-hero">
-      <img :src="logoLockup" class="sobre-mark" alt="DesertPB" />
-      <h1>Sobre</h1>
-    </section>
+    <main class="sobre-main">
+      <section class="sobre-hero">
+        <img :src="logoLockup" class="sobre-mark" alt="DesertPB" />
+        <h1>Sobre</h1>
+      </section>
 
-    <section class="sobre-content sobre-intro">
-      <p>
-        O <strong>DesertPB</strong> é um WEBGIS fruto do projeto de pesquisa intitulado
-        “Monitoramento com a utilização de ferramentas digitais, na mitigação do processo de
-        desertificação com uso de palma forrageira no estado da Paraíba”, objeto da Emenda
-        Parlamentar Individual nº 27140008/2024. Desenvolvido pelo Instituto Nacional do Semiárido,
-        unidade de pesquisa do Ministério da Ciência, Tecnologia e Inovação, o sistema permite
-        verificar o estado de vulnerabilidade à desertificação na região semiárida paraibana,
-        através de índices de vulnerabilidade do solo, vegetação, clima e manejo da terra,
-        calculados por uma série de indicadores ambientais e socioeconômicos.
-      </p>
+      <section class="sobre-content sobre-intro">
+        <p>
+          O <strong>DesertPB</strong> é um WEBGIS fruto do projeto de pesquisa intitulado
+          “Monitoramento com a utilização de ferramentas digitais, na mitigação do processo de
+          desertificação com uso de palma forrageira no estado da Paraíba”, objeto da Emenda
+          Parlamentar Individual nº 27140008/2024. Desenvolvido pelo Instituto Nacional do
+          Semiárido, unidade de pesquisa do Ministério da Ciência, Tecnologia e Inovação, o sistema
+          permite verificar o estado de vulnerabilidade à desertificação na região semiárida
+          paraibana, através de índices de vulnerabilidade do solo, vegetação, clima e manejo da
+          terra, calculados por uma série de indicadores ambientais e socioeconômicos.
+        </p>
 
-      <div class="sobre-tags">
-        <a
-          href="https://www.gov.br/insa/pt-br"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="sobre-tag"
-        >
-          <i class="bi bi-building" aria-hidden="true" />
-          Instituto Nacional do Semiárido (INSA)
-        </a>
-        <a
-          href="https://www.gov.br/mcti/pt-br"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="sobre-tag"
-        >
-          <i class="bi bi-bank" aria-hidden="true" />
-          Ministério da Ciência, Tecnologia e Inovação
-        </a>
-      </div>
-    </section>
+        <div class="sobre-tags">
+          <a
+            href="https://www.gov.br/insa/pt-br"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sobre-tag"
+          >
+            <i class="bi bi-building" aria-hidden="true" />
+            Instituto Nacional do Semiárido (INSA)
+          </a>
+          <a
+            href="https://www.gov.br/mcti/pt-br"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sobre-tag"
+          >
+            <i class="bi bi-bank" aria-hidden="true" />
+            Ministério da Ciência, Tecnologia e Inovação
+          </a>
+        </div>
+      </section>
 
-    <section class="sobre-content sobre-report">
-      <h2 class="sobre-section-title">Relatório do projeto</h2>
-      <p>
-        O
-        <a
-          :href="REPORT_URL || '#'"
-          :target="REPORT_URL ? '_blank' : undefined"
-          rel="noopener noreferrer"
-          class="report-inline-link"
-          @click="!REPORT_URL && $event.preventDefault()"
-        >Relatório do Projeto</a>
-        descreve toda a metodologia utilizada para cálculo dos índices e indicadores de
-        vulnerabilidade à desertificação, bem como uma análise dos resultados encontrados e um breve
-        histórico das ações de PD&amp;I do Instituto Nacional do Semiárido relacionadas ao tema de
-        combate à desertificação e recuperação de áreas degradadas.
-      </p>
+      <section class="sobre-content sobre-report">
+        <h2 class="sobre-section-title">Relatório do projeto</h2>
+        <p>
+          O
+          <a
+            :href="REPORT_URL || '#'"
+            :target="REPORT_URL ? '_blank' : undefined"
+            rel="noopener noreferrer"
+            class="report-inline-link"
+            @click="!REPORT_URL && $event.preventDefault()"
+            >Relatório do Projeto</a
+          >
+          descreve toda a metodologia utilizada para cálculo dos índices e indicadores de
+          vulnerabilidade à desertificação, bem como uma análise dos resultados encontrados e um
+          breve histórico das ações de PD&amp;I do Instituto Nacional do Semiárido relacionadas ao
+          tema de combate à desertificação e recuperação de áreas degradadas.
+        </p>
 
-      <div class="sobre-tags">
-        <a
-          :href="REPORT_URL || '#'"
-          :target="REPORT_URL ? '_blank' : undefined"
-          rel="noopener noreferrer"
-          class="sobre-tag"
-          :aria-disabled="!REPORT_URL || undefined"
-          @click="!REPORT_URL && $event.preventDefault()"
-        >
-          <i class="bi bi-file-earmark-text" aria-hidden="true" />
-          Acessar relatório
-          <span v-if="!REPORT_URL" class="report-soon">em breve</span>
-        </a>
-      </div>
-    </section>
+        <div class="sobre-tags">
+          <a
+            :href="REPORT_URL || '#'"
+            :target="REPORT_URL ? '_blank' : undefined"
+            rel="noopener noreferrer"
+            class="sobre-tag"
+            :aria-disabled="!REPORT_URL || undefined"
+            @click="!REPORT_URL && $event.preventDefault()"
+          >
+            <i class="bi bi-file-earmark-text" aria-hidden="true" />
+            Acessar relatório
+            <span v-if="!REPORT_URL" class="report-soon">em breve</span>
+          </a>
+        </div>
+      </section>
 
-    <section class="team-section">
-      <h2 class="sobre-section-title">Equipe de desenvolvimento</h2>
+      <section class="team-section">
+        <h2 class="sobre-section-title">Equipe de desenvolvimento</h2>
 
-      <div class="team-lead-wrap">
-        <article class="team-card team-lead">
-          <span class="team-avatar" aria-hidden="true">{{ initials(coordinator.name) }}</span>
-          <div class="team-info">
-            <h3>
-              <a
-                :href="coordinator.lattes"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="team-name-link"
-              >
-                {{ coordinator.name }}
-              </a>
-            </h3>
-            <p>{{ coordinator.role }}</p>
-            <span class="team-tag">{{ coordinator.tag }}</span>
-          </div>
-        </article>
-      </div>
+        <div class="team-lead-wrap">
+          <article class="team-card team-lead">
+            <span class="team-avatar" aria-hidden="true">{{ initials(coordinator.name) }}</span>
+            <div class="team-info">
+              <h3>
+                <a
+                  :href="coordinator.lattes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="team-name-link"
+                >
+                  {{ coordinator.name }}
+                </a>
+              </h3>
+              <p>{{ coordinator.role }}</p>
+              <span class="team-tag">{{ coordinator.tag }}</span>
+            </div>
+          </article>
+        </div>
 
-      <div class="team-grid">
-        <article v-for="member in members" :key="member.name" class="team-card">
-          <span class="team-avatar" aria-hidden="true">{{ initials(member.name) }}</span>
-          <div class="team-info">
-            <h3>
-              <a
-                :href="member.lattes"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="team-name-link"
-              >
-                {{ member.name }}
-              </a>
-            </h3>
-            <p>{{ member.role }}</p>
-          </div>
-        </article>
-      </div>
-    </section>
+        <div class="team-grid">
+          <article v-for="member in members" :key="member.name" class="team-card">
+            <span class="team-avatar" aria-hidden="true">{{ initials(member.name) }}</span>
+            <div class="team-info">
+              <h3>
+                <a
+                  :href="member.lattes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="team-name-link"
+                >
+                  {{ member.name }}
+                </a>
+              </h3>
+              <p>{{ member.role }}</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
 
     <AppFooter />
   </div>
@@ -186,6 +189,13 @@ const members = team.filter((member) => !member.tag)
   height: 100%;
   overflow-y: auto;
   background: var(--bg-app);
+  /* Sticky footer — ver .inicio-view em InicioView.vue. */
+  display: flex;
+  flex-direction: column;
+}
+
+.sobre-main {
+  flex: 1 0 auto;
 }
 
 .sobre-hero,
