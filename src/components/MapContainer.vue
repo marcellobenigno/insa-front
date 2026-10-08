@@ -58,6 +58,13 @@ const paraibaBounds = [
 // Cache de memória para reuso dos buffers binários PBF
 const tileDataCache = new Map()
 
+// Zoom máximo da pirâmide de tiles (Tippecanoe -z14, ver CLAUDE.md Step 2).
+// As camadas continuam visíveis até OVERLAY_MAX_ZOOM via overzoom
+// (createTile reaproveita o tile de MAX_TILE_ZOOM) — o mesmo maxZoom das
+// bases de satélite/Google em layers.js.
+const MAX_TILE_ZOOM = 14
+const OVERLAY_MAX_ZOOM = 20
+
 onMounted(async () => {
   await nextTick()
 
@@ -382,6 +389,11 @@ function renderTileLayer() {
     currentLabelsLayer = null
   }
   currentTileLayer = L.tileLayer(url, { ...leafletOptions, opacity, zIndex: 1 }).addTo(map)
+  // Limite de zoom do mapa = o da base ativa (ex. Esri escuro só vai até
+  // z16). Sem isso o Leaflet usaria o maior maxZoom entre todas as camadas
+  // — incluindo os overlays (OVERLAY_MAX_ZOOM) — e a base sumiria acima do
+  // seu próprio limite.
+  map.setMaxZoom(leafletOptions.maxZoom ?? OVERLAY_MAX_ZOOM)
   if (labelsUrl) {
     currentLabelsLayer = L.tileLayer(labelsUrl, { ...leafletOptions, opacity, zIndex: 2 }).addTo(map)
   }
@@ -452,22 +464,34 @@ function syncVectorOverlays(desired) {
           tile.height = size.y
           const ctx = tile.getContext('2d')
 
-          const targetY = coords.y
-
+          // Overzoom: a pirâmide só vai até MAX_TILE_ZOOM (Tippecanoe -z14).
+          // Acima disso, usa o tile desse zoom que contém este e desenha só
+          // o recorte correspondente, ampliado — como é vetor (não imagem
+          // esticada), continua nítido em qualquer zoom.
+          const dz = Math.max(0, coords.z - MAX_TILE_ZOOM)
+          const scale = 2 ** dz
+          const srcZ = coords.z - dz
+          const srcX = coords.x >> dz
+          const srcY = coords.y >> dz
+          const offsetX = (coords.x - srcX * scale) * size.x
+          const offsetY = (coords.y - srcY * scale) * size.y
 
           const tileUrl = url
-            .replace('{z}', coords.z)
-            .replace('{x}', coords.x)
-            .replace('{y}', targetY)
+            .replace('{z}', srcZ)
+            .replace('{x}', srcX)
+            .replace('{y}', srcY)
 
-          fetch(tileUrl)
-  .then(res => {
-    if (!res.ok) throw new Error(`Tile PBF não encontrado na URL: ${tileUrl}`)
-    return res.arrayBuffer()
-  })
+          const cacheKey = `${srcZ}-${srcX}-${srcY}-${sourceLayer}`
+          const bufferPromise = tileDataCache.has(cacheKey)
+            ? Promise.resolve(tileDataCache.get(cacheKey))
+            : fetch(tileUrl).then((res) => {
+                if (!res.ok) throw new Error(`Tile PBF não encontrado na URL: ${tileUrl}`)
+                return res.arrayBuffer()
+              })
+
+          bufferPromise
   .then(buffer => {
     try {
-      const cacheKey = `${coords.z}-${coords.x}-${targetY}-${sourceLayer}`
       tileDataCache.set(cacheKey, buffer)
       const pbf = new Pbf(new Uint8Array(buffer))
       const vt = new VectorTile(pbf)
@@ -487,7 +511,11 @@ function syncVectorOverlays(desired) {
           const { strokeOnly, color } = parseColor(rawColor)
           const isMatch = !activeFilter || matchesFilter(props, activeFilter)
 
+          // O path é transformado no momento em que é construído; reseta
+          // antes do stroke/fill pra lineWidth não ser ampliada junto.
+          ctx.setTransform(scale, 0, 0, scale, -offsetX, -offsetY)
           drawGeometryToContext(ctx, geom, feature.type, size)
+          ctx.setTransform(1, 0, 0, 1, 0, 0)
 
           if (strokeOnly) {
             // Camada de contorno (ex: municípios)
@@ -542,7 +570,7 @@ function syncVectorOverlays(desired) {
 
       const layer = new CustomMVTLayer({
         minZoom: 2,
-        maxZoom: 14,
+        maxZoom: OVERLAY_MAX_ZOOM,
         zIndex: zIndex,
       }).addTo(map)
 
@@ -565,7 +593,9 @@ function syncVectorOverlays(desired) {
 async function handleMapClick(e) {
   if (measureMode) { addMeasurePoint(e.latlng); return }
 
-  const zoom = map.getZoom()
+  // Acima de MAX_TILE_ZOOM não existe tile — consulta o do zoom máximo
+  // (o mesmo que createTile usa no overzoom).
+  const zoom = Math.min(map.getZoom(), MAX_TILE_ZOOM)
   const point = map.project(e.latlng, zoom)
   const layerPoint = point.divideBy(256).floor()
   
