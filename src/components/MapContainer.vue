@@ -16,7 +16,7 @@ import { VectorTile } from 'vector-tile'
 import Pbf from 'pbf'
 
 // Utilitários isolados
-import { getThematicColor, drawGeometryToContext, parseColor, matchesFilter } from '@/utils/mapRenderer'
+import { getThematicColor, drawGeometryToContext, parseColor, matchesFilter, polygonContainsPoint } from '@/utils/mapRenderer'
 import { createPopupContent } from '@/utils/mapPopup'
 // Valores de atributo de toda camada (sem geometria), pré-computados do
 // GeoPackage — usado só pela contagem de resultados da busca (countFilterMatches),
@@ -569,10 +569,11 @@ async function handleMapClick(e) {
   const point = map.project(e.latlng, zoom)
   const layerPoint = point.divideBy(256).floor()
   
-  // Coordenadas locais dentro do tile (0-4096) para precisão no clique
-  const clickX = (point.x % 256) * (4096 / 256)
-  const clickY = (point.y % 256) * (4096 / 256)
-  
+  // Posição do clique dentro do tile (0–256 px); convertida para a extensão
+  // de cada camada MVT (normalmente 4096) dentro de parseProperties
+  const tileX = point.x - layerPoint.x * 256
+  const tileY = point.y - layerPoint.y * 256
+
   const targetY = layerPoint.y
 
   const layersToQuery = mapStore.availableOverlays.filter(layer => mapStore.visibleOverlays[layer.key] && !layer.noPopup)
@@ -593,14 +594,20 @@ async function handleMapClick(e) {
         const layer = vt.layers[sourceLayer]
         
         if (layer && layer.length > 0) {
-          // Itera pelas feições para ver qual delas contém o ponto do clique
-          for (let i = 0; i < layer.length; i++) {
+          const clickX = tileX * (layer.extent / 256)
+          const clickY = tileY * (layer.extent / 256)
+          // Teste point-in-polygon real, não só bbox: após o dissolve do
+          // GeoPackage cada feição é um multipolígono espalhado (ex. uma
+          // classe inteira do IVD), cujo bbox cobre o tile quase todo — o
+          // teste por bbox devolvia uma feição arbitrária a cada clique.
+          // Percorre de trás pra frente: a última feição desenhada é a que
+          // fica visível por cima no canvas.
+          for (let i = layer.length - 1; i >= 0; i--) {
             const feature = layer.feature(i)
-            const bbox = feature.bbox() // [x1, y1, x2, y2]
-            
-            // Verifica se o clique está dentro do bounding box da geometria
-            if (clickX >= bbox[0] && clickX <= bbox[2] && 
-                clickY >= bbox[1] && clickY <= bbox[3]) {
+            if (feature.type !== 3) continue
+            const bbox = feature.bbox() // [x1, y1, x2, y2] — pré-filtro barato
+            if (clickX < bbox[0] || clickX > bbox[2] || clickY < bbox[1] || clickY > bbox[3]) continue
+            if (polygonContainsPoint(feature.loadGeometry(), clickX, clickY)) {
               return { label, properties: feature.properties, popUpFields, descFields }
             }
           }

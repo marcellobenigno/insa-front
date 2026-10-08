@@ -89,6 +89,27 @@ export function parseColor(colorValue) {
 }
 
 /**
+ * Testa se o ponto (x, y), em coordenadas locais do tile MVT, está dentro de
+ * uma geometria de polígono (`feature.loadGeometry()`). Usa a regra par-ímpar
+ * sobre todos os anéis de uma vez — isso já trata multipolígonos (vários
+ * anéis externos) e buracos (anéis internos) sem precisar classificar cada
+ * anel pela orientação.
+ */
+export function polygonContainsPoint(geom, x, y) {
+  let inside = false
+  for (const ring of geom) {
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const a = ring[i]
+      const b = ring[j]
+      if ((a.y > y) !== (b.y > y) && x < ((b.x - a.x) * (y - a.y)) / (b.y - a.y) + a.x) {
+        inside = !inside
+      }
+    }
+  }
+  return inside
+}
+
+/**
  * Desenha as geometrias de uma feição MVT em um contexto Canvas 2D.
  */
 export function drawGeometryToContext(ctx, geom, featureType, tileSize) {
