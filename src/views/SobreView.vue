@@ -1,6 +1,11 @@
 <script setup>
 import logoLockup from '@/assets/logo-lockup-fine.svg'
 
+// Link do relatório final do projeto — vazio enquanto o relatório não é
+// publicado. Com a string vazia, os links apontam pra "#", não navegam e o
+// botão exibe "em breve"; basta preencher a URL quando ele estiver pronto.
+const REPORT_URL = ''
+
 const team = [
   {
     name: 'Ricardo da Cunha Correia Lima',
@@ -56,7 +61,7 @@ const members = team.filter((member) => !member.tag)
       <h1>Sobre</h1>
     </section>
 
-    <section class="sobre-content">
+    <section class="sobre-content sobre-intro">
       <p>
         O <strong>DesertPB</strong> é um WEBGIS fruto do projeto de pesquisa intitulado
         “Monitoramento com a utilização de ferramentas digitais, na mitigação do processo de
@@ -90,8 +95,41 @@ const members = team.filter((member) => !member.tag)
       </div>
     </section>
 
+    <section class="sobre-content sobre-report">
+      <h2 class="sobre-section-title">Relatório do projeto</h2>
+      <p>
+        O
+        <a
+          :href="REPORT_URL || '#'"
+          :target="REPORT_URL ? '_blank' : undefined"
+          rel="noopener noreferrer"
+          class="report-inline-link"
+          @click="!REPORT_URL && $event.preventDefault()"
+        >Relatório do Projeto</a>
+        descreve toda a metodologia utilizada para cálculo dos índices e indicadores de
+        vulnerabilidade à desertificação, bem como uma análise dos resultados encontrados e um breve
+        histórico das ações de PD&amp;I do Instituto Nacional do Semiárido relacionadas ao tema de
+        combate à desertificação e recuperação de áreas degradadas.
+      </p>
+
+      <div class="sobre-tags">
+        <a
+          :href="REPORT_URL || '#'"
+          :target="REPORT_URL ? '_blank' : undefined"
+          rel="noopener noreferrer"
+          class="sobre-tag"
+          :aria-disabled="!REPORT_URL || undefined"
+          @click="!REPORT_URL && $event.preventDefault()"
+        >
+          <i class="bi bi-file-earmark-text" aria-hidden="true" />
+          Acessar relatório
+          <span v-if="!REPORT_URL" class="report-soon">em breve</span>
+        </a>
+      </div>
+    </section>
+
     <section class="team-section">
-      <h2>Equipe de desenvolvimento</h2>
+      <h2 class="sobre-section-title">Equipe de desenvolvimento</h2>
 
       <div class="team-lead-wrap">
         <article class="team-card team-lead">
@@ -137,16 +175,29 @@ const members = team.filter((member) => !member.tag)
 
 <style scoped>
 .sobre-view {
+  /* Uma única coluna e um único ritmo vertical pra todas as seções — antes
+     texto (680px) e equipe (900px) tinham larguras e espaçamentos próprios,
+     e as bordas das seções não alinhavam entre si. */
+  --sobre-col: 760px;
+  --sobre-gap: 56px;
   height: 100%;
   overflow-y: auto;
   background: var(--bg-app);
 }
 
+.sobre-hero,
+.sobre-content,
+.team-section {
+  max-width: var(--sobre-col);
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 /* ── Header ───────────────────────────────────────────────────────────────── */
 .sobre-hero {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 56px 24px 8px;
+  padding-top: 56px;
+  padding-bottom: 0;
   text-align: center;
 }
 
@@ -161,6 +212,7 @@ const members = team.filter((member) => !member.tag)
   margin: 0;
   font-size: clamp(30px, 5vw, 40px);
   font-weight: 800;
+  line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--text-main);
   animation: sobre-fade-up 0.6s var(--transition-curve) 0.05s both;
@@ -186,9 +238,8 @@ const members = team.filter((member) => !member.tag)
 
 /* ── Institutional text ──────────────────────────────────────────────────── */
 .sobre-content {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 24px 24px 8px;
+  padding-top: 40px;
+  padding-bottom: 0;
 }
 
 .sobre-content p {
@@ -196,7 +247,45 @@ const members = team.filter((member) => !member.tag)
   font-size: 15px;
   line-height: 1.75;
   color: var(--text-muted);
-  text-align: left;
+  /* Justificado com hifenização (lang="pt-BR" no index.html) — sem
+     hyphens, a coluna estreita no celular abre "rios" de espaço entre
+     palavras longas como "desertificação"/"socioeconômicos". */
+  text-align: justify;
+  hyphens: auto;
+  text-wrap: pretty;
+}
+
+/* Parágrafo de abertura um degrau acima do texto corrido — é a única
+   seção sem título próprio, então o tamanho é o que marca a entrada. */
+.sobre-intro p {
+  font-size: 16px;
+}
+
+/* Título de seção — compartilhado por "Relatório do projeto" e "Equipe de
+   desenvolvimento". Mantém o rótulo centralizado em caixa alta de antes,
+   agora entre dois filetes (cor de borda do tema) que marcam a quebra de
+   seção, e com --text-muted em vez de --text-dim: no tema escuro o
+   --text-dim (#636366) tinha pouco contraste sobre o fundo. */
+.sobre-section-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 24px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.sobre-section-title::before,
+.sobre-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
 }
 
 .sobre-content strong {
@@ -206,8 +295,9 @@ const members = team.filter((member) => !member.tag)
 .sobre-tags {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .sobre-tag {
@@ -239,21 +329,36 @@ const members = team.filter((member) => !member.tag)
   font-size: 13px;
 }
 
-/* ── Team ─────────────────────────────────────────────────────────────────── */
-.team-section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 24px 72px;
+/* ── Report ───────────────────────────────────────────────────────────────── */
+.sobre-report {
+  padding-top: var(--sobre-gap);
 }
 
-.team-section h2 {
-  margin: 0 0 20px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+.report-inline-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.report-inline-link:hover {
+  text-decoration: underline;
+}
+
+.report-soon {
+  padding: 1px 7px;
+  border-radius: 9999px;
+  background: var(--bg-accent-dim);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--text-dim);
-  text-align: center;
+}
+
+/* ── Team ─────────────────────────────────────────────────────────────────── */
+.team-section {
+  padding-top: var(--sobre-gap);
+  padding-bottom: 80px;
 }
 
 .team-lead-wrap {
@@ -270,22 +375,22 @@ const members = team.filter((member) => !member.tag)
 
 .team-card {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 14px;
-  padding: 18px;
+  padding: 18px 20px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 14px;
 }
 
-/* Coordenador — card único e centralizado acima da grade, mesmo
-   background/borda dos demais, só maior e com layout vertical. */
+/* Coordenador — card único acima da grade, ocupando a mesma largura das
+   duas colunas abaixo; mesmo background/borda dos demais, só com layout
+   vertical e conteúdo centralizado. */
 .team-lead {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 300px;
-  padding: 24px 28px;
+  padding: 24px 28px 22px;
   text-align: center;
 }
 
@@ -316,7 +421,7 @@ const members = team.filter((member) => !member.tag)
 }
 
 .team-info h3 {
-  margin: 0 0 4px;
+  margin: 0 0 3px;
   font-size: 14px;
   font-weight: 700;
   color: var(--text-main);
@@ -358,6 +463,18 @@ const members = team.filter((member) => !member.tag)
 
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
+  .sobre-view {
+    --sobre-gap: 44px;
+  }
+
+  .sobre-hero {
+    padding-top: 40px;
+  }
+
+  .sobre-mark {
+    width: 160px;
+  }
+
   .team-grid {
     grid-template-columns: 1fr;
   }
