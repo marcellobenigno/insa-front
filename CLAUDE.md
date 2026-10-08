@@ -314,6 +314,19 @@ rendering can't do, since a canvas tile has no addressable per-feature DOM/layer
    fetched, rendering as disconnected line fragments. The map's own
    `map.setMaxBounds()` (with padding) already constrains panning — that's enough.
 
+7. **Overzoom above z14 — don't cap overlays at the tile pyramid's max zoom.**
+   Tiles only exist up to `MAX_TILE_ZOOM = 14` (Tippecanoe `-z14`), but the
+   satellite/Google bases go to z20. `CustomMVTLayer` uses
+   `maxZoom: OVERLAY_MAX_ZOOM` (20) and, for `coords.z > 14`, reuses the
+   ancestor z14 tile (`coords >> dz`) and draws only its sub-area via
+   `ctx.setTransform(scale, …)` — vector, so it stays sharp. The transform is
+   reset before `stroke()`/`fill()` so line widths aren't scaled. The click
+   popup likewise clamps to `Math.min(map.getZoom(), MAX_TILE_ZOOM)`. Before
+   this (overlay `maxZoom: 14`), every layer silently vanished above z14.
+   Because the overlay's maxZoom is now 20, `renderTileLayer()` calls
+   `map.setMaxZoom(<active base maxZoom>)` — otherwise Leaflet takes the max
+   across all layers and the dark Esri base (max z16) would go blank at z17–20.
+
 ---
 
 ## Routing & navegação
@@ -364,6 +377,16 @@ its now-shorter container and clip `GeoSearch.vue` at the bottom) — it must be
 `height: 100%`, relying on the `html/body/#app { height: 100% }` chain already in
 `main.css`. If you add more views, keep following this pattern rather than
 reintroducing a `100vh` rule anywhere below the navbar.
+
+**Rodapé (`AppFooter.vue`) — sticky footer.** `InicioView`, `SobreView` e
+`DashboardView` rolam o próprio container (`height: 100%; overflow-y: auto`)
+e terminam com `<AppFooter />`. Pra o rodapé encostar no fim da tela em
+monitores altos (conteúdo mais baixo que a viewport), a view é
+`display: flex; flex-direction: column` e o conteúdo acima do rodapé fica num
+wrapper com `flex: 1 0 auto` (`.inicio-main`, `.sobre-main`,
+`.dashboard-content`). Não aplicar o flex direto nas seções: as que usam
+`max-width` + `margin: 0 auto` encolheriam até a largura do conteúdo numa
+coluna flex. Uma view nova com rodapé deve seguir o mesmo padrão.
 
 ---
 
@@ -1187,6 +1210,12 @@ mudarem.
   botão "−" não deve afastar além do zoom inicial). Um valor fixo (era `6`)
   podia ficar aquém da visão inicial real em containers menores, já que o
   zoom que o `fitBounds` calcula varia com o tamanho do container.
+- **Caixa de hover (`.municipio-hover-box`, `setHoverInfo`)** mostra nome +
+  "Valor médio:" + "Classe dominante:" (com a cor da classe) do índice
+  selecionado, lidos de `dashboard_stats.json` por `cod_ibge_m` — os mesmos
+  dados da `DashboardTable.vue`. Montada com `createElement`/`textContent`
+  (sem `innerHTML`). Rótulos e valores entram direto num grid de 2 colunas
+  (sem wrapper por linha) pra os valores alinharem à esquerda numa coluna só.
 
 ### Basemap escuro (`BASE_LAYERS.dark_gray`) — Esri, não CARTO
 
