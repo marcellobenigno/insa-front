@@ -54,7 +54,7 @@ const features = [
           </RouterLink>
           <RouterLink to="/dashboard" class="btn-cta btn-cta-ghost">
             <i class="bi bi-bar-chart-line" aria-hidden="true" />
-            Ver dashboard
+            Ver painel interativo
           </RouterLink>
         </div>
       </section>
