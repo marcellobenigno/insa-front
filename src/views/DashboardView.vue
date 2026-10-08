@@ -7,6 +7,7 @@ import DashboardMiniMap from '@/components/DashboardMiniMap.vue'
 import DashboardChart from '@/components/DashboardChart.vue'
 import DashboardPieChart from '@/components/DashboardPieChart.vue'
 import DashboardTable from '@/components/DashboardTable.vue'
+import AppFooter from '@/components/AppFooter.vue'
 
 // IVD (vulnerabilidade à desertificação) é o índice síntese de maior destaque
 // no INSA — vem primeiro no seletor e já carrega selecionado ao abrir o dashboard.
@@ -57,78 +58,82 @@ watch(selectedIndex, () => {
 
 <template>
   <div class="dashboard-view">
-    <header class="dashboard-header">
-      <div>
-        <h1>Comparativo entre Municípios</h1>
-        <p class="dashboard-subtitle">
-          Cruzamento dos índices de vulnerabilidade com os
-          {{ Object.keys(dashboardData.municipios).length }}
-          municípios do Semiárido da PB
-        </p>
-      </div>
-      <label class="index-select-wrap">
-        <span class="index-select-label">Índice</span>
-        <select v-model="selectedIndex" class="index-select" aria-label="Selecionar índice">
-          <option v-for="opt in indexOptions" :key="opt.key" :value="opt.key">
-            {{ opt.label }}
-          </option>
-        </select>
-      </label>
-    </header>
+    <div class="dashboard-content">
+      <header class="dashboard-header">
+        <div>
+          <h1>Comparativo entre Municípios</h1>
+          <p class="dashboard-subtitle">
+            Cruzamento dos índices de vulnerabilidade com os
+            {{ Object.keys(dashboardData.municipios).length }}
+            municípios do Semiárido da PB
+          </p>
+        </div>
+        <label class="index-select-wrap">
+          <span class="index-select-label">Índice</span>
+          <select v-model="selectedIndex" class="index-select" aria-label="Selecionar índice">
+            <option v-for="opt in indexOptions" :key="opt.key" :value="opt.key">
+              {{ opt.label }}
+            </option>
+          </select>
+        </label>
+      </header>
 
-    <section class="dashboard-section">
-      <h2 class="section-eyebrow">Explorar municípios</h2>
-      <div class="dashboard-grid grid-explore">
-        <section class="dashboard-panel">
-          <h3 class="panel-title">
-            <i class="bi bi-geo-alt-fill" aria-hidden="true" />Distribuição espacial
-          </h3>
-          <div class="panel-body">
-            <DashboardMiniMap
-              :source-layer="selectedIndex"
-              :selected-municipio="selectedMunicipio"
-              @clear-selection="selectedMunicipio = null"
-            />
-          </div>
-        </section>
+      <section class="dashboard-section">
+        <h2 class="section-eyebrow">Explorar municípios</h2>
+        <div class="dashboard-grid grid-explore">
+          <section class="dashboard-panel">
+            <h3 class="panel-title">
+              <i class="bi bi-geo-alt-fill" aria-hidden="true" />Distribuição espacial
+            </h3>
+            <div class="panel-body">
+              <DashboardMiniMap
+                :source-layer="selectedIndex"
+                :selected-municipio="selectedMunicipio"
+                @clear-selection="selectedMunicipio = null"
+              />
+            </div>
+          </section>
 
-        <section class="dashboard-panel">
-          <h3 class="panel-title">
-            <i class="bi bi-table" aria-hidden="true" />Todos os municípios
-          </h3>
-          <div class="panel-body">
-            <DashboardTable
-              :municipios="municipiosList"
-              :selected="selectedMunicipio"
-              @select="selectedMunicipio = $event"
-            />
-          </div>
-        </section>
-      </div>
-    </section>
+          <section class="dashboard-panel">
+            <h3 class="panel-title">
+              <i class="bi bi-table" aria-hidden="true" />Todos os municípios
+            </h3>
+            <div class="panel-body">
+              <DashboardTable
+                :municipios="municipiosList"
+                :selected="selectedMunicipio"
+                @select="selectedMunicipio = $event"
+              />
+            </div>
+          </section>
+        </div>
+      </section>
 
-    <section class="dashboard-section">
-      <h2 class="section-eyebrow">Análise do índice selecionado</h2>
-      <div class="dashboard-grid grid-charts">
-        <section class="dashboard-panel">
-          <h3 class="panel-title">
-            <i class="bi bi-pie-chart-fill" aria-hidden="true" />Distribuição por classe
-          </h3>
-          <div class="panel-body">
-            <DashboardPieChart :source-layer="selectedIndex" />
-          </div>
-        </section>
+      <section class="dashboard-section">
+        <h2 class="section-eyebrow">Análise do índice selecionado</h2>
+        <div class="dashboard-grid grid-charts">
+          <section class="dashboard-panel">
+            <h3 class="panel-title">
+              <i class="bi bi-pie-chart-fill" aria-hidden="true" />Distribuição por classe
+            </h3>
+            <div class="panel-body">
+              <DashboardPieChart :source-layer="selectedIndex" />
+            </div>
+          </section>
 
-        <section class="dashboard-panel">
-          <h3 class="panel-title">
-            <i class="bi bi-bar-chart-line-fill" aria-hidden="true" />Ranking dos municípios
-          </h3>
-          <div class="panel-body">
-            <DashboardChart :municipios="municipiosList" />
-          </div>
-        </section>
-      </div>
-    </section>
+          <section class="dashboard-panel">
+            <h3 class="panel-title">
+              <i class="bi bi-bar-chart-line-fill" aria-hidden="true" />Ranking dos municípios
+            </h3>
+            <div class="panel-body">
+              <DashboardChart :municipios="municipiosList" />
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <AppFooter />
   </div>
 </template>
 
@@ -136,8 +141,13 @@ watch(selectedIndex, () => {
 .dashboard-view {
   height: 100%;
   overflow-y: auto;
-  padding: 28px 32px 44px;
   background: var(--bg-app);
+}
+
+/* Padding num wrapper interno (não no .dashboard-view) pra o AppFooter
+   ocupar a largura toda, de borda a borda. */
+.dashboard-content {
+  padding: 28px 32px 44px;
 }
 
 .dashboard-header {
@@ -309,7 +319,7 @@ watch(selectedIndex, () => {
 }
 
 @media (max-width: 640px) {
-  .dashboard-view {
+  .dashboard-content {
     padding: 20px 16px 32px;
   }
 

@@ -1,6 +1,7 @@
 <script setup>
 import logoLockup from '@/assets/logo-lockup-fine.svg'
 import HeroCarousel from '@/components/HeroCarousel.vue'
+import AppFooter from '@/components/AppFooter.vue'
 
 const features = [
   {
@@ -77,6 +78,8 @@ const features = [
         <p>{{ f.text }}</p>
       </article>
     </section>
+
+    <AppFooter />
   </div>
 </template>
 

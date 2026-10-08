@@ -1,5 +1,6 @@
 <script setup>
 import logoLockup from '@/assets/logo-lockup-fine.svg'
+import AppFooter from '@/components/AppFooter.vue'
 
 // Link do relatório final do projeto — vazio enquanto o relatório não é
 // publicado. Com a string vazia, os links apontam pra "#", não navegam e o
@@ -170,6 +171,8 @@ const members = team.filter((member) => !member.tag)
         </article>
       </div>
     </section>
+
+    <AppFooter />
   </div>
 </template>
 
